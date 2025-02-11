@@ -17,9 +17,10 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ opt :=
+                let~ opt : Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Self,
@@ -34,6 +35,7 @@ Module iter.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.associated,
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                       "unwrap_unchecked",

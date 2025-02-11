@@ -27,6 +27,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let iter := M.alloc (| iter |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "extend_desugared",
@@ -71,6 +72,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let iterator := M.alloc (| iterator |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                 "extend_trusted",
@@ -118,10 +120,11 @@ Module vec.
             (let self := M.alloc (| self |) in
             let iterator := M.alloc (| iterator |) in
             M.read (|
-              let~ _ :=
-                let~ _ :=
+              let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                         "append_elements",
@@ -137,6 +140,10 @@ Module vec.
                                 Pointer.Kind.ConstPointer,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::into_iter::IntoIter")
@@ -156,9 +163,10 @@ Module vec.
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::into_iter::IntoIter")
@@ -214,6 +222,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let iterator := M.alloc (| iterator |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "alloc::vec::spec_extend::SpecExtend",
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
@@ -226,6 +235,7 @@ Module vec.
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     I,
@@ -273,9 +283,10 @@ Module vec.
             (let self := M.alloc (| self |) in
             let iterator := M.alloc (| iterator |) in
             M.read (|
-              let~ slice :=
+              let~ slice : Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                       "as_slice",
@@ -285,9 +296,10 @@ Module vec.
                     [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                       "append_elements",

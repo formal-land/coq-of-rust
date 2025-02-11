@@ -31,10 +31,20 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
       M.catch_return (|
         ltac:(M.monadic
           (M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                        Ty.tuple []
+                      ],
                     M.get_trait_method (|
                       "core::ops::try_trait::Try",
                       Ty.apply
@@ -49,6 +59,10 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
@@ -58,6 +72,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -83,6 +98,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -123,6 +139,10 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                           M.read (|
                             M.return_ (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::FromResidual",
                                   Ty.apply
@@ -161,9 +181,10 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                       val))
                 ]
               |) in
-            let~ items :=
+            let~ items : Ty.associated :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.associated,
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     impl_IntoIterator_Item___T_,
@@ -176,7 +197,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                   [ M.read (| items |) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -185,6 +206,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ T ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.associated,
@@ -204,10 +226,23 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                           0
                         |) in
                       let x := M.copy (| γ0_0 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "core::fmt::Error"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -222,6 +257,10 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Formatter",
                                     "write_fmt",
@@ -234,6 +273,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                       M.deref (| M.read (| f |) |)
                                     |);
                                     M.call_closure (|
+                                      Ty.path "core::fmt::Arguments",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
@@ -261,6 +301,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                 Value.Array
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path "core::fmt::rt::Argument",
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::rt::Argument",
                                                         "new_display",
@@ -303,6 +344,10 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -345,6 +390,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         (M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.associated,
                               M.get_trait_method (|
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.associated,
@@ -363,10 +409,11 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                 (let iter := M.copy (| γ |) in
                                 M.loop (|
                                   ltac:(M.monadic
-                                    (let~ _ :=
+                                    (let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                             M.get_trait_method (|
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.associated,
@@ -406,10 +453,24 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                   0
                                                 |) in
                                               let x := M.copy (| γ0_0 |) in
-                                              let~ _ :=
+                                              let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::ops::control_flow::ControlFlow")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path "core::fmt::Error"
+                                                            ];
+                                                          Ty.tuple []
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::Try",
                                                         Ty.apply
@@ -425,6 +486,13 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path "core::fmt::Error"
+                                                            ],
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Formatter",
                                                             "write_fmt",
@@ -437,6 +505,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                               M.deref (| M.read (| f |) |)
                                                             |);
                                                             M.call_closure (|
+                                                              Ty.path "core::fmt::Arguments",
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_v1",
@@ -469,6 +538,8 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                                         Value.Array
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
@@ -515,6 +586,13 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                             M.read (|
                                                               M.return_ (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path "core::fmt::Error"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::try_trait::FromResidual",
                                                                     Ty.apply
@@ -569,10 +647,20 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::ops::control_flow::ControlFlow")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error" ];
+                        Ty.tuple []
+                      ],
                     M.get_trait_method (|
                       "core::ops::try_trait::Try",
                       Ty.apply
@@ -587,6 +675,10 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_fmt",
@@ -596,6 +688,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -621,6 +714,7 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -661,6 +755,10 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                           M.read (|
                             M.return_ (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::FromResidual",
                                   Ty.apply

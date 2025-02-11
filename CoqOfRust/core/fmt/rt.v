@@ -215,9 +215,10 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -226,9 +227,10 @@ Module fmt.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -590,6 +592,7 @@ Module fmt.
                     [
                       ("value",
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.tuple [] ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                             "cast",
@@ -598,6 +601,7 @@ Module fmt.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                               M.get_trait_method (|
                                 "core::convert::From",
                                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
@@ -613,6 +617,15 @@ Module fmt.
                         |));
                       ("formatter",
                         M.call_closure (|
+                          Ty.function
+                            [
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.tuple [] ];
+                              Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                            ]
+                            (Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                           M.get_function (|
                             "core::intrinsics::transmute",
                             [],
@@ -662,6 +675,7 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
+              Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
@@ -687,6 +701,7 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
+              Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
@@ -712,6 +727,7 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
+              Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
@@ -762,6 +778,7 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
+              Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
@@ -787,6 +804,7 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
+              Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
@@ -813,6 +831,7 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
+              Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
@@ -839,6 +858,7 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
+              Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
@@ -864,6 +884,7 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
+              Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
@@ -889,6 +910,7 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
+              Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
@@ -915,6 +937,7 @@ Module fmt.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.call_closure (|
+              Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| x |) |) |);
@@ -1002,6 +1025,10 @@ Module fmt.
                       let value := M.copy (| γ0_1 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.read (| formatter |),
                           [
                             M.read (| value |);
@@ -1020,6 +1047,7 @@ Module fmt.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
+                            Ty.path "never",
                             M.get_function (| "core::hint::unreachable_unchecked", [], [] |),
                             []
                           |)

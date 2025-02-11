@@ -35,6 +35,7 @@ Module interface.
             [
               ("gas_used",
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "u64",
@@ -62,6 +63,7 @@ Module interface.
                 |));
               ("bytes",
                 M.call_closure (|
+                  Ty.path "alloy_primitives::bytes_::Bytes",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "alloy_primitives::bytes_::Bytes",
@@ -110,6 +112,10 @@ Module interface.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
@@ -208,6 +214,7 @@ Module interface.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "alloy_primitives::bytes_::Bytes",
@@ -297,9 +304,10 @@ Module interface.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "u64",
@@ -329,6 +337,7 @@ Module interface.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "core::hash::Hash",
                   Ty.path "alloy_primitives::bytes_::Bytes",
@@ -453,6 +462,7 @@ Module interface.
                         "revm_precompile::interface::PrecompileErrors::Error"
                         [
                           M.call_closure (|
+                            Ty.path "revm_precompile::interface::PrecompileError",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "revm_precompile::interface::PrecompileError",
@@ -482,6 +492,7 @@ Module interface.
                         [
                           ("msg",
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "alloc::string::String",
@@ -536,6 +547,10 @@ Module interface.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -567,6 +582,10 @@ Module interface.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_struct_field1_finish",
@@ -626,9 +645,10 @@ Module interface.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -637,9 +657,10 @@ Module interface.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -678,6 +699,7 @@ Module interface.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -723,6 +745,7 @@ Module interface.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
@@ -743,6 +766,7 @@ Module interface.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
+                                  Ty.path "never",
                                   M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                   []
                                 |)
@@ -814,9 +838,10 @@ Module interface.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -825,9 +850,10 @@ Module interface.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "isize",
@@ -861,6 +887,7 @@ Module interface.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.path "revm_precompile::interface::PrecompileError",
@@ -888,6 +915,7 @@ Module interface.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.path "alloc::string::String",
@@ -936,6 +964,7 @@ Module interface.
             "revm_context_interface::result::EVMError::Precompile"
             [
               M.call_closure (|
+                Ty.path "alloc::string::String",
                 M.get_trait_method (|
                   "alloc::string::ToString",
                   Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -1005,6 +1034,10 @@ Module interface.
                     let e := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_trait_method (|
                           "core::fmt::Display",
                           Ty.path "revm_precompile::interface::PrecompileError",
@@ -1032,6 +1065,10 @@ Module interface.
                     let msg := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1044,6 +1081,7 @@ Module interface.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
                                   Ty.path "alloc::string::String",
@@ -1332,6 +1370,7 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::Other"
                         [
                           M.call_closure (|
+                            Ty.path "alloc::string::String",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "alloc::string::String",
@@ -1383,6 +1422,10 @@ Module interface.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1408,6 +1451,10 @@ Module interface.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1433,6 +1480,10 @@ Module interface.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1458,6 +1509,10 @@ Module interface.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1483,6 +1538,10 @@ Module interface.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1508,6 +1567,10 @@ Module interface.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1533,6 +1596,10 @@ Module interface.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1558,6 +1625,10 @@ Module interface.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1583,6 +1654,10 @@ Module interface.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1608,6 +1683,10 @@ Module interface.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1633,6 +1712,10 @@ Module interface.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1658,6 +1741,10 @@ Module interface.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -1685,6 +1772,10 @@ Module interface.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -1740,9 +1831,10 @@ Module interface.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -1751,9 +1843,10 @@ Module interface.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -1792,6 +1885,7 @@ Module interface.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
@@ -1867,9 +1961,10 @@ Module interface.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -1878,9 +1973,10 @@ Module interface.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "isize",
@@ -1914,6 +2010,7 @@ Module interface.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.path "alloc::string::String",
@@ -1961,6 +2058,7 @@ Module interface.
             "revm_precompile::interface::PrecompileError::Other"
             [
               M.call_closure (|
+                Ty.path "alloc::string::String",
                 M.get_trait_method (|
                   "core::convert::Into",
                   impl_Into_String_,
@@ -2082,7 +2180,7 @@ Module interface.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ s :=
+            let~ s : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
               M.copy (|
                 M.match_operator (|
                   self,
@@ -2275,6 +2373,7 @@ Module interface.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
                                   Ty.path "alloc::string::String",
@@ -2294,6 +2393,10 @@ Module interface.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);

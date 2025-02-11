@@ -29,6 +29,10 @@ Module hash.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
@@ -87,6 +91,10 @@ Module hash.
               [
                 ("hasher",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::hash::sip::Hasher")
+                      []
+                      [ Ty.path "core::hash::sip::Sip13Rounds" ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -140,6 +148,10 @@ Module hash.
               [
                 ("hasher",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::hash::sip::Hasher")
+                      []
+                      [ Ty.path "core::hash::sip::Sip13Rounds" ],
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.apply
@@ -192,6 +204,10 @@ Module hash.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
@@ -250,6 +266,10 @@ Module hash.
               [
                 ("hasher",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::hash::sip::Hasher")
+                      []
+                      [ Ty.path "core::hash::sip::Sip24Rounds" ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -303,6 +323,10 @@ Module hash.
               [
                 ("hasher",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::hash::sip::Hasher")
+                      []
+                      [ Ty.path "core::hash::sip::Sip24Rounds" ],
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.apply
@@ -348,6 +372,10 @@ Module hash.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
@@ -404,6 +432,7 @@ Module hash.
               "core::hash::sip::SipHasher"
               [
                 M.call_closure (|
+                  Ty.path "core::hash::sip::SipHasher24",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "core::hash::sip::SipHasher24",
@@ -453,6 +482,7 @@ Module hash.
               "core::hash::sip::SipHasher"
               [
                 M.call_closure (|
+                  Ty.path "core::hash::sip::SipHasher24",
                   M.get_trait_method (|
                     "core::default::Default",
                     Ty.path "core::hash::sip::SipHasher24",
@@ -505,7 +535,16 @@ Module hash.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let~ names :=
+              let~ names :
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 7 ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                    ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -546,7 +585,16 @@ Module hash.
                     |)
                   |)
                 |) in
-              let~ values :=
+              let~ values :
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                    ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -660,6 +708,10 @@ Module hash.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                   M.get_associated_function (|
                     Ty.path "core::fmt::Formatter",
                     "debug_struct_fields_finish",
@@ -715,6 +767,10 @@ Module hash.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field4_finish",
@@ -869,7 +925,7 @@ Module hash.
           let start := M.alloc (| start |) in
           let len := M.alloc (| len |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -877,7 +933,7 @@ Module hash.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -901,6 +957,7 @@ Module hash.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
+                                      Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [ M.read (| Value.String "assertion failed: len < 8" |) ]
                                     |)
@@ -913,9 +970,9 @@ Module hash.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ i := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-            let~ out := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
-            let~ _ :=
+            let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+            let~ out : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -933,180 +990,192 @@ Module hash.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
-                        M.write (|
-                          out,
-                          M.cast
-                            (Ty.path "u64")
-                            (M.read (|
-                              let~ _ :=
-                                M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                                        let _ :=
-                                          M.is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Bool true
-                                          |) in
-                                        let~ _ :=
-                                          M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ :=
-                                                    M.use
-                                                      (M.alloc (|
-                                                        UnOp.not (|
-                                                          BinOp.le (|
-                                                            BinOp.Wrap.add (|
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          M.write (|
+                            out,
+                            M.cast
+                              (Ty.path "u64")
+                              (M.read (|
+                                let~ _ : Ty.tuple [] :=
+                                  M.match_operator (|
+                                    M.alloc (| Value.Tuple [] |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                          let _ :=
+                                            M.is_constant_or_break_match (|
+                                              M.read (| γ |),
+                                              Value.Bool true
+                                            |) in
+                                          let~ _ : Ty.tuple [] :=
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          UnOp.not (|
+                                                            BinOp.le (|
                                                               BinOp.Wrap.add (|
-                                                                M.read (| start |),
-                                                                M.read (| i |)
+                                                                BinOp.Wrap.add (|
+                                                                  M.read (| start |),
+                                                                  M.read (| i |)
+                                                                |),
+                                                                M.call_closure (|
+                                                                  Ty.path "usize",
+                                                                  M.get_function (|
+                                                                    "core::mem::size_of",
+                                                                    [],
+                                                                    [ Ty.path "u32" ]
+                                                                  |),
+                                                                  []
+                                                                |)
                                                               |),
                                                               M.call_closure (|
-                                                                M.get_function (|
-                                                                  "core::mem::size_of",
+                                                                Ty.path "usize",
+                                                                M.get_associated_function (|
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [ Ty.path "u8" ],
+                                                                  "len",
                                                                   [],
-                                                                  [ Ty.path "u32" ]
-                                                                |),
-                                                                []
-                                                              |)
-                                                            |),
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path "slice")
                                                                   []
-                                                                  [ Ty.path "u8" ],
-                                                                "len",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| buf |) |)
-                                                                |)
-                                                              ]
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.Ref,
+                                                                    M.deref (| M.read (| buf |) |)
+                                                                  |)
+                                                                ]
+                                                              |)
                                                             |)
                                                           |)
+                                                        |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.call_closure (|
+                                                          Ty.path "never",
+                                                          M.get_function (|
+                                                            "core::panicking::panic",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (|
+                                                              Value.String
+                                                                "assertion failed: start + i + mem::size_of::<u32>() <= buf.len()"
+                                                            |)
+                                                          ]
                                                         |)
-                                                      |)) in
-                                                  let _ :=
-                                                    M.is_constant_or_break_match (|
-                                                      M.read (| γ |),
-                                                      Value.Bool true
-                                                    |) in
-                                                  M.alloc (|
-                                                    M.never_to_any (|
-                                                      M.call_closure (|
-                                                        M.get_function (|
-                                                          "core::panicking::panic",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.read (|
-                                                            Value.String
-                                                              "assertion failed: start + i + mem::size_of::<u32>() <= buf.len()"
-                                                          |)
-                                                        ]
                                                       |)
-                                                    |)
-                                                  |)));
-                                              fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                            ]
-                                          |) in
-                                        M.alloc (| Value.Tuple [] |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                  ]
-                                |) in
-                              let~ data :=
-                                M.copy (|
-                                  M.use (M.alloc (| Value.Integer IntegerKind.U32 0 |))
-                                |) in
-                              let~ _ :=
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)));
+                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    ]
+                                  |) in
+                                let~ data : Ty.path "u32" :=
+                                  M.copy (|
+                                    M.use (M.alloc (| Value.Integer IntegerKind.U32 0 |))
+                                  |) in
+                                let~ _ : Ty.tuple [] :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      Ty.tuple [],
+                                      M.get_function (|
+                                        "core::intrinsics::copy_nonoverlapping",
+                                        [],
+                                        [ Ty.path "u8" ]
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                            "add",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                "as_ptr",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| buf |) |)
+                                                |)
+                                              ]
+                                            |);
+                                            BinOp.Wrap.add (| M.read (| start |), M.read (| i |) |)
+                                          ]
+                                        |);
+                                        M.cast
+                                          (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                          (M.read (|
+                                            M.use
+                                              (M.alloc (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutPointer,
+                                                  M.deref (|
+                                                    M.borrow (| Pointer.Kind.MutRef, data |)
+                                                  |)
+                                                |)
+                                              |))
+                                          |));
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          M.get_function (|
+                                            "core::mem::size_of",
+                                            [],
+                                            [ Ty.path "u32" ]
+                                          |),
+                                          []
+                                        |)
+                                      ]
+                                    |)
+                                  |) in
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_function (|
-                                      "core::intrinsics::copy_nonoverlapping",
-                                      [],
-                                      [ Ty.path "u8" ]
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                          "add",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                              "as_ptr",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| buf |) |)
-                                              |)
-                                            ]
-                                          |);
-                                          BinOp.Wrap.add (| M.read (| start |), M.read (| i |) |)
-                                        ]
-                                      |);
-                                      M.cast
-                                        (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
-                                        (M.read (|
-                                          M.use
-                                            (M.alloc (|
-                                              M.borrow (|
-                                                Pointer.Kind.MutPointer,
-                                                M.deref (|
-                                                  M.borrow (| Pointer.Kind.MutRef, data |)
-                                                |)
-                                              |)
-                                            |))
-                                        |));
-                                      M.call_closure (|
-                                        M.get_function (|
-                                          "core::mem::size_of",
-                                          [],
-                                          [ Ty.path "u32" ]
-                                        |),
-                                        []
-                                      |)
-                                    ]
+                                    Ty.path "u32",
+                                    M.get_associated_function (| Ty.path "u32", "to_le", [], [] |),
+                                    [ M.read (| data |) ]
                                   |)
-                                |) in
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (| Ty.path "u32", "to_le", [], [] |),
-                                  [ M.read (| data |) ]
                                 |)
-                              |)
-                            |))
+                              |))
+                          |)
                         |) in
-                      let~ _ :=
-                        let β := i in
-                        M.write (|
-                          β,
-                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 4 |)
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          let β := i in
+                          M.write (|
+                            β,
+                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 4 |)
+                          |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1124,192 +1193,210 @@ Module hash.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
-                        let β := out in
-                        M.write (|
-                          β,
-                          BinOp.bit_or
-                            (M.read (| β |))
-                            (BinOp.Wrap.shl (|
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (|
-                                  let~ _ :=
-                                    M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                                            let _ :=
-                                              M.is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            let~ _ :=
-                                              M.match_operator (|
-                                                M.alloc (| Value.Tuple [] |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ :=
-                                                        M.use
-                                                          (M.alloc (|
-                                                            UnOp.not (|
-                                                              BinOp.le (|
-                                                                BinOp.Wrap.add (|
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          let β := out in
+                          M.write (|
+                            β,
+                            BinOp.bit_or
+                              (M.read (| β |))
+                              (BinOp.Wrap.shl (|
+                                M.cast
+                                  (Ty.path "u64")
+                                  (M.read (|
+                                    let~ _ : Ty.tuple [] :=
+                                      M.match_operator (|
+                                        M.alloc (| Value.Tuple [] |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                              let _ :=
+                                                M.is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
+                                              let~ _ : Ty.tuple [] :=
+                                                M.match_operator (|
+                                                  M.alloc (| Value.Tuple [] |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ :=
+                                                          M.use
+                                                            (M.alloc (|
+                                                              UnOp.not (|
+                                                                BinOp.le (|
                                                                   BinOp.Wrap.add (|
-                                                                    M.read (| start |),
-                                                                    M.read (| i |)
+                                                                    BinOp.Wrap.add (|
+                                                                      M.read (| start |),
+                                                                      M.read (| i |)
+                                                                    |),
+                                                                    M.call_closure (|
+                                                                      Ty.path "usize",
+                                                                      M.get_function (|
+                                                                        "core::mem::size_of",
+                                                                        [],
+                                                                        [ Ty.path "u16" ]
+                                                                      |),
+                                                                      []
+                                                                    |)
                                                                   |),
                                                                   M.call_closure (|
-                                                                    M.get_function (|
-                                                                      "core::mem::size_of",
+                                                                    Ty.path "usize",
+                                                                    M.get_associated_function (|
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [ Ty.path "u8" ],
+                                                                      "len",
                                                                       [],
-                                                                      [ Ty.path "u16" ]
-                                                                    |),
-                                                                    []
-                                                                  |)
-                                                                |),
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.apply
-                                                                      (Ty.path "slice")
                                                                       []
-                                                                      [ Ty.path "u8" ],
-                                                                    "len",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (| M.read (| buf |) |)
-                                                                    |)
-                                                                  ]
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| buf |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |)
                                                                 |)
                                                               |)
+                                                            |)) in
+                                                        let _ :=
+                                                          M.is_constant_or_break_match (|
+                                                            M.read (| γ |),
+                                                            Value.Bool true
+                                                          |) in
+                                                        M.alloc (|
+                                                          M.never_to_any (|
+                                                            M.call_closure (|
+                                                              Ty.path "never",
+                                                              M.get_function (|
+                                                                "core::panicking::panic",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "assertion failed: start + i + mem::size_of::<u16>() <= buf.len()"
+                                                                |)
+                                                              ]
                                                             |)
-                                                          |)) in
-                                                      let _ :=
-                                                        M.is_constant_or_break_match (|
-                                                          M.read (| γ |),
-                                                          Value.Bool true
-                                                        |) in
-                                                      M.alloc (|
-                                                        M.never_to_any (|
-                                                          M.call_closure (|
-                                                            M.get_function (|
-                                                              "core::panicking::panic",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "assertion failed: start + i + mem::size_of::<u16>() <= buf.len()"
-                                                              |)
-                                                            ]
                                                           |)
-                                                        |)
-                                                      |)));
-                                                  fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                                ]
-                                              |) in
-                                            M.alloc (| Value.Tuple [] |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                      ]
-                                    |) in
-                                  let~ data :=
-                                    M.copy (|
-                                      M.use (M.alloc (| Value.Integer IntegerKind.U16 0 |))
-                                    |) in
-                                  let~ _ :=
+                                                        |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.alloc (| Value.Tuple [] |)))
+                                                  ]
+                                                |) in
+                                              M.alloc (| Value.Tuple [] |)));
+                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        ]
+                                      |) in
+                                    let~ data : Ty.path "u16" :=
+                                      M.copy (|
+                                        M.use (M.alloc (| Value.Integer IntegerKind.U16 0 |))
+                                      |) in
+                                    let~ _ : Ty.tuple [] :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          Ty.tuple [],
+                                          M.get_function (|
+                                            "core::intrinsics::copy_nonoverlapping",
+                                            [],
+                                            [ Ty.path "u8" ]
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                                "add",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.call_closure (|
+                                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
+                                                  M.get_associated_function (|
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                    "as_ptr",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| buf |) |)
+                                                    |)
+                                                  ]
+                                                |);
+                                                BinOp.Wrap.add (|
+                                                  M.read (| start |),
+                                                  M.read (| i |)
+                                                |)
+                                              ]
+                                            |);
+                                            M.cast
+                                              (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
+                                              (M.read (|
+                                                M.use
+                                                  (M.alloc (|
+                                                    M.borrow (|
+                                                      Pointer.Kind.MutPointer,
+                                                      M.deref (|
+                                                        M.borrow (| Pointer.Kind.MutRef, data |)
+                                                      |)
+                                                    |)
+                                                  |))
+                                              |));
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_function (|
+                                                "core::mem::size_of",
+                                                [],
+                                                [ Ty.path "u16" ]
+                                              |),
+                                              []
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
                                     M.alloc (|
                                       M.call_closure (|
-                                        M.get_function (|
-                                          "core::intrinsics::copy_nonoverlapping",
-                                          [],
-                                          [ Ty.path "u8" ]
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
-                                              "add",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                                  "as_ptr",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| buf |) |)
-                                                  |)
-                                                ]
-                                              |);
-                                              BinOp.Wrap.add (|
-                                                M.read (| start |),
-                                                M.read (| i |)
-                                              |)
-                                            ]
-                                          |);
-                                          M.cast
-                                            (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
-                                            (M.read (|
-                                              M.use
-                                                (M.alloc (|
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutPointer,
-                                                    M.deref (|
-                                                      M.borrow (| Pointer.Kind.MutRef, data |)
-                                                    |)
-                                                  |)
-                                                |))
-                                            |));
-                                          M.call_closure (|
-                                            M.get_function (|
-                                              "core::mem::size_of",
-                                              [],
-                                              [ Ty.path "u16" ]
-                                            |),
-                                            []
-                                          |)
-                                        ]
-                                      |)
-                                    |) in
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
                                         Ty.path "u16",
-                                        "to_le",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| data |) ]
+                                        M.get_associated_function (|
+                                          Ty.path "u16",
+                                          "to_le",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| data |) ]
+                                      |)
                                     |)
-                                  |)
-                                |)),
-                              BinOp.Wrap.mul (| M.read (| i |), Value.Integer IntegerKind.Usize 8 |)
-                            |))
+                                  |)),
+                                BinOp.Wrap.mul (|
+                                  M.read (| i |),
+                                  Value.Integer IntegerKind.Usize 8
+                                |)
+                              |))
+                          |)
                         |) in
-                      let β := i in
-                      M.write (|
-                        β,
-                        BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 2 |)
+                      M.alloc (|
+                        let β := i in
+                        M.write (|
+                          β,
+                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 2 |)
+                        |)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1318,48 +1405,56 @@ Module hash.
                       (let γ :=
                         M.use (M.alloc (| BinOp.lt (| M.read (| i |), M.read (| len |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
-                        let β := out in
-                        M.write (|
-                          β,
-                          BinOp.bit_or
-                            (M.read (| β |))
-                            (BinOp.Wrap.shl (|
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (|
-                                  M.deref (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                        "get_unchecked",
-                                        [],
-                                        [ Ty.path "usize" ]
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| buf |) |)
-                                        |);
-                                        BinOp.Wrap.add (| M.read (| start |), M.read (| i |) |)
-                                      ]
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          let β := out in
+                          M.write (|
+                            β,
+                            BinOp.bit_or
+                              (M.read (| β |))
+                              (BinOp.Wrap.shl (|
+                                M.cast
+                                  (Ty.path "u64")
+                                  (M.read (|
+                                    M.deref (|
+                                      M.call_closure (|
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                          "get_unchecked",
+                                          [],
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| buf |) |)
+                                          |);
+                                          BinOp.Wrap.add (| M.read (| start |), M.read (| i |) |)
+                                        ]
+                                      |)
                                     |)
-                                  |)
-                                |)),
-                              BinOp.Wrap.mul (| M.read (| i |), Value.Integer IntegerKind.Usize 8 |)
-                            |))
+                                  |)),
+                                BinOp.Wrap.mul (|
+                                  M.read (| i |),
+                                  Value.Integer IntegerKind.Usize 8
+                                |)
+                              |))
+                          |)
                         |) in
-                      let~ _ :=
-                        let β := i in
-                        M.write (|
-                          β,
-                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          let β := i in
+                          M.write (|
+                            β,
+                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                          |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1367,7 +1462,7 @@ Module hash.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -1386,6 +1481,7 @@ Module hash.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
+                                      Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [ M.read (| Value.String "assertion failed: i == len" |) ]
                                     |)
@@ -1419,6 +1515,7 @@ Module hash.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "core::hash::sip::SipHasher",
               M.get_associated_function (|
                 Ty.path "core::hash::sip::SipHasher",
                 "new_with_keys",
@@ -1452,6 +1549,10 @@ Module hash.
                   [
                     ("hasher",
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::hash::sip::Hasher")
+                          []
+                          [ Ty.path "core::hash::sip::Sip24Rounds" ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::hash::sip::Hasher")
@@ -1486,6 +1587,7 @@ Module hash.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "core::hash::sip::SipHasher13",
               M.get_associated_function (|
                 Ty.path "core::hash::sip::SipHasher13",
                 "new_with_keys",
@@ -1516,6 +1618,10 @@ Module hash.
               [
                 ("hasher",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::hash::sip::Hasher")
+                      []
+                      [ Ty.path "core::hash::sip::Sip13Rounds" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::hash::sip::Hasher")
@@ -1567,7 +1673,7 @@ Module hash.
             (let key0 := M.alloc (| key0 |) in
             let key1 := M.alloc (| key1 |) in
             M.read (|
-              let~ state :=
+              let~ state : Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ] :=
                 M.alloc (|
                   Value.StructRecord
                     "core::hash::sip::Hasher"
@@ -1589,9 +1695,10 @@ Module hash.
                       ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                     ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ],
                       "reset",
@@ -1628,107 +1735,119 @@ Module hash.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::hash::sip::Hasher",
-                    "length"
-                  |),
-                  Value.Integer IntegerKind.Usize 0
-                |) in
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
-                      "state"
+                      "length"
                     |),
-                    "core::hash::sip::State",
-                    "v0"
-                  |),
-                  BinOp.bit_xor
-                    (M.read (|
+                    Value.Integer IntegerKind.Usize 0
+                  |)
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| self |) |),
                         "core::hash::sip::Hasher",
-                        "k0"
-                      |)
-                    |))
-                    (Value.Integer IntegerKind.U64 8317987319222330741)
+                        "state"
+                      |),
+                      "core::hash::sip::State",
+                      "v0"
+                    |),
+                    BinOp.bit_xor
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::hash::sip::Hasher",
+                          "k0"
+                        |)
+                      |))
+                      (Value.Integer IntegerKind.U64 8317987319222330741)
+                  |)
                 |) in
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::hash::sip::Hasher",
+                        "state"
+                      |),
+                      "core::hash::sip::State",
+                      "v1"
+                    |),
+                    BinOp.bit_xor
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::hash::sip::Hasher",
+                          "k1"
+                        |)
+                      |))
+                      (Value.Integer IntegerKind.U64 7237128888997146477)
+                  |)
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::hash::sip::Hasher",
+                        "state"
+                      |),
+                      "core::hash::sip::State",
+                      "v2"
+                    |),
+                    BinOp.bit_xor
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::hash::sip::Hasher",
+                          "k0"
+                        |)
+                      |))
+                      (Value.Integer IntegerKind.U64 7816392313619706465)
+                  |)
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::hash::sip::Hasher",
+                        "state"
+                      |),
+                      "core::hash::sip::State",
+                      "v3"
+                    |),
+                    BinOp.bit_xor
+                      (M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::hash::sip::Hasher",
+                          "k1"
+                        |)
+                      |))
+                      (Value.Integer IntegerKind.U64 8387220255154660723)
+                  |)
+                |) in
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| self |) |),
                       "core::hash::sip::Hasher",
-                      "state"
+                      "ntail"
                     |),
-                    "core::hash::sip::State",
-                    "v1"
-                  |),
-                  BinOp.bit_xor
-                    (M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::hash::sip::Hasher",
-                        "k1"
-                      |)
-                    |))
-                    (Value.Integer IntegerKind.U64 7237128888997146477)
-                |) in
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::hash::sip::Hasher",
-                      "state"
-                    |),
-                    "core::hash::sip::State",
-                    "v2"
-                  |),
-                  BinOp.bit_xor
-                    (M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::hash::sip::Hasher",
-                        "k0"
-                      |)
-                    |))
-                    (Value.Integer IntegerKind.U64 7816392313619706465)
-                |) in
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::hash::sip::Hasher",
-                      "state"
-                    |),
-                    "core::hash::sip::State",
-                    "v3"
-                  |),
-                  BinOp.bit_xor
-                    (M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::hash::sip::Hasher",
-                        "k1"
-                      |)
-                    |))
-                    (Value.Integer IntegerKind.U64 8387220255154660723)
-                |) in
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::hash::sip::Hasher",
-                    "ntail"
-                  |),
-                  Value.Integer IntegerKind.Usize 0
+                    Value.Integer IntegerKind.Usize 0
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -1756,6 +1875,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let msg := M.alloc (| msg |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "core::hash::Hasher",
                 Ty.apply
@@ -1799,9 +1919,10 @@ Module hash.
             (let self := M.alloc (| self |) in
             let s := M.alloc (| s |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hasher",
                       Ty.apply
@@ -1847,6 +1968,7 @@ Module hash.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u64",
               M.get_trait_method (|
                 "core::hash::Hasher",
                 Ty.apply
@@ -1905,6 +2027,7 @@ Module hash.
             (let self := M.alloc (| self |) in
             let msg := M.alloc (| msg |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "core::hash::Hasher",
                 Ty.apply
@@ -1944,9 +2067,10 @@ Module hash.
             (let self := M.alloc (| self |) in
             let s := M.alloc (| s |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hasher",
                       Ty.apply
@@ -1988,6 +2112,7 @@ Module hash.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u64",
               M.get_trait_method (|
                 "core::hash::Hasher",
                 Ty.apply
@@ -2087,9 +2212,10 @@ Module hash.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ length :=
+                  let~ length : Ty.path "usize" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "len",
@@ -2099,16 +2225,19 @@ Module hash.
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |) ]
                       |)
                     |) in
-                  let~ _ :=
-                    let β :=
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::hash::sip::Hasher",
-                        "length"
-                      |) in
-                    M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| length |) |) |) in
-                  let~ needed := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
+                    M.alloc (|
+                      let β :=
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::hash::sip::Hasher",
+                          "length"
+                        |) in
+                      M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| length |) |) |)
+                    |) in
+                  let~ needed : Ty.path "usize" :=
+                    M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -2130,61 +2259,67 @@ Module hash.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
-                              M.write (|
-                                needed,
-                                BinOp.Wrap.sub (|
-                                  Value.Integer IntegerKind.Usize 8,
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::hash::sip::Hasher",
-                                      "ntail"
+                            let~ _ : Ty.tuple [] :=
+                              M.alloc (|
+                                M.write (|
+                                  needed,
+                                  BinOp.Wrap.sub (|
+                                    Value.Integer IntegerKind.Usize 8,
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::hash::sip::Hasher",
+                                        "ntail"
+                                      |)
                                     |)
                                   |)
                                 |)
                               |) in
-                            let~ _ :=
-                              let β :=
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::hash::sip::Hasher",
-                                  "tail"
-                                |) in
-                              M.write (|
-                                β,
-                                BinOp.bit_or
-                                  (M.read (| β |))
-                                  (BinOp.Wrap.shl (|
-                                    M.call_closure (|
-                                      M.get_function (| "core::hash::sip::u8to64_le", [], [] |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| msg |) |)
-                                        |);
-                                        Value.Integer IntegerKind.Usize 0;
-                                        M.call_closure (|
-                                          M.get_function (|
-                                            "core::cmp::min",
-                                            [],
-                                            [ Ty.path "usize" ]
-                                          |),
-                                          [ M.read (| length |); M.read (| needed |) ]
-                                        |)
-                                      ]
-                                    |),
-                                    BinOp.Wrap.mul (|
-                                      Value.Integer IntegerKind.Usize 8,
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::hash::sip::Hasher",
-                                          "ntail"
+                            let~ _ : Ty.tuple [] :=
+                              M.alloc (|
+                                let β :=
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::hash::sip::Hasher",
+                                    "tail"
+                                  |) in
+                                M.write (|
+                                  β,
+                                  BinOp.bit_or
+                                    (M.read (| β |))
+                                    (BinOp.Wrap.shl (|
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        M.get_function (| "core::hash::sip::u8to64_le", [], [] |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| msg |) |)
+                                          |);
+                                          Value.Integer IntegerKind.Usize 0;
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_function (|
+                                              "core::cmp::min",
+                                              [],
+                                              [ Ty.path "usize" ]
+                                            |),
+                                            [ M.read (| length |); M.read (| needed |) ]
+                                          |)
+                                        ]
+                                      |),
+                                      BinOp.Wrap.mul (|
+                                        Value.Integer IntegerKind.Usize 8,
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::hash::sip::Hasher",
+                                            "ntail"
+                                          |)
                                         |)
                                       |)
-                                    |)
-                                  |))
+                                    |))
+                                |)
                               |) in
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
@@ -2204,18 +2339,20 @@ Module hash.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.read (|
-                                          let~ _ :=
-                                            let β :=
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::hash::sip::Hasher",
-                                                "ntail"
-                                              |) in
-                                            M.write (|
-                                              β,
-                                              BinOp.Wrap.add (|
-                                                M.read (| β |),
-                                                M.read (| length |)
+                                          let~ _ : Ty.tuple [] :=
+                                            M.alloc (|
+                                              let β :=
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::hash::sip::Hasher",
+                                                  "ntail"
+                                                |) in
+                                              M.write (|
+                                                β,
+                                                BinOp.Wrap.add (|
+                                                  M.read (| β |),
+                                                  M.read (| length |)
+                                                |)
                                               |)
                                             |) in
                                           M.return_ (| Value.Tuple [] |)
@@ -2224,32 +2361,35 @@ Module hash.
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let~ _ :=
-                                      let β :=
-                                        M.SubPointer.get_struct_record_field (|
+                                    (let~ _ : Ty.tuple [] :=
+                                      M.alloc (|
+                                        let β :=
                                           M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::hash::sip::Hasher",
-                                            "state"
-                                          |),
-                                          "core::hash::sip::State",
-                                          "v3"
-                                        |) in
-                                      M.write (|
-                                        β,
-                                        BinOp.bit_xor
-                                          (M.read (| β |))
-                                          (M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.deref (| M.read (| self |) |),
                                               "core::hash::sip::Hasher",
-                                              "tail"
-                                            |)
-                                          |))
+                                              "state"
+                                            |),
+                                            "core::hash::sip::State",
+                                            "v3"
+                                          |) in
+                                        M.write (|
+                                          β,
+                                          BinOp.bit_xor
+                                            (M.read (| β |))
+                                            (M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::hash::sip::Hasher",
+                                                "tail"
+                                              |)
+                                            |))
+                                        |)
                                       |) in
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.tuple [],
                                           M.get_trait_method (|
                                             "core::hash::sip::Sip",
                                             S,
@@ -2276,37 +2416,41 @@ Module hash.
                                           ]
                                         |)
                                       |) in
-                                    let~ _ :=
-                                      let β :=
-                                        M.SubPointer.get_struct_record_field (|
+                                    let~ _ : Ty.tuple [] :=
+                                      M.alloc (|
+                                        let β :=
                                           M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::hash::sip::Hasher",
-                                            "state"
-                                          |),
-                                          "core::hash::sip::State",
-                                          "v0"
-                                        |) in
-                                      M.write (|
-                                        β,
-                                        BinOp.bit_xor
-                                          (M.read (| β |))
-                                          (M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.deref (| M.read (| self |) |),
                                               "core::hash::sip::Hasher",
-                                              "tail"
-                                            |)
-                                          |))
+                                              "state"
+                                            |),
+                                            "core::hash::sip::State",
+                                            "v0"
+                                          |) in
+                                        M.write (|
+                                          β,
+                                          BinOp.bit_xor
+                                            (M.read (| β |))
+                                            (M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::hash::sip::Hasher",
+                                                "tail"
+                                              |)
+                                            |))
+                                        |)
                                       |) in
-                                    let~ _ :=
-                                      M.write (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::hash::sip::Hasher",
-                                          "ntail"
-                                        |),
-                                        Value.Integer IntegerKind.Usize 0
+                                    let~ _ : Ty.tuple [] :=
+                                      M.alloc (|
+                                        M.write (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::hash::sip::Hasher",
+                                            "ntail"
+                                          |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)))
                               ]
@@ -2314,14 +2458,14 @@ Module hash.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ len :=
+                  let~ len : Ty.path "usize" :=
                     M.alloc (| BinOp.Wrap.sub (| M.read (| length |), M.read (| needed |) |) |) in
-                  let~ left :=
+                  let~ left : Ty.path "usize" :=
                     M.alloc (|
                       BinOp.bit_and (M.read (| len |)) (Value.Integer IntegerKind.Usize 7)
                     |) in
-                  let~ i := M.copy (| needed |) in
-                  let~ _ :=
+                  let~ i : Ty.path "usize" := M.copy (| needed |) in
+                  let~ _ : Ty.tuple [] :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -2342,9 +2486,9 @@ Module hash.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ mi :=
+                                let~ mi : Ty.path "u64" :=
                                   M.copy (|
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -2356,7 +2500,7 @@ Module hash.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let~ _ :=
+                                              let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
@@ -2370,6 +2514,7 @@ Module hash.
                                                                   BinOp.Wrap.add (|
                                                                     M.read (| i |),
                                                                     M.call_closure (|
+                                                                      Ty.path "usize",
                                                                       M.get_function (|
                                                                         "core::mem::size_of",
                                                                         [],
@@ -2379,6 +2524,7 @@ Module hash.
                                                                     |)
                                                                   |),
                                                                   M.call_closure (|
+                                                                    Ty.path "usize",
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "slice")
@@ -2408,6 +2554,7 @@ Module hash.
                                                         M.alloc (|
                                                           M.never_to_any (|
                                                             M.call_closure (|
+                                                              Ty.path "never",
                                                               M.get_function (|
                                                                 "core::panicking::panic",
                                                                 [],
@@ -2431,13 +2578,14 @@ Module hash.
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                         ]
                                       |) in
-                                    let~ data :=
+                                    let~ data : Ty.path "u64" :=
                                       M.copy (|
                                         M.use (M.alloc (| Value.Integer IntegerKind.U64 0 |))
                                       |) in
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.tuple [],
                                           M.get_function (|
                                             "core::intrinsics::copy_nonoverlapping",
                                             [],
@@ -2445,6 +2593,7 @@ Module hash.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                 "add",
@@ -2453,6 +2602,7 @@ Module hash.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                   M.get_associated_function (|
                                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                     "as_ptr",
@@ -2483,6 +2633,7 @@ Module hash.
                                                   |))
                                               |));
                                             M.call_closure (|
+                                              Ty.path "usize",
                                               M.get_function (|
                                                 "core::mem::size_of",
                                                 [],
@@ -2495,6 +2646,7 @@ Module hash.
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "u64",
                                         M.get_associated_function (|
                                           Ty.path "u64",
                                           "to_le",
@@ -2505,24 +2657,27 @@ Module hash.
                                       |)
                                     |)
                                   |) in
-                                let~ _ :=
-                                  let β :=
-                                    M.SubPointer.get_struct_record_field (|
+                                let~ _ : Ty.tuple [] :=
+                                  M.alloc (|
+                                    let β :=
                                       M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::hash::sip::Hasher",
-                                        "state"
-                                      |),
-                                      "core::hash::sip::State",
-                                      "v3"
-                                    |) in
-                                  M.write (|
-                                    β,
-                                    BinOp.bit_xor (M.read (| β |)) (M.read (| mi |))
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::hash::sip::Hasher",
+                                          "state"
+                                        |),
+                                        "core::hash::sip::State",
+                                        "v3"
+                                      |) in
+                                    M.write (|
+                                      β,
+                                      BinOp.bit_xor (M.read (| β |)) (M.read (| mi |))
+                                    |)
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "core::hash::sip::Sip",
                                         S,
@@ -2549,28 +2704,32 @@ Module hash.
                                       ]
                                     |)
                                   |) in
-                                let~ _ :=
-                                  let β :=
-                                    M.SubPointer.get_struct_record_field (|
+                                let~ _ : Ty.tuple [] :=
+                                  M.alloc (|
+                                    let β :=
                                       M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::hash::sip::Hasher",
-                                        "state"
-                                      |),
-                                      "core::hash::sip::State",
-                                      "v0"
-                                    |) in
-                                  M.write (|
-                                    β,
-                                    BinOp.bit_xor (M.read (| β |)) (M.read (| mi |))
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::hash::sip::Hasher",
+                                          "state"
+                                        |),
+                                        "core::hash::sip::State",
+                                        "v0"
+                                      |) in
+                                    M.write (|
+                                      β,
+                                      BinOp.bit_xor (M.read (| β |)) (M.read (| mi |))
+                                    |)
                                   |) in
-                                let~ _ :=
-                                  let β := i in
-                                  M.write (|
-                                    β,
-                                    BinOp.Wrap.add (|
-                                      M.read (| β |),
-                                      Value.Integer IntegerKind.Usize 8
+                                let~ _ : Ty.tuple [] :=
+                                  M.alloc (|
+                                    let β := i in
+                                    M.write (|
+                                      β,
+                                      BinOp.Wrap.add (|
+                                        M.read (| β |),
+                                        Value.Integer IntegerKind.Usize 8
+                                      |)
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -2579,7 +2738,7 @@ Module hash.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -2590,30 +2749,35 @@ Module hash.
                           ]
                         |)))
                     |) in
-                  let~ _ :=
-                    M.write (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::hash::sip::Hasher",
-                        "tail"
-                      |),
-                      M.call_closure (|
-                        M.get_function (| "core::hash::sip::u8to64_le", [], [] |),
-                        [
-                          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |);
-                          M.read (| i |);
-                          M.read (| left |)
-                        ]
+                  let~ _ : Ty.tuple [] :=
+                    M.alloc (|
+                      M.write (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::hash::sip::Hasher",
+                          "tail"
+                        |),
+                        M.call_closure (|
+                          Ty.path "u64",
+                          M.get_function (| "core::hash::sip::u8to64_le", [], [] |),
+                          [
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| msg |) |) |);
+                            M.read (| i |);
+                            M.read (| left |)
+                          ]
+                        |)
                       |)
                     |) in
-                  let~ _ :=
-                    M.write (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::hash::sip::Hasher",
-                        "ntail"
-                      |),
-                      M.read (| left |)
+                  let~ _ : Ty.tuple [] :=
+                    M.alloc (|
+                      M.write (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::hash::sip::Hasher",
+                          "ntail"
+                        |),
+                        M.read (| left |)
+                      |)
                     |) in
                   M.alloc (| Value.Tuple [] |)
                 |)))
@@ -2637,9 +2801,10 @@ Module hash.
             (let self := M.alloc (| self |) in
             let s := M.alloc (| s |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hasher",
                       Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ],
@@ -2655,6 +2820,10 @@ Module hash.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                             M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                           |)
@@ -2663,9 +2832,10 @@ Module hash.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hasher",
                       Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ],
@@ -2709,7 +2879,7 @@ Module hash.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ state :=
+              let~ state : Ty.path "core::hash::sip::State" :=
                 M.copy (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
@@ -2717,7 +2887,7 @@ Module hash.
                     "state"
                   |)
                 |) in
-              let~ b :=
+              let~ b : Ty.path "u64" :=
                 M.alloc (|
                   BinOp.bit_or
                     (BinOp.Wrap.shl (|
@@ -2742,17 +2912,20 @@ Module hash.
                       |)
                     |))
                 |) in
-              let~ _ :=
-                let β :=
-                  M.SubPointer.get_struct_record_field (|
-                    state,
-                    "core::hash::sip::State",
-                    "v3"
-                  |) in
-                M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| b |)) |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  let β :=
+                    M.SubPointer.get_struct_record_field (|
+                      state,
+                      "core::hash::sip::State",
+                      "v3"
+                    |) in
+                  M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| b |)) |)
+                |) in
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (| "core::hash::sip::Sip", S, [], [], "c_rounds", [], [] |),
                     [
                       M.borrow (|
@@ -2762,28 +2935,33 @@ Module hash.
                     ]
                   |)
                 |) in
-              let~ _ :=
-                let β :=
-                  M.SubPointer.get_struct_record_field (|
-                    state,
-                    "core::hash::sip::State",
-                    "v0"
-                  |) in
-                M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| b |)) |) in
-              let~ _ :=
-                let β :=
-                  M.SubPointer.get_struct_record_field (|
-                    state,
-                    "core::hash::sip::State",
-                    "v2"
-                  |) in
-                M.write (|
-                  β,
-                  BinOp.bit_xor (M.read (| β |)) (Value.Integer IntegerKind.U64 255)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  let β :=
+                    M.SubPointer.get_struct_record_field (|
+                      state,
+                      "core::hash::sip::State",
+                      "v0"
+                    |) in
+                  M.write (| β, BinOp.bit_xor (M.read (| β |)) (M.read (| b |)) |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  let β :=
+                    M.SubPointer.get_struct_record_field (|
+                      state,
+                      "core::hash::sip::State",
+                      "v2"
+                    |) in
+                  M.write (|
+                    β,
+                    BinOp.bit_xor (M.read (| β |)) (Value.Integer IntegerKind.U64 255)
+                  |)
+                |) in
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (| "core::hash::sip::Sip", S, [], [], "d_rounds", [], [] |),
                     [
                       M.borrow (|
@@ -2948,6 +3126,7 @@ Module hash.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ],
                 "new_with_keys",
@@ -2990,6 +3169,10 @@ Module hash.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -3063,315 +3246,353 @@ Module hash.
           ltac:(M.monadic
             (let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+              let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 13
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 16
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
-                        |);
-                        M.read (|
+                        |))
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 17
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
-                            "v3"
+                            "v2"
                           |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 13
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 21
+                        ]
+                      |)
                     |)
                   |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 16
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v0"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 17
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 21
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
@@ -3393,939 +3614,1053 @@ Module hash.
           ltac:(M.monadic
             (let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+              let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 13
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 16
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
-                        |);
-                        M.read (|
+                        |))
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 17
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
-                            "v3"
+                            "v2"
                           |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 13
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 21
+                        ]
+                      |)
                     |)
                   |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 16
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v0"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 17
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 21
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let~ _ :=
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+              let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 13
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 16
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
-                        |);
-                        M.read (|
+                        |))
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 17
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
-                            "v3"
+                            "v2"
                           |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 13
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 21
+                        ]
+                      |)
                     |)
                   |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 16
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v0"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 17
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 21
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let~ _ :=
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+              let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 13
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 16
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
-                        |);
-                        M.read (|
+                        |))
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 17
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
-                            "v3"
+                            "v2"
                           |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 13
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 21
+                        ]
+                      |)
                     |)
                   |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 16
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v0"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 17
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 21
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
@@ -4363,6 +4698,10 @@ Module hash.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -4437,627 +4776,703 @@ Module hash.
           ltac:(M.monadic
             (let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+              let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 13
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 16
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
-                        |);
-                        M.read (|
+                        |))
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 17
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
-                            "v3"
+                            "v2"
                           |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 13
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 21
+                        ]
+                      |)
                     |)
                   |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 16
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v0"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 17
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 21
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let~ _ :=
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+              let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 13
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 16
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
-                        |);
-                        M.read (|
+                        |))
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 17
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
-                            "v3"
+                            "v2"
                           |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 13
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 21
+                        ]
+                      |)
                     |)
                   |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 16
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v0"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 17
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 21
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
@@ -5080,1251 +5495,1403 @@ Module hash.
           ltac:(M.monadic
             (let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+              let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 13
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 16
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
-                        |);
-                        M.read (|
+                        |))
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 17
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
-                            "v3"
+                            "v2"
                           |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 13
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 21
+                        ]
+                      |)
                     |)
                   |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 16
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v0"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 17
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 21
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let~ _ :=
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+              let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 13
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 16
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
-                        |);
-                        M.read (|
+                        |))
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 17
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
-                            "v3"
+                            "v2"
                           |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 13
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 21
+                        ]
+                      |)
                     |)
                   |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 16
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v0"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 17
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 21
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let~ _ :=
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+              let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 13
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 16
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
-                        |);
-                        M.read (|
+                        |))
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 17
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
-                            "v3"
+                            "v2"
                           |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 13
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 21
+                        ]
+                      |)
                     |)
                   |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 16
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v0"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 17
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 21
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in
-              let~ _ :=
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+              let~ _ : Ty.tuple [] :=
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 13
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 16
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v2"
                           |)
-                        |);
-                        M.read (|
+                        |))
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v0"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v0"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v1"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 17
+                        ]
+                      |)
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v1"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
-                            "v3"
+                            "v2"
                           |)
-                        |)
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 13
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v3"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 21
+                        ]
+                      |)
                     |)
                   |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 16
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v3"
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_xor
+                        (M.read (| β |))
+                        (M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| state |) |),
                             "core::hash::sip::State",
                             "v0"
                           |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                        |))
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v0"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v0"
-                          |)
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v1"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 17
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v1"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v2"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v3"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 21
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  let β :=
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v3"
-                    |) in
-                  M.write (|
-                    β,
-                    BinOp.bit_xor
-                      (M.read (| β |))
-                      (M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| state |) |),
-                          "core::hash::sip::State",
-                          "v0"
-                        |)
-                      |))
-                  |) in
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| state |) |),
-                      "core::hash::sip::State",
-                      "v2"
-                    |),
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| state |) |),
-                            "core::hash::sip::State",
-                            "v2"
-                          |)
-                        |);
-                        Value.Integer IntegerKind.U32 32
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| state |) |),
+                        "core::hash::sip::State",
+                        "v2"
+                      |),
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| state |) |),
+                              "core::hash::sip::State",
+                              "v2"
+                            |)
+                          |);
+                          Value.Integer IntegerKind.U32 32
+                        ]
+                      |)
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |) in

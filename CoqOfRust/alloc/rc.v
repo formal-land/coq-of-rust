@@ -34,6 +34,7 @@ Module rc.
       ltac:(M.monadic
         (let layout := M.alloc (| layout |) in
         M.call_closure (|
+          Ty.path "core::alloc::layout::Layout",
           M.get_associated_function (|
             Ty.path "core::alloc::layout::Layout",
             "pad_to_align",
@@ -46,6 +47,7 @@ Module rc.
               M.SubPointer.get_tuple_field (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -60,6 +62,13 @@ Module rc.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.tuple [ Ty.path "core::alloc::layout::Layout"; Ty.path "usize" ];
+                            Ty.path "core::alloc::layout::LayoutError"
+                          ],
                         M.get_associated_function (|
                           Ty.path "core::alloc::layout::Layout",
                           "extend",
@@ -71,6 +80,7 @@ Module rc.
                             Pointer.Kind.Ref,
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::alloc::layout::Layout",
                                 M.get_associated_function (|
                                   Ty.path "core::alloc::layout::Layout",
                                   "new",
@@ -210,6 +220,7 @@ Module rc.
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
+            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_inner_in",
@@ -238,6 +249,7 @@ Module rc.
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
+            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_inner",
@@ -246,6 +258,10 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::ptr::non_null::NonNull")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
@@ -287,6 +303,7 @@ Module rc.
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           M.call_closure (|
+            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_inner",
@@ -295,6 +312,10 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::ptr::non_null::NonNull")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                 M.get_trait_method (|
                   "core::convert::Into",
                   Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
@@ -314,6 +335,10 @@ Module rc.
                     Pointer.Kind.MutRef,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
@@ -328,6 +353,13 @@ Module rc.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
@@ -346,6 +378,7 @@ Module rc.
                                 [
                                   ("strong",
                                     M.call_closure (|
+                                      Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::cell::Cell")
@@ -359,6 +392,7 @@ Module rc.
                                     |));
                                   ("weak",
                                     M.call_closure (|
+                                      Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::cell::Cell")
@@ -403,6 +437,7 @@ Module rc.
         ltac:(M.monadic
           (let data_fn := M.alloc (| data_fn |) in
           M.call_closure (|
+            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new_cyclic_in",
@@ -436,6 +471,13 @@ Module rc.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [
+                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
+                Ty.path "alloc::alloc::Global"
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
@@ -450,6 +492,15 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "*mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::rc::RcBox")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
@@ -488,6 +539,7 @@ Module rc.
                 |),
                 [
                   M.call_closure (|
+                    Ty.path "core::alloc::layout::Layout",
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "new",
@@ -509,6 +561,16 @@ Module rc.
                                   ltac:(M.monadic
                                     (let layout := M.copy (| γ |) in
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                          Ty.path "core::alloc::AllocError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::alloc::Allocator",
                                         Ty.path "alloc::alloc::Global",
@@ -570,6 +632,13 @@ Module rc.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [
+                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
+                Ty.path "alloc::alloc::Global"
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
@@ -584,6 +653,15 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "*mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::rc::RcBox")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
@@ -622,6 +700,7 @@ Module rc.
                 |),
                 [
                   M.call_closure (|
+                    Ty.path "core::alloc::layout::Layout",
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "new",
@@ -643,6 +722,16 @@ Module rc.
                                   ltac:(M.monadic
                                     (let layout := M.copy (| γ |) in
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                          Ty.path "core::alloc::AllocError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::alloc::Allocator",
                                         Ty.path "alloc::alloc::Global",
@@ -713,6 +802,7 @@ Module rc.
                 "core::result::Result::Ok"
                 [
                   M.call_closure (|
+                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                       "from_inner",
@@ -721,6 +811,10 @@ Module rc.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ptr::non_null::NonNull")
+                          []
+                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                         M.get_trait_method (|
                           "core::convert::Into",
                           Ty.apply
@@ -743,6 +837,10 @@ Module rc.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::boxed::Box")
@@ -760,6 +858,25 @@ Module rc.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "core::alloc::AllocError"
+                                                ];
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                []
+                                                [
+                                                  Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -783,6 +900,22 @@ Module rc.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::boxed::Box")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "alloc::rc::RcBox")
+                                                        []
+                                                        [ T ];
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ];
+                                                  Ty.path "core::alloc::AllocError"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "alloc::boxed::Box")
@@ -801,6 +934,10 @@ Module rc.
                                                   [
                                                     ("strong",
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::cell::Cell")
+                                                          []
+                                                          [ Ty.path "usize" ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::cell::Cell")
@@ -814,6 +951,10 @@ Module rc.
                                                       |));
                                                     ("weak",
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::cell::Cell")
+                                                          []
+                                                          [ Ty.path "usize" ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::cell::Cell")
@@ -847,6 +988,16 @@ Module rc.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "alloc::rc::Rc")
+                                                            []
+                                                            [ T; Ty.path "alloc::alloc::Global" ];
+                                                          Ty.path "core::alloc::AllocError"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -937,6 +1088,13 @@ Module rc.
                 "core::result::Result::Ok"
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::rc::Rc")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::rc::Rc")
@@ -954,6 +1112,32 @@ Module rc.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "core::alloc::AllocError"
+                                    ];
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::rc::RcBox")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ]
+                                    ]
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -984,6 +1168,26 @@ Module rc.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "*mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::rc::RcBox")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ T ]
+                                            ]
+                                        ];
+                                      Ty.path "core::alloc::AllocError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::rc::Rc")
@@ -1030,6 +1234,7 @@ Module rc.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::alloc::layout::Layout",
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "new",
@@ -1051,6 +1256,22 @@ Module rc.
                                                     ltac:(M.monadic
                                                       (let layout := M.copy (| γ |) in
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::ptr::non_null::NonNull")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ];
+                                                            Ty.path "core::alloc::AllocError"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::alloc::Allocator",
                                                           Ty.path "alloc::alloc::Global",
@@ -1112,6 +1333,22 @@ Module rc.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::rc::Rc")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
+                                                    [ T ];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ];
+                                              Ty.path "core::alloc::AllocError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -1203,6 +1440,13 @@ Module rc.
                 "core::result::Result::Ok"
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::rc::Rc")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::rc::Rc")
@@ -1220,6 +1464,32 @@ Module rc.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "core::alloc::AllocError"
+                                    ];
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::rc::RcBox")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ]
+                                    ]
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -1250,6 +1520,26 @@ Module rc.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "*mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::rc::RcBox")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ T ]
+                                            ]
+                                        ];
+                                      Ty.path "core::alloc::AllocError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::rc::Rc")
@@ -1296,6 +1586,7 @@ Module rc.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::alloc::layout::Layout",
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "new",
@@ -1317,6 +1608,22 @@ Module rc.
                                                     ltac:(M.monadic
                                                       (let layout := M.copy (| γ |) in
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::ptr::non_null::NonNull")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ];
+                                                            Ty.path "core::alloc::AllocError"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::alloc::Allocator",
                                                           Ty.path "alloc::alloc::Global",
@@ -1378,6 +1685,22 @@ Module rc.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::rc::Rc")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
+                                                    [ T ];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ];
+                                              Ty.path "core::alloc::AllocError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -1454,6 +1777,10 @@ Module rc.
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::pin::Pin")
+              []
+              [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::pin::Pin")
@@ -1465,6 +1792,7 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                   "new",
@@ -1492,6 +1820,7 @@ Module rc.
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
+            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_raw_in",
@@ -1525,6 +1854,7 @@ Module rc.
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "increment_strong_count_in",
@@ -1558,6 +1888,7 @@ Module rc.
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "decrement_strong_count_in",
@@ -1605,15 +1936,17 @@ Module rc.
           let allocate := M.alloc (| allocate |) in
           let mem_to_rcbox := M.alloc (| mem_to_rcbox |) in
           M.read (|
-            let~ layout :=
+            let~ layout : Ty.path "core::alloc::layout::Layout" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::alloc::layout::Layout",
                   M.get_function (| "alloc::rc::rcbox_layout_for_value_layout", [], [] |),
                   [ M.read (| value_layout |) ]
                 |)
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -1638,6 +1971,16 @@ Module rc.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "*mut")
+                          []
+                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ];
+                        Ty.path "core::alloc::AllocError"
+                      ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                       "try_allocate_for_layout",
@@ -1662,6 +2005,7 @@ Module rc.
                                   ltac:(M.monadic
                                     (M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (|
                                           "alloc::alloc::handle_alloc_error",
                                           [],
@@ -1730,18 +2074,39 @@ Module rc.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ layout :=
+                let~ layout : Ty.path "core::alloc::layout::Layout" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "core::alloc::layout::Layout",
                       M.get_function (| "alloc::rc::rcbox_layout_for_value_layout", [], [] |),
                       [ M.read (| value_layout |) ]
                     |)
                   |) in
-                let~ ptr :=
+                let~ ptr :
+                    Ty.apply
+                      (Ty.path "core::ptr::non_null::NonNull")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "core::alloc::AllocError"
+                                ];
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -1762,6 +2127,16 @@ Module rc.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                  Ty.path "core::alloc::AllocError"
+                                ],
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 impl_FnOnce_Layout__arrow_Result_NonNull__u8____AllocError_,
@@ -1791,6 +2166,16 @@ Module rc.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ];
+                                          Ty.path "core::alloc::AllocError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -1836,9 +2221,17 @@ Module rc.
                       ]
                     |)
                   |) in
-                let~ inner :=
+                let~ inner :
+                    Ty.apply
+                      (Ty.path "*mut")
+                      []
+                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::function::FnOnce",
                         impl_FnOnce__mut_u8__arrow__mut_RcBox_T_,
@@ -1853,6 +2246,7 @@ Module rc.
                         Value.Tuple
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
@@ -1864,6 +2258,10 @@ Module rc.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.path "u8" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
@@ -1881,8 +2279,8 @@ Module rc.
                       ]
                     |)
                   |) in
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1891,7 +2289,7 @@ Module rc.
                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   Value.Tuple
@@ -1900,6 +2298,7 @@ Module rc.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "core::alloc::layout::Layout",
                                             M.get_associated_function (|
                                               Ty.path "core::alloc::layout::Layout",
                                               "for_value_raw",
@@ -1933,6 +2332,7 @@ Module rc.
                                                   (M.alloc (|
                                                     UnOp.not (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialEq",
                                                           Ty.path "core::alloc::layout::Layout",
@@ -1963,7 +2363,8 @@ Module rc.
                                               M.alloc (|
                                                 M.never_to_any (|
                                                   M.read (|
-                                                    let~ kind :=
+                                                    let~ kind :
+                                                        Ty.path "core::panicking::AssertKind" :=
                                                       M.alloc (|
                                                         Value.StructTuple
                                                           "core::panicking::AssertKind::Eq"
@@ -1971,6 +2372,7 @@ Module rc.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "never",
                                                         M.get_function (|
                                                           "core::panicking::assert_failed",
                                                           [],
@@ -2017,9 +2419,10 @@ Module rc.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "*mut")
@@ -2039,6 +2442,7 @@ Module rc.
                             |)
                           |);
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                               "new",
@@ -2050,9 +2454,10 @@ Module rc.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "*mut")
@@ -2072,6 +2477,7 @@ Module rc.
                             |)
                           |);
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                               "new",
@@ -2116,6 +2522,7 @@ Module rc.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
@@ -2164,9 +2571,17 @@ Module rc.
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.read (|
-            let~ this :=
+            let~ this :
+                Ty.apply
+                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -2186,6 +2601,10 @@ Module rc.
                     M.SubPointer.get_struct_record_field (|
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply
@@ -2206,6 +2625,7 @@ Module rc.
                     |)
                   |);
                   M.call_closure (|
+                    A,
                     M.get_function (| "core::ptr::read", [], [ A ] |),
                     [
                       M.borrow (|
@@ -2216,6 +2636,10 @@ Module rc.
                             M.SubPointer.get_struct_record_field (|
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                                   M.get_trait_method (|
                                     "core::ops::deref::Deref",
                                     Ty.apply
@@ -2295,6 +2719,7 @@ Module rc.
           (let ptr := M.alloc (| ptr |) in
           let alloc := M.alloc (| alloc |) in
           M.call_closure (|
+            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
               "from_inner_in",
@@ -2303,6 +2728,10 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::ptr::non_null::NonNull")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::ptr::non_null::NonNull")
@@ -2345,6 +2774,13 @@ Module rc.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ];
+                      Ty.path "core::alloc::AllocError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                     "try_new_in",
@@ -2368,9 +2804,11 @@ Module rc.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "alloc::alloc::handle_alloc_error", [], [] |),
                           [
                             M.call_closure (|
+                              Ty.path "core::alloc::layout::Layout",
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "new",
@@ -2420,6 +2858,10 @@ Module rc.
         ltac:(M.monadic
           (let alloc := M.alloc (| alloc |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
@@ -2431,6 +2873,15 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "*mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::rc::RcBox")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
@@ -2469,6 +2920,7 @@ Module rc.
                 |),
                 [
                   M.call_closure (|
+                    Ty.path "core::alloc::layout::Layout",
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "new",
@@ -2490,6 +2942,16 @@ Module rc.
                                   ltac:(M.monadic
                                     (let layout := M.copy (| γ |) in
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                          Ty.path "core::alloc::AllocError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::alloc::Allocator",
                                         A,
@@ -2556,6 +3018,10 @@ Module rc.
         ltac:(M.monadic
           (let alloc := M.alloc (| alloc |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
@@ -2567,6 +3033,15 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "*mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::rc::RcBox")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
@@ -2605,6 +3080,7 @@ Module rc.
                 |),
                 [
                   M.call_closure (|
+                    Ty.path "core::alloc::layout::Layout",
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "new",
@@ -2626,6 +3102,16 @@ Module rc.
                                   ltac:(M.monadic
                                     (let layout := M.copy (| γ |) in
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                          Ty.path "core::alloc::AllocError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::alloc::Allocator",
                                         A,
@@ -2730,6 +3216,19 @@ Module rc.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple
+                    [
+                      Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::rc::RcBox")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                        ];
+                      A
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
@@ -2747,6 +3246,16 @@ Module rc.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::rc::RcBox")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                          A
+                        ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
@@ -2769,6 +3278,7 @@ Module rc.
                           [
                             ("strong",
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                   "new",
@@ -2779,6 +3289,7 @@ Module rc.
                               |));
                             ("weak",
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                   "new",
@@ -2789,6 +3300,7 @@ Module rc.
                               |));
                             ("value",
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -2814,9 +3326,28 @@ Module rc.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let uninit_raw_ptr := M.copy (| γ0_0 |) in
                     let alloc := M.copy (| γ0_1 |) in
-                    let~ uninit_ptr :=
+                    let~ uninit_ptr :
+                        Ty.apply
+                          (Ty.path "core::ptr::non_null::NonNull")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::rc::RcBox")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ptr::non_null::NonNull")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::rc::RcBox")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ]
+                            ],
                           M.get_trait_method (|
                             "core::convert::Into",
                             Ty.apply
@@ -2867,9 +3398,17 @@ Module rc.
                           ]
                         |)
                       |) in
-                    let~ init_ptr :=
+                    let~ init_ptr :
+                        Ty.apply
+                          (Ty.path "core::ptr::non_null::NonNull")
+                          []
+                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ptr::non_null::NonNull")
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
@@ -2892,15 +3431,16 @@ Module rc.
                           [ M.read (| uninit_ptr |) ]
                         |)
                       |) in
-                    let~ weak :=
+                    let~ weak : Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] :=
                       M.alloc (|
                         Value.StructRecord
                           "alloc::rc::Weak"
                           [ ("ptr", M.read (| init_ptr |)); ("alloc", M.read (| alloc |)) ]
                       |) in
-                    let~ data :=
+                    let~ data : T :=
                       M.alloc (|
                         M.call_closure (|
+                          T,
                           M.get_trait_method (|
                             "core::ops::function::FnOnce",
                             F,
@@ -2930,11 +3470,19 @@ Module rc.
                           ]
                         |)
                       |) in
-                    let~ strong :=
+                    let~ strong : Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] :=
                       M.copy (|
-                        let~ inner :=
+                        let~ inner :
+                            Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
@@ -2947,9 +3495,10 @@ Module rc.
                               [ M.read (| init_ptr |) ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_function (| "core::ptr::write", [], [ T ] |),
                               [
                                 M.borrow (|
@@ -2964,9 +3513,10 @@ Module rc.
                               ]
                             |)
                           |) in
-                        let~ prev_value :=
+                        let~ prev_value : Ty.path "usize" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                 "get",
@@ -2985,7 +3535,7 @@ Module rc.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -2997,7 +3547,7 @@ Module rc.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (|
                                         Value.Tuple
@@ -3043,7 +3593,9 @@ Module rc.
                                                     M.alloc (|
                                                       M.never_to_any (|
                                                         M.read (|
-                                                          let~ kind :=
+                                                          let~ kind :
+                                                              Ty.path
+                                                                "core::panicking::AssertKind" :=
                                                             M.alloc (|
                                                               Value.StructTuple
                                                                 "core::panicking::AssertKind::Eq"
@@ -3051,6 +3603,7 @@ Module rc.
                                                             |) in
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path "never",
                                                               M.get_function (|
                                                                 "core::panicking::assert_failed",
                                                                 [],
@@ -3084,6 +3637,8 @@ Module rc.
                                                                   "core::option::Option::Some"
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "core::fmt::Arguments",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "core::fmt::Arguments",
@@ -3128,9 +3683,10 @@ Module rc.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                 "set",
@@ -3150,11 +3706,12 @@ Module rc.
                               ]
                             |)
                           |) in
-                        let~ alloc :=
+                        let~ alloc : A :=
                           M.copy (|
                             M.SubPointer.get_tuple_field (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.tuple [ Ty.apply (Ty.path "*const") [] [ T ]; A ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
                                     "into_raw_with_allocator",
@@ -3169,6 +3726,7 @@ Module rc.
                           |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                               "from_inner_in",
@@ -3217,6 +3775,14 @@ Module rc.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "core::ptr::unique::Unique")
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ];
+                          A
+                        ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
@@ -3231,6 +3797,22 @@ Module rc.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::alloc::AllocError"
+                                      ];
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ]; A ]
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -3251,6 +3833,16 @@ Module rc.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ]; A ];
+                                        Ty.path "core::alloc::AllocError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::boxed::Box")
@@ -3266,6 +3858,10 @@ Module rc.
                                         [
                                           ("strong",
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::cell::Cell")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::cell::Cell")
@@ -3279,6 +3875,10 @@ Module rc.
                                             |));
                                           ("weak",
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::cell::Cell")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::cell::Cell")
@@ -3313,6 +3913,13 @@ Module rc.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ];
+                                                Ty.path "core::alloc::AllocError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -3370,6 +3977,7 @@ Module rc.
                             "core::result::Result::Ok"
                             [
                               M.call_closure (|
+                                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                   "from_inner_in",
@@ -3378,6 +3986,10 @@ Module rc.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::ptr::non_null::NonNull")
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                     M.get_trait_method (|
                                       "core::convert::Into",
                                       Ty.apply
@@ -3445,6 +4057,10 @@ Module rc.
                 "core::result::Result::Ok"
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::rc::Rc")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::rc::Rc")
@@ -3459,6 +4075,32 @@ Module rc.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "core::alloc::AllocError"
+                                    ];
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::rc::RcBox")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ]
+                                    ]
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -3489,6 +4131,26 @@ Module rc.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "*mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::rc::RcBox")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ T ]
+                                            ]
+                                        ];
+                                      Ty.path "core::alloc::AllocError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::rc::Rc")
@@ -3535,6 +4197,7 @@ Module rc.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::alloc::layout::Layout",
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "new",
@@ -3556,6 +4219,22 @@ Module rc.
                                                     ltac:(M.monadic
                                                       (let layout := M.copy (| γ |) in
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::ptr::non_null::NonNull")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ];
+                                                            Ty.path "core::alloc::AllocError"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::alloc::Allocator",
                                                           A,
@@ -3610,6 +4289,22 @@ Module rc.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::rc::Rc")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
+                                                    [ T ];
+                                                  A
+                                                ];
+                                              Ty.path "core::alloc::AllocError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -3706,6 +4401,10 @@ Module rc.
                 "core::result::Result::Ok"
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::rc::Rc")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]; A ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::rc::Rc")
@@ -3720,6 +4419,32 @@ Module rc.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "core::alloc::AllocError"
+                                    ];
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::rc::RcBox")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ]
+                                    ]
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -3750,6 +4475,26 @@ Module rc.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "*mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::rc::RcBox")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ T ]
+                                            ]
+                                        ];
+                                      Ty.path "core::alloc::AllocError"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::rc::Rc")
@@ -3796,6 +4541,7 @@ Module rc.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::alloc::layout::Layout",
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "new",
@@ -3817,6 +4563,22 @@ Module rc.
                                                     ltac:(M.monadic
                                                       (let layout := M.copy (| γ |) in
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::ptr::non_null::NonNull")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ];
+                                                            Ty.path "core::alloc::AllocError"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::alloc::Allocator",
                                                           A,
@@ -3871,6 +4633,22 @@ Module rc.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::rc::Rc")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                    []
+                                                    [ T ];
+                                                  A
+                                                ];
+                                              Ty.path "core::alloc::AllocError"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -3952,6 +4730,10 @@ Module rc.
           (let value := M.alloc (| value |) in
           let alloc := M.alloc (| alloc |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::pin::Pin")
+              []
+              [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::pin::Pin")
@@ -3963,6 +4745,7 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "new_in",
@@ -4018,6 +4801,7 @@ Module rc.
                         (M.alloc (|
                           BinOp.eq (|
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                 "strong_count",
@@ -4035,9 +4819,17 @@ Module rc.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ this :=
+                    let~ this :
+                        Ty.apply
+                          (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                          []
+                          [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -4050,9 +4842,10 @@ Module rc.
                           [ M.read (| this |) ]
                         |)
                       |) in
-                    let~ val :=
+                    let~ val : T :=
                       M.alloc (|
                         M.call_closure (|
+                          T,
                           M.get_function (| "core::ptr::read", [], [ T ] |),
                           [
                             M.borrow (|
@@ -4062,6 +4855,7 @@ Module rc.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply (Ty.path "&") [] [ T ],
                                       M.get_trait_method (|
                                         "core::ops::deref::Deref",
                                         Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -4076,6 +4870,10 @@ Module rc.
                                           Pointer.Kind.Ref,
                                           M.deref (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                                               M.get_trait_method (|
                                                 "core::ops::deref::Deref",
                                                 Ty.apply
@@ -4102,9 +4900,10 @@ Module rc.
                           ]
                         |)
                       |) in
-                    let~ alloc :=
+                    let~ alloc : A :=
                       M.alloc (|
                         M.call_closure (|
+                          A,
                           M.get_function (| "core::ptr::read", [], [ A ] |),
                           [
                             M.borrow (|
@@ -4115,6 +4914,10 @@ Module rc.
                                   M.SubPointer.get_struct_record_field (|
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -4139,9 +4942,10 @@ Module rc.
                           ]
                         |)
                       |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_trait_method (|
                             "alloc::rc::RcInnerPtr",
                             Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
@@ -4156,6 +4960,10 @@ Module rc.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                     "inner",
@@ -4167,6 +4975,10 @@ Module rc.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                                           M.get_trait_method (|
                                             "core::ops::deref::Deref",
                                             Ty.apply
@@ -4190,7 +5002,7 @@ Module rc.
                           ]
                         |)
                       |) in
-                    let~ _weak :=
+                    let~ _weak : Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] :=
                       M.alloc (|
                         Value.StructRecord
                           "alloc::rc::Weak"
@@ -4200,6 +5012,10 @@ Module rc.
                                 M.SubPointer.get_struct_record_field (|
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                                       M.get_trait_method (|
                                         "core::ops::deref::Deref",
                                         Ty.apply
@@ -4253,6 +5069,7 @@ Module rc.
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ T ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -4264,6 +5081,10 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ T; Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "try_unwrap",
@@ -4326,9 +5147,17 @@ Module rc.
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.read (|
-            let~ this :=
+            let~ this :
+                Ty.apply
+                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -4343,6 +5172,7 @@ Module rc.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "*const") [] [ T ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "as_ptr",
@@ -4357,6 +5187,10 @@ Module rc.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                             M.get_trait_method (|
                               "core::ops::deref::Deref",
                               Ty.apply
@@ -4408,9 +5242,17 @@ Module rc.
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.read (|
-            let~ this :=
+            let~ this :
+                Ty.apply
+                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -4423,9 +5265,10 @@ Module rc.
                   [ M.read (| this |) ]
                 |)
               |) in
-            let~ ptr :=
+            let~ ptr : Ty.apply (Ty.path "*const") [] [ T ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                     "as_ptr",
@@ -4437,6 +5280,10 @@ Module rc.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply
@@ -4461,9 +5308,10 @@ Module rc.
                   ]
                 |)
               |) in
-            let~ alloc :=
+            let~ alloc : A :=
               M.alloc (|
                 M.call_closure (|
+                  A,
                   M.get_function (| "core::ptr::read", [], [ A ] |),
                   [
                     M.borrow (|
@@ -4474,6 +5322,10 @@ Module rc.
                           M.SubPointer.get_struct_record_field (|
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
                                   Ty.apply
@@ -4525,9 +5377,11 @@ Module rc.
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.read (|
-            let~ ptr :=
+            let~ ptr :
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
@@ -4587,18 +5441,21 @@ Module rc.
           (let ptr := M.alloc (| ptr |) in
           let alloc := M.alloc (| alloc |) in
           M.read (|
-            let~ offset :=
+            let~ offset : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_function (| "alloc::rc::data_offset", [], [ T ] |),
                   [ M.read (| ptr |) ]
                 |)
               |) in
-            let~ rc_ptr :=
+            let~ rc_ptr :
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ] :=
               M.alloc (|
                 M.cast
                   (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ])
                   (M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ T ],
                       "byte_sub",
@@ -4610,6 +5467,7 @@ Module rc.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "from_ptr_in",
@@ -4646,9 +5504,10 @@ Module rc.
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "alloc::rc::RcInnerPtr",
                     Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
@@ -4663,6 +5522,10 @@ Module rc.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                             "inner",
@@ -4676,7 +5539,7 @@ Module rc.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -4684,7 +5547,7 @@ Module rc.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -4696,6 +5559,7 @@ Module rc.
                                       UnOp.not (|
                                         UnOp.not (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_function (|
                                               "alloc::rc::is_dangling",
                                               [],
@@ -4705,6 +5569,11 @@ Module rc.
                                               (* MutToConstPointer *)
                                               M.pointer_coercion
                                                 (M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "*mut")
+                                                    []
+                                                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ]
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "core::ptr::non_null::NonNull")
@@ -4742,6 +5611,7 @@ Module rc.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
+                                      Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
@@ -4773,6 +5643,7 @@ Module rc.
                     |));
                   ("alloc",
                     M.call_closure (|
+                      A,
                       M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
                         M.borrow (|
@@ -4809,6 +5680,7 @@ Module rc.
           (let this := M.alloc (| this |) in
           BinOp.Wrap.sub (|
             M.call_closure (|
+              Ty.path "usize",
               M.get_trait_method (|
                 "alloc::rc::RcInnerPtr",
                 Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
@@ -4823,6 +5695,7 @@ Module rc.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                         "inner",
@@ -4862,6 +5735,7 @@ Module rc.
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_trait_method (|
               "alloc::rc::RcInnerPtr",
               Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
@@ -4876,6 +5750,7 @@ Module rc.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                       "inner",
@@ -4920,9 +5795,17 @@ Module rc.
           (let ptr := M.alloc (| ptr |) in
           let alloc := M.alloc (| alloc |) in
           M.read (|
-            let~ rc :=
+            let~ rc :
+                Ty.apply
+                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -4934,6 +5817,7 @@ Module rc.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                         "from_raw_in",
@@ -4945,9 +5829,17 @@ Module rc.
                   ]
                 |)
               |) in
-            let~ _rc_clone :=
+            let~ _rc_clone :
+                Ty.apply
+                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -4991,9 +5883,10 @@ Module rc.
           (let ptr := M.alloc (| ptr |) in
           let alloc := M.alloc (| alloc |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (|
                     "core::mem::drop",
                     [],
@@ -5001,6 +5894,7 @@ Module rc.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                         "from_raw_in",
@@ -5036,6 +5930,7 @@ Module rc.
           LogicalOp.and (|
             BinOp.eq (|
               M.call_closure (|
+                Ty.path "usize",
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "weak_count",
@@ -5049,6 +5944,7 @@ Module rc.
             ltac:(M.monadic
               (BinOp.eq (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                     "strong_count",
@@ -5089,6 +5985,7 @@ Module rc.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                               "is_unique",
@@ -5107,6 +6004,7 @@ Module rc.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "&mut") [] [ T ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                   "get_mut_unchecked",
@@ -5169,6 +6067,10 @@ Module rc.
                         M.SubPointer.get_struct_record_field (|
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
@@ -5220,6 +6122,7 @@ Module rc.
           (let this := M.alloc (| this |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_function (|
               "core::ptr::addr_eq",
               [],
@@ -5232,6 +6135,7 @@ Module rc.
               (* MutToConstPointer *)
               M.pointer_coercion
                 (M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
@@ -5254,6 +6158,7 @@ Module rc.
               (* MutToConstPointer *)
               M.pointer_coercion
                 (M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
@@ -5347,9 +6252,10 @@ Module rc.
             Pointer.Kind.MutRef,
             M.deref (|
               M.read (|
-                let~ size_of_val :=
+                let~ size_of_val : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_function (| "core::mem::size_of_val", [], [ T ] |),
                       [
                         M.borrow (|
@@ -5359,6 +6265,7 @@ Module rc.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "&") [] [ T ],
                                   M.get_trait_method (|
                                     "core::ops::deref::Deref",
                                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -5378,7 +6285,7 @@ Module rc.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -5389,6 +6296,7 @@ Module rc.
                               (M.alloc (|
                                 BinOp.ne (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                       "strong_count",
@@ -5407,7 +6315,7 @@ Module rc.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ this_data_ref :=
+                          let~ this_data_ref : Ty.apply (Ty.path "&") [] [ T ] :=
                             M.alloc (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
@@ -5416,6 +6324,7 @@ Module rc.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply (Ty.path "&") [] [ T ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -5437,9 +6346,11 @@ Module rc.
                                 |)
                               |)
                             |) in
-                          let~ in_progress :=
+                          let~ in_progress :
+                              Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ],
                                   "new",
@@ -5452,6 +6363,7 @@ Module rc.
                                     M.deref (| M.read (| this_data_ref |) |)
                                   |);
                                   M.call_closure (|
+                                    A,
                                     M.get_trait_method (|
                                       "core::clone::Clone",
                                       A,
@@ -5475,11 +6387,12 @@ Module rc.
                                 ]
                               |)
                             |) in
-                          let~ initialized_clone :=
+                          let~ initialized_clone : Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] :=
                             M.copy (|
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.tuple [],
                                     M.get_trait_method (|
                                       "core::clone::CloneToUninit",
                                       T,
@@ -5495,6 +6408,7 @@ Module rc.
                                         M.deref (| M.read (| this_data_ref |) |)
                                       |);
                                       M.call_closure (|
+                                        Ty.apply (Ty.path "*mut") [] [ T ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::rc::UniqueRcUninit")
@@ -5511,6 +6425,7 @@ Module rc.
                                 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ],
                                     "into_rc",
@@ -5521,10 +6436,12 @@ Module rc.
                                 |)
                               |)
                             |) in
-                          let~ _ :=
-                            M.write (|
-                              M.deref (| M.read (| this |) |),
-                              M.read (| initialized_clone |)
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                M.deref (| M.read (| this |) |),
+                                M.read (| initialized_clone |)
+                              |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
@@ -5539,6 +6456,7 @@ Module rc.
                                       (M.alloc (|
                                         BinOp.ne (|
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                               "weak_count",
@@ -5560,9 +6478,11 @@ Module rc.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ in_progress :=
+                                  let~ in_progress :
+                                      Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::rc::UniqueRcUninit")
@@ -5580,6 +6500,7 @@ Module rc.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply (Ty.path "&") [] [ T ],
                                                     M.get_trait_method (|
                                                       "core::ops::deref::Deref",
                                                       Ty.apply
@@ -5604,6 +6525,7 @@ Module rc.
                                             |)
                                           |);
                                           M.call_closure (|
+                                            A,
                                             M.get_trait_method (|
                                               "core::clone::Clone",
                                               A,
@@ -5627,9 +6549,10 @@ Module rc.
                                         ]
                                       |)
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_function (|
                                           "core::intrinsics::copy_nonoverlapping",
                                           [],
@@ -5637,6 +6560,7 @@ Module rc.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*const") [] [ T ],
                                               "cast",
@@ -5645,6 +6569,7 @@ Module rc.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply (Ty.path "*const") [] [ T ],
                                                 M.get_function (|
                                                   "core::ptr::from_ref",
                                                   [],
@@ -5658,6 +6583,7 @@ Module rc.
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
                                                           M.call_closure (|
+                                                            Ty.apply (Ty.path "&") [] [ T ],
                                                             M.get_trait_method (|
                                                               "core::ops::deref::Deref",
                                                               Ty.apply
@@ -5686,6 +6612,7 @@ Module rc.
                                             ]
                                           |);
                                           M.call_closure (|
+                                            Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ T ],
                                               "cast",
@@ -5694,6 +6621,7 @@ Module rc.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply (Ty.path "*mut") [] [ T ],
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::rc::UniqueRcUninit")
@@ -5711,9 +6639,10 @@ Module rc.
                                         ]
                                       |)
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_trait_method (|
                                           "alloc::rc::RcInnerPtr",
                                           Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
@@ -5728,6 +6657,11 @@ Module rc.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ]
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                                   "inner",
@@ -5746,9 +6680,10 @@ Module rc.
                                         ]
                                       |)
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_trait_method (|
                                           "alloc::rc::RcInnerPtr",
                                           Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
@@ -5763,6 +6698,11 @@ Module rc.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ]
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                                   "inner",
@@ -5781,9 +6721,10 @@ Module rc.
                                         ]
                                       |)
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_function (|
                                           "core::ptr::write",
                                           [],
@@ -5795,6 +6736,7 @@ Module rc.
                                             M.deref (| M.read (| this |) |)
                                           |);
                                           M.call_closure (|
+                                            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::rc::UniqueRcUninit")
@@ -5827,6 +6769,10 @@ Module rc.
                             M.SubPointer.get_struct_record_field (|
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
@@ -5884,6 +6830,7 @@ Module rc.
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.call_closure (|
+            T,
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -5895,6 +6842,10 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ T; Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "try_unwrap",
@@ -5916,6 +6867,7 @@ Module rc.
                               ltac:(M.monadic
                                 (let rc := M.copy (| γ |) in
                                 M.call_closure (|
+                                  T,
                                   M.get_trait_method (|
                                     "core::clone::Clone",
                                     T,
@@ -5930,6 +6882,7 @@ Module rc.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply (Ty.path "&") [] [ T ],
                                           M.get_trait_method (|
                                             "core::ops::deref::Deref",
                                             Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -5983,6 +6936,7 @@ Module rc.
           (let ptr := M.alloc (| ptr |) in
           let alloc := M.alloc (| alloc |) in
           M.call_closure (|
+            Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "allocate_for_layout",
@@ -6007,6 +6961,7 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.path "core::alloc::layout::Layout",
                 M.get_associated_function (|
                   Ty.path "core::alloc::layout::Layout",
                   "for_value_raw",
@@ -6028,6 +6983,16 @@ Module rc.
                               ltac:(M.monadic
                                 (let layout := M.copy (| γ |) in
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ptr::non_null::NonNull")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                      Ty.path "core::alloc::AllocError"
+                                    ],
                                   M.get_trait_method (|
                                     "core::alloc::Allocator",
                                     A,
@@ -6062,6 +7027,10 @@ Module rc.
                               ltac:(M.monadic
                                 (let mem := M.copy (| γ |) in
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                     "with_metadata_of",
@@ -6121,9 +7090,10 @@ Module rc.
         ltac:(M.monadic
           (let src := M.alloc (| src |) in
           M.read (|
-            let~ value_size :=
+            let~ value_size : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_function (| "core::mem::size_of_val", [], [ T ] |),
                   [
                     M.borrow (|
@@ -6133,9 +7103,11 @@ Module rc.
                   ]
                 |)
               |) in
-            let~ ptr :=
+            let~ ptr :
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                     "allocate_for_ptr_in",
@@ -6151,6 +7123,7 @@ Module rc.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ A ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                             "allocator",
@@ -6169,9 +7142,10 @@ Module rc.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (|
                     "core::intrinsics::copy_nonoverlapping",
                     [],
@@ -6198,6 +7172,7 @@ Module rc.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ]; A ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
                     "into_raw_with_allocator",
@@ -6214,9 +7189,23 @@ Module rc.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let bptr := M.copy (| γ0_0 |) in
                     let alloc := M.copy (| γ0_1 |) in
-                    let~ src :=
+                    let~ src :
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ];
+                            Ty.apply (Ty.path "&") [] [ A ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ];
+                              Ty.apply (Ty.path "&") [] [ A ]
+                            ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::boxed::Box")
@@ -6245,6 +7234,7 @@ Module rc.
                                 ])
                               (M.read (| bptr |));
                             M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ A ],
                               M.get_trait_method (|
                                 "core::alloc::Allocator",
                                 A,
@@ -6259,9 +7249,10 @@ Module rc.
                           ]
                         |)
                       |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_function (|
                             "core::mem::drop",
                             [],
@@ -6283,6 +7274,7 @@ Module rc.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                           "from_ptr_in",
@@ -6330,6 +7322,16 @@ Module rc.
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                Ty.path "alloc::alloc::Global"
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
@@ -6347,6 +7349,20 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "*mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::rc::RcBox")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                      ]
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
@@ -6400,6 +7416,16 @@ Module rc.
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                Ty.path "alloc::alloc::Global"
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
@@ -6417,6 +7443,20 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "*mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::rc::RcBox")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                      ]
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
@@ -6464,6 +7504,7 @@ Module rc.
                 |),
                 [
                   M.call_closure (|
+                    Ty.path "core::alloc::layout::Layout",
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -6478,6 +7519,13 @@ Module rc.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "core::alloc::layout::Layout";
+                            Ty.path "core::alloc::layout::LayoutError"
+                          ],
                         M.get_associated_function (|
                           Ty.path "core::alloc::layout::Layout",
                           "array",
@@ -6501,6 +7549,16 @@ Module rc.
                                   ltac:(M.monadic
                                     (let layout := M.copy (| γ |) in
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                          Ty.path "core::alloc::AllocError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::alloc::Allocator",
                                         Ty.path "alloc::alloc::Global",
@@ -6555,6 +7613,10 @@ Module rc.
                                             ]
                                         ])
                                       (M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "*mut")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                         M.get_function (|
                                           "core::ptr::slice_from_raw_parts_mut",
                                           [],
@@ -6562,6 +7624,7 @@ Module rc.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.apply (Ty.path "*mut") [] [ T ],
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                               "cast",
@@ -6611,6 +7674,10 @@ Module rc.
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "*mut")
+              []
+              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
@@ -6646,6 +7713,7 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.path "core::alloc::layout::Layout",
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -6660,6 +7728,13 @@ Module rc.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "core::alloc::layout::Layout";
+                        Ty.path "core::alloc::layout::LayoutError"
+                      ],
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "array",
@@ -6683,6 +7758,16 @@ Module rc.
                               ltac:(M.monadic
                                 (let layout := M.copy (| γ |) in
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ptr::non_null::NonNull")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                      Ty.path "core::alloc::AllocError"
+                                    ],
                                   M.get_trait_method (|
                                     "core::alloc::Allocator",
                                     Ty.path "alloc::alloc::Global",
@@ -6727,6 +7812,10 @@ Module rc.
                                         [ Ty.apply (Ty.path "slice") [] [ T ] ]
                                     ])
                                   (M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                     M.get_function (|
                                       "core::ptr::slice_from_raw_parts_mut",
                                       [],
@@ -6734,6 +7823,7 @@ Module rc.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply (Ty.path "*mut") [] [ T ],
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                           "cast",
@@ -6780,9 +7870,23 @@ Module rc.
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.read (|
-            let~ ptr :=
+            let~ ptr :
+                Ty.apply
+                  (Ty.path "*mut")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "*mut")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::rc::RcBox")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
@@ -6794,6 +7898,7 @@ Module rc.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
@@ -6805,12 +7910,14 @@ Module rc.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ T ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "as_ptr",
@@ -6830,6 +7937,7 @@ Module rc.
                         |)
                       |));
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
@@ -6843,6 +7951,10 @@ Module rc.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::rc::Rc")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
@@ -6923,9 +8035,23 @@ Module rc.
           (let iter := M.alloc (| iter |) in
           let len := M.alloc (| len |) in
           M.read (|
-            let~ ptr :=
+            let~ ptr :
+                Ty.apply
+                  (Ty.path "*mut")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "*mut")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::rc::RcBox")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
@@ -6938,7 +8064,7 @@ Module rc.
                   [ M.read (| len |) ]
                 |)
               |) in
-            let~ mem :=
+            let~ mem : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
               M.alloc (|
                 M.cast
                   (Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ])
@@ -6954,9 +8080,10 @@ Module rc.
                       ])
                     (M.read (| ptr |)))
               |) in
-            let~ layout :=
+            let~ layout : Ty.path "core::alloc::layout::Layout" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::alloc::layout::Layout",
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "for_value_raw",
@@ -6971,7 +8098,7 @@ Module rc.
                   [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
                 |)
               |) in
-            let~ elems :=
+            let~ elems : Ty.apply (Ty.path "*mut") [] [ T ] :=
               M.alloc (|
                 M.cast
                   (Ty.apply (Ty.path "*mut") [] [ T ])
@@ -6984,13 +8111,14 @@ Module rc.
                     |)
                   |))
               |) in
-            let~ guard :=
+            let~ guard : Ty.apply (Ty.path "alloc::rc::from_iter_exact::Guard") [] [ T ] :=
               M.alloc (|
                 Value.StructRecord
                   "alloc::rc::from_iter_exact::Guard"
                   [
                     ("mem",
                       M.call_closure (|
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                           "new_unchecked",
@@ -7004,11 +8132,15 @@ Module rc.
                     ("n_elems", Value.Integer IntegerKind.Usize 0)
                   ]
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                        []
+                        [ impl_Iterator_Item___T_ ],
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
@@ -7023,6 +8155,10 @@ Module rc.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [ impl_Iterator_Item___T_ ],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             impl_Iterator_Item___T_,
@@ -7043,10 +8179,14 @@ Module rc.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let~ _ :=
+                            (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.tuple [ Ty.path "usize"; T ] ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
@@ -7087,12 +8227,14 @@ Module rc.
                                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                       let i := M.copy (| γ1_0 |) in
                                       let item := M.copy (| γ1_1 |) in
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.tuple [],
                                             M.get_function (| "core::ptr::write", [], [ T ] |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply (Ty.path "*mut") [] [ T ],
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "*mut") [] [ T ],
                                                   "add",
@@ -7105,18 +8247,20 @@ Module rc.
                                             ]
                                           |)
                                         |) in
-                                      let~ _ :=
-                                        let β :=
-                                          M.SubPointer.get_struct_record_field (|
-                                            guard,
-                                            "alloc::rc::from_iter_exact::Guard",
-                                            "n_elems"
-                                          |) in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.add (|
-                                            M.read (| β |),
-                                            Value.Integer IntegerKind.Usize 1
+                                      let~ _ : Ty.tuple [] :=
+                                        M.alloc (|
+                                          let β :=
+                                            M.SubPointer.get_struct_record_field (|
+                                              guard,
+                                              "alloc::rc::from_iter_exact::Guard",
+                                              "n_elems"
+                                            |) in
+                                          M.write (|
+                                            β,
+                                            BinOp.Wrap.add (|
+                                              M.read (| β |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -7126,9 +8270,10 @@ Module rc.
                         |)))
                   ]
                 |)) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (|
                     "core::mem::forget",
                     [],
@@ -7139,6 +8284,10 @@ Module rc.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::rc::Rc")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
@@ -7183,6 +8332,16 @@ Module rc.
           (let len := M.alloc (| len |) in
           let alloc := M.alloc (| alloc |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                A
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
@@ -7200,6 +8359,20 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "*mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::rc::RcBox")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                      ]
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
@@ -7264,6 +8437,16 @@ Module rc.
           (let len := M.alloc (| len |) in
           let alloc := M.alloc (| alloc |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                A
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
@@ -7281,6 +8464,20 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "*mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::rc::RcBox")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                      ]
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
@@ -7328,6 +8525,7 @@ Module rc.
                 |),
                 [
                   M.call_closure (|
+                    Ty.path "core::alloc::layout::Layout",
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -7342,6 +8540,13 @@ Module rc.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "core::alloc::layout::Layout";
+                            Ty.path "core::alloc::layout::LayoutError"
+                          ],
                         M.get_associated_function (|
                           Ty.path "core::alloc::layout::Layout",
                           "array",
@@ -7365,6 +8570,16 @@ Module rc.
                                   ltac:(M.monadic
                                     (let layout := M.copy (| γ |) in
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                          Ty.path "core::alloc::AllocError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::alloc::Allocator",
                                         A,
@@ -7414,6 +8629,10 @@ Module rc.
                                             ]
                                         ])
                                       (M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "*mut")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                         M.get_function (|
                                           "core::ptr::slice_from_raw_parts_mut",
                                           [],
@@ -7421,6 +8640,7 @@ Module rc.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.apply (Ty.path "*mut") [] [ T ],
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                               "cast",
@@ -7472,6 +8692,10 @@ Module rc.
           (let len := M.alloc (| len |) in
           let alloc := M.alloc (| alloc |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "*mut")
+              []
+              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
@@ -7507,6 +8731,7 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.path "core::alloc::layout::Layout",
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -7521,6 +8746,13 @@ Module rc.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "core::alloc::layout::Layout";
+                        Ty.path "core::alloc::layout::LayoutError"
+                      ],
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "array",
@@ -7544,6 +8776,16 @@ Module rc.
                               ltac:(M.monadic
                                 (let layout := M.copy (| γ |) in
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::ptr::non_null::NonNull")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                      Ty.path "core::alloc::AllocError"
+                                    ],
                                   M.get_trait_method (|
                                     "core::alloc::Allocator",
                                     A,
@@ -7588,6 +8830,10 @@ Module rc.
                                         [ Ty.apply (Ty.path "slice") [] [ T ] ]
                                     ])
                                   (M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                     M.get_function (|
                                       "core::ptr::slice_from_raw_parts_mut",
                                       [],
@@ -7595,6 +8841,7 @@ Module rc.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply (Ty.path "*mut") [] [ T ],
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                           "cast",
@@ -7644,6 +8891,19 @@ Module rc.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::rc::RcBox")
+                            []
+                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                        ];
+                      A
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
@@ -7665,6 +8925,7 @@ Module rc.
                     let alloc := M.copy (| γ0_1 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                           "from_inner_in",
@@ -7673,6 +8934,10 @@ Module rc.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::ptr::non_null::NonNull")
+                              []
+                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
@@ -7739,6 +9004,25 @@ Module rc.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::rc::RcBox")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ]
+                            ]
+                        ];
+                      A
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
@@ -7766,6 +9050,10 @@ Module rc.
                     let alloc := M.copy (| γ0_1 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::rc::Rc")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::rc::Rc")
@@ -7787,6 +9075,25 @@ Module rc.
                                   [ Ty.apply (Ty.path "slice") [] [ T ] ]
                               ])
                             (M.call_closure (|
+                              Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::rc::RcBox")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ]
+                                    ]
+                                ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
@@ -7865,6 +9172,7 @@ Module rc.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_associated_function (|
                               Ty.dyn [ ("core::any::Any::Trait", []) ],
                               "is",
@@ -7876,6 +9184,10 @@ Module rc.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::any::Any::Trait", []) ] ],
                                     M.get_trait_method (|
                                       "core::ops::deref::Deref",
                                       Ty.apply
@@ -7899,6 +9211,19 @@ Module rc.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::rc::RcBox")
+                                    []
+                                    [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
+                                ];
+                              A
+                            ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::rc::Rc")
@@ -7923,6 +9248,7 @@ Module rc.
                                 "core::result::Result::Ok"
                                 [
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                       "from_inner_in",
@@ -7931,6 +9257,10 @@ Module rc.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
@@ -7993,6 +9323,19 @@ Module rc.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::rc::RcBox")
+                            []
+                            [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
+                        ];
+                      A
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
@@ -8014,6 +9357,7 @@ Module rc.
                     let alloc := M.copy (| γ0_1 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                           "from_inner_in",
@@ -8022,6 +9366,10 @@ Module rc.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::ptr::non_null::NonNull")
+                              []
+                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
@@ -8080,6 +9428,10 @@ Module rc.
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
@@ -8096,6 +9448,10 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::iter::adapters::cloned::Cloned")
+                  []
+                  [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
@@ -8107,6 +9463,7 @@ Module rc.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ T ],
                       "iter",
@@ -8118,6 +9475,7 @@ Module rc.
                 ]
               |);
               M.call_closure (|
+                Ty.path "usize",
                 M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [], [] |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
               |)
@@ -8154,6 +9512,10 @@ Module rc.
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
@@ -8202,6 +9564,7 @@ Module rc.
                 M.SubPointer.get_struct_record_field (|
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                         "inner",
@@ -8309,9 +9672,10 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "alloc::rc::RcInnerPtr",
                     Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
@@ -8326,6 +9690,10 @@ Module rc.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                             "inner",
@@ -8349,6 +9717,7 @@ Module rc.
                         (M.alloc (|
                           BinOp.eq (|
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_trait_method (|
                                 "alloc::rc::RcInnerPtr",
                                 Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
@@ -8363,6 +9732,10 @@ Module rc.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                         "inner",
@@ -8384,15 +9757,17 @@ Module rc.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
                           [
                             M.borrow (|
                               Pointer.Kind.MutPointer,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "&mut") [] [ T ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                     "get_mut_unchecked",
@@ -8411,9 +9786,10 @@ Module rc.
                           ]
                         |)
                       |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_trait_method (|
                             "alloc::rc::RcInnerPtr",
                             Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
@@ -8428,6 +9804,10 @@ Module rc.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                     "inner",
@@ -8452,6 +9832,7 @@ Module rc.
                                 (M.alloc (|
                                   BinOp.eq (|
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_trait_method (|
                                         "alloc::rc::RcInnerPtr",
                                         Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
@@ -8466,6 +9847,10 @@ Module rc.
                                           Pointer.Kind.Ref,
                                           M.deref (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                                 "inner",
@@ -8488,9 +9873,10 @@ Module rc.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.tuple [],
                                   M.get_trait_method (|
                                     "core::alloc::Allocator",
                                     A,
@@ -8510,6 +9896,10 @@ Module rc.
                                       |)
                                     |);
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::ptr::non_null::NonNull")
+                                        []
+                                        [ Ty.path "u8" ],
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::ptr::non_null::NonNull")
@@ -8530,6 +9920,7 @@ Module rc.
                                       ]
                                     |);
                                     M.call_closure (|
+                                      Ty.path "core::alloc::layout::Layout",
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "for_value_raw",
@@ -8540,6 +9931,10 @@ Module rc.
                                         (* MutToConstPointer *)
                                         M.pointer_coercion
                                           (M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "*mut")
+                                              []
+                                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::ptr::non_null::NonNull")
@@ -8602,9 +9997,10 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "alloc::rc::RcInnerPtr",
                     Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
@@ -8619,6 +10015,10 @@ Module rc.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                             "inner",
@@ -8634,6 +10034,7 @@ Module rc.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "from_inner_in",
@@ -8649,6 +10050,7 @@ Module rc.
                     |)
                   |);
                   M.call_closure (|
+                    A,
                     M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                     [
                       M.borrow (|
@@ -8692,6 +10094,7 @@ Module rc.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
+            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new",
@@ -8700,6 +10103,7 @@ Module rc.
             |),
             [
               M.call_closure (|
+                T,
                 M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |),
                 []
               |)
@@ -8731,6 +10135,7 @@ Module rc.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
+            Ty.apply (Ty.path "alloc::rc::Rc") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
             M.get_trait_method (|
               "core::convert::From",
               Ty.apply
@@ -8775,9 +10180,14 @@ Module rc.
       | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let~ arr := M.alloc (| Value.Array [] |) in
+            let~ arr : Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ] :=
+              M.alloc (| Value.Array [] |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::rc::Rc")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::convert::From",
                   Ty.apply
@@ -8825,12 +10235,14 @@ Module rc.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
             [
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -8848,6 +10260,7 @@ Module rc.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -8879,12 +10292,14 @@ Module rc.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
             [
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -8902,6 +10317,7 @@ Module rc.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -8962,6 +10378,7 @@ Module rc.
           let other := M.alloc (| other |) in
           LogicalOp.or (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                 "ptr_eq",
@@ -8975,12 +10392,14 @@ Module rc.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ T ],
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -8998,6 +10417,7 @@ Module rc.
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ T ],
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9032,6 +10452,7 @@ Module rc.
           LogicalOp.and (|
             UnOp.not (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "ptr_eq",
@@ -9046,12 +10467,14 @@ Module rc.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ T ],
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9069,6 +10492,7 @@ Module rc.
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ T ],
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9114,6 +10538,7 @@ Module rc.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "alloc::rc::RcEqIdent",
               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9144,6 +10569,7 @@ Module rc.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "alloc::rc::RcEqIdent",
               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9199,12 +10625,14 @@ Module rc.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
             [
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9225,6 +10653,7 @@ Module rc.
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ T ],
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9258,12 +10687,14 @@ Module rc.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "lt", [], [] |),
             [
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9281,6 +10712,7 @@ Module rc.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9312,12 +10744,14 @@ Module rc.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "le", [], [] |),
             [
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9335,6 +10769,7 @@ Module rc.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9366,12 +10801,14 @@ Module rc.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "gt", [], [] |),
             [
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9389,6 +10826,7 @@ Module rc.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9420,12 +10858,14 @@ Module rc.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "ge", [], [] |),
             [
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9443,6 +10883,7 @@ Module rc.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9493,12 +10934,14 @@ Module rc.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "core::cmp::Ordering",
             M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
             [
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9519,6 +10962,7 @@ Module rc.
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ T ],
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9564,15 +11008,17 @@ Module rc.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ H ] |),
                   [
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ T ],
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9620,6 +11066,10 @@ Module rc.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
             [
               M.borrow (|
@@ -9629,6 +11079,7 @@ Module rc.
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ T ],
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9675,6 +11126,10 @@ Module rc.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
             [
               M.borrow (|
@@ -9684,6 +11139,7 @@ Module rc.
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ T ],
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9730,6 +11186,10 @@ Module rc.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_trait_method (|
               "core::fmt::Pointer",
               Ty.apply (Ty.path "*const") [] [ T ],
@@ -9750,6 +11210,7 @@ Module rc.
                         Pointer.Kind.ConstPointer,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "&") [] [ T ],
                             M.get_trait_method (|
                               "core::ops::deref::Deref",
                               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -9798,6 +11259,7 @@ Module rc.
         ltac:(M.monadic
           (let t := M.alloc (| t |) in
           M.call_closure (|
+            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new",
@@ -9843,6 +11305,10 @@ Module rc.
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [ Ty.apply (Ty.path "array") [ N ] [ T ]; Ty.path "alloc::alloc::Global" ],
             M.get_trait_method (|
               "core::convert::From",
               Ty.apply
@@ -9888,6 +11354,10 @@ Module rc.
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
             M.get_trait_method (|
               "alloc::rc::RcFromSlice",
               Ty.apply
@@ -9931,9 +11401,19 @@ Module rc.
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.read (|
-            let~ rc :=
+            let~ rc :
+                Ty.apply
+                  (Ty.path "alloc::rc::Rc")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global"
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::rc::Rc")
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply
@@ -9952,6 +11432,7 @@ Module rc.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
@@ -9960,6 +11441,10 @@ Module rc.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::rc::Rc")
+                  []
+                  [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::rc::Rc")
@@ -9973,6 +11458,10 @@ Module rc.
                   M.cast
                     (Ty.apply (Ty.path "*const") [] [ Ty.path "str" ])
                     (M.call_closure (|
+                      Ty.apply
+                        (Ty.path "*const")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::rc::Rc")
@@ -10017,6 +11506,7 @@ Module rc.
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
+            Ty.apply (Ty.path "alloc::rc::Rc") [] [ Ty.path "str"; Ty.path "alloc::alloc::Global" ],
             M.get_trait_method (|
               "core::convert::From",
               Ty.apply
@@ -10034,6 +11524,7 @@ Module rc.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                     M.get_trait_method (|
                       "core::ops::index::Index",
                       Ty.path "alloc::string::String",
@@ -10078,6 +11569,7 @@ Module rc.
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
+            Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
               "from_box_in",
@@ -10128,6 +11620,8 @@ Module rc.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple
+                    [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "usize"; Ty.path "usize"; A ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
                     "into_raw_parts_with_alloc",
@@ -10148,9 +11642,27 @@ Module rc.
                     let len := M.copy (| γ0_1 |) in
                     let cap := M.copy (| γ0_2 |) in
                     let alloc := M.copy (| γ0_3 |) in
-                    let~ rc_ptr :=
+                    let~ rc_ptr :
+                        Ty.apply
+                          (Ty.path "*mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::rc::RcBox")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                          ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "*mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::rc::RcBox")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                            ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::rc::Rc")
@@ -10169,9 +11681,10 @@ Module rc.
                           ]
                         |)
                       |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                           [
                             (* MutToConstPointer *) M.pointer_coercion (M.read (| vec_ptr |));
@@ -10192,6 +11705,10 @@ Module rc.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ T; Ty.apply (Ty.path "&") [] [ A ] ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::vec::Vec")
@@ -10214,6 +11731,10 @@ Module rc.
                           ltac:(M.monadic
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "alloc::rc::Rc")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::rc::Rc")
@@ -10276,6 +11797,7 @@ Module rc.
                     let s := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ B; Ty.path "alloc::alloc::Global" ],
                         M.get_trait_method (|
                           "core::convert::From",
                           Ty.apply
@@ -10298,6 +11820,7 @@ Module rc.
                     let s := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "alloc::rc::Rc") [] [ B; Ty.path "alloc::alloc::Global" ],
                         M.get_trait_method (|
                           "core::convert::From",
                           Ty.apply
@@ -10347,6 +11870,10 @@ Module rc.
         ltac:(M.monadic
           (let rc := M.alloc (| rc |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::rc::Rc")
@@ -10360,6 +11887,7 @@ Module rc.
               M.cast
                 (Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
                 (M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "str" ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::rc::Rc")
@@ -10429,6 +11957,7 @@ Module rc.
                         (M.alloc (|
                           BinOp.eq (|
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
@@ -10440,6 +11969,10 @@ Module rc.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                       M.get_trait_method (|
                                         "core::ops::deref::Deref",
                                         Ty.apply
@@ -10465,6 +11998,19 @@ Module rc.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::rc::RcBox")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                ];
+                              A
+                            ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::rc::Rc")
@@ -10489,6 +12035,10 @@ Module rc.
                                 "core::result::Result::Ok"
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "alloc::rc::Rc")
+                                      []
+                                      [ Ty.apply (Ty.path "array") [ N ] [ T ]; A ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::rc::Rc")
@@ -10500,6 +12050,15 @@ Module rc.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::rc::RcBox")
+                                              []
+                                              [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
+                                          ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
@@ -10572,6 +12131,10 @@ Module rc.
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
             M.get_trait_method (|
               "alloc::rc::ToRcSlice",
               Ty.associated,
@@ -10583,6 +12146,7 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   I,
@@ -10626,6 +12190,10 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::rc::Rc")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ],
             M.get_trait_method (|
               "core::convert::Into",
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
@@ -10642,6 +12210,7 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -10705,6 +12274,11 @@ Module rc.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     I,
@@ -10737,7 +12311,7 @@ Module rc.
                                 0
                               |) in
                             let high := M.copy (| γ0_0 |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -10749,7 +12323,7 @@ Module rc.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
                                           M.alloc (|
                                             Value.Tuple
@@ -10798,7 +12372,9 @@ Module rc.
                                                         M.alloc (|
                                                           M.never_to_any (|
                                                             M.read (|
-                                                              let~ kind :=
+                                                              let~ kind :
+                                                                  Ty.path
+                                                                    "core::panicking::AssertKind" :=
                                                                 M.alloc (|
                                                                   Value.StructTuple
                                                                     "core::panicking::AssertKind::Eq"
@@ -10806,6 +12382,7 @@ Module rc.
                                                                 |) in
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.path "never",
                                                                   M.get_function (|
                                                                     "core::panicking::assert_failed",
                                                                     [],
@@ -10842,6 +12419,8 @@ Module rc.
                                                                       "core::option::Option::Some"
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::Arguments",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
@@ -10876,6 +12455,8 @@ Module rc.
                                                                                     Value.Array
                                                                                       [
                                                                                         M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::rt::Argument",
                                                                                           M.get_associated_function (|
                                                                                             Ty.path
                                                                                               "core::fmt::rt::Argument",
@@ -10940,6 +12521,13 @@ Module rc.
                               |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "alloc::rc::Rc")
+                                  []
+                                  [
+                                    Ty.apply (Ty.path "slice") [] [ T ];
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::rc::Rc")
@@ -10960,9 +12548,11 @@ Module rc.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
+                                  Ty.path "never",
                                   M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::Arguments",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_const",
@@ -11095,6 +12685,10 @@ Module rc.
             [
               ("ptr",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::ptr::non_null::NonNull")
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
@@ -11106,6 +12700,10 @@ Module rc.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                       M.get_function (|
                         "core::ptr::without_provenance_mut",
                         [],
@@ -11134,6 +12732,7 @@ Module rc.
         ltac:(M.monadic
           (let ptr := M.alloc (| ptr |) in
           M.call_closure (|
+            Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; Ty.path "alloc::alloc::Global" ],
               "from_raw_in",
@@ -11175,6 +12774,10 @@ Module rc.
             [
               ("ptr",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::ptr::non_null::NonNull")
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
@@ -11186,6 +12789,10 @@ Module rc.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                       M.get_function (|
                         "core::ptr::without_provenance_mut",
                         [],
@@ -11259,9 +12866,11 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ ptr :=
+            let~ ptr :
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
@@ -11291,6 +12900,7 @@ Module rc.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_function (|
                               "alloc::rc::is_dangling",
                               [],
@@ -11340,6 +12950,7 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "*const") [] [ T ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
               "as_ptr",
@@ -11351,6 +12962,7 @@ Module rc.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply
@@ -11368,6 +12980,10 @@ Module rc.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                              []
+                              [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -11416,9 +13032,17 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ this :=
+            let~ this :
+                Ty.apply
+                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -11431,9 +13055,10 @@ Module rc.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ result :=
+            let~ result : Ty.apply (Ty.path "*const") [] [ T ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
                     "as_ptr",
@@ -11445,6 +13070,10 @@ Module rc.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ],
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply
@@ -11464,9 +13093,10 @@ Module rc.
                   ]
                 |)
               |) in
-            let~ alloc :=
+            let~ alloc : A :=
               M.alloc (|
                 M.call_closure (|
+                  A,
                   M.get_function (| "core::ptr::read", [], [ A ] |),
                   [
                     M.borrow (|
@@ -11477,6 +13107,10 @@ Module rc.
                           M.SubPointer.get_struct_record_field (|
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ],
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
                                   Ty.apply
@@ -11539,7 +13173,8 @@ Module rc.
           (let ptr := M.alloc (| ptr |) in
           let alloc := M.alloc (| alloc |) in
           M.read (|
-            let~ ptr :=
+            let~ ptr :
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ] :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -11550,6 +13185,7 @@ Module rc.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_function (| "alloc::rc::is_dangling", [], [ T ] |),
                                 [ M.read (| ptr |) ]
                               |)
@@ -11566,9 +13202,10 @@ Module rc.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ offset :=
+                        (let~ offset : Ty.path "usize" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_function (| "alloc::rc::data_offset", [], [ T ] |),
                               [ M.read (| ptr |) ]
                             |)
@@ -11580,6 +13217,7 @@ Module rc.
                               []
                               [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ])
                             (M.call_closure (|
+                              Ty.apply (Ty.path "*const") [] [ T ],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*const") [] [ T ],
                                 "byte_sub",
@@ -11598,6 +13236,10 @@ Module rc.
                 [
                   ("ptr",
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
@@ -11647,11 +13289,21 @@ Module rc.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ inner :=
+                let~ inner : Ty.path "alloc::rc::WeakInner" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.path "core::convert::Infallible" ];
+                              Ty.path "alloc::rc::WeakInner"
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -11666,6 +13318,10 @@ Module rc.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.path "alloc::rc::WeakInner" ],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
                                 "inner",
@@ -11692,6 +13348,10 @@ Module rc.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ] ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -11738,6 +13398,7 @@ Module rc.
                             (M.alloc (|
                               BinOp.eq (|
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_trait_method (|
                                     "alloc::rc::RcInnerPtr",
                                     Ty.path "alloc::rc::WeakInner",
@@ -11757,9 +13418,10 @@ Module rc.
                         M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_trait_method (|
                                 "alloc::rc::RcInnerPtr",
                                 Ty.path "alloc::rc::WeakInner",
@@ -11777,6 +13439,7 @@ Module rc.
                             "core::option::Option::Some"
                             [
                               M.call_closure (|
+                                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                                   "from_inner_in",
@@ -11792,6 +13455,7 @@ Module rc.
                                     |)
                                   |);
                                   M.call_closure (|
+                                    A,
                                     M.get_trait_method (|
                                       "core::clone::Clone",
                                       A,
@@ -11853,6 +13517,10 @@ Module rc.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "alloc::rc::WeakInner" ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
                             "inner",
@@ -11871,6 +13539,7 @@ Module rc.
                     let inner := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_trait_method (|
                           "alloc::rc::RcInnerPtr",
                           Ty.path "alloc::rc::WeakInner",
@@ -11923,6 +13592,10 @@ Module rc.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "alloc::rc::WeakInner" ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
                             "inner",
@@ -11949,6 +13622,7 @@ Module rc.
                                 (M.alloc (|
                                   BinOp.gt (|
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_trait_method (|
                                         "alloc::rc::RcInnerPtr",
                                         Ty.path "alloc::rc::WeakInner",
@@ -11968,6 +13642,7 @@ Module rc.
                             M.alloc (|
                               BinOp.Wrap.sub (|
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_trait_method (|
                                     "alloc::rc::RcInnerPtr",
                                     Ty.path "alloc::rc::WeakInner",
@@ -12028,6 +13703,7 @@ Module rc.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_function (|
                               "alloc::rc::is_dangling",
                               [],
@@ -12037,6 +13713,10 @@ Module rc.
                               (* MutToConstPointer *)
                               M.pointer_coercion
                                 (M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
@@ -12068,9 +13748,17 @@ Module rc.
                         "core::option::Option::Some"
                         [
                           M.read (|
-                            let~ ptr :=
+                            let~ ptr :
+                                Ty.apply
+                                  (Ty.path "*mut")
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
@@ -12152,6 +13840,7 @@ Module rc.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_function (|
               "core::ptr::addr_eq",
               [],
@@ -12164,6 +13853,7 @@ Module rc.
               (* MutToConstPointer *)
               M.pointer_coercion
                 (M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
@@ -12186,6 +13876,7 @@ Module rc.
               (* MutToConstPointer *)
               M.pointer_coercion
                 (M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::ptr::non_null::NonNull")
@@ -12228,6 +13919,7 @@ Module rc.
         (let ptr := M.alloc (| ptr |) in
         BinOp.eq (|
           M.call_closure (|
+            Ty.path "usize",
             M.get_associated_function (|
               Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
               "addr",
@@ -12236,6 +13928,7 @@ Module rc.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "*const") [] [ T ],
                   "cast",
@@ -12302,7 +13995,7 @@ Module rc.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ inner :=
+                let~ inner : Ty.path "alloc::rc::WeakInner" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -12312,6 +14005,10 @@ Module rc.
                             (let γ :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "alloc::rc::WeakInner" ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
                                     "inner",
@@ -12338,9 +14035,10 @@ Module rc.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "alloc::rc::RcInnerPtr",
                         Ty.path "alloc::rc::WeakInner",
@@ -12363,6 +14061,7 @@ Module rc.
                             (M.alloc (|
                               BinOp.eq (|
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_trait_method (|
                                     "alloc::rc::RcInnerPtr",
                                     Ty.path "alloc::rc::WeakInner",
@@ -12379,9 +14078,10 @@ Module rc.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_trait_method (|
                                 "core::alloc::Allocator",
                                 A,
@@ -12401,6 +14101,10 @@ Module rc.
                                   |)
                                 |);
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.path "u8" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::ptr::non_null::NonNull")
@@ -12421,6 +14125,7 @@ Module rc.
                                   ]
                                 |);
                                 M.call_closure (|
+                                  Ty.path "core::alloc::layout::Layout",
                                   M.get_associated_function (|
                                     Ty.path "core::alloc::layout::Layout",
                                     "for_value_raw",
@@ -12431,6 +14136,10 @@ Module rc.
                                     (* MutToConstPointer *)
                                     M.pointer_coercion
                                       (M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "*mut")
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::ptr::non_null::NonNull")
@@ -12491,7 +14200,7 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -12500,6 +14209,10 @@ Module rc.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "alloc::rc::WeakInner" ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
                               "inner",
@@ -12518,6 +14231,7 @@ Module rc.
                       let inner := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_trait_method (|
                             "alloc::rc::RcInnerPtr",
                             Ty.path "alloc::rc::WeakInner",
@@ -12547,6 +14261,7 @@ Module rc.
                     |));
                   ("alloc",
                     M.call_closure (|
+                      A,
                       M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
                         M.borrow (|
@@ -12590,10 +14305,15 @@ Module rc.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
+                Ty.path "core::fmt::Arguments",
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
                 [
                   M.borrow (|
@@ -12636,6 +14356,7 @@ Module rc.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
+            Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new",
@@ -12664,6 +14385,7 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_associated_function (|
               Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
               "get",
@@ -12675,6 +14397,10 @@ Module rc.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ] ],
                     M.get_trait_method (|
                       "alloc::rc::RcInnerPtr",
                       Self,
@@ -12700,32 +14426,36 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ strong :=
+            let~ strong : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_trait_method (| "alloc::rc::RcInnerPtr", Self, [], [], "strong", [], [] |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "core::hint::assert_unchecked", [], [] |),
                     [ BinOp.ne (| M.read (| strong |), Value.Integer IntegerKind.Usize 0 |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
-            let~ strong :=
+            let~ strong : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (| Ty.path "usize", "wrapping_add", [], [] |),
                   [ M.read (| strong |); Value.Integer IntegerKind.Usize 1 ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                     "set",
@@ -12737,6 +14467,10 @@ Module rc.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ] ],
                           M.get_trait_method (|
                             "alloc::rc::RcInnerPtr",
                             Self,
@@ -12763,6 +14497,7 @@ Module rc.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| strong |), Value.Integer IntegerKind.Usize 0 |)
                             ]
@@ -12772,6 +14507,7 @@ Module rc.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::intrinsics::abort", [], [] |),
                           []
                         |)
@@ -12792,9 +14528,10 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                     "set",
@@ -12806,6 +14543,10 @@ Module rc.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ] ],
                           M.get_trait_method (|
                             "alloc::rc::RcInnerPtr",
                             Self,
@@ -12821,6 +14562,7 @@ Module rc.
                     |);
                     BinOp.Wrap.sub (|
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_trait_method (|
                           "alloc::rc::RcInnerPtr",
                           Self,
@@ -12850,6 +14592,7 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_associated_function (|
               Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
               "get",
@@ -12861,6 +14604,10 @@ Module rc.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ] ],
                     M.get_trait_method (|
                       "alloc::rc::RcInnerPtr",
                       Self,
@@ -12886,32 +14633,36 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ weak :=
+            let~ weak : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_trait_method (| "alloc::rc::RcInnerPtr", Self, [], [], "weak", [], [] |),
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "core::hint::assert_unchecked", [], [] |),
                     [ BinOp.ne (| M.read (| weak |), Value.Integer IntegerKind.Usize 0 |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
-            let~ weak :=
+            let~ weak : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (| Ty.path "usize", "wrapping_add", [], [] |),
                   [ M.read (| weak |); Value.Integer IntegerKind.Usize 1 ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                     "set",
@@ -12923,6 +14674,10 @@ Module rc.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ] ],
                           M.get_trait_method (|
                             "alloc::rc::RcInnerPtr",
                             Self,
@@ -12949,6 +14704,7 @@ Module rc.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_function (| "core::intrinsics::unlikely", [], [] |),
                             [ BinOp.eq (| M.read (| weak |), Value.Integer IntegerKind.Usize 0 |) ]
                           |)
@@ -12957,6 +14713,7 @@ Module rc.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::intrinsics::abort", [], [] |),
                           []
                         |)
@@ -12976,9 +14733,10 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                     "set",
@@ -12990,6 +14748,10 @@ Module rc.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ] ],
                           M.get_trait_method (|
                             "alloc::rc::RcInnerPtr",
                             Self,
@@ -13005,6 +14767,7 @@ Module rc.
                     |);
                     BinOp.Wrap.sub (|
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_trait_method (|
                           "alloc::rc::RcInnerPtr",
                           Self,
@@ -13185,6 +14948,7 @@ Module rc.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -13233,6 +14997,7 @@ Module rc.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
@@ -13289,9 +15054,11 @@ Module rc.
       ltac:(M.monadic
         (let ptr := M.alloc (| ptr |) in
         M.call_closure (|
+          Ty.path "usize",
           M.get_function (| "alloc::rc::data_offset_align", [], [] |),
           [
             M.call_closure (|
+              Ty.path "usize",
               M.get_function (| "core::mem::align_of_val_raw", [], [ T ] |),
               [ M.read (| ptr |) ]
             |)
@@ -13315,9 +15082,10 @@ Module rc.
       ltac:(M.monadic
         (let align := M.alloc (| align |) in
         M.read (|
-          let~ layout :=
+          let~ layout : Ty.path "core::alloc::layout::Layout" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "core::alloc::layout::Layout",
                 M.get_associated_function (|
                   Ty.path "core::alloc::layout::Layout",
                   "new",
@@ -13330,6 +15098,7 @@ Module rc.
           M.alloc (|
             BinOp.Wrap.add (|
               M.call_closure (|
+                Ty.path "usize",
                 M.get_associated_function (|
                   Ty.path "core::alloc::layout::Layout",
                   "size",
@@ -13339,6 +15108,7 @@ Module rc.
                 [ M.borrow (| Pointer.Kind.Ref, layout |) ]
               |),
               M.call_closure (|
+                Ty.path "usize",
                 M.get_associated_function (|
                   Ty.path "core::alloc::layout::Layout",
                   "padding_needed_for",
@@ -13389,6 +15159,10 @@ Module rc.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field3_finish",
@@ -13488,6 +15262,7 @@ Module rc.
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           M.call_closure (|
+            Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; Ty.path "alloc::alloc::Global" ],
               "new_in",
@@ -13532,6 +15307,14 @@ Module rc.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple
+                    [
+                      Ty.apply
+                        (Ty.path "core::ptr::unique::Unique")
+                        []
+                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ];
+                      A
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
@@ -13543,6 +15326,10 @@ Module rc.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ]; A ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::boxed::Box")
@@ -13558,6 +15345,7 @@ Module rc.
                           [
                             ("strong",
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                   "new",
@@ -13568,6 +15356,7 @@ Module rc.
                               |));
                             ("weak",
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                                   "new",
@@ -13597,6 +15386,10 @@ Module rc.
                         [
                           ("ptr",
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                               M.get_trait_method (|
                                 "core::convert::Into",
                                 Ty.apply
@@ -13654,9 +15447,17 @@ Module rc.
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.read (|
-            let~ this :=
+            let~ this :
+                Ty.apply
+                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ] ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -13669,9 +15470,10 @@ Module rc.
                   [ M.read (| this |) ]
                 |)
               |) in
-            let~ alloc :=
+            let~ alloc : A :=
               M.alloc (|
                 M.call_closure (|
+                  A,
                   M.get_function (| "core::ptr::read", [], [ A ] |),
                   [
                     M.borrow (|
@@ -13682,6 +15484,10 @@ Module rc.
                           M.SubPointer.get_struct_record_field (|
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ] ],
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
                                   Ty.apply
@@ -13706,9 +15512,10 @@ Module rc.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
                     "set",
@@ -13721,6 +15528,10 @@ Module rc.
                       M.SubPointer.get_struct_record_field (|
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
@@ -13736,6 +15547,10 @@ Module rc.
                                 M.SubPointer.get_struct_record_field (|
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ] ],
                                       M.get_trait_method (|
                                         "core::ops::deref::DerefMut",
                                         Ty.apply
@@ -13768,6 +15583,7 @@ Module rc.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "from_inner_in",
@@ -13779,6 +15595,10 @@ Module rc.
                     M.SubPointer.get_struct_record_field (|
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ] ],
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply
@@ -13827,10 +15647,11 @@ Module rc.
         ltac:(M.monadic
           (let this := M.alloc (| this |) in
           M.read (|
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "alloc::rc::RcInnerPtr",
                       Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
@@ -13845,6 +15666,10 @@ Module rc.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::ptr::non_null::NonNull")
@@ -13885,6 +15710,7 @@ Module rc.
                     |));
                   ("alloc",
                     M.call_closure (|
+                      A,
                       M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
                         M.borrow (|
@@ -13937,6 +15763,7 @@ Module rc.
                 M.SubPointer.get_struct_record_field (|
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
@@ -14021,6 +15848,10 @@ Module rc.
                         M.SubPointer.get_struct_record_field (|
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "*mut")
+                                []
+                                [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
@@ -14088,15 +15919,17 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
                   [
                     M.borrow (|
                       Pointer.Kind.MutPointer,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "&mut") [] [ T ],
                           M.get_trait_method (|
                             "core::ops::deref::DerefMut",
                             Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ],
@@ -14113,9 +15946,10 @@ Module rc.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "alloc::rc::RcInnerPtr",
                     Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
@@ -14130,6 +15964,10 @@ Module rc.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
@@ -14165,6 +16003,7 @@ Module rc.
                         (M.alloc (|
                           BinOp.eq (|
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_trait_method (|
                                 "alloc::rc::RcInnerPtr",
                                 Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ],
@@ -14179,6 +16018,10 @@ Module rc.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::ptr::non_null::NonNull")
@@ -14207,9 +16050,10 @@ Module rc.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_trait_method (|
                             "core::alloc::Allocator",
                             A,
@@ -14229,6 +16073,7 @@ Module rc.
                               |)
                             |);
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ptr::non_null::NonNull")
@@ -14249,6 +16094,7 @@ Module rc.
                               ]
                             |);
                             M.call_closure (|
+                              Ty.path "core::alloc::layout::Layout",
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "for_value_raw",
@@ -14259,6 +16105,10 @@ Module rc.
                                 (* MutToConstPointer *)
                                 M.pointer_coercion
                                   (M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::ptr::non_null::NonNull")
@@ -14342,9 +16192,10 @@ Module rc.
           (let for_value := M.alloc (| for_value |) in
           let alloc := M.alloc (| alloc |) in
           M.read (|
-            let~ layout :=
+            let~ layout : Ty.path "core::alloc::layout::Layout" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::alloc::layout::Layout",
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "for_value",
@@ -14354,9 +16205,11 @@ Module rc.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| for_value |) |) |) ]
                 |)
               |) in
-            let~ ptr :=
+            let~ ptr :
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
                     "allocate_for_layout",
@@ -14397,6 +16250,16 @@ Module rc.
                                     ltac:(M.monadic
                                       (let layout_for_rcbox := M.copy (| γ |) in
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                            Ty.path "core::alloc::AllocError"
+                                          ],
                                         M.get_trait_method (|
                                           "core::alloc::Allocator",
                                           A,
@@ -14428,6 +16291,10 @@ Module rc.
                                     ltac:(M.monadic
                                       (let mem := M.copy (| γ |) in
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "*mut")
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                           "with_metadata_of",
@@ -14442,6 +16309,7 @@ Module rc.
                                               []
                                               [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ])
                                             (M.call_closure (|
+                                              Ty.apply (Ty.path "*const") [] [ T ],
                                               M.get_function (| "core::ptr::from_ref", [], [ T ] |),
                                               [
                                                 M.borrow (|
@@ -14465,6 +16333,10 @@ Module rc.
                 [
                   ("ptr",
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -14481,6 +16353,15 @@ Module rc.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
+                            ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::ptr::non_null::NonNull")
@@ -14520,12 +16401,14 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ offset :=
+            let~ offset : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_function (| "alloc::rc::data_offset_align", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "align",
@@ -14550,6 +16433,7 @@ Module rc.
               M.cast
                 (Ty.apply (Ty.path "*mut") [] [ T ])
                 (M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                     "byte_add",
@@ -14558,6 +16442,10 @@ Module rc.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "*mut")
+                        []
+                        [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
@@ -14608,9 +16496,17 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ this :=
+            let~ this :
+                Ty.apply
+                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ] ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -14623,11 +16519,19 @@ Module rc.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ ptr :=
+            let~ ptr :
+                Ty.apply
+                  (Ty.path "core::ptr::non_null::NonNull")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ] :=
               M.copy (|
                 M.SubPointer.get_struct_record_field (|
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ] ],
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
                         Ty.apply
@@ -14647,9 +16551,10 @@ Module rc.
                   "ptr"
                 |)
               |) in
-            let~ alloc :=
+            let~ alloc : A :=
               M.alloc (|
                 M.call_closure (|
+                  A,
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ A ],
                     "unwrap",
@@ -14658,6 +16563,7 @@ Module rc.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ A ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ A ],
                         "take",
@@ -14670,6 +16576,10 @@ Module rc.
                           M.SubPointer.get_struct_record_field (|
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ] ],
                                 M.get_trait_method (|
                                   "core::ops::deref::DerefMut",
                                   Ty.apply
@@ -14696,6 +16606,7 @@ Module rc.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
                   "from_ptr_in",
@@ -14704,6 +16615,7 @@ Module rc.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::ptr::non_null::NonNull")
@@ -14753,9 +16665,10 @@ Module rc.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::alloc::Allocator",
                     A,
@@ -14770,6 +16683,7 @@ Module rc.
                       Pointer.Kind.Ref,
                       M.alloc (|
                         M.call_closure (|
+                          A,
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::option::Option") [] [ A ],
                             "unwrap",
@@ -14778,6 +16692,7 @@ Module rc.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::option::Option") [] [ A ],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ A ],
                                 "take",
@@ -14800,6 +16715,7 @@ Module rc.
                       |)
                     |);
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::ptr::non_null::NonNull")
@@ -14820,6 +16736,7 @@ Module rc.
                       ]
                     |);
                     M.call_closure (|
+                      Ty.path "core::alloc::layout::Layout",
                       M.get_function (| "alloc::rc::rcbox_layout_for_value_layout", [], [] |),
                       [
                         M.read (|

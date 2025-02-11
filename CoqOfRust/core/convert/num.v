@@ -37,6 +37,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u8",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -70,6 +71,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u16",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -103,6 +105,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -136,6 +139,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u64",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -169,6 +173,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u128",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -202,6 +207,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -235,6 +241,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i8",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -268,6 +275,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i16",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -301,6 +309,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i32",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -334,6 +343,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i64",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -367,6 +377,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i128",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -400,6 +411,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "isize",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -444,6 +456,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u8",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -477,6 +490,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u16",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -510,6 +524,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -543,6 +558,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u64",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -576,6 +592,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u128",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -609,6 +626,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -642,6 +660,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i8",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -675,6 +694,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i16",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -708,6 +728,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i32",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -741,6 +762,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i64",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -774,6 +796,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i128",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -807,6 +830,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "isize",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -851,6 +875,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u8",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -884,6 +909,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u16",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -917,6 +943,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -950,6 +977,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u64",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -983,6 +1011,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u128",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1016,6 +1045,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1049,6 +1079,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i8",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1082,6 +1113,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i16",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1115,6 +1147,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i32",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1148,6 +1181,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i64",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1181,6 +1215,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i128",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1214,6 +1249,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "isize",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1258,6 +1294,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u8",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1291,6 +1328,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u16",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1324,6 +1362,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1357,6 +1396,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u64",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1390,6 +1430,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u128",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1423,6 +1464,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1456,6 +1498,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i8",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1489,6 +1532,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i16",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1522,6 +1566,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i32",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1555,6 +1600,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i64",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1588,6 +1634,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "i128",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -1621,6 +1668,7 @@ Module convert.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "isize",
               M.get_function (|
                 "core::intrinsics::float_to_int_unchecked",
                 [],
@@ -3892,11 +3940,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i16" :=
                 M.alloc (|
                   M.cast (Ty.path "i16") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i16" :=
                 M.alloc (|
                   M.cast (Ty.path "i16") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -3965,11 +4013,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i32" :=
                 M.alloc (|
                   M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i32" :=
                 M.alloc (|
                   M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -4038,11 +4086,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i32" :=
                 M.alloc (|
                   M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i32" :=
                 M.alloc (|
                   M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -4111,11 +4159,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i64" :=
                 M.alloc (|
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i64" :=
                 M.alloc (|
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -4184,11 +4232,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i64" :=
                 M.alloc (|
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i64" :=
                 M.alloc (|
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -4257,11 +4305,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i64" :=
                 M.alloc (|
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i64" :=
                 M.alloc (|
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -4330,11 +4378,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -4403,11 +4451,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -4476,11 +4524,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -4549,11 +4597,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -5867,11 +5915,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i16" :=
                 M.alloc (|
                   M.cast (Ty.path "i16") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i16" :=
                 M.alloc (|
                   M.cast (Ty.path "i16") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -6180,11 +6228,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i32" :=
                 M.alloc (|
                   M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i32" :=
                 M.alloc (|
                   M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -6253,11 +6301,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i32" :=
                 M.alloc (|
                   M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i32" :=
                 M.alloc (|
                   M.cast (Ty.path "i32") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -6506,11 +6554,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i64" :=
                 M.alloc (|
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i64" :=
                 M.alloc (|
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -6579,11 +6627,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i64" :=
                 M.alloc (|
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i64" :=
                 M.alloc (|
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -6652,11 +6700,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i64" :=
                 M.alloc (|
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i64" :=
                 M.alloc (|
                   M.cast (Ty.path "i64") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -6845,11 +6893,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -6918,11 +6966,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -6991,11 +7039,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -7064,11 +7112,11 @@ Module convert.
           ltac:(M.monadic
             (let u := M.alloc (| u |) in
             M.read (|
-              let~ min :=
+              let~ min : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                 |) in
-              let~ max :=
+              let~ max : Ty.path "i128" :=
                 M.alloc (|
                   M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                 |) in
@@ -7899,11 +7947,11 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let~ min :=
+                let~ min : Ty.path "isize" :=
                   M.alloc (|
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
-                let~ max :=
+                let~ max : Ty.path "isize" :=
                   M.alloc (|
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
@@ -7976,11 +8024,11 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let~ min :=
+                let~ min : Ty.path "isize" :=
                   M.alloc (|
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
-                let~ max :=
+                let~ max : Ty.path "isize" :=
                   M.alloc (|
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
@@ -8053,11 +8101,11 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let~ min :=
+                let~ min : Ty.path "isize" :=
                   M.alloc (|
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
-                let~ max :=
+                let~ max : Ty.path "isize" :=
                   M.alloc (|
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
@@ -8258,11 +8306,11 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let~ min :=
+                let~ min : Ty.path "isize" :=
                   M.alloc (|
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
-                let~ max :=
+                let~ max : Ty.path "isize" :=
                   M.alloc (|
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
@@ -8335,11 +8383,11 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let~ min :=
+                let~ min : Ty.path "isize" :=
                   M.alloc (|
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
-                let~ max :=
+                let~ max : Ty.path "isize" :=
                   M.alloc (|
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
@@ -8412,11 +8460,11 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let~ min :=
+                let~ min : Ty.path "isize" :=
                   M.alloc (|
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
-                let~ max :=
+                let~ max : Ty.path "isize" :=
                   M.alloc (|
                     M.cast (Ty.path "isize") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
@@ -8938,11 +8986,11 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let~ min :=
+                let~ min : Ty.path "i128" :=
                   M.alloc (|
                     M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
-                let~ max :=
+                let~ max : Ty.path "i128" :=
                   M.alloc (|
                     M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
@@ -9277,11 +9325,11 @@ Module convert.
             ltac:(M.monadic
               (let u := M.alloc (| u |) in
               M.read (|
-                let~ min :=
+                let~ min : Ty.path "i128" :=
                   M.alloc (|
                     M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MIN" |))
                   |) in
-                let~ max :=
+                let~ max : Ty.path "i128" :=
                   M.alloc (|
                     M.cast (Ty.path "i128") (M.read (| M.get_constant "core::num::MAX" |))
                   |) in
@@ -9348,6 +9396,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                 "new_unchecked",
@@ -9356,6 +9405,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u16",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u16",
@@ -9367,6 +9417,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -9407,6 +9458,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -9415,6 +9467,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u32",
@@ -9426,6 +9479,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -9466,6 +9520,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                 "new_unchecked",
@@ -9474,6 +9529,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u64",
@@ -9485,6 +9541,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -9525,6 +9582,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 "new_unchecked",
@@ -9533,6 +9591,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u128",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u128",
@@ -9544,6 +9603,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -9584,6 +9644,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "new_unchecked",
@@ -9592,6 +9653,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "usize",
@@ -9603,6 +9665,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -9643,6 +9706,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -9651,6 +9715,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u32",
@@ -9662,6 +9727,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -9702,6 +9768,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                 "new_unchecked",
@@ -9710,6 +9777,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u64",
@@ -9721,6 +9789,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -9761,6 +9830,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 "new_unchecked",
@@ -9769,6 +9839,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u128",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u128",
@@ -9780,6 +9851,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -9820,6 +9892,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "new_unchecked",
@@ -9828,6 +9901,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "usize",
@@ -9839,6 +9913,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -9879,6 +9954,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                 "new_unchecked",
@@ -9887,6 +9963,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u64",
@@ -9898,6 +9975,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
@@ -9938,6 +10016,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 "new_unchecked",
@@ -9946,6 +10025,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u128",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u128",
@@ -9957,6 +10037,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
@@ -9997,6 +10078,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 "new_unchecked",
@@ -10005,6 +10087,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u128",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "u128",
@@ -10016,6 +10099,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "get",
@@ -10056,6 +10140,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                 "new_unchecked",
@@ -10064,6 +10149,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i16",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i16",
@@ -10075,6 +10161,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -10115,6 +10202,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 "new_unchecked",
@@ -10123,6 +10211,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i32",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i32",
@@ -10134,6 +10223,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -10174,6 +10264,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
@@ -10182,6 +10273,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i64",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i64",
@@ -10193,6 +10285,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -10233,6 +10326,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
@@ -10241,6 +10335,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
@@ -10252,6 +10347,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -10292,6 +10388,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                 "new_unchecked",
@@ -10300,6 +10397,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "isize",
@@ -10311,6 +10409,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -10351,6 +10450,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 "new_unchecked",
@@ -10359,6 +10459,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i32",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i32",
@@ -10370,6 +10471,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
@@ -10410,6 +10512,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
@@ -10418,6 +10521,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i64",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i64",
@@ -10429,6 +10533,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
@@ -10469,6 +10574,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
@@ -10477,6 +10583,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
@@ -10488,6 +10595,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
@@ -10528,6 +10636,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                 "new_unchecked",
@@ -10536,6 +10645,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "isize",
@@ -10547,6 +10657,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
@@ -10587,6 +10698,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
@@ -10595,6 +10707,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i64",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i64",
@@ -10606,6 +10719,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "get",
@@ -10646,6 +10760,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
@@ -10654,6 +10769,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
@@ -10665,6 +10781,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "get",
@@ -10705,6 +10822,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
@@ -10713,6 +10831,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
@@ -10724,6 +10843,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "get",
@@ -10764,6 +10884,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                 "new_unchecked",
@@ -10772,6 +10893,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i16",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i16",
@@ -10783,6 +10905,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -10823,6 +10946,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 "new_unchecked",
@@ -10831,6 +10955,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i32",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i32",
@@ -10842,6 +10967,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -10882,6 +11008,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
@@ -10890,6 +11017,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i64",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i64",
@@ -10901,6 +11029,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -10941,6 +11070,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
@@ -10949,6 +11079,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
@@ -10960,6 +11091,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -11000,6 +11132,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                 "new_unchecked",
@@ -11008,6 +11141,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "isize",
@@ -11019,6 +11153,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -11059,6 +11194,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 "new_unchecked",
@@ -11067,6 +11203,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i32",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i32",
@@ -11078,6 +11215,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -11118,6 +11256,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
@@ -11126,6 +11265,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i64",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i64",
@@ -11137,6 +11277,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -11177,6 +11318,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
@@ -11185,6 +11327,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
@@ -11196,6 +11339,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -11236,6 +11380,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
@@ -11244,6 +11389,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i64",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i64",
@@ -11255,6 +11401,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
@@ -11295,6 +11442,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
@@ -11303,6 +11451,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
@@ -11314,6 +11463,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
@@ -11354,6 +11504,7 @@ Module convert.
           ltac:(M.monadic
             (let small := M.alloc (| small |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
@@ -11362,6 +11513,7 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "i128",
@@ -11373,6 +11525,7 @@ Module convert.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "get",
@@ -11415,6 +11568,13 @@ Module convert.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                  Ty.path "core::num::error::TryFromIntError"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -11426,6 +11586,10 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "new",
@@ -11467,6 +11631,13 @@ Module convert.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                  Ty.path "core::num::error::TryFromIntError"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -11478,6 +11649,10 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "new",
@@ -11519,6 +11694,13 @@ Module convert.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                  Ty.path "core::num::error::TryFromIntError"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -11530,6 +11712,10 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "new",
@@ -11571,6 +11757,13 @@ Module convert.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                  Ty.path "core::num::error::TryFromIntError"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -11582,6 +11775,10 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new",
@@ -11623,6 +11820,13 @@ Module convert.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                  Ty.path "core::num::error::TryFromIntError"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -11634,6 +11838,10 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "new",
@@ -11675,6 +11883,13 @@ Module convert.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                  Ty.path "core::num::error::TryFromIntError"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -11686,6 +11901,10 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "new",
@@ -11727,6 +11946,13 @@ Module convert.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                  Ty.path "core::num::error::TryFromIntError"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -11738,6 +11964,10 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                     "new",
@@ -11779,6 +12009,13 @@ Module convert.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                  Ty.path "core::num::error::TryFromIntError"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -11790,6 +12027,10 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                     "new",
@@ -11831,6 +12072,13 @@ Module convert.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                  Ty.path "core::num::error::TryFromIntError"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -11842,6 +12090,10 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                     "new",
@@ -11883,6 +12135,13 @@ Module convert.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                  Ty.path "core::num::error::TryFromIntError"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -11894,6 +12153,10 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                     "new",
@@ -11935,6 +12198,13 @@ Module convert.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
+                  Ty.path "core::num::error::TryFromIntError"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -11946,6 +12216,10 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                     "new",
@@ -11987,6 +12261,13 @@ Module convert.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                  Ty.path "core::num::error::TryFromIntError"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -11998,6 +12279,10 @@ Module convert.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                     "new",
@@ -12045,6 +12330,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
@@ -12056,6 +12342,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -12070,6 +12369,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
@@ -12081,6 +12384,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u16",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -12112,6 +12416,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -12198,6 +12512,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
@@ -12209,6 +12524,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -12223,6 +12551,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
@@ -12234,6 +12566,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -12265,6 +12598,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -12351,6 +12694,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
@@ -12362,6 +12706,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -12376,6 +12733,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
@@ -12387,6 +12749,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -12418,6 +12781,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -12504,6 +12877,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
@@ -12515,6 +12889,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "usize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -12530,6 +12917,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
@@ -12541,6 +12933,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -12572,6 +12965,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "usize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -12658,6 +13061,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
@@ -12669,6 +13073,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -12683,6 +13100,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
@@ -12694,6 +13115,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -12725,6 +13147,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -12811,6 +13243,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
@@ -12822,6 +13255,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -12836,6 +13282,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
@@ -12847,6 +13298,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -12878,6 +13330,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -12964,6 +13426,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
@@ -12975,6 +13438,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -12989,6 +13465,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
@@ -13000,6 +13481,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -13031,6 +13513,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -13117,6 +13609,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
@@ -13128,6 +13621,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "usize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -13143,6 +13649,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
@@ -13154,6 +13665,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -13185,6 +13697,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "usize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -13271,6 +13793,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
@@ -13282,6 +13805,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -13296,6 +13832,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
@@ -13307,6 +13847,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -13338,6 +13879,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -13424,6 +13975,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
@@ -13435,6 +13987,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -13449,6 +14014,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
@@ -13460,6 +14030,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -13491,6 +14062,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -13577,6 +14158,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
@@ -13588,6 +14170,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -13602,6 +14197,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
@@ -13613,6 +14213,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -13644,6 +14245,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -13730,6 +14341,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
@@ -13741,6 +14353,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u64"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -13755,6 +14380,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
@@ -13766,6 +14396,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -13797,6 +14428,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u64" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -13883,6 +14524,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
@@ -13894,6 +14536,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "usize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -13909,6 +14564,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
@@ -13920,6 +14580,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -13951,6 +14612,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "usize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -14037,6 +14708,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
@@ -14048,6 +14720,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -14062,6 +14747,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
@@ -14073,6 +14762,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -14104,6 +14794,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -14190,6 +14890,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
@@ -14201,6 +14902,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -14215,6 +14929,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
@@ -14226,6 +14945,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -14257,6 +14977,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -14343,6 +15073,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
@@ -14354,6 +15085,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -14368,6 +15112,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
@@ -14379,6 +15128,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -14410,6 +15160,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -14496,6 +15256,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
@@ -14507,6 +15268,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u64"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -14521,6 +15295,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
@@ -14532,6 +15311,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -14563,6 +15343,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u64" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -14649,6 +15439,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "new_unchecked",
@@ -14660,6 +15451,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u128"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -14674,6 +15478,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u128",
@@ -14685,6 +15494,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -14716,6 +15526,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u128" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -14802,6 +15622,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
@@ -14813,6 +15634,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -14827,6 +15661,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
@@ -14838,6 +15676,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i16",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -14869,6 +15708,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -14955,6 +15804,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
@@ -14966,6 +15816,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -14980,6 +15843,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
@@ -14991,6 +15858,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -15022,6 +15890,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -15108,6 +15986,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
@@ -15119,6 +15998,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -15133,6 +16025,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
@@ -15144,6 +16041,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -15175,6 +16073,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -15261,6 +16169,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
@@ -15272,6 +16181,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "isize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -15287,6 +16209,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
@@ -15298,6 +16225,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -15329,6 +16257,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "isize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -15415,6 +16353,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
@@ -15426,6 +16365,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -15440,6 +16392,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
@@ -15451,6 +16407,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -15482,6 +16439,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -15568,6 +16535,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
@@ -15579,6 +16547,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -15593,6 +16574,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
@@ -15604,6 +16590,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -15635,6 +16622,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -15721,6 +16718,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "new_unchecked",
@@ -15732,6 +16730,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -15746,6 +16757,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i32",
@@ -15757,6 +16773,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -15788,6 +16805,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -15874,6 +16901,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
@@ -15885,6 +16913,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "isize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -15900,6 +16941,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
@@ -15911,6 +16957,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -15942,6 +16989,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "isize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -16028,6 +17085,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
@@ -16039,6 +17097,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -16053,6 +17124,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
@@ -16064,6 +17139,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -16095,6 +17171,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -16181,6 +17267,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
@@ -16192,6 +17279,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -16206,6 +17306,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
@@ -16217,6 +17322,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -16248,6 +17354,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -16334,6 +17450,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "new_unchecked",
@@ -16345,6 +17462,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -16359,6 +17489,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i32",
@@ -16370,6 +17505,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -16401,6 +17537,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -16487,6 +17633,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "new_unchecked",
@@ -16498,6 +17645,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i64"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -16512,6 +17672,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i64",
@@ -16523,6 +17688,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -16554,6 +17720,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i64" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -16640,6 +17816,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
@@ -16651,6 +17828,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "isize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -16666,6 +17856,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
@@ -16677,6 +17872,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -16708,6 +17904,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "isize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -16794,6 +18000,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
@@ -16805,6 +18012,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -16819,6 +18039,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
@@ -16830,6 +18054,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "isize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -16861,6 +18086,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -16947,6 +18182,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
@@ -16958,6 +18194,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -16972,6 +18221,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
@@ -16983,6 +18237,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "isize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -17014,6 +18269,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -17100,6 +18365,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "new_unchecked",
@@ -17111,6 +18377,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -17125,6 +18404,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i32",
@@ -17136,6 +18420,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "isize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -17167,6 +18452,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -17253,6 +18548,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "new_unchecked",
@@ -17264,6 +18560,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i64"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -17278,6 +18587,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i64",
@@ -17289,6 +18603,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "isize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -17320,6 +18635,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i64" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -17406,6 +18731,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "new_unchecked",
@@ -17417,6 +18743,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i128"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -17431,6 +18770,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i128"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i128",
@@ -17442,6 +18786,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "isize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -17473,6 +18818,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i128" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -17559,6 +18914,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
@@ -17570,6 +18926,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -17584,6 +18953,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
@@ -17595,6 +18968,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u8",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -17626,6 +19000,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -17712,6 +19096,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
@@ -17723,6 +19108,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -17737,6 +19135,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
@@ -17748,6 +19150,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u16",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -17779,6 +19182,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -17865,6 +19278,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
@@ -17876,6 +19290,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -17890,6 +19317,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
@@ -17901,6 +19333,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u16",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -17932,6 +19365,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -18018,6 +19461,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
@@ -18029,6 +19473,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "isize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -18044,6 +19501,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
@@ -18055,6 +19517,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u16",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -18086,6 +19549,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "isize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -18172,6 +19645,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
@@ -18183,6 +19657,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -18197,6 +19684,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
@@ -18208,6 +19699,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -18239,6 +19731,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -18325,6 +19827,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
@@ -18336,6 +19839,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -18350,6 +19866,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
@@ -18361,6 +19882,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -18392,6 +19914,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -18478,6 +20010,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "new_unchecked",
@@ -18489,6 +20022,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -18503,6 +20049,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i32",
@@ -18514,6 +20065,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -18545,6 +20097,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -18631,6 +20193,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
@@ -18642,6 +20205,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "isize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -18657,6 +20233,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
@@ -18668,6 +20249,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -18699,6 +20281,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "isize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -18785,6 +20377,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
@@ -18796,6 +20389,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -18810,6 +20416,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
@@ -18821,6 +20431,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -18852,6 +20463,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -18938,6 +20559,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
@@ -18949,6 +20571,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -18963,6 +20598,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
@@ -18974,6 +20614,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -19005,6 +20646,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -19091,6 +20742,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "new_unchecked",
@@ -19102,6 +20754,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -19116,6 +20781,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i32",
@@ -19127,6 +20797,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -19158,6 +20829,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -19244,6 +20925,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "new_unchecked",
@@ -19255,6 +20937,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i64"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -19269,6 +20964,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i64",
@@ -19280,6 +20980,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -19311,6 +21012,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i64" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -19397,6 +21108,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
@@ -19408,6 +21120,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "isize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -19423,6 +21148,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
@@ -19434,6 +21164,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -19465,6 +21196,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "isize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -19551,6 +21292,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
@@ -19562,6 +21304,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -19576,6 +21331,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
@@ -19587,6 +21346,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -19618,6 +21378,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -19704,6 +21474,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
@@ -19715,6 +21486,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -19729,6 +21513,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
@@ -19740,6 +21529,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -19771,6 +21561,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -19857,6 +21657,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "new_unchecked",
@@ -19868,6 +21669,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -19882,6 +21696,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i32",
@@ -19893,6 +21712,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -19924,6 +21744,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -20010,6 +21840,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "new_unchecked",
@@ -20021,6 +21852,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i64"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -20035,6 +21879,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i64",
@@ -20046,6 +21895,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -20077,6 +21927,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i64" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -20163,6 +22023,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "new_unchecked",
@@ -20174,6 +22035,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i128"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -20188,6 +22062,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i128"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i128",
@@ -20199,6 +22078,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -20230,6 +22110,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i128" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -20316,6 +22206,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
@@ -20327,6 +22218,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "isize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -20342,6 +22246,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
@@ -20353,6 +22262,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "u128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -20384,6 +22294,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "isize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -20470,6 +22390,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new_unchecked",
@@ -20481,6 +22402,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -20495,6 +22429,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i8",
@@ -20506,6 +22444,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -20537,6 +22476,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -20623,6 +22572,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new_unchecked",
@@ -20634,6 +22584,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -20648,6 +22611,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i16",
@@ -20659,6 +22627,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -20690,6 +22659,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -20776,6 +22755,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "new_unchecked",
@@ -20787,6 +22767,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -20801,6 +22794,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i32",
@@ -20812,6 +22810,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -20843,6 +22842,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -20929,6 +22938,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "new_unchecked",
@@ -20940,6 +22950,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i64"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -20954,6 +22977,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i64",
@@ -20965,6 +22993,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -20996,6 +23025,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i64" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -21082,6 +23121,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "new_unchecked",
@@ -21093,6 +23133,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "i128"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -21107,6 +23160,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i128"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "i128",
@@ -21118,6 +23176,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -21149,6 +23208,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i128" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -21235,6 +23304,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new_unchecked",
@@ -21246,6 +23316,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "isize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -21261,6 +23344,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "isize",
@@ -21272,6 +23360,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -21303,6 +23392,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "isize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -21389,6 +23488,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
@@ -21400,6 +23500,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -21414,6 +23527,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
@@ -21425,6 +23542,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i8",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -21456,6 +23574,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -21542,6 +23670,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
@@ -21553,6 +23682,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -21567,6 +23709,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
@@ -21578,6 +23725,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i8",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -21609,6 +23757,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -21695,6 +23853,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
@@ -21706,6 +23865,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -21720,6 +23892,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
@@ -21731,6 +23908,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i8",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -21762,6 +23940,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -21848,6 +24036,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
@@ -21859,6 +24048,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u64"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -21873,6 +24075,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
@@ -21884,6 +24091,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i8",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -21915,6 +24123,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u64" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -22001,6 +24219,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "new_unchecked",
@@ -22012,6 +24231,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u128"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -22026,6 +24258,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u128",
@@ -22037,6 +24274,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i8",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -22068,6 +24306,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u128" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -22154,6 +24402,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
@@ -22165,6 +24414,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "usize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -22180,6 +24442,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
@@ -22191,6 +24458,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i8",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -22222,6 +24490,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "usize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -22308,6 +24586,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
@@ -22319,6 +24598,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -22333,6 +24625,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
@@ -22344,6 +24640,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i16",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -22375,6 +24672,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -22461,6 +24768,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
@@ -22472,6 +24780,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -22486,6 +24807,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
@@ -22497,6 +24823,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i16",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -22528,6 +24855,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -22614,6 +24951,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
@@ -22625,6 +24963,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -22639,6 +24990,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
@@ -22650,6 +25006,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i16",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -22681,6 +25038,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -22767,6 +25134,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
@@ -22778,6 +25146,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u64"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -22792,6 +25173,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
@@ -22803,6 +25189,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i16",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -22834,6 +25221,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u64" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -22920,6 +25317,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "new_unchecked",
@@ -22931,6 +25329,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u128"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -22945,6 +25356,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u128",
@@ -22956,6 +25372,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i16",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -22987,6 +25404,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u128" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -23073,6 +25500,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
@@ -23084,6 +25512,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "usize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -23099,6 +25540,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
@@ -23110,6 +25556,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i16",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -23141,6 +25588,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "usize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -23227,6 +25684,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
@@ -23238,6 +25696,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -23252,6 +25723,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
@@ -23263,6 +25738,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -23294,6 +25770,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -23380,6 +25866,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
@@ -23391,6 +25878,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -23405,6 +25905,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
@@ -23416,6 +25921,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -23447,6 +25953,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -23533,6 +26049,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
@@ -23544,6 +26061,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -23558,6 +26088,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
@@ -23569,6 +26104,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -23600,6 +26136,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -23686,6 +26232,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
@@ -23697,6 +26244,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u64"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -23711,6 +26271,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
@@ -23722,6 +26287,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -23753,6 +26319,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u64" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -23839,6 +26415,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "new_unchecked",
@@ -23850,6 +26427,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u128"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -23864,6 +26454,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u128",
@@ -23875,6 +26470,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -23906,6 +26502,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u128" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -23992,6 +26598,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
@@ -24003,6 +26610,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "usize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -24018,6 +26638,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
@@ -24029,6 +26654,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -24060,6 +26686,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "usize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -24146,6 +26782,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
@@ -24157,6 +26794,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -24171,6 +26821,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
@@ -24182,6 +26836,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -24213,6 +26868,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -24299,6 +26964,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
@@ -24310,6 +26976,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -24324,6 +27003,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
@@ -24335,6 +27019,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -24366,6 +27051,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -24452,6 +27147,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
@@ -24463,6 +27159,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -24477,6 +27186,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
@@ -24488,6 +27202,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -24519,6 +27234,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -24605,6 +27330,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
@@ -24616,6 +27342,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u64"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -24630,6 +27369,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
@@ -24641,6 +27385,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -24672,6 +27417,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u64" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -24758,6 +27513,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "new_unchecked",
@@ -24769,6 +27525,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u128"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -24783,6 +27552,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u128",
@@ -24794,6 +27568,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -24825,6 +27600,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u128" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -24911,6 +27696,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
@@ -24922,6 +27708,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "usize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -24937,6 +27736,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
@@ -24948,6 +27752,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i64",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -24979,6 +27784,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "usize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -25065,6 +27880,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
@@ -25076,6 +27892,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -25090,6 +27919,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
@@ -25101,6 +27934,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -25132,6 +27966,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -25218,6 +28062,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
@@ -25229,6 +28074,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -25243,6 +28101,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
@@ -25254,6 +28117,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -25285,6 +28149,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -25371,6 +28245,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
@@ -25382,6 +28257,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -25396,6 +28284,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
@@ -25407,6 +28300,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -25438,6 +28332,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -25524,6 +28428,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
@@ -25535,6 +28440,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u64"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -25549,6 +28467,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
@@ -25560,6 +28483,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -25591,6 +28515,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u64" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -25677,6 +28611,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "new_unchecked",
@@ -25688,6 +28623,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u128"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -25702,6 +28650,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u128",
@@ -25713,6 +28666,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -25744,6 +28698,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u128" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -25830,6 +28794,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
@@ -25841,6 +28806,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "usize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -25856,6 +28834,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
@@ -25867,6 +28850,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "i128",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -25898,6 +28882,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "usize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -25984,6 +28978,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new_unchecked",
@@ -25995,6 +28990,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -26009,6 +29017,10 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u8",
@@ -26020,6 +29032,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "isize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -26051,6 +29064,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u8" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -26137,6 +29160,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new_unchecked",
@@ -26148,6 +29172,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -26162,6 +29199,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u16",
@@ -26173,6 +29215,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "isize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -26204,6 +29247,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u16" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -26290,6 +29343,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new_unchecked",
@@ -26301,6 +29355,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -26315,6 +29382,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u32",
@@ -26326,6 +29398,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "isize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -26357,6 +29430,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u32" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -26443,6 +29526,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new_unchecked",
@@ -26454,6 +29538,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u64"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -26468,6 +29565,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u64",
@@ -26479,6 +29581,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "isize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -26510,6 +29613,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u64" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -26596,6 +29709,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "new_unchecked",
@@ -26607,6 +29721,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "u128"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -26621,6 +29748,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "u128",
@@ -26632,6 +29764,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "isize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -26663,6 +29796,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u128" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -26749,6 +29892,7 @@ Module convert.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new_unchecked",
@@ -26760,6 +29904,19 @@ Module convert.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::TryFromIntError"
+                                      ];
+                                    Ty.path "usize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -26775,6 +29932,11 @@ Module convert.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryFrom",
                                       Ty.path "usize",
@@ -26786,6 +29948,7 @@ Module convert.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "isize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::num::nonzero::NonZero")
@@ -26817,6 +29980,16 @@ Module convert.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "usize" ];
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply

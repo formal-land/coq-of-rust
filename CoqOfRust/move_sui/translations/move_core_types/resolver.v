@@ -30,6 +30,7 @@ Module resolver.
             "core::result::Result::Ok"
             [
               M.call_closure (|
+                Ty.path "move_core_types::language_storage::ModuleId",
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.path "move_core_types::language_storage::ModuleId",
@@ -63,6 +64,7 @@ Module resolver.
             "core::result::Result::Ok"
             [
               M.call_closure (|
+                Ty.path "move_core_types::language_storage::ModuleId",
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.path "move_core_types::language_storage::ModuleId",
@@ -133,6 +135,21 @@ Module resolver.
           let address := M.alloc (| address |) in
           let tag := M.alloc (| tag |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                  ];
+                Ty.associated
+              ],
             M.get_trait_method (|
               "move_core_types::resolver::ResourceResolver",
               T,
@@ -186,6 +203,21 @@ Module resolver.
           (let self := M.alloc (| self |) in
           let module_id := M.alloc (| module_id |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                  ];
+                Ty.associated
+              ],
             M.get_trait_method (|
               "move_core_types::resolver::ModuleResolver",
               T,
@@ -239,6 +271,21 @@ Module resolver.
           (let self := M.alloc (| self |) in
           let module_id := M.alloc (| module_id |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                  ];
+                Ty.associated
+              ],
             M.get_trait_method (|
               "move_core_types::resolver::ModuleResolver",
               T,
@@ -253,6 +300,7 @@ Module resolver.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ T ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply
@@ -306,6 +354,7 @@ Module resolver.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "move_core_types::account_address::AccountAddress",
             M.get_trait_method (|
               "move_core_types::resolver::LinkageResolver",
               T,
@@ -338,6 +387,10 @@ Module resolver.
           (let self := M.alloc (| self |) in
           let module_id := M.alloc (| module_id |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "move_core_types::language_storage::ModuleId"; Ty.associated ],
             M.get_trait_method (|
               "move_core_types::resolver::LinkageResolver",
               T,
@@ -381,6 +434,10 @@ Module resolver.
           let module_id := M.alloc (| module_id |) in
           let struct_ := M.alloc (| struct_ |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "move_core_types::language_storage::ModuleId"; Ty.associated ],
             M.get_trait_method (|
               "move_core_types::resolver::LinkageResolver",
               T,

@@ -16,6 +16,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -30,6 +31,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A1 ],
@@ -50,6 +52,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A2 ],
@@ -80,6 +83,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -94,6 +98,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A1 ],
@@ -114,6 +119,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A2 ],
@@ -159,6 +165,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -173,6 +180,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
@@ -193,6 +201,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ U ],
@@ -226,6 +235,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -240,6 +250,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
@@ -260,6 +271,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ U ],
@@ -307,6 +319,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -321,6 +334,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
@@ -341,6 +355,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ U ],
@@ -374,6 +389,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -388,6 +404,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
@@ -408,6 +425,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ U ],
@@ -456,6 +474,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -470,6 +489,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ T ],
@@ -493,6 +513,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
@@ -523,6 +544,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -537,6 +559,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ T ],
@@ -560,6 +583,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
@@ -605,6 +629,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -619,6 +644,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ T ],
@@ -642,6 +668,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
@@ -672,6 +699,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -686,6 +714,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ T ],
@@ -709,6 +738,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
@@ -753,6 +783,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -767,6 +798,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
@@ -787,6 +819,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ U ],
@@ -817,6 +850,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -831,6 +865,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
@@ -851,6 +886,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ U ],
@@ -894,6 +930,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -908,6 +945,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ T ],
@@ -928,6 +966,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
@@ -958,6 +997,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -972,6 +1012,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ T ],
@@ -992,6 +1033,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
@@ -1037,6 +1079,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -1051,6 +1094,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ T ],
@@ -1065,6 +1109,7 @@ Module vec.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.apply
@@ -1090,6 +1135,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
@@ -1120,6 +1166,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -1134,6 +1181,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ T ],
@@ -1148,6 +1196,7 @@ Module vec.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.apply
@@ -1173,6 +1222,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
@@ -1218,6 +1268,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -1232,6 +1283,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ T ],
@@ -1246,6 +1298,7 @@ Module vec.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.apply
@@ -1271,6 +1324,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ U ],
@@ -1304,6 +1358,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -1318,6 +1373,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ T ],
@@ -1332,6 +1388,7 @@ Module vec.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.apply
@@ -1357,6 +1414,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ U ],
@@ -1405,6 +1463,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -1419,6 +1478,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ T ],
@@ -1433,6 +1493,7 @@ Module vec.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.apply
@@ -1458,6 +1519,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ U ],
@@ -1491,6 +1553,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -1505,6 +1568,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ T ],
@@ -1519,6 +1583,7 @@ Module vec.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.apply
@@ -1544,6 +1609,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "slice") [] [ U ],
@@ -1598,6 +1664,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -1612,6 +1679,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
@@ -1632,6 +1700,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "array") [ N ] [ U ],
@@ -1668,6 +1737,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -1682,6 +1752,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
@@ -1702,6 +1773,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "array") [ N ] [ U ],
@@ -1752,6 +1824,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -1766,6 +1839,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
@@ -1786,6 +1860,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "array") [ N ] [ U ],
@@ -1825,6 +1900,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -1839,6 +1915,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
@@ -1859,6 +1936,7 @@ Module vec.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "array") [ N ] [ U ],

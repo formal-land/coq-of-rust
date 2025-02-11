@@ -15,12 +15,17 @@ Module task.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "alloc::task::Wake", Self, [], [], "wake", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::sync::Arc")
+                        []
+                        [ Self; Ty.path "alloc::alloc::Global" ],
                       M.get_trait_method (|
                         "core::clone::Clone",
                         Ty.apply
@@ -64,9 +69,11 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.call_closure (|
+            Ty.path "core::task::wake::Waker",
             M.get_associated_function (| Ty.path "core::task::wake::Waker", "from_raw", [], [] |),
             [
               M.call_closure (|
+                Ty.path "core::task::wake::RawWaker",
                 M.get_function (| "alloc::task::raw_waker", [], [ W ] |),
                 [ M.read (| waker |) ]
               |)
@@ -100,6 +107,7 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.call_closure (|
+            Ty.path "core::task::wake::RawWaker",
             M.get_function (| "alloc::task::raw_waker", [], [ W ] |),
             [ M.read (| waker |) ]
           |)))
@@ -165,11 +173,13 @@ Module task.
       ltac:(M.monadic
         (let waker := M.alloc (| waker |) in
         M.call_closure (|
+          Ty.path "core::task::wake::RawWaker",
           M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
           [
             M.cast
               (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
               (M.call_closure (|
+                Ty.apply (Ty.path "*const") [] [ W ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
                   "into_raw",
@@ -185,6 +195,7 @@ Module task.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "core::task::wake::RawWakerVTable",
                       M.get_associated_function (|
                         Ty.path "core::task::wake::RawWakerVTable",
                         "new",
@@ -234,9 +245,10 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
                     "increment_strong_count",
@@ -248,6 +260,7 @@ Module task.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.path "core::task::wake::RawWaker",
                 M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
                 [
                   M.read (| waker |);
@@ -258,6 +271,7 @@ Module task.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "core::task::wake::RawWakerVTable",
                             M.get_associated_function (|
                               Ty.path "core::task::wake::RawWakerVTable",
                               "new",
@@ -305,9 +319,11 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let~ waker :=
+            let~ waker :
+                Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
                     "from_raw",
@@ -317,9 +333,10 @@ Module task.
                   [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "alloc::task::Wake", W, [], [], "wake", [], [] |),
                   [ M.read (| waker |) ]
                 |)
@@ -344,9 +361,19 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let~ waker :=
+            let~ waker :
+                Ty.apply
+                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ]
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ]
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -363,6 +390,10 @@ Module task.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::sync::Arc")
+                        []
+                        [ W; Ty.path "alloc::alloc::Global" ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::sync::Arc")
@@ -377,15 +408,25 @@ Module task.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "alloc::task::Wake", W, [], [], "wake_by_ref", [], [] |),
                   [
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::sync::Arc")
+                                []
+                                [ W; Ty.path "alloc::alloc::Global" ]
+                            ],
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply
@@ -434,9 +475,10 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
                     "decrement_strong_count",
@@ -468,12 +510,17 @@ Module task.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "alloc::task::LocalWake", Self, [], [], "wake", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::rc::Rc")
+                        []
+                        [ Self; Ty.path "alloc::alloc::Global" ],
                       M.get_trait_method (|
                         "core::clone::Clone",
                         Ty.apply
@@ -517,6 +564,7 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.call_closure (|
+            Ty.path "core::task::wake::LocalWaker",
             M.get_associated_function (|
               Ty.path "core::task::wake::LocalWaker",
               "from_raw",
@@ -525,6 +573,7 @@ Module task.
             |),
             [
               M.call_closure (|
+                Ty.path "core::task::wake::RawWaker",
                 M.get_function (| "alloc::task::local_raw_waker", [], [ W ] |),
                 [ M.read (| waker |) ]
               |)
@@ -558,6 +607,7 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.call_closure (|
+            Ty.path "core::task::wake::RawWaker",
             M.get_function (| "alloc::task::local_raw_waker", [], [ W ] |),
             [ M.read (| waker |) ]
           |)))
@@ -618,11 +668,13 @@ Module task.
       ltac:(M.monadic
         (let waker := M.alloc (| waker |) in
         M.call_closure (|
+          Ty.path "core::task::wake::RawWaker",
           M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
           [
             M.cast
               (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
               (M.call_closure (|
+                Ty.apply (Ty.path "*const") [] [ W ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
                   "into_raw",
@@ -638,6 +690,7 @@ Module task.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "core::task::wake::RawWakerVTable",
                       M.get_associated_function (|
                         Ty.path "core::task::wake::RawWakerVTable",
                         "new",
@@ -687,9 +740,10 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
                     "increment_strong_count",
@@ -701,6 +755,7 @@ Module task.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.path "core::task::wake::RawWaker",
                 M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
                 [
                   M.read (| waker |);
@@ -711,6 +766,7 @@ Module task.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "core::task::wake::RawWakerVTable",
                             M.get_associated_function (|
                               Ty.path "core::task::wake::RawWakerVTable",
                               "new",
@@ -771,9 +827,11 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let~ waker :=
+            let~ waker :
+                Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
                     "from_raw",
@@ -783,9 +841,10 @@ Module task.
                   [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (| "alloc::task::LocalWake", W, [], [], "wake", [], [] |),
                   [ M.read (| waker |) ]
                 |)
@@ -810,9 +869,17 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let~ waker :=
+            let~ waker :
+                Ty.apply
+                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ] ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -825,6 +892,7 @@ Module task.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
                         "from_raw",
@@ -836,9 +904,10 @@ Module task.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "alloc::task::LocalWake",
                     W,
@@ -853,6 +922,15 @@ Module task.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::rc::Rc")
+                                []
+                                [ W; Ty.path "alloc::alloc::Global" ]
+                            ],
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply
@@ -902,9 +980,10 @@ Module task.
         ltac:(M.monadic
           (let waker := M.alloc (| waker |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
                     "decrement_strong_count",

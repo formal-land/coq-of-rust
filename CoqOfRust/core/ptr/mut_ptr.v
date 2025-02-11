@@ -18,6 +18,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply (Ty.path "*const") [] [ T ],
                 "is_null",
@@ -26,6 +27,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ T ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ T ],
                     "cast_const",
@@ -85,6 +87,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let meta := M.alloc (| meta |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ U ],
               M.get_function (|
                 "core::ptr::metadata::from_raw_parts_mut",
                 [],
@@ -93,6 +96,7 @@ Module ptr.
               [
                 M.cast (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ]) (M.read (| self |));
                 M.call_closure (|
+                  Ty.associated,
                   M.get_function (| "core::ptr::metadata::metadata", [], [ U ] |),
                   [ M.read (| meta |) ]
                 |)
@@ -143,6 +147,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_function (|
                 "core::intrinsics::transmute",
                 [],
@@ -150,6 +155,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ T ],
                     "cast",
@@ -188,6 +194,7 @@ Module ptr.
             M.cast
               (Ty.path "usize")
               (M.call_closure (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "*mut") [] [ T ],
                   "cast",
@@ -227,11 +234,12 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let addr := M.alloc (| addr |) in
             M.read (|
-              let~ self_addr :=
+              let~ self_addr : Ty.path "isize" :=
                 M.alloc (|
                   M.cast
                     (Ty.path "isize")
                     (M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ T ],
                         "addr",
@@ -241,16 +249,19 @@ Module ptr.
                       [ M.read (| self |) ]
                     |))
                 |) in
-              let~ dest_addr := M.alloc (| M.cast (Ty.path "isize") (M.read (| addr |)) |) in
-              let~ offset :=
+              let~ dest_addr : Ty.path "isize" :=
+                M.alloc (| M.cast (Ty.path "isize") (M.read (| addr |)) |) in
+              let~ offset : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_associated_function (| Ty.path "isize", "wrapping_sub", [], [] |),
                     [ M.read (| dest_addr |); M.read (| self_addr |) ]
                   |)
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ T ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ T ],
                     "wrapping_byte_offset",
@@ -282,6 +293,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ T ],
                 "with_addr",
@@ -291,6 +303,7 @@ Module ptr.
               [
                 M.read (| self |);
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_trait_method (|
                     "core::ops::function::FnOnce",
                     impl_FnOnce_usize__arrow_usize,
@@ -305,6 +318,7 @@ Module ptr.
                     Value.Tuple
                       [
                         M.call_closure (|
+                          Ty.path "usize",
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
                             "addr",
@@ -345,6 +359,7 @@ Module ptr.
             Value.Tuple
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ T ],
                     "cast",
@@ -354,6 +369,7 @@ Module ptr.
                   [ M.read (| self |) ]
                 |);
                 M.call_closure (|
+                  Ty.associated,
                   M.get_function (| "core::ptr::metadata::metadata", [], [ T ] |),
                   [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
                 |)
@@ -389,6 +405,7 @@ Module ptr.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "is_null",
@@ -485,6 +502,7 @@ Module ptr.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "is_null",
@@ -555,6 +573,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_function (|
                 "core::intrinsics::offset",
                 [],
@@ -584,6 +603,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                 "with_metadata_of",
@@ -592,6 +612,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     "offset",
@@ -600,6 +621,7 @@ Module ptr.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ T ],
                         "cast",
@@ -646,6 +668,7 @@ Module ptr.
             M.cast
               (Ty.apply (Ty.path "*mut") [] [ T ])
               (M.call_closure (|
+                Ty.apply (Ty.path "*const") [] [ T ],
                 M.get_function (| "core::intrinsics::arith_offset", [], [ T ] |),
                 [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)); M.read (| count |)
                 ]
@@ -676,6 +699,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                 "with_metadata_of",
@@ -684,6 +708,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     "wrapping_offset",
@@ -692,6 +717,7 @@ Module ptr.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ T ],
                         "cast",
@@ -727,6 +753,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let mask := M.alloc (| mask |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
                 "with_metadata_of",
@@ -735,6 +762,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                     "cast_mut",
@@ -743,11 +771,13 @@ Module ptr.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                       M.get_function (| "core::intrinsics::ptr_mask", [], [ Ty.tuple [] ] |),
                       [
                         (* MutToConstPointer *)
                         M.pointer_coercion
                           (M.call_closure (|
+                            Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
                               "cast",
@@ -795,6 +825,7 @@ Module ptr.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "is_null",
@@ -903,6 +934,7 @@ Module ptr.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ T ],
                                 "is_null",
@@ -980,6 +1012,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "*const") [] [ T ],
                 "guaranteed_eq",
@@ -1024,6 +1057,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "*const") [] [ T ],
                 "guaranteed_ne",
@@ -1064,6 +1098,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let origin := M.alloc (| origin |) in
             M.call_closure (|
+              Ty.path "isize",
               M.get_associated_function (|
                 Ty.apply (Ty.path "*const") [] [ T ],
                 "offset_from",
@@ -1104,6 +1139,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let origin := M.alloc (| origin |) in
             M.call_closure (|
+              Ty.path "isize",
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                 "offset_from",
@@ -1112,6 +1148,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ T ],
                     "cast",
@@ -1121,6 +1158,7 @@ Module ptr.
                   [ M.read (| self |) ]
                 |);
                 M.call_closure (|
+                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*const") [] [ U ],
                     "cast",
@@ -1156,6 +1194,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let origin := M.alloc (| origin |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply (Ty.path "*const") [] [ T ],
                 "sub_ptr",
@@ -1194,6 +1233,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_function (|
                 "core::intrinsics::offset",
                 [],
@@ -1223,6 +1263,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                 "with_metadata_of",
@@ -1231,6 +1272,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     "add",
@@ -1239,6 +1281,7 @@ Module ptr.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ T ],
                         "cast",
@@ -1297,6 +1340,7 @@ Module ptr.
                     ltac:(M.monadic
                       (M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
                             "offset",
@@ -1306,6 +1350,7 @@ Module ptr.
                           [
                             M.read (| self |);
                             M.call_closure (|
+                              Ty.path "isize",
                               M.get_associated_function (|
                                 Ty.path "isize",
                                 "unchecked_neg",
@@ -1342,6 +1387,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                 "with_metadata_of",
@@ -1350,6 +1396,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     "sub",
@@ -1358,6 +1405,7 @@ Module ptr.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ T ],
                         "cast",
@@ -1401,6 +1449,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ T ],
                 "wrapping_offset",
@@ -1435,6 +1484,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                 "with_metadata_of",
@@ -1443,6 +1493,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     "wrapping_add",
@@ -1451,6 +1502,7 @@ Module ptr.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ T ],
                         "cast",
@@ -1494,6 +1546,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ T ],
                 "wrapping_offset",
@@ -1503,6 +1556,7 @@ Module ptr.
               [
                 M.read (| self |);
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_associated_function (| Ty.path "isize", "wrapping_neg", [], [] |),
                   [ M.cast (Ty.path "isize") (M.read (| count |)) ]
                 |)
@@ -1534,6 +1588,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                 "with_metadata_of",
@@ -1542,6 +1597,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                     "wrapping_sub",
@@ -1550,6 +1606,7 @@ Module ptr.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ T ],
                         "cast",
@@ -1588,6 +1645,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              T,
               M.get_function (| "core::ptr::read", [], [ T ] |),
               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
             |)))
@@ -1620,6 +1678,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              T,
               M.get_function (| "core::ptr::read_volatile", [], [ T ] |),
               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
             |)))
@@ -1652,6 +1711,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              T,
               M.get_function (| "core::ptr::read_unaligned", [], [ T ] |),
               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
             |)))
@@ -1681,6 +1741,7 @@ Module ptr.
             let dest := M.alloc (| dest |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "core::intrinsics::copy", [], [ T ] |),
               [
                 (* MutToConstPointer *) M.pointer_coercion (M.read (| self |));
@@ -1719,6 +1780,7 @@ Module ptr.
             let dest := M.alloc (| dest |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
               [
                 (* MutToConstPointer *) M.pointer_coercion (M.read (| self |));
@@ -1752,6 +1814,7 @@ Module ptr.
             let src := M.alloc (| src |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "core::intrinsics::copy", [], [ T ] |),
               [ M.read (| src |); M.read (| self |); M.read (| count |) ]
             |)))
@@ -1786,6 +1849,7 @@ Module ptr.
             let src := M.alloc (| src |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
               [ M.read (| src |); M.read (| self |); M.read (| count |) ]
             |)))
@@ -1815,6 +1879,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
               [ M.read (| self |) ]
             |)))
@@ -1843,6 +1908,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "core::ptr::write", [], [ T ] |),
               [ M.read (| self |); M.read (| val |) ]
             |)))
@@ -1872,6 +1938,7 @@ Module ptr.
             let val := M.alloc (| val |) in
             let count := M.alloc (| count |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "core::intrinsics::write_bytes", [], [ T ] |),
               [ M.read (| self |); M.read (| val |); M.read (| count |) ]
             |)))
@@ -1905,6 +1972,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "core::ptr::write_volatile", [], [ T ] |),
               [ M.read (| self |); M.read (| val |) ]
             |)))
@@ -1938,6 +2006,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "core::ptr::write_unaligned", [], [ T ] |),
               [ M.read (| self |); M.read (| val |) ]
             |)))
@@ -1966,6 +2035,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let src := M.alloc (| src |) in
             M.call_closure (|
+              T,
               M.get_function (| "core::ptr::replace", [], [ T ] |),
               [ M.read (| self |); M.read (| src |) ]
             |)))
@@ -1994,6 +2064,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let with_ := M.alloc (| with_ |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "core::ptr::swap", [], [ T ] |),
               [ M.read (| self |); M.read (| with_ |) ]
             |)))
@@ -2042,7 +2113,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2053,6 +2124,7 @@ Module ptr.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "is_power_of_two",
@@ -2068,9 +2140,11 @@ Module ptr.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic_fmt", [], [] |),
                               [
                                 M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
@@ -2104,9 +2178,10 @@ Module ptr.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ ret :=
+              let~ ret : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (| "core::ptr::align_offset", [], [ T ] |),
                     [
                       (* MutToConstPointer *) M.pointer_coercion (M.read (| self |));
@@ -2139,6 +2214,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply (Ty.path "*mut") [] [ T ],
                 "is_aligned_to",
@@ -2147,7 +2223,11 @@ Module ptr.
               |),
               [
                 M.read (| self |);
-                M.call_closure (| M.get_function (| "core::mem::align_of", [], [ T ] |), [] |)
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_function (| "core::mem::align_of", [], [ T ] |),
+                  []
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2194,7 +2274,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2205,6 +2285,7 @@ Module ptr.
                             (M.alloc (|
                               UnOp.not (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "is_power_of_two",
@@ -2220,9 +2301,11 @@ Module ptr.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic_fmt", [], [] |),
                               [
                                 M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
@@ -2258,6 +2341,7 @@ Module ptr.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_function (|
                     "core::intrinsics::const_eval_select",
                     [],
@@ -2276,6 +2360,7 @@ Module ptr.
                     Value.Tuple
                       [
                         M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
                             "cast",
@@ -2317,6 +2402,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_function (|
                 "core::ptr::metadata::metadata",
                 [],
@@ -2345,6 +2431,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             BinOp.eq (|
               M.call_closure (|
+                Ty.path "usize",
                 M.get_associated_function (|
                   Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                   "len",
@@ -2384,7 +2471,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let mid := M.alloc (| mid |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2397,6 +2484,7 @@ Module ptr.
                                 BinOp.le (|
                                   M.read (| mid |),
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "*mut")
@@ -2416,6 +2504,7 @@ Module ptr.
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "assertion failed: mid <= self.len()" |) ]
                             |)
@@ -2426,6 +2515,11 @@ Module ptr.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                      Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                    ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "split_at_mut_unchecked",
@@ -2470,9 +2564,10 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let mid := M.alloc (| mid |) in
             M.read (|
-              let~ len :=
+              let~ len : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       "len",
@@ -2482,9 +2577,10 @@ Module ptr.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ ptr :=
+              let~ ptr : Ty.apply (Ty.path "*mut") [] [ T ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       "as_mut_ptr",
@@ -2494,9 +2590,10 @@ Module ptr.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ tail :=
+              let~ tail : Ty.apply (Ty.path "*mut") [] [ T ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*mut") [] [ T ],
                       "add",
@@ -2510,10 +2607,12 @@ Module ptr.
                 Value.Tuple
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
                       [ M.read (| ptr |); M.read (| mid |) ]
                     |);
                     M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_function (| "core::ptr::slice_from_raw_parts_mut", [], [ T ] |),
                       [ M.read (| tail |); BinOp.Wrap.sub (| M.read (| len |), M.read (| mid |) |) ]
                     |)
@@ -2570,6 +2669,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let index := M.alloc (| index |) in
             M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ Ty.associated ],
               M.get_trait_method (|
                 "core::slice::index::SliceIndex",
                 I,
@@ -2620,6 +2720,7 @@ Module ptr.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "*mut")
@@ -2644,6 +2745,20 @@ Module ptr.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                            []
+                                            [ T ]
+                                        ]
+                                    ],
                                   M.get_function (|
                                     "core::slice::raw::from_raw_parts",
                                     [],
@@ -2667,6 +2782,7 @@ Module ptr.
                                         ])
                                       (M.read (| self |));
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "*mut")
@@ -2726,6 +2842,7 @@ Module ptr.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "*mut")
@@ -2753,6 +2870,20 @@ Module ptr.
                                   Pointer.Kind.MutRef,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ T ]
+                                            ]
+                                        ],
                                       M.get_function (|
                                         "core::slice::raw::from_raw_parts_mut",
                                         [],
@@ -2776,6 +2907,7 @@ Module ptr.
                                             ])
                                           (M.read (| self |));
                                         M.call_closure (|
+                                          Ty.path "usize",
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "*mut")
@@ -2938,6 +3070,7 @@ Module ptr.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialOrd",
                                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
@@ -2975,6 +3108,7 @@ Module ptr.
                                 M.use
                                   (M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.apply
@@ -3043,6 +3177,7 @@ Module ptr.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (|
                     "core::cmp::Ord",
                     Ty.apply (Ty.path "*mut") [] [ T ],

@@ -71,7 +71,7 @@ Module instructions.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -81,6 +81,7 @@ Module instructions.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "is_empty",
@@ -103,7 +104,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -115,6 +116,7 @@ Module instructions.
                                 UnOp.not (|
                                   BinOp.le (|
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
@@ -137,9 +139,11 @@ Module instructions.
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
+                                Ty.path "never",
                                 M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::Arguments",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
@@ -168,11 +172,12 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ n_words :=
+                let~ n_words : Ty.path "usize" :=
                   M.alloc (|
                     BinOp.Wrap.div (|
                       BinOp.Wrap.add (|
                         M.call_closure (|
+                          Ty.path "usize",
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "len",
@@ -186,9 +191,10 @@ Module instructions.
                       Value.Integer IntegerKind.Usize 32
                     |)
                   |) in
-                let~ dst :=
+                let~ dst : Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                         "as_mut_ptr",
@@ -200,6 +206,15 @@ Module instructions.
                           Pointer.Kind.MutRef,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                    [ Ty.path "u64" ]
+                                ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
@@ -223,10 +238,12 @@ Module instructions.
                       ]
                     |)
                   |) in
-                let~ i := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-                let~ words :=
+                let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+                let~ words :
+                    Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u8" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "chunks_exact",
@@ -239,9 +256,11 @@ Module instructions.
                       ]
                     |)
                   |) in
-                let~ partial_last_word :=
+                let~ partial_last_word :
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u8" ],
                         "remainder",
@@ -251,11 +270,12 @@ Module instructions.
                       [ M.borrow (| Pointer.Kind.Ref, words |) ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u8" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ Ty.path "u8" ],
@@ -274,10 +294,19 @@ Module instructions.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -322,6 +351,10 @@ Module instructions.
                                             (M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::slice::iter::RChunksExact")
+                                                    []
+                                                    [ Ty.path "u8" ],
                                                   M.get_trait_method (|
                                                     "core::iter::traits::collect::IntoIterator",
                                                     Ty.apply
@@ -336,6 +369,10 @@ Module instructions.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::slice::iter::RChunksExact")
+                                                        []
+                                                        [ Ty.path "u8" ],
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "slice")
@@ -362,10 +399,24 @@ Module instructions.
                                                     (let iter := M.copy (| γ |) in
                                                     M.loop (|
                                                       ltac:(M.monadic
-                                                        (let~ _ :=
+                                                        (let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
+                                                                      ]
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::iter::traits::iterator::Iterator",
                                                                   Ty.apply
@@ -414,9 +465,10 @@ Module instructions.
                                                                       0
                                                                     |) in
                                                                   let l := M.copy (| γ0_0 |) in
-                                                                  let~ _ :=
+                                                                  let~ _ : Ty.tuple [] :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.tuple [],
                                                                         M.get_associated_function (|
                                                                           Ty.apply
                                                                             (Ty.path "*mut")
@@ -428,6 +480,10 @@ Module instructions.
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "*mut")
+                                                                              []
+                                                                              [ Ty.path "u64" ],
                                                                             M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path "*mut")
@@ -443,6 +499,7 @@ Module instructions.
                                                                             ]
                                                                           |);
                                                                           M.call_closure (|
+                                                                            Ty.path "u64",
                                                                             M.get_associated_function (|
                                                                               Ty.path "u64",
                                                                               "from_be_bytes",
@@ -451,6 +508,14 @@ Module instructions.
                                                                             |),
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "array")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      8
+                                                                                  ]
+                                                                                  [ Ty.path "u8" ],
                                                                                 M.get_associated_function (|
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -478,6 +543,26 @@ Module instructions.
                                                                                 |),
                                                                                 [
                                                                                   M.call_closure (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "array")
+                                                                                          [
+                                                                                            Value.Integer
+                                                                                              IntegerKind.Usize
+                                                                                              8
+                                                                                          ]
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8"
+                                                                                          ];
+                                                                                        Ty.path
+                                                                                          "core::array::TryFromSliceError"
+                                                                                      ],
                                                                                     M.get_trait_method (|
                                                                                       "core::convert::TryInto",
                                                                                       Ty.apply
@@ -531,15 +616,17 @@ Module instructions.
                                                                         ]
                                                                       |)
                                                                     |) in
-                                                                  let~ _ :=
-                                                                    let β := i in
-                                                                    M.write (|
-                                                                      β,
-                                                                      BinOp.Wrap.add (|
-                                                                        M.read (| β |),
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          1
+                                                                  let~ _ : Ty.tuple [] :=
+                                                                    M.alloc (|
+                                                                      let β := i in
+                                                                      M.write (|
+                                                                        β,
+                                                                        BinOp.Wrap.add (|
+                                                                          M.read (| β |),
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
+                                                                        |)
                                                                       |)
                                                                     |) in
                                                                   M.alloc (| Value.Tuple [] |)))
@@ -555,7 +642,7 @@ Module instructions.
                             |)))
                       ]
                     |)) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -565,6 +652,7 @@ Module instructions.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "is_empty",
@@ -587,9 +675,11 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ limbs :=
+                let~ limbs :
+                    Ty.apply (Ty.path "core::slice::iter::RChunksExact") [] [ Ty.path "u8" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::slice::iter::RChunksExact") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "rchunks_exact",
@@ -605,9 +695,11 @@ Module instructions.
                       ]
                     |)
                   |) in
-                let~ partial_last_limb :=
+                let~ partial_last_limb :
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::slice::iter::RChunksExact") [] [ Ty.path "u8" ],
                         "remainder",
@@ -617,11 +709,12 @@ Module instructions.
                       [ M.borrow (| Pointer.Kind.Ref, limbs |) ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::slice::iter::RChunksExact") [] [ Ty.path "u8" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -643,10 +736,19 @@ Module instructions.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -687,9 +789,10 @@ Module instructions.
                                               0
                                             |) in
                                           let l := M.copy (| γ0_0 |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.tuple [],
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                                   "write",
@@ -698,6 +801,7 @@ Module instructions.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "*mut")
@@ -710,6 +814,7 @@ Module instructions.
                                                     [ M.read (| dst |); M.read (| i |) ]
                                                   |);
                                                   M.call_closure (|
+                                                    Ty.path "u64",
                                                     M.get_associated_function (|
                                                       Ty.path "u64",
                                                       "from_be_bytes",
@@ -718,6 +823,10 @@ Module instructions.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 8 ]
+                                                          [ Ty.path "u8" ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
@@ -737,6 +846,21 @@ Module instructions.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      8
+                                                                  ]
+                                                                  [ Ty.path "u8" ];
+                                                                Ty.path
+                                                                  "core::array::TryFromSliceError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::convert::TryInto",
                                                               Ty.apply
@@ -777,13 +901,15 @@ Module instructions.
                                                 ]
                                               |)
                                             |) in
-                                          let~ _ :=
-                                            let β := i in
-                                            M.write (|
-                                              β,
-                                              BinOp.Wrap.add (|
-                                                M.read (| β |),
-                                                Value.Integer IntegerKind.Usize 1
+                                          let~ _ : Ty.tuple [] :=
+                                            M.alloc (|
+                                              let β := i in
+                                              M.write (|
+                                                β,
+                                                BinOp.Wrap.add (|
+                                                  M.read (| β |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |)
                                               |)
                                             |) in
                                           M.alloc (| Value.Tuple [] |)))
@@ -793,7 +919,7 @@ Module instructions.
                             |)))
                       ]
                     |)) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -804,6 +930,7 @@ Module instructions.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "is_empty",
@@ -821,16 +948,21 @@ Module instructions.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ tmp :=
+                          let~ tmp :
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 8 ]
+                                [ Ty.path "u8" ] :=
                             M.alloc (|
                               repeat (|
                                 Value.Integer IntegerKind.U8 0,
                                 Value.Integer IntegerKind.Usize 8
                               |)
                             |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple [],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                   "copy_from_slice",
@@ -842,6 +974,10 @@ Module instructions.
                                     Pointer.Kind.MutRef,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                         M.get_trait_method (|
                                           "core::ops::index::IndexMut",
                                           Ty.apply
@@ -868,6 +1004,7 @@ Module instructions.
                                                 BinOp.Wrap.sub (|
                                                   Value.Integer IntegerKind.Usize 8,
                                                   M.call_closure (|
+                                                    Ty.path "usize",
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "slice")
@@ -897,9 +1034,10 @@ Module instructions.
                                 ]
                               |)
                             |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple [],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                   "write",
@@ -908,6 +1046,7 @@ Module instructions.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                       "add",
@@ -917,6 +1056,7 @@ Module instructions.
                                     [ M.read (| dst |); M.read (| i |) ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "u64",
                                     M.get_associated_function (|
                                       Ty.path "u64",
                                       "from_be_bytes",
@@ -928,17 +1068,22 @@ Module instructions.
                                 ]
                               |)
                             |) in
-                          let~ _ :=
-                            let β := i in
-                            M.write (|
-                              β,
-                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              let β := i in
+                              M.write (|
+                                β,
+                                BinOp.Wrap.add (|
+                                  M.read (| β |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
+                              |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -947,7 +1092,7 @@ Module instructions.
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (|
                                 Value.Tuple
@@ -1001,7 +1146,8 @@ Module instructions.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
-                                                  let~ kind :=
+                                                  let~ kind :
+                                                      Ty.path "core::panicking::AssertKind" :=
                                                     M.alloc (|
                                                       Value.StructTuple
                                                         "core::panicking::AssertKind::Eq"
@@ -1009,6 +1155,7 @@ Module instructions.
                                                     |) in
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.path "never",
                                                       M.get_function (|
                                                         "core::panicking::assert_failed",
                                                         [],
@@ -1038,6 +1185,7 @@ Module instructions.
                                                           "core::option::Option::Some"
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path "core::fmt::Arguments",
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_const",
@@ -1080,7 +1228,7 @@ Module instructions.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ m :=
+                let~ m : Ty.path "usize" :=
                   M.alloc (|
                     BinOp.Wrap.rem (| M.read (| i |), Value.Integer IntegerKind.Usize 4 |)
                   |) in
@@ -1096,9 +1244,10 @@ Module instructions.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                 "write_bytes",
@@ -1107,6 +1256,7 @@ Module instructions.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                     "add",
@@ -1153,6 +1303,10 @@ Module instructions.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "ruint::Uint")
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                [],
               M.get_trait_method (|
                 "revm_interpreter::instructions::utility::IntoU256",
                 Ty.apply
@@ -1167,6 +1321,10 @@ Module instructions.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [],
                   M.get_associated_function (|
                     Ty.path "alloy_primitives::bits::address::Address",
                     "into_word",
@@ -1206,6 +1364,10 @@ Module instructions.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "ruint::Uint")
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                [],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "ruint::Uint")
@@ -1257,6 +1419,7 @@ Module instructions.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "alloy_primitives::bits::address::Address",
               M.get_associated_function (|
                 Ty.path "alloy_primitives::bits::address::Address",
                 "from_word",
@@ -1265,6 +1428,10 @@ Module instructions.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [],
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.apply
@@ -1284,6 +1451,10 @@ Module instructions.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "ruint::Uint")

@@ -19,12 +19,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.catch_return (|
         ltac:(M.monadic
           (M.read (|
-            let~ number_str := M.copy (| Value.String "10" |) in
-            let~ number :=
+            let~ number_str : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+              M.copy (| Value.String "10" |) in
+            let~ number : Ty.path "i32" :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                       M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "i32" ] |),
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| number_str |) |) |) ]
                     |)
@@ -61,13 +66,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ]
                 |)
               |) in
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_v1",
@@ -97,6 +104,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Value.Array
                                     [
                                       M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",

@@ -70,6 +70,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "core::ptr::alignment::AlignmentEnum",
@@ -213,13 +214,20 @@ Module ptr.
         | [], [ T ], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "core::ptr::alignment::Alignment",
               M.get_associated_function (|
                 Ty.path "core::ptr::alignment::Alignment",
                 "new_unchecked",
                 [],
                 []
               |),
-              [ M.call_closure (| M.get_function (| "core::mem::align_of", [], [ T ] |), [] |) ]
+              [
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_function (| "core::mem::align_of", [], [ T ] |),
+                  []
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -252,6 +260,7 @@ Module ptr.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.path "usize",
                                 "is_power_of_two",
@@ -267,6 +276,7 @@ Module ptr.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.path "core::ptr::alignment::Alignment",
                               M.get_associated_function (|
                                 Ty.path "core::ptr::alignment::Alignment",
                                 "new_unchecked",
@@ -308,7 +318,7 @@ Module ptr.
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -318,15 +328,17 @@ Module ptr.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                                 []
                               |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.new_unchecked",
@@ -342,6 +354,7 @@ Module ptr.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::ptr::alignment::Alignment",
                   M.get_function (|
                     "core::intrinsics::transmute",
                     [],
@@ -391,6 +404,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "new_unchecked",
@@ -399,6 +413,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.path "core::ptr::alignment::Alignment",
                     "as_usize",
@@ -426,6 +441,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "trailing_zeros",
@@ -434,6 +450,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   M.get_associated_function (|
                     Ty.path "core::ptr::alignment::Alignment",
                     "as_nonzero",
@@ -463,9 +480,11 @@ Module ptr.
             (let self := M.alloc (| self |) in
             UnOp.not (|
               M.call_closure (|
+                Ty.path "usize",
                 M.get_associated_function (| Ty.path "usize", "unchecked_sub", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (|
                       Ty.path "core::ptr::alignment::Alignment",
                       "as_usize",
@@ -506,6 +525,7 @@ Module ptr.
                           (M.alloc (|
                             BinOp.gt (|
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.path "core::ptr::alignment::Alignment",
                                   "as_usize",
@@ -515,6 +535,7 @@ Module ptr.
                                 [ M.read (| a |) ]
                               |),
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.path "core::ptr::alignment::Alignment",
                                   "as_usize",
@@ -553,10 +574,15 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.call_closure (|
+                  Ty.path "core::fmt::Arguments",
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                   [
                     M.borrow (|
@@ -584,6 +610,7 @@ Module ptr.
                             Value.Array
                               [
                                 M.call_closure (|
+                                  Ty.path "core::fmt::rt::Argument",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_debug",
@@ -603,6 +630,10 @@ Module ptr.
                                           Pointer.Kind.Ref,
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::nonzero::NonZero")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.get_associated_function (|
                                                 Ty.path "core::ptr::alignment::Alignment",
                                                 "as_nonzero",
@@ -618,6 +649,7 @@ Module ptr.
                                   ]
                                 |);
                                 M.call_closure (|
+                                  Ty.path "core::fmt::rt::Argument",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_debug",
@@ -632,6 +664,7 @@ Module ptr.
                                           Pointer.Kind.Ref,
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "u32",
                                               M.get_associated_function (|
                                                 Ty.path "core::ptr::alignment::Alignment",
                                                 "log2",
@@ -683,6 +716,13 @@ Module ptr.
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "core::ptr::alignment::Alignment";
+                  Ty.path "core::num::error::TryFromIntError"
+                ],
               M.get_trait_method (|
                 "core::convert::TryInto",
                 Ty.path "usize",
@@ -694,6 +734,7 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "get",
@@ -734,6 +775,13 @@ Module ptr.
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.path "core::ptr::alignment::Alignment";
+                  Ty.path "core::num::error::TryFromIntError"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -745,6 +793,10 @@ Module ptr.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "core::ptr::alignment::Alignment" ],
                   M.get_associated_function (|
                     Ty.path "core::ptr::alignment::Alignment",
                     "new",
@@ -783,6 +835,7 @@ Module ptr.
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
               M.get_associated_function (|
                 Ty.path "core::ptr::alignment::Alignment",
                 "as_nonzero",
@@ -816,6 +869,7 @@ Module ptr.
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.path "core::ptr::alignment::Alignment",
                 "as_usize",
@@ -850,12 +904,14 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", Ty.path "usize", [], [], "cmp", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "get",
@@ -864,6 +920,7 @@ Module ptr.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           M.get_associated_function (|
                             Ty.path "core::ptr::alignment::Alignment",
                             "as_nonzero",
@@ -883,6 +940,7 @@ Module ptr.
                       Pointer.Kind.Ref,
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "usize",
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                             "get",
@@ -891,6 +949,10 @@ Module ptr.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ],
                               M.get_associated_function (|
                                 Ty.path "core::ptr::alignment::Alignment",
                                 "as_nonzero",
@@ -936,6 +998,7 @@ Module ptr.
               "core::option::Option::Some"
               [
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (|
                     "core::cmp::Ord",
                     Ty.path "core::ptr::alignment::Alignment",
@@ -977,6 +1040,7 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "core::hash::Hash",
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
@@ -991,6 +1055,7 @@ Module ptr.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                       M.get_associated_function (|
                         Ty.path "core::ptr::alignment::Alignment",
                         "as_nonzero",
@@ -1422,9 +1487,10 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "u64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -1433,9 +1499,10 @@ Module ptr.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "u64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],

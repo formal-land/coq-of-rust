@@ -21,6 +21,7 @@ Module Impl_core_default_Default_for_contract_terminate_AccountId.
           "contract_terminate::AccountId"
           [
             M.call_closure (|
+              Ty.path "u128",
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.path "u128",
@@ -155,6 +156,7 @@ Module Impl_contract_terminate_JustTerminate.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.path "contract_terminate::Env",
           M.get_associated_function (|
             Ty.path "contract_terminate::JustTerminate",
             "init_env",
@@ -194,9 +196,10 @@ Module Impl_contract_terminate_JustTerminate.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_associated_function (|
                   Ty.path "contract_terminate::Env",
                   "terminate_contract",
@@ -208,6 +211,7 @@ Module Impl_contract_terminate_JustTerminate.
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "contract_terminate::Env",
                         M.get_associated_function (|
                           Ty.path "contract_terminate::JustTerminate",
                           "env",
@@ -219,6 +223,7 @@ Module Impl_contract_terminate_JustTerminate.
                     |)
                   |);
                   M.call_closure (|
+                    Ty.path "contract_terminate::AccountId",
                     M.get_associated_function (|
                       Ty.path "contract_terminate::Env",
                       "caller",
@@ -230,6 +235,7 @@ Module Impl_contract_terminate_JustTerminate.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "contract_terminate::Env",
                             M.get_associated_function (|
                               Ty.path "contract_terminate::JustTerminate",
                               "env",

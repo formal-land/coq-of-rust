@@ -28,6 +28,7 @@ Module main.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
+          Ty.path "never",
           M.get_function (|
             "std::panicking::begin_panic",
             [],

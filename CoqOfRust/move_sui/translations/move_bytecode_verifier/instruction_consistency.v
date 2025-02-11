@@ -37,6 +37,10 @@ Module instruction_consistency.
         ltac:(M.monadic
           (let module := M.alloc (| module |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -53,6 +57,10 @@ Module instruction_consistency.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                   "verify_module_impl",
@@ -74,6 +82,7 @@ Module instruction_consistency.
                               ltac:(M.monadic
                                 (let e := M.copy (| γ |) in
                                 M.call_closure (|
+                                  Ty.path "move_binary_format::errors::VMError",
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "finish",
@@ -86,6 +95,7 @@ Module instruction_consistency.
                                       "move_binary_format::errors::Location::Module"
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_core_types::language_storage::ModuleId",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -141,11 +151,20 @@ Module instruction_consistency.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -165,6 +184,16 @@ Module instruction_consistency.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -179,6 +208,11 @@ Module instruction_consistency.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -196,6 +230,18 @@ Module instruction_consistency.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinition"
+                                                ]
+                                            ],
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -225,10 +271,26 @@ Module instruction_consistency.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionDefinition"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -311,7 +373,9 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let code := M.alloc (| γ1_0 |) in
-                                                  let~ checker :=
+                                                  let~ checker :
+                                                      Ty.path
+                                                        "move_bytecode_verifier::instruction_consistency::InstructionConsistency" :=
                                                     M.alloc (|
                                                       Value.StructRecord
                                                         "move_bytecode_verifier::instruction_consistency::InstructionConsistency"
@@ -334,6 +398,21 @@ Module instruction_consistency.
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ];
+                                                            Ty.tuple []
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
@@ -352,6 +431,14 @@ Module instruction_consistency.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -388,6 +475,15 @@ Module instruction_consistency.
                                                               M.read (|
                                                                 M.return_ (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::try_trait::FromResidual",
                                                                       Ty.apply
@@ -559,11 +655,20 @@ Module instruction_consistency.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -583,6 +688,15 @@ Module instruction_consistency.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -597,6 +711,10 @@ Module instruction_consistency.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -611,6 +729,18 @@ Module instruction_consistency.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::Bytecode"
+                                                ]
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::deref::Deref",
                                             Ty.apply
@@ -652,10 +782,26 @@ Module instruction_consistency.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::Bytecode"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -720,10 +866,26 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let field_handle_index := M.alloc (| γ1_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -742,6 +904,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -781,6 +951,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -838,9 +1017,23 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let field_inst_index := M.alloc (| γ1_0 |) in
-                                                  let~ field_inst :=
+                                                  let~ field_inst :
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::FieldInstantiation"
+                                                        ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::FieldInstantiation"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
@@ -869,10 +1062,26 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -891,6 +1100,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -934,6 +1151,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -991,10 +1217,26 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let field_handle_index := M.alloc (| γ1_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -1013,6 +1255,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -1052,6 +1302,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -1109,9 +1368,23 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let field_inst_index := M.alloc (| γ1_0 |) in
-                                                  let~ field_inst :=
+                                                  let~ field_inst :
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::FieldInstantiation"
+                                                        ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::FieldInstantiation"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
@@ -1140,10 +1413,26 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -1162,6 +1451,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -1205,6 +1502,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -1262,10 +1568,26 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -1284,6 +1606,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -1321,6 +1651,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -1378,9 +1717,23 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ func_inst :=
+                                                  let~ func_inst :
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::FunctionInstantiation"
+                                                        ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::FunctionInstantiation"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
@@ -1407,10 +1760,26 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -1429,6 +1798,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -1472,6 +1849,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -1529,10 +1915,26 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -1551,6 +1953,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -1588,6 +1998,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -1645,9 +2064,23 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ struct_inst :=
+                                                  let~ struct_inst :
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                        ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::StructDefInstantiation"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
@@ -1674,10 +2107,26 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -1696,6 +2145,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -1739,6 +2196,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -1796,10 +2262,26 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -1818,6 +2300,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -1855,6 +2345,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -1912,9 +2411,23 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ struct_inst :=
+                                                  let~ struct_inst :
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                        ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::StructDefInstantiation"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
@@ -1941,10 +2454,26 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -1963,6 +2492,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -2006,6 +2543,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -2063,10 +2609,26 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -2085,6 +2647,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -2122,6 +2692,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -2179,9 +2758,23 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ struct_inst :=
+                                                  let~ struct_inst :
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                        ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::StructDefInstantiation"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
@@ -2208,10 +2801,26 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -2230,6 +2839,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -2273,6 +2890,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -2330,10 +2956,26 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -2352,6 +2994,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -2389,6 +3039,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -2446,9 +3105,23 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ struct_inst :=
+                                                  let~ struct_inst :
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                        ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::StructDefInstantiation"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
@@ -2475,10 +3148,26 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -2497,6 +3186,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -2540,6 +3237,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -2597,10 +3303,26 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -2619,6 +3341,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -2656,6 +3386,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -2713,9 +3452,23 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ struct_inst :=
+                                                  let~ struct_inst :
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                        ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::StructDefInstantiation"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
@@ -2742,10 +3495,26 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -2764,6 +3533,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -2807,6 +3584,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -2864,10 +3650,26 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -2886,6 +3688,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -2923,6 +3733,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -2980,9 +3799,23 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ struct_inst :=
+                                                  let~ struct_inst :
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                        ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::StructDefInstantiation"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
@@ -3009,10 +3842,26 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -3031,6 +3880,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -3074,6 +3931,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -3131,10 +3997,26 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -3153,6 +4035,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -3190,6 +4080,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -3247,9 +4146,23 @@ Module instruction_consistency.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ struct_inst :=
+                                                  let~ struct_inst :
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                        ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::StructDefInstantiation"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
@@ -3276,10 +4189,26 @@ Module instruction_consistency.
                                                         ]
                                                       |)
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -3298,6 +4227,14 @@ Module instruction_consistency.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -3341,6 +4278,15 @@ Module instruction_consistency.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -3468,6 +4414,8 @@ Module instruction_consistency.
                                                                               "core::result::Result::Err"
                                                                               [
                                                                                 M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError",
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "move_binary_format::errors::PartialVMError",
@@ -3477,6 +4425,8 @@ Module instruction_consistency.
                                                                                   |),
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "move_binary_format::errors::PartialVMError",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "move_binary_format::errors::PartialVMError",
@@ -3486,6 +4436,8 @@ Module instruction_consistency.
                                                                                       |),
                                                                                       [
                                                                                         M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "move_binary_format::errors::PartialVMError",
                                                                                           M.get_associated_function (|
                                                                                             Ty.path
                                                                                               "move_binary_format::errors::PartialVMError",
@@ -3500,6 +4452,8 @@ Module instruction_consistency.
                                                                                           ]
                                                                                         |);
                                                                                         M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "move_binary_format::file_format::FunctionDefinitionIndex",
                                                                                           M.get_associated_function (|
                                                                                             Ty.path
                                                                                               "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -3527,6 +4481,8 @@ Module instruction_consistency.
                                                                                       ]
                                                                                     |);
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "alloc::string::String",
                                                                                       M.get_trait_method (|
                                                                                         "alloc::string::ToString",
                                                                                         Ty.path
@@ -4135,9 +5091,17 @@ Module instruction_consistency.
           let field_handle_index := M.alloc (| field_handle_index |) in
           let generic := M.alloc (| generic |) in
           M.read (|
-            let~ field_handle :=
+            let~ field_handle :
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "move_binary_format::file_format::FieldHandle" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::FieldHandle" ],
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "field_handle_at",
@@ -4163,6 +5127,10 @@ Module instruction_consistency.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
                   "check_type_op",
@@ -4202,6 +5170,7 @@ Module instruction_consistency.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -4260,9 +5229,17 @@ Module instruction_consistency.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ struct_def :=
+                let~ struct_def :
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "struct_def_at",
@@ -4286,9 +5263,17 @@ Module instruction_consistency.
                       ]
                     |)
                   |) in
-                let~ struct_handle :=
+                let~ struct_handle :
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::StructHandle" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::StructHandle" ],
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "struct_handle_at",
@@ -4318,7 +5303,7 @@ Module instruction_consistency.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -4329,6 +5314,7 @@ Module instruction_consistency.
                               (M.alloc (|
                                 BinOp.eq (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -4366,6 +5352,7 @@ Module instruction_consistency.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "at_code_offset",
@@ -4374,6 +5361,7 @@ Module instruction_consistency.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "move_binary_format::errors::PartialVMError",
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
@@ -4387,6 +5375,8 @@ Module instruction_consistency.
                                             ]
                                           |);
                                           M.call_closure (|
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionDefinitionIndex",
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
@@ -4450,9 +5440,17 @@ Module instruction_consistency.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ function_handle :=
+                let~ function_handle :
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "function_handle_at",
@@ -4476,7 +5474,7 @@ Module instruction_consistency.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -4487,6 +5485,7 @@ Module instruction_consistency.
                               (M.alloc (|
                                 BinOp.eq (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -4523,6 +5522,7 @@ Module instruction_consistency.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "at_code_offset",
@@ -4531,6 +5531,7 @@ Module instruction_consistency.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "move_binary_format::errors::PartialVMError",
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
@@ -4544,6 +5545,8 @@ Module instruction_consistency.
                                             ]
                                           |);
                                           M.call_closure (|
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionDefinitionIndex",
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_bytecode_verifier::instruction_consistency::InstructionConsistency",

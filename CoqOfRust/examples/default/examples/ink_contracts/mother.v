@@ -27,6 +27,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
           [
             ("_key",
               M.call_closure (|
+                Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ K ],
@@ -40,6 +41,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
               |));
             ("_value",
               M.call_closure (|
+                Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply (Ty.path "core::marker::PhantomData") [] [ V ],
@@ -112,6 +114,7 @@ Module Impl_core_default_Default_for_mother_AccountId.
           "mother::AccountId"
           [
             M.call_closure (|
+              Ty.path "u128",
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.path "u128",
@@ -301,6 +304,22 @@ Module Impl_core_default_Default_for_mother_Bids.
           "mother::Bids"
           [
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
+                      Ty.path "alloc::alloc::Global"
+                    ];
+                  Ty.path "alloc::alloc::Global"
+                ],
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.apply
@@ -361,6 +380,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.call_closure (|
+          Ty.path "bool",
           M.get_trait_method (|
             "core::cmp::PartialEq",
             Ty.apply
@@ -476,6 +496,22 @@ Module Impl_core_clone_Clone_for_mother_Bids.
           "mother::Bids"
           [
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.tuple [ Ty.path "mother::AccountId"; Ty.path "u128" ] ];
+                      Ty.path "alloc::alloc::Global"
+                    ];
+                  Ty.path "alloc::alloc::Global"
+                ],
               M.get_trait_method (|
                 "core::clone::Clone",
                 Ty.apply
@@ -576,9 +612,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -587,9 +624,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -737,9 +775,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -748,9 +787,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -789,6 +829,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                           let __arg1_0 := M.alloc (| γ2_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
@@ -826,6 +867,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                           let __arg1_0 := M.alloc (| γ2_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 Ty.apply (Ty.path "&") [] [ Ty.path "mother::Outline" ],
@@ -863,6 +905,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
                           let __arg1_0 := M.alloc (| γ2_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
@@ -972,6 +1015,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                       "mother::Status::EndingPeriod"
                       [
                         M.call_closure (|
+                          Ty.path "u32",
                           M.get_trait_method (|
                             "core::clone::Clone",
                             Ty.path "u32",
@@ -996,6 +1040,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                       "mother::Status::Ended"
                       [
                         M.call_closure (|
+                          Ty.path "mother::Outline",
                           M.get_trait_method (|
                             "core::clone::Clone",
                             Ty.path "mother::Outline",
@@ -1020,6 +1065,7 @@ Module Impl_core_clone_Clone_for_mother_Status.
                       "mother::Status::RfDelay"
                       [
                         M.call_closure (|
+                          Ty.path "u32",
                           M.get_trait_method (|
                             "core::clone::Clone",
                             Ty.path "u32",
@@ -1095,6 +1141,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                 LogicalOp.and (|
                   LogicalOp.and (|
                     M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "alloc::string::String",
@@ -1125,6 +1172,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -1164,6 +1212,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "mother::Bids",
@@ -1195,6 +1244,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.apply
@@ -1234,6 +1284,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.path "mother::Status",
@@ -1283,6 +1334,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
           |),
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply
@@ -1422,6 +1474,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
           [
             ("name",
               M.call_closure (|
+                Ty.path "alloc::string::String",
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.path "alloc::string::String",
@@ -1449,6 +1502,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
               |));
             ("subject",
               M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.apply
@@ -1479,6 +1533,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
               |));
             ("bids",
               M.call_closure (|
+                Ty.path "mother::Bids",
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.path "mother::Bids",
@@ -1506,6 +1561,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
               |));
             ("terms",
               M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ Ty.path "u32" ],
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.apply
@@ -1536,6 +1592,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
               |));
             ("status",
               M.call_closure (|
+                Ty.path "mother::Status",
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.path "mother::Status",
@@ -1563,6 +1620,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
               |));
             ("finalized",
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.path "bool",
@@ -1590,6 +1648,10 @@ Module Impl_core_clone_Clone_for_mother_Auction.
               |));
             ("vector",
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.apply
@@ -1655,6 +1717,7 @@ Module Impl_core_default_Default_for_mother_Auction.
           [
             ("name",
               M.call_closure (|
+                Ty.path "alloc::string::String",
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.path "alloc::string::String",
@@ -1668,6 +1731,7 @@ Module Impl_core_default_Default_for_mother_Auction.
               |));
             ("subject",
               M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply
@@ -1684,6 +1748,7 @@ Module Impl_core_default_Default_for_mother_Auction.
               |));
             ("bids",
               M.call_closure (|
+                Ty.path "mother::Bids",
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.path "mother::Bids",
@@ -1697,6 +1762,7 @@ Module Impl_core_default_Default_for_mother_Auction.
               |));
             ("terms",
               M.call_closure (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ Ty.path "u32" ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply
@@ -1715,6 +1781,10 @@ Module Impl_core_default_Default_for_mother_Auction.
             ("finalized", Value.Bool false);
             ("vector",
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply
@@ -1784,9 +1854,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -1795,9 +1866,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -1836,6 +1908,7 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
                           let __arg1_0 := M.alloc (| γ2_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
@@ -1987,6 +2060,7 @@ Module Impl_core_default_Default_for_mother_Mother.
           [
             ("auction",
               M.call_closure (|
+                Ty.path "mother::Auction",
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.path "mother::Auction",
@@ -2000,6 +2074,10 @@ Module Impl_core_default_Default_for_mother_Mother.
               |));
             ("balances",
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "mother::Mapping")
+                  []
+                  [ Ty.path "mother::AccountId"; Ty.path "u128" ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply
@@ -2050,6 +2128,7 @@ Module Impl_mother_Mother.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.path "mother::Env",
           M.get_associated_function (| Ty.path "mother::Mother", "init_env", [], [] |),
           []
         |)))
@@ -2077,6 +2156,10 @@ Module Impl_mother_Mother.
           [
             ("balances",
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "mother::Mapping")
+                  []
+                  [ Ty.path "mother::AccountId"; Ty.path "u128" ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply
@@ -2109,6 +2192,7 @@ Module Impl_mother_Mother.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
+          Ty.path "mother::Mother",
           M.get_trait_method (|
             "core::default::Default",
             Ty.path "mother::Mother",
@@ -2156,6 +2240,7 @@ Module Impl_mother_Mother.
                           "mother::Failure::Revert"
                           [
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_trait_method (|
                                 "alloc::string::ToString",
                                 Ty.path "str",
@@ -2182,6 +2267,7 @@ Module Impl_mother_Mother.
                       "core::result::Result::Ok"
                       [
                         M.call_closure (|
+                          Ty.path "mother::Mother",
                           M.get_trait_method (|
                             "core::default::Default",
                             Ty.path "mother::Mother",
@@ -2219,15 +2305,17 @@ Module Impl_mother_Mother.
         (let self := M.alloc (| self |) in
         let auction := M.alloc (| auction |) in
         M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_associated_function (| Ty.path "mother::Env", "emit_event", [], [] |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "mother::Env",
                         M.get_associated_function (| Ty.path "mother::Mother", "env", [], [] |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
@@ -2241,6 +2329,7 @@ Module Impl_mother_Mother.
                         [
                           ("auction",
                             M.call_closure (|
+                              Ty.path "mother::Auction",
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "mother::Auction",
@@ -2302,6 +2391,7 @@ Module Impl_mother_Mother.
                           "mother::Failure::Revert"
                           [
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_trait_method (|
                                 "alloc::string::ToString",
                                 Ty.path "str",
@@ -2331,6 +2421,7 @@ Module Impl_mother_Mother.
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
+                        Ty.path "never",
                         M.get_function (|
                           "std::panicking::begin_panic",
                           [],
@@ -2366,13 +2457,15 @@ Module Impl_mother_Mother.
         (let self := M.alloc (| self |) in
         let _message := M.alloc (| _message |) in
         M.read (|
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -2405,6 +2498,7 @@ Module Impl_mother_Mother.
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",

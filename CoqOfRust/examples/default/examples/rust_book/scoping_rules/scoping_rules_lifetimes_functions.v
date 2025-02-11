@@ -12,13 +12,15 @@ Definition print_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -51,6 +53,7 @@ Definition print_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -94,9 +97,11 @@ Definition add_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
       M.read (|
-        let~ _ :=
-          let β := M.deref (| M.read (| x |) |) in
-          M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |) |) in
+        let~ _ : Ty.tuple [] :=
+          M.alloc (|
+            let β := M.deref (| M.read (| x |) |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |) |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -117,13 +122,15 @@ Definition print_multi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
       (let x := M.alloc (| x |) in
       let y := M.alloc (| y |) in
       M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -157,6 +164,7 @@ Definition print_multi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -171,6 +179,7 @@ Definition print_multi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -243,18 +252,20 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x := M.alloc (| Value.Integer IntegerKind.I32 7 |) in
-        let~ y := M.alloc (| Value.Integer IntegerKind.I32 9 |) in
-        let~ _ :=
+        let~ x : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 7 |) in
+        let~ y : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 9 |) in
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "scoping_rules_lifetimes_functions::print_one", [], [] |),
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "scoping_rules_lifetimes_functions::print_multi", [], [] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |);
@@ -262,9 +273,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ z :=
+        let~ z : Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
               M.get_function (| "scoping_rules_lifetimes_functions::pass_x", [], [] |),
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |);
@@ -272,17 +284,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "scoping_rules_lifetimes_functions::print_one", [], [] |),
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| z |) |) |) ]
             |)
           |) in
-        let~ t := M.alloc (| Value.Integer IntegerKind.I32 3 |) in
-        let~ _ :=
+        let~ t : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 3 |) in
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "scoping_rules_lifetimes_functions::add_one", [], [] |),
               [
                 M.borrow (|
@@ -292,9 +306,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "scoping_rules_lifetimes_functions::print_one", [], [] |),
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, t |) |) |) ]
             |)

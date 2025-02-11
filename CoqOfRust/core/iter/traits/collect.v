@@ -30,9 +30,10 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.read (|
-                let~ res :=
+                let~ res : Ty.tuple [ A; B ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [ A; B ],
                       M.get_trait_method (|
                         "core::default::Default",
                         Ty.tuple [ A; B ],
@@ -45,9 +46,10 @@ Module iter.
                       []
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         Ty.tuple [ A; B ],
@@ -129,9 +131,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let item := M.alloc (| item |) in
               M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         Self,
@@ -193,9 +196,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let item := M.alloc (| item |) in
               M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         Self,
@@ -239,6 +243,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   Ty.associated,
@@ -250,6 +255,7 @@ Module iter.
                 |),
                 [
                   M.call_closure (|
+                    Ty.associated,
                     M.get_trait_method (|
                       "core::iter::traits::collect::IntoIterator",
                       T,
@@ -323,9 +329,10 @@ Module iter.
                         let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let a := M.alloc (| γ1_0 |) in
                         let b := M.alloc (| γ1_1 |) in
-                        let~ iter :=
+                        let~ iter : Ty.associated :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.associated,
                               M.get_trait_method (|
                                 "core::iter::traits::collect::IntoIterator",
                                 T,
@@ -338,9 +345,10 @@ Module iter.
                               [ M.read (| into_iter |) ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_trait_method (|
                                 "core::iter::traits::collect::SpecTupleExtend",
                                 Ty.associated,
@@ -383,9 +391,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let item := M.alloc (| item |) in
               M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendA,
@@ -404,9 +413,10 @@ Module iter.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendB,
@@ -449,9 +459,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let additional := M.alloc (| additional |) in
               M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendA,
@@ -470,9 +481,10 @@ Module iter.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendB,
@@ -518,9 +530,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let item := M.alloc (| item |) in
               M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendA,
@@ -539,9 +552,10 @@ Module iter.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "core::iter::traits::collect::Extend",
                         ExtendB,
@@ -620,6 +634,11 @@ Module iter.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple
+                      [
+                        Ty.path "usize";
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                      ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       impl_Iterator_Item____A__B__,
@@ -638,7 +657,7 @@ Module iter.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let lower_bound := M.copy (| γ0_0 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -657,9 +676,10 @@ Module iter.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "core::iter::traits::collect::Extend",
                                         ExtendA,
@@ -678,9 +698,10 @@ Module iter.
                                       ]
                                     |)
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_trait_method (|
                                         "core::iter::traits::collect::Extend",
                                         ExtendB,
@@ -703,9 +724,10 @@ Module iter.
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               impl_Iterator_Item____A__B__,
@@ -719,6 +741,7 @@ Module iter.
                               M.read (| iter |);
                               Value.Tuple [];
                               M.call_closure (|
+                                Ty.associated,
                                 M.get_function (|
                                   "core::iter::traits::collect::default_extend_tuple.extend",
                                   [],
@@ -782,9 +805,10 @@ Module iter.
                                         let t := M.copy (| γ0_0 |) in
                                         let u := M.copy (| γ0_1 |) in
                                         M.read (|
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.tuple [],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::collect::Extend",
                                                   impl_Extend_A_,
@@ -803,9 +827,10 @@ Module iter.
                                                 ]
                                               |)
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.tuple [],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::collect::Extend",
                                                   impl_Extend_B_,
@@ -869,9 +894,10 @@ Module iter.
               let a := M.alloc (| a |) in
               let b := M.alloc (| b |) in
               M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (|
                         "core::iter::traits::collect::default_extend_tuple",
                         [],
@@ -950,6 +976,11 @@ Module iter.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple
+                            [
+                              Ty.path "usize";
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Iter,
@@ -969,7 +1000,7 @@ Module iter.
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let lower_bound := M.copy (| γ0_0 |) in
                             let upper_bound := M.copy (| γ0_1 |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -979,6 +1010,7 @@ Module iter.
                                         M.use
                                           (M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "bool",
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -999,9 +1031,10 @@ Module iter.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
-                                            let~ _ :=
+                                            let~ _ : Ty.tuple [] :=
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.tuple [],
                                                   M.get_function (|
                                                     "core::iter::traits::collect::default_extend_tuple",
                                                     [],
@@ -1027,7 +1060,7 @@ Module iter.
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -1046,9 +1079,10 @@ Module iter.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.tuple [],
                                             M.get_trait_method (|
                                               "core::iter::traits::collect::Extend",
                                               ExtendA,
@@ -1067,9 +1101,10 @@ Module iter.
                                             ]
                                           |)
                                         |) in
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.tuple [],
                                             M.get_trait_method (|
                                               "core::iter::traits::collect::Extend",
                                               ExtendB,
@@ -1092,9 +1127,10 @@ Module iter.
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                 ]
                               |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.tuple [],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     Iter,
@@ -1108,6 +1144,7 @@ Module iter.
                                     M.read (| self |);
                                     Value.Tuple [];
                                     M.call_closure (|
+                                      Ty.associated,
                                       M.get_associated_function (| Self, "extend.extend", [], [] |),
                                       [
                                         M.borrow (|

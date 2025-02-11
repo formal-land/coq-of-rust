@@ -98,6 +98,11 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.path "returning_traits_with_dyn::Sheep"; Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
@@ -115,6 +120,10 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
               ltac:(M.monadic
                 (M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.path "returning_traits_with_dyn::Cow"; Ty.path "alloc::alloc::Global" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
@@ -153,21 +162,37 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ random_number := M.copy (| UnsupportedLiteral |) in
-        let~ animal :=
+        let~ random_number : Ty.path "f64" := M.copy (| UnsupportedLiteral |) in
+        let~ animal :
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [
+                Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                Ty.path "alloc::alloc::Global"
+              ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [
+                  Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                  Ty.path "alloc::alloc::Global"
+                ],
               M.get_function (| "returning_traits_with_dyn::random_animal", [], [] |),
               [ M.read (| random_number |) ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -202,6 +227,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -216,6 +242,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                 M.get_trait_method (|
                                                   "returning_traits_with_dyn::Animal",
                                                   Ty.dyn

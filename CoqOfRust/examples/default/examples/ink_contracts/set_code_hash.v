@@ -41,6 +41,7 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
           [
             ("count",
               M.call_closure (|
+                Ty.path "u32",
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.path "u32",
@@ -77,6 +78,7 @@ Module Impl_set_code_hash_Incrementer.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
+          Ty.path "set_code_hash::Incrementer",
           M.get_trait_method (|
             "core::default::Default",
             Ty.path "set_code_hash::Incrementer",
@@ -109,21 +111,25 @@ Module Impl_set_code_hash_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
-            let β :=
-              M.SubPointer.get_struct_record_field (|
-                M.deref (| M.read (| self |) |),
-                "set_code_hash::Incrementer",
-                "count"
-              |) in
-            M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 1 |) |) in
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              let β :=
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "set_code_hash::Incrementer",
+                  "count"
+                |) in
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 1 |) |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -159,6 +165,7 @@ Module Impl_set_code_hash_Incrementer.
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
@@ -238,9 +245,10 @@ Module Impl_set_code_hash_Incrementer.
         (let self := M.alloc (| self |) in
         let code_hash := M.alloc (| code_hash |) in
         M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -252,6 +260,10 @@ Module Impl_set_code_hash_Incrementer.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "set_code_hash::Error" ],
                     M.get_function (|
                       "set_code_hash::set_code_hash",
                       [],
@@ -283,6 +295,7 @@ Module Impl_set_code_hash_Incrementer.
                                     (let err := M.copy (| γ |) in
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (|
                                           "std::panicking::begin_panic",
                                           [],
@@ -303,13 +316,15 @@ Module Impl_set_code_hash_Incrementer.
                 ]
               |)
             |) in
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -342,6 +357,7 @@ Module Impl_set_code_hash_Incrementer.
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",

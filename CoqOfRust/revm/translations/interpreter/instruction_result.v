@@ -261,6 +261,10 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -902,9 +906,10 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "u8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -913,9 +918,10 @@ Module instruction_result.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "u8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -974,9 +980,10 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "u8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -987,6 +994,7 @@ Module instruction_result.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "core::hash::Hash",
                   Ty.path "u8",
@@ -2248,6 +2256,10 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -2381,9 +2393,10 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -2392,9 +2405,10 @@ Module instruction_result.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -2453,9 +2467,10 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -2466,6 +2481,7 @@ Module instruction_result.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "core::hash::Hash",
                   Ty.path "isize",
@@ -2580,6 +2596,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
                         [
                           M.call_closure (|
+                            Ty.path "revm_context_interface::result::SuccessReason",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "revm_context_interface::result::SuccessReason",
@@ -2621,6 +2638,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::clone::Clone",
                               HaltReasonT,
@@ -2662,6 +2680,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Internal"
                         [
                           M.call_closure (|
+                            Ty.path "revm_interpreter::instruction_result::InternalResult",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "revm_interpreter::instruction_result::InternalResult",
@@ -2718,6 +2737,10 @@ Module instruction_result.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -2747,6 +2770,10 @@ Module instruction_result.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -2774,6 +2801,10 @@ Module instruction_result.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -2803,6 +2834,10 @@ Module instruction_result.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -2830,6 +2865,10 @@ Module instruction_result.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -2890,9 +2929,10 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -2906,9 +2946,10 @@ Module instruction_result.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -2952,6 +2993,7 @@ Module instruction_result.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -2997,6 +3039,7 @@ Module instruction_result.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ HaltReasonT ],
@@ -3034,6 +3077,7 @@ Module instruction_result.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -3150,9 +3194,10 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -3166,9 +3211,10 @@ Module instruction_result.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "isize",
@@ -3202,6 +3248,7 @@ Module instruction_result.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.path "revm_context_interface::result::SuccessReason",
@@ -3229,6 +3276,7 @@ Module instruction_result.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           HaltReasonT,
@@ -3256,6 +3304,7 @@ Module instruction_result.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.path "revm_interpreter::instruction_result::InternalResult",
@@ -3529,6 +3578,7 @@ Module instruction_result.
             "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
             [
               M.call_closure (|
+                HALT,
                 M.get_trait_method (|
                   "core::convert::Into",
                   Ty.path "revm_context_interface::result::HaltReason",
@@ -3767,6 +3817,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -3796,6 +3847,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -3825,6 +3877,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -3858,6 +3911,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -3891,6 +3945,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -3924,6 +3979,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -3957,6 +4013,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -3990,6 +4047,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4043,6 +4101,7 @@ Module instruction_result.
                                   "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                                   [
                                     M.call_closure (|
+                                      HaltReasonT,
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_context_interface::result::HaltReason",
@@ -4075,6 +4134,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4104,6 +4164,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4133,6 +4194,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4162,6 +4224,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4191,6 +4254,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4220,6 +4284,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4249,6 +4314,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4278,6 +4344,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4307,6 +4374,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4336,6 +4404,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4365,6 +4434,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4394,6 +4464,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4443,6 +4514,7 @@ Module instruction_result.
                                   "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                                   [
                                     M.call_closure (|
+                                      HaltReasonT,
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_context_interface::result::HaltReason",
@@ -4475,6 +4547,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4528,6 +4601,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4557,6 +4631,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4602,6 +4677,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4631,6 +4707,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",
@@ -4660,6 +4737,7 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         [
                           M.call_closure (|
+                            HaltReasonT,
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.path "revm_context_interface::result::HaltReason",

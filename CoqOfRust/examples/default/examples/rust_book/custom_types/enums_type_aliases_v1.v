@@ -38,7 +38,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x :=
+        let~ x : Ty.path "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers" :=
           M.alloc (|
             Value.StructTuple
               "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers::Add"

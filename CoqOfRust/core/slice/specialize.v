@@ -36,6 +36,19 @@ Module slice.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.apply (Ty.path "&mut") [] [ T ];
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                  ]
+                              ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ T ],
                               "split_last_mut",
@@ -55,11 +68,12 @@ Module slice.
                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                       let last := M.copy (| γ1_0 |) in
                       let elems := M.copy (| γ1_1 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.use
                           (M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                 M.get_trait_method (|
                                   "core::iter::traits::collect::IntoIterator",
                                   Ty.apply
@@ -81,10 +95,14 @@ Module slice.
                                   (let iter := M.copy (| γ |) in
                                   M.loop (|
                                     ltac:(M.monadic
-                                      (let~ _ :=
+                                      (let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
@@ -127,9 +145,10 @@ Module slice.
                                                     0
                                                   |) in
                                                 let el := M.copy (| γ0_0 |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.tuple [],
                                                       M.get_trait_method (|
                                                         "core::clone::Clone",
                                                         T,
@@ -160,7 +179,9 @@ Module slice.
                                   |)))
                             ]
                           |)) in
-                      M.write (| M.deref (| M.read (| last |) |), M.read (| value |) |)));
+                      M.alloc (|
+                        M.write (| M.deref (| M.read (| last |) |), M.read (| value |) |)
+                      |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |)
@@ -199,6 +220,7 @@ Module slice.
                 (M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -210,6 +232,7 @@ Module slice.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "iter_mut",
@@ -227,10 +250,14 @@ Module slice.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let~ _ :=
+                            (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -265,10 +292,12 @@ Module slice.
                                           0
                                         |) in
                                       let item := M.copy (| γ0_0 |) in
-                                      let~ _ :=
-                                        M.write (|
-                                          M.deref (| M.read (| item |) |),
-                                          M.read (| value |)
+                                      let~ _ : Ty.tuple [] :=
+                                        M.alloc (|
+                                          M.write (|
+                                            M.deref (| M.read (| item |) |),
+                                            M.read (| value |)
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]

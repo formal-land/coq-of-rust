@@ -21,6 +21,7 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
           "e2e_call_runtime::AccountId"
           [
             M.call_closure (|
+              Ty.path "u128",
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.path "u128",
@@ -151,6 +152,7 @@ Module Impl_e2e_call_runtime_Contract.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.path "e2e_call_runtime::Env",
           M.get_associated_function (| Ty.path "e2e_call_runtime::Contract", "init_env", [], [] |),
           []
         |)))
@@ -185,12 +187,14 @@ Module Impl_e2e_call_runtime_Contract.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.path "u128",
           M.get_associated_function (| Ty.path "e2e_call_runtime::Env", "balance", [], [] |),
           [
             M.borrow (|
               Pointer.Kind.Ref,
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "e2e_call_runtime::Env",
                   M.get_associated_function (|
                     Ty.path "e2e_call_runtime::Contract",
                     "env",

@@ -35,6 +35,7 @@ Module iter.
                 [
                   ("a",
                     M.call_closure (|
+                      A,
                       M.get_trait_method (| "core::clone::Clone", A, [], [], "clone", [], [] |),
                       [
                         M.borrow (|
@@ -54,6 +55,7 @@ Module iter.
                     |));
                   ("b",
                     M.call_closure (|
+                      B,
                       M.get_trait_method (| "core::clone::Clone", B, [], [], "clone", [], [] |),
                       [
                         M.borrow (|
@@ -73,6 +75,7 @@ Module iter.
                     |));
                   ("index",
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_trait_method (|
                         "core::clone::Clone",
                         Ty.path "usize",
@@ -100,6 +103,7 @@ Module iter.
                     |));
                   ("len",
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_trait_method (|
                         "core::clone::Clone",
                         Ty.path "usize",
@@ -127,6 +131,7 @@ Module iter.
                     |));
                   ("a_len",
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_trait_method (|
                         "core::clone::Clone",
                         Ty.path "usize",
@@ -182,6 +187,7 @@ Module iter.
               (let a := M.alloc (| a |) in
               let b := M.alloc (| b |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
@@ -227,7 +233,7 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.loop (|
                         ltac:(M.monadic
                           (M.match_operator (|
@@ -238,6 +244,10 @@ Module iter.
                                   (let γ :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.tuple [ Ty.associated; Ty.associated ] ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -265,7 +275,7 @@ Module iter.
                                       0
                                     |) in
                                   let x := M.copy (| γ0_0 |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -298,13 +308,15 @@ Module iter.
                                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                       ]
                                     |) in
-                                  let~ _ :=
-                                    let β := n in
-                                    M.write (|
-                                      β,
-                                      BinOp.Wrap.sub (|
-                                        M.read (| β |),
-                                        Value.Integer IntegerKind.Usize 1
+                                  let~ _ : Ty.tuple [] :=
+                                    M.alloc (|
+                                      let β := n in
+                                      M.write (|
+                                        β,
+                                        BinOp.Wrap.sub (|
+                                          M.read (| β |),
+                                          Value.Integer IntegerKind.Usize 1
+                                        |)
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
@@ -313,7 +325,7 @@ Module iter.
                                   (M.alloc (|
                                     M.never_to_any (|
                                       M.read (|
-                                        let~ _ :=
+                                        let~ _ : Ty.tuple [] :=
                                           M.alloc (|
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |) in
@@ -352,6 +364,10 @@ Module iter.
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::iter::adapters::zip::Zip")
+                []
+                [ Ty.associated; Ty.associated ],
               M.get_trait_method (|
                 "core::iter::adapters::zip::ZipImpl",
                 Ty.apply
@@ -366,6 +382,7 @@ Module iter.
               |),
               [
                 M.call_closure (|
+                  Ty.associated,
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     A,
@@ -378,6 +395,7 @@ Module iter.
                   [ M.read (| a |) ]
                 |);
                 M.call_closure (|
+                  Ty.associated,
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     B,
@@ -416,6 +434,10 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.tuple [ Ty.associated; Ty.associated ] ],
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
@@ -447,6 +469,11 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.tuple
+                  [
+                    Ty.path "usize";
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                  ],
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
@@ -474,6 +501,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.tuple [ Ty.associated; Ty.associated ] ],
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
@@ -508,6 +539,7 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Acc,
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
@@ -545,6 +577,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let idx := M.alloc (| idx |) in
               M.call_closure (|
+                Ty.tuple [ Ty.associated; Ty.associated ],
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
@@ -600,6 +633,10 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.tuple [ Ty.associated; Ty.associated ] ],
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipImpl",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
@@ -679,11 +716,21 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ x :=
+                    let~ x : Ty.associated :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::convert::Infallible" ];
+                                  Ty.associated
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
@@ -695,6 +742,7 @@ Module iter.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     A,
@@ -733,6 +781,10 @@ Module iter.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.tuple [ Ty.associated; Ty.associated ] ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -769,11 +821,21 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let~ y :=
+                    let~ y : Ty.associated :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::convert::Infallible" ];
+                                  Ty.associated
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
@@ -785,6 +847,7 @@ Module iter.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     B,
@@ -823,6 +886,10 @@ Module iter.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.tuple [ Ty.associated; Ty.associated ] ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -882,6 +949,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.tuple [ Ty.associated; Ty.associated ] ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
                   "super_nth",
@@ -939,9 +1010,10 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ a_sz :=
+                let~ a_sz : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_trait_method (|
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         A,
@@ -963,9 +1035,10 @@ Module iter.
                       ]
                     |)
                   |) in
-                let~ b_sz :=
+                let~ b_sz : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_trait_method (|
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         B,
@@ -987,7 +1060,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1017,6 +1090,10 @@ Module iter.
                                     (M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ],
                                           M.get_trait_method (|
                                             "core::iter::traits::collect::IntoIterator",
                                             Ty.apply
@@ -1049,10 +1126,14 @@ Module iter.
                                             (let iter := M.copy (| γ |) in
                                             M.loop (|
                                               ltac:(M.monadic
-                                                (let~ _ :=
+                                                (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "usize" ],
                                                         M.get_trait_method (|
                                                           "core::iter::traits::iterator::Iterator",
                                                           Ty.apply
@@ -1099,9 +1180,17 @@ Module iter.
                                                               "core::option::Option::Some",
                                                               0
                                                             |) in
-                                                          let~ _ :=
+                                                          let~ _ :
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [ Ty.associated ] :=
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.associated ],
                                                                 M.get_trait_method (|
                                                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                   A,
@@ -1138,6 +1227,10 @@ Module iter.
                                     (M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ],
                                           M.get_trait_method (|
                                             "core::iter::traits::collect::IntoIterator",
                                             Ty.apply
@@ -1170,10 +1263,14 @@ Module iter.
                                             (let iter := M.copy (| γ |) in
                                             M.loop (|
                                               ltac:(M.monadic
-                                                (let~ _ :=
+                                                (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "usize" ],
                                                         M.get_trait_method (|
                                                           "core::iter::traits::iterator::Iterator",
                                                           Ty.apply
@@ -1220,9 +1317,17 @@ Module iter.
                                                               "core::option::Option::Some",
                                                               0
                                                             |) in
-                                                          let~ _ :=
+                                                          let~ _ :
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [ Ty.associated ] :=
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.associated ],
                                                                 M.get_trait_method (|
                                                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                   B,
@@ -1263,6 +1368,7 @@ Module iter.
                     Value.Tuple
                       [
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                           M.get_trait_method (|
                             "core::iter::traits::double_ended::DoubleEndedIterator",
                             A,
@@ -1284,6 +1390,7 @@ Module iter.
                           ]
                         |);
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                           M.get_trait_method (|
                             "core::iter::traits::double_ended::DoubleEndedIterator",
                             B,
@@ -1342,6 +1449,7 @@ Module iter.
                         (M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "internal error: entered unreachable code" |)
                               ]
@@ -1386,6 +1494,11 @@ Module iter.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple
+                        [
+                          Ty.path "usize";
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         A,
@@ -1417,6 +1530,11 @@ Module iter.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple
+                                [
+                                  Ty.path "usize";
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 B,
@@ -1445,9 +1563,10 @@ Module iter.
                                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let b_lower := M.copy (| γ0_0 |) in
                                 let b_upper := M.copy (| γ0_1 |) in
-                                let~ lower :=
+                                let~ lower : Ty.path "usize" :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_function (|
                                         "core::cmp::min",
                                         [],
@@ -1456,7 +1575,11 @@ Module iter.
                                       [ M.read (| a_lower |); M.read (| b_lower |) ]
                                     |)
                                   |) in
-                                let~ upper :=
+                                let~ upper :
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ] :=
                                   M.copy (|
                                     M.match_operator (|
                                       M.alloc (|
@@ -1486,6 +1609,7 @@ Module iter.
                                                 "core::option::Option::Some"
                                                 [
                                                   M.call_closure (|
+                                                    Ty.path "usize",
                                                     M.get_function (|
                                                       "core::cmp::min",
                                                       [],
@@ -1590,9 +1714,11 @@ Module iter.
               let _idx := M.alloc (| _idx |) in
               M.never_to_any (|
                 M.call_closure (|
+                  Ty.path "never",
                   M.get_function (| "core::panicking::panic_fmt", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -1624,6 +1750,10 @@ Module iter.
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 0 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "none",
@@ -1661,6 +1791,7 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Acc,
                 M.get_trait_method (|
                   "core::iter::adapters::zip::SpecFold",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
@@ -1744,11 +1875,21 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ x :=
+                    let~ x : Ty.associated :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::convert::Infallible" ];
+                                  Ty.associated
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
@@ -1760,6 +1901,7 @@ Module iter.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     A,
@@ -1798,6 +1940,10 @@ Module iter.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.tuple [ Ty.associated; Ty.associated ] ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -1834,11 +1980,21 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let~ y :=
+                    let~ y : Ty.associated :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::convert::Infallible" ];
+                                  Ty.associated
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
@@ -1850,6 +2006,7 @@ Module iter.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     B,
@@ -1888,6 +2045,10 @@ Module iter.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.tuple [ Ty.associated; Ty.associated ] ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -1947,6 +2108,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.tuple [ Ty.associated; Ty.associated ] ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
                   "super_nth",
@@ -2004,9 +2169,10 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ a_sz :=
+                let~ a_sz : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_trait_method (|
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         A,
@@ -2028,9 +2194,10 @@ Module iter.
                       ]
                     |)
                   |) in
-                let~ b_sz :=
+                let~ b_sz : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_trait_method (|
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         B,
@@ -2052,7 +2219,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2082,6 +2249,10 @@ Module iter.
                                     (M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ],
                                           M.get_trait_method (|
                                             "core::iter::traits::collect::IntoIterator",
                                             Ty.apply
@@ -2114,10 +2285,14 @@ Module iter.
                                             (let iter := M.copy (| γ |) in
                                             M.loop (|
                                               ltac:(M.monadic
-                                                (let~ _ :=
+                                                (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "usize" ],
                                                         M.get_trait_method (|
                                                           "core::iter::traits::iterator::Iterator",
                                                           Ty.apply
@@ -2164,9 +2339,17 @@ Module iter.
                                                               "core::option::Option::Some",
                                                               0
                                                             |) in
-                                                          let~ _ :=
+                                                          let~ _ :
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [ Ty.associated ] :=
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.associated ],
                                                                 M.get_trait_method (|
                                                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                   A,
@@ -2203,6 +2386,10 @@ Module iter.
                                     (M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::range::Range")
+                                            []
+                                            [ Ty.path "usize" ],
                                           M.get_trait_method (|
                                             "core::iter::traits::collect::IntoIterator",
                                             Ty.apply
@@ -2235,10 +2422,14 @@ Module iter.
                                             (let iter := M.copy (| γ |) in
                                             M.loop (|
                                               ltac:(M.monadic
-                                                (let~ _ :=
+                                                (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "usize" ],
                                                         M.get_trait_method (|
                                                           "core::iter::traits::iterator::Iterator",
                                                           Ty.apply
@@ -2285,9 +2476,17 @@ Module iter.
                                                               "core::option::Option::Some",
                                                               0
                                                             |) in
-                                                          let~ _ :=
+                                                          let~ _ :
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [ Ty.associated ] :=
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.associated ],
                                                                 M.get_trait_method (|
                                                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                   B,
@@ -2328,6 +2527,7 @@ Module iter.
                     Value.Tuple
                       [
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                           M.get_trait_method (|
                             "core::iter::traits::double_ended::DoubleEndedIterator",
                             A,
@@ -2349,6 +2549,7 @@ Module iter.
                           ]
                         |);
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
                           M.get_trait_method (|
                             "core::iter::traits::double_ended::DoubleEndedIterator",
                             B,
@@ -2407,6 +2608,7 @@ Module iter.
                         (M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
+                              Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [ M.read (| Value.String "internal error: entered unreachable code" |)
                               ]
@@ -2437,12 +2639,14 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ size :=
+                let~ size : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                       [
                         M.call_closure (|
+                          Ty.path "usize",
                           M.get_trait_method (|
                             "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                             A,
@@ -2464,6 +2668,7 @@ Module iter.
                           ]
                         |);
                         M.call_closure (|
+                          Ty.path "usize",
                           M.get_trait_method (|
                             "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                             B,
@@ -2519,7 +2724,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let idx := M.alloc (| idx |) in
               M.read (|
-                let~ idx :=
+                let~ idx : Ty.path "usize" :=
                   M.alloc (|
                     BinOp.Wrap.add (|
                       M.read (|
@@ -2536,6 +2741,7 @@ Module iter.
                   Value.Tuple
                     [
                       M.call_closure (|
+                        Ty.associated,
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           A,
@@ -2558,6 +2764,7 @@ Module iter.
                         ]
                       |);
                       M.call_closure (|
+                        Ty.associated,
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           B,
@@ -2612,12 +2819,17 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let~ accum := M.copy (| init |) in
-                let~ len :=
+                let~ accum : Acc := M.copy (| init |) in
+                let~ len : Ty.path "usize" :=
                   M.copy (|
                     M.SubPointer.get_tuple_field (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple
+                            [
+                              Ty.path "usize";
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::adapters::zip::ZipImpl",
                             Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
@@ -2638,11 +2850,12 @@ Module iter.
                       0
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -2668,10 +2881,14 @@ Module iter.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -2712,51 +2929,58 @@ Module iter.
                                               0
                                             |) in
                                           let i := M.copy (| γ0_0 |) in
-                                          let~ _ :=
-                                            M.write (|
-                                              accum,
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::function::FnMut",
-                                                  F,
-                                                  [],
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Acc;
-                                                        Ty.tuple [ Ty.associated; Ty.associated ]
-                                                      ]
-                                                  ],
-                                                  "call_mut",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (| Pointer.Kind.MutRef, f |);
-                                                  Value.Tuple
+                                          let~ _ : Ty.tuple [] :=
+                                            M.alloc (|
+                                              M.write (|
+                                                accum,
+                                                M.call_closure (|
+                                                  Acc,
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::FnMut",
+                                                    F,
+                                                    [],
                                                     [
-                                                      M.read (| accum |);
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::iter::adapters::zip::ZipImpl",
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "core::iter::adapters::zip::Zip")
-                                                            []
-                                                            [ A; B ],
-                                                          [],
-                                                          [ A; B ],
-                                                          "get_unchecked",
-                                                          [],
-                                                          []
-                                                        |),
+                                                      Ty.tuple
                                                         [
-                                                          M.borrow (| Pointer.Kind.MutRef, self |);
-                                                          M.read (| i |)
+                                                          Acc;
+                                                          Ty.tuple [ Ty.associated; Ty.associated ]
                                                         ]
-                                                      |)
-                                                    ]
-                                                ]
+                                                    ],
+                                                    "call_mut",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (| Pointer.Kind.MutRef, f |);
+                                                    Value.Tuple
+                                                      [
+                                                        M.read (| accum |);
+                                                        M.call_closure (|
+                                                          Ty.tuple [ Ty.associated; Ty.associated ],
+                                                          M.get_trait_method (|
+                                                            "core::iter::adapters::zip::ZipImpl",
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "core::iter::adapters::zip::Zip")
+                                                              []
+                                                              [ A; B ],
+                                                            [],
+                                                            [ A; B ],
+                                                            "get_unchecked",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.borrow (|
+                                                              Pointer.Kind.MutRef,
+                                                              self
+                                                            |);
+                                                            M.read (| i |)
+                                                          ]
+                                                        |)
+                                                      ]
+                                                  ]
+                                                |)
                                               |)
                                             |) in
                                           M.alloc (| Value.Tuple [] |)))
@@ -2808,9 +3032,10 @@ Module iter.
               (let a := M.alloc (| a |) in
               let b := M.alloc (| b |) in
               M.read (|
-                let~ a_len :=
+                let~ a_len : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_trait_method (|
                         "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                         A,
@@ -2823,13 +3048,15 @@ Module iter.
                       [ M.borrow (| Pointer.Kind.Ref, a |) ]
                     |)
                   |) in
-                let~ len :=
+                let~ len : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                       [
                         M.read (| a_len |);
                         M.call_closure (|
+                          Ty.path "usize",
                           M.get_trait_method (|
                             "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                             B,
@@ -2920,7 +3147,7 @@ Module iter.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ i :=
+                        let~ i : Ty.path "usize" :=
                           M.copy (|
                             M.SubPointer.get_struct_record_field (|
                               M.deref (| M.read (| self |) |),
@@ -2928,16 +3155,18 @@ Module iter.
                               "index"
                             |)
                           |) in
-                        let~ _ :=
-                          let β :=
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::iter::adapters::zip::Zip",
-                              "index"
-                            |) in
-                          M.write (|
-                            β,
-                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                        let~ _ : Ty.tuple [] :=
+                          M.alloc (|
+                            let β :=
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::zip::Zip",
+                                "index"
+                              |) in
+                            M.write (|
+                              β,
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                            |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -2946,6 +3175,7 @@ Module iter.
                               Value.Tuple
                                 [
                                   M.call_closure (|
+                                    Ty.associated,
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       A,
@@ -2968,6 +3198,7 @@ Module iter.
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.associated,
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       B,
@@ -3031,7 +3262,7 @@ Module iter.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ i :=
+                                let~ i : Ty.path "usize" :=
                                   M.copy (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.deref (| M.read (| self |) |),
@@ -3039,38 +3270,43 @@ Module iter.
                                       "index"
                                     |)
                                   |) in
-                                let~ _ :=
-                                  let β :=
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::iter::adapters::zip::Zip",
-                                      "index"
-                                    |) in
-                                  M.write (|
-                                    β,
-                                    BinOp.Wrap.add (|
-                                      M.read (| β |),
-                                      Value.Integer IntegerKind.Usize 1
+                                let~ _ : Ty.tuple [] :=
+                                  M.alloc (|
+                                    let β :=
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::zip::Zip",
+                                        "index"
+                                      |) in
+                                    M.write (|
+                                      β,
+                                      BinOp.Wrap.add (|
+                                        M.read (| β |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |)
                                     |)
                                   |) in
-                                let~ _ :=
-                                  let β :=
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::iter::adapters::zip::Zip",
-                                      "len"
-                                    |) in
-                                  M.write (|
-                                    β,
-                                    BinOp.Wrap.add (|
-                                      M.read (| β |),
-                                      Value.Integer IntegerKind.Usize 1
+                                let~ _ : Ty.tuple [] :=
+                                  M.alloc (|
+                                    let β :=
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::zip::Zip",
+                                        "len"
+                                      |) in
+                                    M.write (|
+                                      β,
+                                      BinOp.Wrap.add (|
+                                        M.read (| β |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |)
                                     |)
                                   |) in
-                                let~ _ :=
-                                  let~ _ :=
+                                let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.associated :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.associated,
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           A,
@@ -3124,7 +3360,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ len :=
+                let~ len : Ty.path "usize" :=
                   M.alloc (|
                     BinOp.Wrap.sub (|
                       M.read (|
@@ -3190,9 +3426,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
               M.read (|
-                let~ delta :=
+                let~ delta : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                       [
                         M.read (| n |);
@@ -3215,7 +3452,7 @@ Module iter.
                       ]
                     |)
                   |) in
-                let~ end_ :=
+                let~ end_ : Ty.path "usize" :=
                   M.alloc (|
                     BinOp.Wrap.add (|
                       M.read (|
@@ -3228,7 +3465,7 @@ Module iter.
                       M.read (| delta |)
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -3255,7 +3492,7 @@ Module iter.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ i :=
+                              let~ i : Ty.path "usize" :=
                                 M.copy (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.deref (| M.read (| self |) |),
@@ -3263,21 +3500,23 @@ Module iter.
                                     "index"
                                   |)
                                 |) in
-                              let~ _ :=
-                                let β :=
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::iter::adapters::zip::Zip",
-                                    "index"
-                                  |) in
-                                M.write (|
-                                  β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    Value.Integer IntegerKind.Usize 1
+                              let~ _ : Ty.tuple [] :=
+                                M.alloc (|
+                                  let β :=
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::zip::Zip",
+                                      "index"
+                                    |) in
+                                  M.write (|
+                                    β,
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |)
                                 |) in
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
                                   [
@@ -3292,9 +3531,10 @@ Module iter.
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
-                                        let~ _ :=
+                                        let~ _ : Ty.associated :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.associated,
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
                                                 A,
@@ -3335,9 +3575,10 @@ Module iter.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let~ _ :=
+                                      let~ _ : Ty.associated :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.associated,
                                             M.get_trait_method (|
                                               "core::iter::traits::iterator::Iterator",
                                               B,
@@ -3369,7 +3610,7 @@ Module iter.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -3382,6 +3623,10 @@ Module iter.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.tuple [ Ty.associated; Ty.associated ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
                       "super_nth",
@@ -3457,7 +3702,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3480,9 +3725,10 @@ Module iter.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ sz_a :=
+                          let~ sz_a : Ty.path "usize" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_trait_method (|
                                   "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                                   A,
@@ -3504,9 +3750,10 @@ Module iter.
                                 ]
                               |)
                             |) in
-                          let~ sz_b :=
+                          let~ sz_b : Ty.path "usize" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_trait_method (|
                                   "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                                   B,
@@ -3543,9 +3790,10 @@ Module iter.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ sz_a :=
+                                  let~ sz_a : Ty.path "usize" :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_trait_method (|
                                           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                                           A,
@@ -3567,7 +3815,7 @@ Module iter.
                                         ]
                                       |)
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -3599,11 +3847,15 @@ Module iter.
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
-                                            let~ _ :=
+                                            let~ _ : Ty.tuple [] :=
                                               M.use
                                                 (M.match_operator (|
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::ops::range::Range")
+                                                        []
+                                                        [ Ty.path "usize" ],
                                                       M.get_trait_method (|
                                                         "core::iter::traits::collect::IntoIterator",
                                                         Ty.apply
@@ -3643,10 +3895,15 @@ Module iter.
                                                         (let iter := M.copy (| γ |) in
                                                         M.loop (|
                                                           ltac:(M.monadic
-                                                            (let~ _ :=
+                                                            (let~ _ : Ty.tuple [] :=
                                                               M.match_operator (|
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::option::Option")
+                                                                      []
+                                                                      [ Ty.path "usize" ],
                                                                     M.get_trait_method (|
                                                                       "core::iter::traits::iterator::Iterator",
                                                                       Ty.apply
@@ -3694,27 +3951,39 @@ Module iter.
                                                                           "core::option::Option::Some",
                                                                           0
                                                                         |) in
-                                                                      let~ _ :=
-                                                                        let β :=
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.deref (|
-                                                                              M.read (| self |)
-                                                                            |),
-                                                                            "core::iter::adapters::zip::Zip",
-                                                                            "a_len"
-                                                                          |) in
-                                                                        M.write (|
-                                                                          β,
-                                                                          BinOp.Wrap.sub (|
-                                                                            M.read (| β |),
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              1
+                                                                      let~ _ : Ty.tuple [] :=
+                                                                        M.alloc (|
+                                                                          let β :=
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.deref (|
+                                                                                M.read (| self |)
+                                                                              |),
+                                                                              "core::iter::adapters::zip::Zip",
+                                                                              "a_len"
+                                                                            |) in
+                                                                          M.write (|
+                                                                            β,
+                                                                            BinOp.Wrap.sub (|
+                                                                              M.read (| β |),
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            |)
                                                                           |)
                                                                         |) in
-                                                                      let~ _ :=
+                                                                      let~ _ :
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [ Ty.associated ] :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::option::Option")
+                                                                              []
+                                                                              [ Ty.associated ],
                                                                             M.get_trait_method (|
                                                                               "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                               A,
@@ -3747,7 +4016,7 @@ Module iter.
                                                         |)))
                                                   ]
                                                 |)) in
-                                            let~ _ :=
+                                            let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
@@ -3760,7 +4029,7 @@ Module iter.
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
-                                                      let~ _ :=
+                                                      let~ _ : Ty.tuple [] :=
                                                         M.match_operator (|
                                                           M.alloc (|
                                                             Value.Tuple
@@ -3834,7 +4103,9 @@ Module iter.
                                                                         M.alloc (|
                                                                           M.never_to_any (|
                                                                             M.read (|
-                                                                              let~ kind :=
+                                                                              let~ kind :
+                                                                                  Ty.path
+                                                                                    "core::panicking::AssertKind" :=
                                                                                 M.alloc (|
                                                                                   Value.StructTuple
                                                                                     "core::panicking::AssertKind::Eq"
@@ -3842,6 +4113,7 @@ Module iter.
                                                                                 |) in
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.path "never",
                                                                                   M.get_function (|
                                                                                     "core::panicking::assert_failed",
                                                                                     [],
@@ -3909,9 +4181,10 @@ Module iter.
                                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                       ]
                                     |) in
-                                  let~ sz_b :=
+                                  let~ sz_b : Ty.path "usize" :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_trait_method (|
                                           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce",
                                           B,
@@ -3968,6 +4241,10 @@ Module iter.
                                             (M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::range::Range")
+                                                    []
+                                                    [ Ty.path "usize" ],
                                                   M.get_trait_method (|
                                                     "core::iter::traits::collect::IntoIterator",
                                                     Ty.apply
@@ -4007,10 +4284,14 @@ Module iter.
                                                     (let iter := M.copy (| γ |) in
                                                     M.loop (|
                                                       ltac:(M.monadic
-                                                        (let~ _ :=
+                                                        (let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "usize" ],
                                                                 M.get_trait_method (|
                                                                   "core::iter::traits::iterator::Iterator",
                                                                   Ty.apply
@@ -4058,9 +4339,19 @@ Module iter.
                                                                       "core::option::Option::Some",
                                                                       0
                                                                     |) in
-                                                                  let~ _ :=
+                                                                  let~ _ :
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::option::Option")
+                                                                        []
+                                                                        [ Ty.associated ] :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [ Ty.associated ],
                                                                         M.get_trait_method (|
                                                                           "core::iter::traits::double_ended::DoubleEndedIterator",
                                                                           B,
@@ -4127,29 +4418,33 @@ Module iter.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
-                          let β :=
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::iter::adapters::zip::Zip",
-                              "len"
-                            |) in
-                          M.write (|
-                            β,
-                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                        let~ _ : Ty.tuple [] :=
+                          M.alloc (|
+                            let β :=
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::zip::Zip",
+                                "len"
+                              |) in
+                            M.write (|
+                              β,
+                              BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                            |)
                           |) in
-                        let~ _ :=
-                          let β :=
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::iter::adapters::zip::Zip",
-                              "a_len"
-                            |) in
-                          M.write (|
-                            β,
-                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                        let~ _ : Ty.tuple [] :=
+                          M.alloc (|
+                            let β :=
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "core::iter::adapters::zip::Zip",
+                                "a_len"
+                              |) in
+                            M.write (|
+                              β,
+                              BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                            |)
                           |) in
-                        let~ i :=
+                        let~ i : Ty.path "usize" :=
                           M.copy (|
                             M.SubPointer.get_struct_record_field (|
                               M.deref (| M.read (| self |) |),
@@ -4164,6 +4459,7 @@ Module iter.
                               Value.Tuple
                                 [
                                   M.call_closure (|
+                                    Ty.associated,
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       A,
@@ -4186,6 +4482,7 @@ Module iter.
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.associated,
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       B,
@@ -4384,6 +4681,7 @@ Module iter.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
                             M.get_trait_method (|
                               "core::iter::adapters::SourceIter",
                               A,
@@ -4487,6 +4785,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_trait_method (|
                   "core::iter::adapters::zip::ZipFmt",
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
@@ -4533,6 +4835,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
@@ -4544,6 +4850,7 @@ Module iter.
                     Pointer.Kind.MutRef,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugStruct",
                           "field",
@@ -4555,6 +4862,10 @@ Module iter.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "core::fmt::builders::DebugStruct" ],
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugStruct",
                                   "field",
@@ -4566,6 +4877,7 @@ Module iter.
                                     Pointer.Kind.MutRef,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "core::fmt::builders::DebugStruct",
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "debug_struct",
@@ -4660,6 +4972,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
@@ -4671,6 +4987,7 @@ Module iter.
                     Pointer.Kind.MutRef,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "core::fmt::builders::DebugStruct",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_struct",
@@ -4715,6 +5032,11 @@ Module iter.
                 M.SubPointer.get_tuple_field (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple
+                        [
+                          Ty.path "usize";
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Self,
@@ -4754,6 +5076,7 @@ Module iter.
             (let it := M.alloc (| it |) in
             let idx := M.alloc (| idx |) in
             M.call_closure (|
+              Ty.associated,
               M.get_trait_method (|
                 "core::iter::adapters::zip::SpecTrustedRandomAccess",
                 I,
@@ -4803,9 +5126,11 @@ Module iter.
                     ltac:(M.monadic
                       (M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::panicking::panic_fmt", [], [] |),
                           [
                             M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
@@ -4872,6 +5197,7 @@ Module iter.
               (let self := M.alloc (| self |) in
               let index := M.alloc (| index |) in
               M.call_closure (|
+                Ty.associated,
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -4931,8 +5257,8 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let~ accum := M.copy (| init |) in
-                let~ _ :=
+                let~ accum : Acc := M.copy (| init |) in
+                let~ _ : Ty.tuple [] :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -4943,6 +5269,10 @@ Module iter.
                               (let γ :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.tuple [ Ty.associated; Ty.associated ] ],
                                     M.get_trait_method (|
                                       "core::iter::adapters::zip::ZipImpl",
                                       Ty.apply
@@ -4970,24 +5300,29 @@ Module iter.
                                   0
                                 |) in
                               let x := M.copy (| γ0_0 |) in
-                              let~ _ :=
-                                M.write (|
-                                  accum,
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::function::FnMut",
-                                      F,
-                                      [],
-                                      [ Ty.tuple [ Acc; Ty.tuple [ Ty.associated; Ty.associated ] ]
-                                      ],
-                                      "call_mut",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.MutRef, f |);
-                                      Value.Tuple [ M.read (| accum |); M.read (| x |) ]
-                                    ]
+                              let~ _ : Ty.tuple [] :=
+                                M.alloc (|
+                                  M.write (|
+                                    accum,
+                                    M.call_closure (|
+                                      Acc,
+                                      M.get_trait_method (|
+                                        "core::ops::function::FnMut",
+                                        F,
+                                        [],
+                                        [
+                                          Ty.tuple
+                                            [ Acc; Ty.tuple [ Ty.associated; Ty.associated ] ]
+                                        ],
+                                        "call_mut",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (| Pointer.Kind.MutRef, f |);
+                                        Value.Tuple [ M.read (| accum |); M.read (| x |) ]
+                                      ]
+                                    |)
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -4996,7 +5331,7 @@ Module iter.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -5068,8 +5403,8 @@ Module iter.
               let init := M.alloc (| init |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let~ accum := M.copy (| init |) in
-                let~ _ :=
+                let~ accum : Acc := M.copy (| init |) in
+                let~ _ : Ty.tuple [] :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -5082,6 +5417,14 @@ Module iter.
                                   M.SubPointer.get_tuple_field (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple
+                                          [
+                                            Ty.path "usize";
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "usize" ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::adapters::zip::ZipImpl",
                                           Ty.apply
@@ -5130,11 +5473,15 @@ Module iter.
                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let upper := M.copy (| γ0_0 |) in
                               let more := M.copy (| γ0_1 |) in
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.use
                                   (M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::Range")
+                                          []
+                                          [ Ty.path "usize" ],
                                         M.get_trait_method (|
                                           "core::iter::traits::collect::IntoIterator",
                                           Ty.apply
@@ -5163,10 +5510,14 @@ Module iter.
                                           (let iter := M.copy (| γ |) in
                                           M.loop (|
                                             ltac:(M.monadic
-                                              (let~ _ :=
+                                              (let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "usize" ],
                                                       M.get_trait_method (|
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
@@ -5210,11 +5561,14 @@ Module iter.
                                                             "core::option::Option::Some",
                                                             0
                                                           |) in
-                                                        let~ pair_ :=
+                                                        let~ pair_ :
+                                                            Ty.tuple
+                                                              [ Ty.associated; Ty.associated ] :=
                                                           M.alloc (|
                                                             Value.Tuple
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.associated,
                                                                   M.get_associated_function (|
                                                                     Ty.apply
                                                                       (Ty.path
@@ -5227,6 +5581,11 @@ Module iter.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::option::Option")
+                                                                        []
+                                                                        [ Ty.associated ],
                                                                       M.get_trait_method (|
                                                                         "core::iter::traits::iterator::Iterator",
                                                                         A,
@@ -5250,6 +5609,7 @@ Module iter.
                                                                   ]
                                                                 |);
                                                                 M.call_closure (|
+                                                                  Ty.associated,
                                                                   M.get_associated_function (|
                                                                     Ty.apply
                                                                       (Ty.path
@@ -5262,6 +5622,11 @@ Module iter.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::option::Option")
+                                                                        []
+                                                                        [ Ty.associated ],
                                                                       M.get_trait_method (|
                                                                         "core::iter::traits::iterator::Iterator",
                                                                         B,
@@ -5286,40 +5651,43 @@ Module iter.
                                                                 |)
                                                               ]
                                                           |) in
-                                                        let~ _ :=
-                                                          M.write (|
-                                                            accum,
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::ops::function::FnMut",
-                                                                F,
-                                                                [],
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Acc;
-                                                                      Ty.tuple
-                                                                        [
-                                                                          Ty.associated;
-                                                                          Ty.associated
-                                                                        ]
-                                                                    ]
-                                                                ],
-                                                                "call_mut",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.MutRef,
-                                                                  f
-                                                                |);
-                                                                Value.Tuple
+                                                        let~ _ : Ty.tuple [] :=
+                                                          M.alloc (|
+                                                            M.write (|
+                                                              accum,
+                                                              M.call_closure (|
+                                                                Acc,
+                                                                M.get_trait_method (|
+                                                                  "core::ops::function::FnMut",
+                                                                  F,
+                                                                  [],
                                                                   [
-                                                                    M.read (| accum |);
-                                                                    M.read (| pair_ |)
-                                                                  ]
-                                                              ]
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Acc;
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.associated;
+                                                                            Ty.associated
+                                                                          ]
+                                                                      ]
+                                                                  ],
+                                                                  "call_mut",
+                                                                  [],
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.borrow (|
+                                                                    Pointer.Kind.MutRef,
+                                                                    f
+                                                                  |);
+                                                                  Value.Tuple
+                                                                    [
+                                                                      M.read (| accum |);
+                                                                      M.read (| pair_ |)
+                                                                    ]
+                                                                ]
+                                                              |)
                                                             |)
                                                           |) in
                                                         M.alloc (| Value.Tuple [] |)))

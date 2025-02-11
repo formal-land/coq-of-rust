@@ -65,6 +65,7 @@ Module task.
                           "core::task::poll::Poll::Ready"
                           [
                             M.call_closure (|
+                              T,
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 T,
@@ -126,6 +127,10 @@ Module task.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "debug_tuple_field1_finish",
@@ -151,6 +156,10 @@ Module task.
                       let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.get_associated_function (|
                             Ty.path "core::fmt::Formatter",
                             "write_str",
@@ -239,9 +248,10 @@ Module task.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -250,9 +260,10 @@ Module task.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -291,6 +302,7 @@ Module task.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply (Ty.path "&") [] [ T ],
@@ -337,9 +349,10 @@ Module task.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -348,9 +361,10 @@ Module task.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -362,6 +376,7 @@ Module task.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::cmp::Ordering",
                     M.get_trait_method (|
                       "core::cmp::Ord",
                       Ty.path "isize",
@@ -412,6 +427,7 @@ Module task.
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     T,
@@ -469,9 +485,10 @@ Module task.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -480,9 +497,10 @@ Module task.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ __arg1_discr :=
+              let~ __arg1_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -516,6 +534,10 @@ Module task.
                       let __arg1_0 := M.alloc (| γ2_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             T,
@@ -535,6 +557,10 @@ Module task.
                     ltac:(M.monadic
                       (M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "isize",
@@ -583,9 +609,10 @@ Module task.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_discr :=
+              let~ __self_discr : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_function (|
                       "core::intrinsics::discriminant_value",
                       [],
@@ -594,9 +621,10 @@ Module task.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "isize",
@@ -630,6 +658,7 @@ Module task.
                       let __self_0 := M.alloc (| γ1_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_trait_method (|
                             "core::hash::Hash",
                             T,
@@ -700,6 +729,7 @@ Module task.
                           "core::task::poll::Poll::Ready"
                           [
                             M.call_closure (|
+                              U,
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
                                 F,
@@ -777,6 +807,7 @@ Module task.
             (let self := M.alloc (| self |) in
             UnOp.not (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
                   "is_ready",
@@ -848,6 +879,7 @@ Module task.
                               "core::result::Result::Ok"
                               [
                                 M.call_closure (|
+                                  U,
                                   M.get_trait_method (|
                                     "core::ops::function::FnOnce",
                                     F,
@@ -963,6 +995,7 @@ Module task.
                               "core::result::Result::Err"
                               [
                                 M.call_closure (|
+                                  U,
                                   M.get_trait_method (|
                                     "core::ops::function::FnOnce",
                                     F,
@@ -1061,6 +1094,7 @@ Module task.
                                   "core::result::Result::Ok"
                                   [
                                     M.call_closure (|
+                                      U,
                                       M.get_trait_method (|
                                         "core::ops::function::FnOnce",
                                         F,
@@ -1221,6 +1255,7 @@ Module task.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      U,
                                       M.get_trait_method (|
                                         "core::ops::function::FnOnce",
                                         F,
@@ -1325,6 +1360,10 @@ Module task.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
+                [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
                 "map",
@@ -1473,6 +1512,7 @@ Module task.
                               "core::result::Result::Err"
                               [
                                 M.call_closure (|
+                                  F,
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     F,
@@ -1546,6 +1586,15 @@ Module task.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::task::poll::Poll")
@@ -1581,6 +1630,10 @@ Module task.
                                 ltac:(M.monadic
                                   (let x := M.copy (| γ |) in
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                       "map",
@@ -1783,6 +1836,7 @@ Module task.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      F,
                                       M.get_trait_method (|
                                         "core::convert::From",
                                         F,

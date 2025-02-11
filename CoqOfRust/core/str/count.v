@@ -8,6 +8,7 @@ Module str.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
+              Ty.path "usize",
               M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
               []
             |)
@@ -56,6 +57,7 @@ Module str.
                             ltac:(M.monadic
                               (BinOp.lt (|
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_associated_function (| Ty.path "str", "len", [], [] |),
                                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                                 |),
@@ -69,12 +71,17 @@ Module str.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_function (| "core::str::count::char_count_general_case", [], [] |),
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                               |)
@@ -87,6 +94,7 @@ Module str.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_function (| "core::str::count::do_count_chars", [], [] |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                       |)
@@ -183,6 +191,21 @@ Module str.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ] ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "align_to",
@@ -194,6 +217,10 @@ Module str.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                             |)
@@ -211,7 +238,7 @@ Module str.
                         let head := M.copy (| γ0_0 |) in
                         let body := M.copy (| γ0_1 |) in
                         let tail := M.copy (| γ0_2 |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -221,11 +248,13 @@ Module str.
                                     M.use
                                       (M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_function (| "core::intrinsics::unlikely", [], [] |),
                                           [
                                             LogicalOp.or (|
                                               LogicalOp.or (|
                                                 M.call_closure (|
+                                                  Ty.path "bool",
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "slice")
@@ -245,6 +274,7 @@ Module str.
                                                 ltac:(M.monadic
                                                   (BinOp.gt (|
                                                     M.call_closure (|
+                                                      Ty.path "usize",
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "slice")
@@ -269,6 +299,7 @@ Module str.
                                               ltac:(M.monadic
                                                 (BinOp.gt (|
                                                   M.call_closure (|
+                                                    Ty.path "usize",
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "slice")
@@ -303,6 +334,7 @@ Module str.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_function (|
                                               "core::str::count::char_count_general_case",
                                               [],
@@ -313,6 +345,15 @@ Module str.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path "str",
                                                       "as_bytes",
@@ -337,10 +378,11 @@ Module str.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ total :=
+                        let~ total : Ty.path "usize" :=
                           M.alloc (|
                             BinOp.Wrap.add (|
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_function (|
                                   "core::str::count::char_count_general_case",
                                   [],
@@ -349,6 +391,7 @@ Module str.
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| head |) |) |) ]
                               |),
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_function (|
                                   "core::str::count::char_count_general_case",
                                   [],
@@ -358,11 +401,15 @@ Module str.
                               |)
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.use
                             (M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Chunks")
+                                    []
+                                    [ Ty.path "usize" ],
                                   M.get_trait_method (|
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
@@ -377,6 +424,10 @@ Module str.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Chunks")
+                                        []
+                                        [ Ty.path "usize" ],
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ],
                                         "chunks",
@@ -403,10 +454,24 @@ Module str.
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
                                       ltac:(M.monadic
-                                        (let~ _ :=
+                                        (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "usize" ]
+                                                      ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -449,13 +514,43 @@ Module str.
                                                       0
                                                     |) in
                                                   let chunk := M.copy (| γ0_0 |) in
-                                                  let~ counts :=
+                                                  let~ counts : Ty.path "usize" :=
                                                     M.alloc (|
                                                       Value.Integer IntegerKind.Usize 0
                                                     |) in
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "array")
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          4
+                                                                      ]
+                                                                      [ Ty.path "usize" ]
+                                                                  ]
+                                                              ];
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "usize" ]
+                                                              ]
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "slice")
@@ -489,11 +584,25 @@ Module str.
                                                           let unrolled_chunks :=
                                                             M.copy (| γ0_0 |) in
                                                           let remainder := M.copy (| γ0_1 |) in
-                                                          let~ _ :=
+                                                          let~ _ : Ty.tuple [] :=
                                                             M.use
                                                               (M.match_operator (|
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::slice::iter::Iter")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              4
+                                                                          ]
+                                                                          [ Ty.path "usize" ]
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::iter::traits::collect::IntoIterator",
                                                                       Ty.apply
@@ -529,10 +638,34 @@ Module str.
                                                                       (let iter := M.copy (| γ |) in
                                                                       M.loop (|
                                                                         ltac:(M.monadic
-                                                                          (let~ _ :=
+                                                                          (let~ _ : Ty.tuple [] :=
                                                                             M.match_operator (|
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "array")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                IntegerKind.Usize
+                                                                                                4
+                                                                                            ]
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "usize"
+                                                                                            ]
+                                                                                        ]
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::iter::traits::iterator::Iterator",
                                                                                     Ty.apply
@@ -603,6 +736,14 @@ Module str.
                                                                                       (M.match_operator (|
                                                                                         M.alloc (|
                                                                                           M.call_closure (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "core::slice::iter::Iter")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "usize"
+                                                                                              ],
                                                                                             M.get_trait_method (|
                                                                                               "core::iter::traits::collect::IntoIterator",
                                                                                               Ty.apply
@@ -647,10 +788,26 @@ Module str.
                                                                                               M.loop (|
                                                                                                 ltac:(M.monadic
                                                                                                   (let~
-                                                                                                        _ :=
+                                                                                                        _ :
+                                                                                                      Ty.tuple
+                                                                                                        [] :=
                                                                                                     M.match_operator (|
                                                                                                       M.alloc (|
                                                                                                         M.call_closure (|
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "core::option::Option")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "&")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "usize"
+                                                                                                                ]
+                                                                                                            ],
                                                                                                           M.get_trait_method (|
                                                                                                             "core::iter::traits::iterator::Iterator",
                                                                                                             Ty.apply
@@ -718,27 +875,33 @@ Module str.
                                                                                                                 γ0_0
                                                                                                               |) in
                                                                                                             let~
-                                                                                                                  _ :=
-                                                                                                              let
-                                                                                                                    β :=
-                                                                                                                counts in
-                                                                                                              M.write (|
-                                                                                                                β,
-                                                                                                                BinOp.Wrap.add (|
-                                                                                                                  M.read (|
-                                                                                                                    β
-                                                                                                                  |),
-                                                                                                                  M.call_closure (|
-                                                                                                                    M.get_function (|
-                                                                                                                      "core::str::count::contains_non_continuation_byte",
-                                                                                                                      [],
-                                                                                                                      []
+                                                                                                                  _ :
+                                                                                                                Ty.tuple
+                                                                                                                  [] :=
+                                                                                                              M.alloc (|
+                                                                                                                let
+                                                                                                                      β :=
+                                                                                                                  counts in
+                                                                                                                M.write (|
+                                                                                                                  β,
+                                                                                                                  BinOp.Wrap.add (|
+                                                                                                                    M.read (|
+                                                                                                                      β
                                                                                                                     |),
-                                                                                                                    [
-                                                                                                                      M.read (|
-                                                                                                                        word
-                                                                                                                      |)
-                                                                                                                    ]
+                                                                                                                    M.call_closure (|
+                                                                                                                      Ty.path
+                                                                                                                        "usize",
+                                                                                                                      M.get_function (|
+                                                                                                                        "core::str::count::contains_non_continuation_byte",
+                                                                                                                        [],
+                                                                                                                        []
+                                                                                                                      |),
+                                                                                                                      [
+                                                                                                                        M.read (|
+                                                                                                                          word
+                                                                                                                        |)
+                                                                                                                      ]
+                                                                                                                    |)
                                                                                                                   |)
                                                                                                                 |)
                                                                                                               |) in
@@ -763,19 +926,22 @@ Module str.
                                                                       |)))
                                                                 ]
                                                               |)) in
-                                                          let~ _ :=
-                                                            let β := total in
-                                                            M.write (|
-                                                              β,
-                                                              BinOp.Wrap.add (|
-                                                                M.read (| β |),
-                                                                M.call_closure (|
-                                                                  M.get_function (|
-                                                                    "core::str::count::sum_bytes_in_usize",
-                                                                    [],
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| counts |) ]
+                                                          let~ _ : Ty.tuple [] :=
+                                                            M.alloc (|
+                                                              let β := total in
+                                                              M.write (|
+                                                                β,
+                                                                BinOp.Wrap.add (|
+                                                                  M.read (| β |),
+                                                                  M.call_closure (|
+                                                                    Ty.path "usize",
+                                                                    M.get_function (|
+                                                                      "core::str::count::sum_bytes_in_usize",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [ M.read (| counts |) ]
+                                                                  |)
                                                                 |)
                                                               |)
                                                             |) in
@@ -789,6 +955,7 @@ Module str.
                                                                       (M.alloc (|
                                                                         UnOp.not (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
@@ -819,17 +986,26 @@ Module str.
                                                                   M.alloc (|
                                                                     M.never_to_any (|
                                                                       M.read (|
-                                                                        let~ counts :=
+                                                                        let~ counts :
+                                                                            Ty.path "usize" :=
                                                                           M.alloc (|
                                                                             Value.Integer
                                                                               IntegerKind.Usize
                                                                               0
                                                                           |) in
-                                                                        let~ _ :=
+                                                                        let~ _ : Ty.tuple [] :=
                                                                           M.use
                                                                             (M.match_operator (|
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::slice::iter::Iter")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "usize"
+                                                                                    ],
                                                                                   M.get_trait_method (|
                                                                                     "core::iter::traits::collect::IntoIterator",
                                                                                     Ty.apply
@@ -867,10 +1043,26 @@ Module str.
                                                                                       |) in
                                                                                     M.loop (|
                                                                                       ltac:(M.monadic
-                                                                                        (let~ _ :=
+                                                                                        (let~ _ :
+                                                                                            Ty.tuple
+                                                                                              [] :=
                                                                                           M.match_operator (|
                                                                                             M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "core::option::Option")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "&")
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.path
+                                                                                                          "usize"
+                                                                                                      ]
+                                                                                                  ],
                                                                                                 M.get_trait_method (|
                                                                                                   "core::iter::traits::iterator::Iterator",
                                                                                                   Ty.apply
@@ -938,27 +1130,33 @@ Module str.
                                                                                                       γ0_0
                                                                                                     |) in
                                                                                                   let~
-                                                                                                        _ :=
-                                                                                                    let
-                                                                                                          β :=
-                                                                                                      counts in
-                                                                                                    M.write (|
-                                                                                                      β,
-                                                                                                      BinOp.Wrap.add (|
-                                                                                                        M.read (|
-                                                                                                          β
-                                                                                                        |),
-                                                                                                        M.call_closure (|
-                                                                                                          M.get_function (|
-                                                                                                            "core::str::count::contains_non_continuation_byte",
-                                                                                                            [],
-                                                                                                            []
+                                                                                                        _ :
+                                                                                                      Ty.tuple
+                                                                                                        [] :=
+                                                                                                    M.alloc (|
+                                                                                                      let
+                                                                                                            β :=
+                                                                                                        counts in
+                                                                                                      M.write (|
+                                                                                                        β,
+                                                                                                        BinOp.Wrap.add (|
+                                                                                                          M.read (|
+                                                                                                            β
                                                                                                           |),
-                                                                                                          [
-                                                                                                            M.read (|
-                                                                                                              word
-                                                                                                            |)
-                                                                                                          ]
+                                                                                                          M.call_closure (|
+                                                                                                            Ty.path
+                                                                                                              "usize",
+                                                                                                            M.get_function (|
+                                                                                                              "core::str::count::contains_non_continuation_byte",
+                                                                                                              [],
+                                                                                                              []
+                                                                                                            |),
+                                                                                                            [
+                                                                                                              M.read (|
+                                                                                                                word
+                                                                                                              |)
+                                                                                                            ]
+                                                                                                          |)
                                                                                                         |)
                                                                                                       |)
                                                                                                     |) in
@@ -975,23 +1173,26 @@ Module str.
                                                                                     |)))
                                                                               ]
                                                                             |)) in
-                                                                        let~ _ :=
-                                                                          let β := total in
-                                                                          M.write (|
-                                                                            β,
-                                                                            BinOp.Wrap.add (|
-                                                                              M.read (| β |),
-                                                                              M.call_closure (|
-                                                                                M.get_function (|
-                                                                                  "core::str::count::sum_bytes_in_usize",
-                                                                                  [],
-                                                                                  []
-                                                                                |),
-                                                                                [
-                                                                                  M.read (|
-                                                                                    counts
-                                                                                  |)
-                                                                                ]
+                                                                        let~ _ : Ty.tuple [] :=
+                                                                          M.alloc (|
+                                                                            let β := total in
+                                                                            M.write (|
+                                                                              β,
+                                                                              BinOp.Wrap.add (|
+                                                                                M.read (| β |),
+                                                                                M.call_closure (|
+                                                                                  Ty.path "usize",
+                                                                                  M.get_function (|
+                                                                                    "core::str::count::sum_bytes_in_usize",
+                                                                                    [],
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      counts
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
                                                                               |)
                                                                             |)
                                                                           |) in
@@ -1067,6 +1268,7 @@ Module str.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.path "usize",
                 M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
                 [ Value.Integer IntegerKind.U8 1 ]
               |)
@@ -1092,7 +1294,7 @@ Module str.
         ltac:(M.monadic
           (let values := M.alloc (| values |) in
           M.read (|
-            let~ pair_sum :=
+            let~ pair_sum : Ty.path "usize" :=
               M.alloc (|
                 BinOp.Wrap.add (|
                   BinOp.bit_and
@@ -1108,6 +1310,7 @@ Module str.
             M.alloc (|
               BinOp.Wrap.shr (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (| Ty.path "usize", "wrapping_mul", [], [] |),
                   [
                     M.read (| pair_sum |);
@@ -1137,6 +1340,7 @@ Module str.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.path "usize",
                 M.get_associated_function (| Ty.path "usize", "repeat_u16", [], [] |),
                 [ Value.Integer IntegerKind.U16 1 ]
               |)
@@ -1151,6 +1355,7 @@ Module str.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.path "usize",
                 M.get_associated_function (| Ty.path "usize", "repeat_u16", [], [] |),
                 [ Value.Integer IntegerKind.U16 255 ]
               |)
@@ -1172,6 +1377,7 @@ Module str.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -1194,6 +1400,19 @@ Module str.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::iter::adapters::filter::Filter")
+                  []
+                  [
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                          ]
+                      ]
+                      (Ty.path "bool")
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
@@ -1213,6 +1432,7 @@ Module str.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                       "iter",
@@ -1237,6 +1457,7 @@ Module str.
                                     let byte := M.copy (| γ |) in
                                     UnOp.not (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_function (|
                                           "core::str::validations::utf8_is_cont_byte",
                                           [],

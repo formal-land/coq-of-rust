@@ -96,9 +96,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "generics_functions::reg_fn", [], [] |),
               [
                 Value.StructTuple
@@ -107,9 +108,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "generics_functions::gen_spec_t", [], [] |),
               [
                 Value.StructTuple
@@ -118,23 +120,26 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "generics_functions::gen_spec_i32", [], [] |),
               [ Value.StructTuple "generics_functions::SGen" [ Value.Integer IntegerKind.I32 6 ] ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "generics_functions::generic", [], [ Ty.path "char" ] |),
               [ Value.StructTuple "generics_functions::SGen" [ Value.UnicodeChar 97 ] ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "generics_functions::generic", [], [ Ty.path "char" ] |),
               [ Value.StructTuple "generics_functions::SGen" [ Value.UnicodeChar 99 ] ]
             |)

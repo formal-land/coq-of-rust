@@ -68,6 +68,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
         M.match_operator (|
           M.alloc (|
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
               M.get_function (| "option::checked_division", [], [] |),
               [ M.read (| dividend |); M.read (| divisor |) ]
             |)
@@ -76,12 +77,14 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -115,6 +118,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
@@ -131,6 +135,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                           ]
                                         |);
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
@@ -160,12 +165,14 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let quotient := M.copy (| γ0_0 |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -200,6 +207,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
@@ -216,6 +224,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                           ]
                                         |);
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
@@ -230,6 +239,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                           ]
                                         |);
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
@@ -292,33 +302,39 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "option::try_division", [], [] |),
               [ Value.Integer IntegerKind.I32 4; Value.Integer IntegerKind.I32 2 ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "option::try_division", [], [] |),
               [ Value.Integer IntegerKind.I32 1; Value.Integer IntegerKind.I32 0 ]
             |)
           |) in
-        let~ none := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-        let~ _equivalent_none := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
-        let~ optional_float :=
+        let~ none : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] :=
+          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let~ _equivalent_none : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] :=
+          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+        let~ optional_float : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "f32" ] :=
           M.alloc (|
             Value.StructTuple "core::option::Option::Some" [ M.read (| UnsupportedLiteral |) ]
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -352,6 +368,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -373,6 +390,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -387,6 +405,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "f32",
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -415,13 +434,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -455,6 +476,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -474,6 +496,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -488,6 +511,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "i32",
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")

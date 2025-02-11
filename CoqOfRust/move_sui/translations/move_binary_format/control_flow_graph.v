@@ -96,13 +96,15 @@ Module control_flow_graph.
           (let self := M.alloc (| self |) in
           let entry := M.alloc (| entry |) in
           M.read (|
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
@@ -129,13 +131,15 @@ Module control_flow_graph.
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_v1",
@@ -168,6 +172,7 @@ Module control_flow_graph.
                                   Value.Array
                                     [
                                       M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
@@ -192,13 +197,15 @@ Module control_flow_graph.
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
@@ -225,13 +232,15 @@ Module control_flow_graph.
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_v1",
@@ -264,6 +273,7 @@ Module control_flow_graph.
                                   Value.Array
                                     [
                                       M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_debug",
@@ -302,13 +312,15 @@ Module control_flow_graph.
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
@@ -335,13 +347,15 @@ Module control_flow_graph.
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_v1",
@@ -374,6 +388,7 @@ Module control_flow_graph.
                                   Value.Array
                                     [
                                       M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
@@ -407,13 +422,15 @@ Module control_flow_graph.
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
@@ -610,11 +627,12 @@ Module control_flow_graph.
         ltac:(M.monadic
           (let code := M.alloc (| code |) in
           M.read (|
-            let~ code_len :=
+            let~ code_len : Ty.path "u16" :=
               M.alloc (|
                 M.cast
                   (Ty.path "u16")
                   (M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "slice")
@@ -627,9 +645,17 @@ Module control_flow_graph.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |) ]
                   |))
               |) in
-            let~ block_ids :=
+            let~ block_ids :
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::set::BTreeSet")
+                  []
+                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::set::BTreeSet")
+                    []
+                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -642,9 +668,10 @@ Module control_flow_graph.
                   []
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.path "bool" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -662,11 +689,12 @@ Module control_flow_graph.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -683,6 +711,7 @@ Module control_flow_graph.
                             ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_",
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -704,10 +733,14 @@ Module control_flow_graph.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let~ _ :=
+                            (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
@@ -745,9 +778,10 @@ Module control_flow_graph.
                                           0
                                         |) in
                                       let pc := M.copy (| γ0_0 |) in
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.tuple [],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::control_flow_graph::VMControlFlowGraph",
@@ -777,9 +811,25 @@ Module control_flow_graph.
                         |)))
                   ]
                 |)) in
-            let~ blocks :=
+            let~ blocks :
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [
+                    Ty.path "u16";
+                    Ty.path "move_binary_format::control_flow_graph::BasicBlock";
+                    Ty.path "alloc::alloc::Global"
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "u16";
+                      Ty.path "move_binary_format::control_flow_graph::BasicBlock";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -796,10 +846,18 @@ Module control_flow_graph.
                   []
                 |)
               |) in
-            let~ entry := M.alloc (| Value.Integer IntegerKind.U16 0 |) in
-            let~ exit_to_entry :=
+            let~ entry : Ty.path "u16" := M.alloc (| Value.Integer IntegerKind.U16 0 |) in
+            let~ exit_to_entry :
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -812,11 +870,12 @@ Module control_flow_graph.
                   []
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -833,6 +892,7 @@ Module control_flow_graph.
                             ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_",
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -854,10 +914,14 @@ Module control_flow_graph.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let~ _ :=
+                            (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
@@ -895,7 +959,7 @@ Module control_flow_graph.
                                           0
                                         |) in
                                       let pc := M.copy (| γ0_0 |) in
-                                      let~ co_pc :=
+                                      let~ co_pc : Ty.path "u16" :=
                                         M.alloc (| M.cast (Ty.path "u16") (M.read (| pc |)) |) in
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
@@ -906,6 +970,7 @@ Module control_flow_graph.
                                                 M.use
                                                   (M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.path "bool",
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::control_flow_graph::VMControlFlowGraph",
@@ -936,10 +1001,18 @@ Module control_flow_graph.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let~ exit := M.copy (| co_pc |) in
-                                              let~ _ :=
+                                              let~ exit : Ty.path "u16" := M.copy (| co_pc |) in
+                                              let~ _ :
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "u16" ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [ Ty.path "u16" ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path
@@ -964,9 +1037,21 @@ Module control_flow_graph.
                                                     ]
                                                   |)
                                                 |) in
-                                              let~ successors :=
+                                              let~ successors :
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [
+                                                        Ty.path "u16";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::file_format::Bytecode",
@@ -983,7 +1068,9 @@ Module control_flow_graph.
                                                     ]
                                                   |)
                                                 |) in
-                                              let~ bb :=
+                                              let~ bb :
+                                                  Ty.path
+                                                    "move_binary_format::control_flow_graph::BasicBlock" :=
                                                 M.alloc (|
                                                   Value.StructRecord
                                                     "move_binary_format::control_flow_graph::BasicBlock"
@@ -992,9 +1079,23 @@ Module control_flow_graph.
                                                       ("successors", M.read (| successors |))
                                                     ]
                                                 |) in
-                                              let~ _ :=
+                                              let~ _ :
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::control_flow_graph::BasicBlock"
+                                                    ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::control_flow_graph::BasicBlock"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path
@@ -1017,12 +1118,14 @@ Module control_flow_graph.
                                                     ]
                                                   |)
                                                 |) in
-                                              let~ _ :=
-                                                M.write (|
-                                                  entry,
-                                                  BinOp.Wrap.add (|
-                                                    M.read (| co_pc |),
-                                                    Value.Integer IntegerKind.U16 1
+                                              let~ _ : Ty.tuple [] :=
+                                                M.alloc (|
+                                                  M.write (|
+                                                    entry,
+                                                    BinOp.Wrap.add (|
+                                                      M.read (| co_pc |),
+                                                      Value.Integer IntegerKind.U16 1
+                                                    |)
                                                   |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
@@ -1035,8 +1138,17 @@ Module control_flow_graph.
                         |)))
                   ]
                 |)) in
-            let~ blocks := M.copy (| blocks |) in
-            let~ _ :=
+            let~ blocks :
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [
+                    Ty.path "u16";
+                    Ty.path "move_binary_format::control_flow_graph::BasicBlock";
+                    Ty.path "alloc::alloc::Global"
+                  ] :=
+              M.copy (| blocks |) in
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (|
                   Value.Tuple
@@ -1075,12 +1187,13 @@ Module control_flow_graph.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ kind :=
+                                    let~ kind : Ty.path "core::panicking::AssertKind" :=
                                       M.alloc (|
                                         Value.StructTuple "core::panicking::AssertKind::Eq" []
                                       |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (|
                                           "core::panicking::assert_failed",
                                           [],
@@ -1118,9 +1231,25 @@ Module control_flow_graph.
                       |)))
                 ]
               |) in
-            let~ exploration :=
+            let~ exploration :
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [
+                    Ty.path "u16";
+                    Ty.path "move_binary_format::control_flow_graph::new::Exploration";
+                    Ty.path "alloc::alloc::Global"
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "u16";
+                      Ty.path "move_binary_format::control_flow_graph::new::Exploration";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1137,9 +1266,17 @@ Module control_flow_graph.
                   []
                 |)
               |) in
-            let~ stack :=
+            let~ stack :
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                     "into_vec",
@@ -1149,6 +1286,16 @@ Module control_flow_graph.
                   [
                     M.read (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 1 ]
+                              [ Ty.path "u16" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
@@ -1180,9 +1327,31 @@ Module control_flow_graph.
                   ]
                 |)
               |) in
-            let~ loop_heads :=
+            let~ loop_heads :
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [
+                    Ty.path "u16";
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::set::BTreeSet")
+                      []
+                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ];
+                    Ty.path "alloc::alloc::Global"
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "u16";
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::set::BTreeSet")
+                        []
+                        [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ];
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1202,9 +1371,17 @@ Module control_flow_graph.
                   []
                 |)
               |) in
-            let~ post_order :=
+            let~ post_order :
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -1216,6 +1393,7 @@ Module control_flow_graph.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1234,7 +1412,7 @@ Module control_flow_graph.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.loop (|
                 ltac:(M.monadic
                   (M.match_operator (|
@@ -1245,6 +1423,7 @@ Module control_flow_graph.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
@@ -1267,6 +1446,15 @@ Module control_flow_graph.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::map::entry::Entry")
+                                  []
+                                  [
+                                    Ty.path "u16";
+                                    Ty.path
+                                      "move_binary_format::control_flow_graph::new::Exploration";
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1297,9 +1485,23 @@ Module control_flow_graph.
                                       0
                                     |) in
                                   let entry := M.copy (| γ0_0 |) in
-                                  let~ _ :=
+                                  let~ _ :
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::control_flow_graph::new::Exploration"
+                                        ] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::control_flow_graph::new::Exploration"
+                                          ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path
@@ -1323,9 +1525,10 @@ Module control_flow_graph.
                                         ]
                                       |)
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -1345,6 +1548,10 @@ Module control_flow_graph.
                                     (M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [ Ty.path "u16" ],
                                           M.get_trait_method (|
                                             "core::iter::traits::collect::IntoIterator",
                                             Ty.apply
@@ -1368,6 +1575,13 @@ Module control_flow_graph.
                                               M.SubPointer.get_struct_record_field (|
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::control_flow_graph::BasicBlock"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::index::Index",
                                                       Ty.apply
@@ -1411,10 +1625,19 @@ Module control_flow_graph.
                                             (let iter := M.copy (| γ |) in
                                             M.loop (|
                                               ltac:(M.monadic
-                                                (let~ _ :=
+                                                (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "u16" ]
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::iter::traits::iterator::Iterator",
                                                           Ty.apply
@@ -1462,10 +1685,22 @@ Module control_flow_graph.
                                                               0
                                                             |) in
                                                           let succ := M.copy (| γ0_0 |) in
-                                                          let~ _ :=
+                                                          let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::control_flow_graph::new::Exploration"
+                                                                        ]
+                                                                    ],
                                                                   M.get_associated_function (|
                                                                     Ty.apply
                                                                       (Ty.path
@@ -1506,6 +1741,7 @@ Module control_flow_graph.
                                                                       |) in
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.tuple [],
                                                                         M.get_associated_function (|
                                                                           Ty.apply
                                                                             (Ty.path
@@ -1547,9 +1783,10 @@ Module control_flow_graph.
                                                                         γ0_0,
                                                                         "move_binary_format::control_flow_graph::new::Exploration::InProgress"
                                                                       |) in
-                                                                    let~ _ :=
+                                                                    let~ _ : Ty.path "bool" :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.path "bool",
                                                                           M.get_associated_function (|
                                                                             Ty.apply
                                                                               (Ty.path
@@ -1569,6 +1806,21 @@ Module control_flow_graph.
                                                                               Pointer.Kind.MutRef,
                                                                               M.deref (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&mut")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "alloc::collections::btree::set::BTreeSet")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "u16";
+                                                                                          Ty.path
+                                                                                            "alloc::alloc::Global"
+                                                                                        ]
+                                                                                    ],
                                                                                   M.get_associated_function (|
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -1596,6 +1848,26 @@ Module control_flow_graph.
                                                                                   |),
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "alloc::collections::btree::map::entry::Entry")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "u16";
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "alloc::collections::btree::set::BTreeSet")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "u16";
+                                                                                              Ty.path
+                                                                                                "alloc::alloc::Global"
+                                                                                            ];
+                                                                                          Ty.path
+                                                                                            "alloc::alloc::Global"
+                                                                                        ],
                                                                                       M.get_associated_function (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -1680,6 +1952,13 @@ Module control_flow_graph.
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::control_flow_graph::new::Exploration"
+                                          ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path
@@ -1718,9 +1997,10 @@ Module control_flow_graph.
                                               γ,
                                               "move_binary_format::control_flow_graph::new::Exploration::InProgress"
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.tuple [],
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
@@ -1737,9 +2017,13 @@ Module control_flow_graph.
                                                 ]
                                               |)
                                             |) in
-                                          let~ _ :=
+                                          let~ _ :
+                                              Ty.path
+                                                "move_binary_format::control_flow_graph::new::Exploration" :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::control_flow_graph::new::Exploration",
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path
@@ -1773,7 +2057,7 @@ Module control_flow_graph.
                           (M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                 M.alloc (| Value.Tuple [] |)
                               |)
@@ -1782,11 +2066,16 @@ Module control_flow_graph.
                     ]
                   |)))
               |) in
-            let~ traversal_order :=
+            let~ traversal_order :
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ] :=
               M.copy (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                         "reverse",
@@ -1798,6 +2087,10 @@ Module control_flow_graph.
                           Pointer.Kind.MutRef,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
                               M.get_trait_method (|
                                 "core::ops::deref::DerefMut",
                                 Ty.apply
@@ -1819,9 +2112,17 @@ Module control_flow_graph.
                   |) in
                 post_order
               |) in
-            let~ traversal_successors :=
+            let~ traversal_successors :
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [ Ty.path "u16"; Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
@@ -1854,6 +2155,23 @@ Module control_flow_graph.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::map::Map")
+                        []
+                        [
+                          Ty.apply (Ty.path "core::slice::iter::Windows") [] [ Ty.path "u16" ];
+                          Ty.function
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ]
+                                ]
+                            ]
+                            (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ])
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::slice::iter::Windows") [] [ Ty.path "u16" ],
@@ -1878,6 +2196,7 @@ Module control_flow_graph.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::slice::iter::Windows") [] [ Ty.path "u16" ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                             "windows",
@@ -1889,6 +2208,10 @@ Module control_flow_graph.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
                                   M.get_trait_method (|
                                     "core::ops::deref::Deref",
                                     Ty.apply
@@ -1921,7 +2244,7 @@ Module control_flow_graph.
                                         ltac:(M.monadic
                                           (let window := M.copy (| γ |) in
                                           M.read (|
-                                            let~ _ :=
+                                            let~ _ : Ty.tuple [] :=
                                               M.match_operator (|
                                                 M.alloc (| Value.Tuple [] |),
                                                 [
@@ -1934,7 +2257,7 @@ Module control_flow_graph.
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
-                                                      let~ _ :=
+                                                      let~ _ : Ty.tuple [] :=
                                                         M.match_operator (|
                                                           M.alloc (| Value.Tuple [] |),
                                                           [
@@ -1946,6 +2269,7 @@ Module control_flow_graph.
                                                                       UnOp.not (|
                                                                         BinOp.eq (|
                                                                           M.call_closure (|
+                                                                            Ty.path "usize",
                                                                             M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
@@ -1980,6 +2304,7 @@ Module control_flow_graph.
                                                                 M.alloc (|
                                                                   M.never_to_any (|
                                                                     M.call_closure (|
+                                                                      Ty.path "never",
                                                                       M.get_function (|
                                                                         "core::panicking::panic",
                                                                         [],
@@ -2065,11 +2390,18 @@ Module control_flow_graph.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::Iter")
+                        []
+                        [
+                          Ty.path "u16";
+                          Ty.path "move_binary_format::control_flow_graph::BasicBlock"
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
@@ -2109,10 +2441,26 @@ Module control_flow_graph.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let~ _ :=
+                            (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "u16" ];
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::control_flow_graph::BasicBlock"
+                                              ]
+                                          ]
+                                      ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
@@ -2157,9 +2505,10 @@ Module control_flow_graph.
                                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                       let entry := M.copy (| γ1_0 |) in
                                       let block := M.copy (| γ1_1 |) in
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.tuple [],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::control_flow_graph::BasicBlock",
@@ -2183,13 +2532,15 @@ Module control_flow_graph.
                         |)))
                   ]
                 |)) in
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_v1_formatted",
@@ -2222,6 +2573,7 @@ Module control_flow_graph.
                                   Value.Array
                                     [
                                       M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_debug",
@@ -2267,6 +2619,7 @@ Module control_flow_graph.
                                   Value.Array
                                     [
                                       M.call_closure (|
+                                        Ty.path "core::fmt::rt::Placeholder",
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Placeholder",
                                           "new",
@@ -2288,6 +2641,7 @@ Module control_flow_graph.
                             |)
                           |);
                           M.call_closure (|
+                            Ty.path "core::fmt::rt::UnsafeArg",
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::UnsafeArg",
                               "new",
@@ -2328,6 +2682,7 @@ Module control_flow_graph.
               M.cast
                 (Ty.path "u16")
                 (M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "slice")
@@ -2342,6 +2697,7 @@ Module control_flow_graph.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -2395,7 +2751,8 @@ Module control_flow_graph.
           let code := M.alloc (| code |) in
           let block_ids := M.alloc (| block_ids |) in
           M.read (|
-            let~ bytecode :=
+            let~ bytecode :
+                Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::Bytecode" ] :=
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -2405,7 +2762,7 @@ Module control_flow_graph.
                   |)
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -2414,6 +2771,10 @@ Module control_flow_graph.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::Bytecode",
                               "offset",
@@ -2430,9 +2791,10 @@ Module control_flow_graph.
                           0
                         |) in
                       let offset := M.copy (| γ0_0 |) in
-                      let~ _ :=
+                      let~ _ : Ty.path "bool" :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -2465,6 +2827,7 @@ Module control_flow_graph.
                         (M.alloc (|
                           LogicalOp.and (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::Bytecode",
                                 "is_branch",
@@ -2483,6 +2846,7 @@ Module control_flow_graph.
                                 M.cast
                                   (Ty.path "u16")
                                   (M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -2503,9 +2867,10 @@ Module control_flow_graph.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ :=
+                    let~ _ : Ty.path "bool" :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -2569,9 +2934,17 @@ Module control_flow_graph.
           (let self := M.alloc (| self |) in
           let block_id := M.alloc (| block_id |) in
           M.read (|
-            let~ ret :=
+            let~ ret :
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -2584,10 +2957,18 @@ Module control_flow_graph.
                   []
                 |)
               |) in
-            let~ index := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-            let~ seen :=
+            let~ index : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+            let~ seen :
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::set::BTreeSet")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]; Ty.path "alloc::alloc::Global" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::set::BTreeSet")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]; Ty.path "alloc::alloc::Global" ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -2601,9 +2982,10 @@ Module control_flow_graph.
                   []
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -2616,9 +2998,10 @@ Module control_flow_graph.
                   [ M.borrow (| Pointer.Kind.MutRef, ret |); M.read (| block_id |) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.path "bool" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -2635,7 +3018,7 @@ Module control_flow_graph.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.loop (|
                 ltac:(M.monadic
                   (M.match_operator (|
@@ -2649,6 +3032,7 @@ Module control_flow_graph.
                                 BinOp.lt (|
                                   M.read (| index |),
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -2664,10 +3048,11 @@ Module control_flow_graph.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ block_id :=
+                          let~ block_id : Ty.path "u16" :=
                             M.copy (|
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                                   M.get_trait_method (|
                                     "core::ops::index::Index",
                                     Ty.apply
@@ -2684,15 +3069,38 @@ Module control_flow_graph.
                                 |)
                               |)
                             |) in
-                          let~ _ :=
-                            let β := index in
-                            M.write (|
-                              β,
-                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              let β := index in
+                              M.write (|
+                                β,
+                                BinOp.Wrap.add (|
+                                  M.read (| β |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
+                              |)
                             |) in
-                          let~ successors :=
+                          let~ successors :
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
+                                ] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
+                                  ],
                                 M.get_trait_method (|
                                   "move_binary_format::control_flow_graph::ControlFlowGraph",
                                   Ty.path
@@ -2713,6 +3121,7 @@ Module control_flow_graph.
                             (M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u16" ],
                                   M.get_trait_method (|
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
@@ -2727,6 +3136,10 @@ Module control_flow_graph.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "u16" ],
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
                                         "iter",
@@ -2738,6 +3151,10 @@ Module control_flow_graph.
                                           Pointer.Kind.Ref,
                                           M.deref (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
                                               M.get_trait_method (|
                                                 "core::ops::deref::Deref",
                                                 Ty.apply
@@ -2770,10 +3187,14 @@ Module control_flow_graph.
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
                                       ltac:(M.monadic
-                                        (let~ _ :=
+                                        (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -2826,6 +3247,7 @@ Module control_flow_graph.
                                                               (M.alloc (|
                                                                 UnOp.not (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path
@@ -2871,9 +3293,10 @@ Module control_flow_graph.
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
-                                                          let~ _ :=
+                                                          let~ _ : Ty.tuple [] :=
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.tuple [],
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "alloc::vec::Vec")
@@ -2899,9 +3322,10 @@ Module control_flow_graph.
                                                                 ]
                                                               |)
                                                             |) in
-                                                          let~ _ :=
+                                                          let~ _ : Ty.path "bool" :=
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.path "bool",
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -2949,7 +3373,7 @@ Module control_flow_graph.
                           (M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                 M.alloc (| Value.Tuple [] |)
                               |)
@@ -2978,6 +3402,10 @@ Module control_flow_graph.
           (let self := M.alloc (| self |) in
           let block_id := M.alloc (| block_id |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
               "traverse_by",
@@ -3030,6 +3458,10 @@ Module control_flow_graph.
             M.SubPointer.get_struct_record_field (|
               M.deref (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::control_flow_graph::BasicBlock" ],
                   M.get_trait_method (|
                     "core::ops::index::Index",
                     Ty.apply
@@ -3088,6 +3520,10 @@ Module control_flow_graph.
                 M.SubPointer.get_struct_record_field (|
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::control_flow_graph::BasicBlock" ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply
@@ -3142,7 +3578,7 @@ Module control_flow_graph.
           (let self := M.alloc (| self |) in
           let block_id := M.alloc (| block_id |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -3150,7 +3586,7 @@ Module control_flow_graph.
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -3161,6 +3597,7 @@ Module control_flow_graph.
                                     (M.alloc (|
                                       UnOp.not (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3202,6 +3639,7 @@ Module control_flow_graph.
                                 M.alloc (|
                                   M.never_to_any (|
                                     M.call_closure (|
+                                      Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
                                         M.read (|
@@ -3221,6 +3659,7 @@ Module control_flow_graph.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -3232,6 +3671,10 @@ Module control_flow_graph.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3275,6 +3718,13 @@ Module control_flow_graph.
           (let self := M.alloc (| self |) in
           let block_id := M.alloc (| block_id |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ];
+                Ty.path "alloc::alloc::Global"
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -3289,6 +3739,7 @@ Module control_flow_graph.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ],
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ],
                   "new",
@@ -3297,6 +3748,7 @@ Module control_flow_graph.
                 |),
                 [
                   M.call_closure (|
+                    Ty.path "u16",
                     M.get_trait_method (|
                       "move_binary_format::control_flow_graph::ControlFlowGraph",
                       Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
@@ -3312,6 +3764,7 @@ Module control_flow_graph.
                     ]
                   |);
                   M.call_closure (|
+                    Ty.path "u16",
                     M.get_trait_method (|
                       "move_binary_format::control_flow_graph::ControlFlowGraph",
                       Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
@@ -3344,6 +3797,10 @@ Module control_flow_graph.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -3368,6 +3825,16 @@ Module control_flow_graph.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::iter::adapters::cloned::Cloned")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::map::Keys")
+                      []
+                      [ Ty.path "u16"; Ty.path "move_binary_format::control_flow_graph::BasicBlock"
+                      ]
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   Ty.apply
@@ -3382,6 +3849,11 @@ Module control_flow_graph.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::map::Keys")
+                      []
+                      [ Ty.path "u16"; Ty.path "move_binary_format::control_flow_graph::BasicBlock"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3426,6 +3898,7 @@ Module control_flow_graph.
           M.cast
             (Ty.path "u16")
             (M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3479,6 +3952,7 @@ Module control_flow_graph.
           (let self := M.alloc (| self |) in
           let block_id := M.alloc (| block_id |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3528,6 +4002,7 @@ Module control_flow_graph.
           let cur := M.alloc (| cur |) in
           let next := M.alloc (| next |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -3567,6 +4042,20 @@ Module control_flow_graph.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::set::BTreeSet")
+                          []
+                          [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
+                      ]
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3612,6 +4101,7 @@ Module control_flow_graph.
                               ltac:(M.monadic
                                 (let back_edges := M.copy (| γ |) in
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -3654,6 +4144,7 @@ Module control_flow_graph.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -3697,6 +4188,16 @@ Module control_flow_graph.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::Iter")
+                  []
+                  [
+                    Ty.path "u16";
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::set::BTreeSet")
+                      []
+                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3748,6 +4249,7 @@ Module control_flow_graph.
                                         BinOp.Wrap.add (|
                                           M.read (| acc |),
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::set::BTreeSet")

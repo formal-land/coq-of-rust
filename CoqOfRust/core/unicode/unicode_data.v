@@ -64,13 +64,13 @@ Module unicode.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ bucket_idx :=
+                let~ bucket_idx : Ty.path "usize" :=
                   M.alloc (|
                     M.cast
                       (Ty.path "usize")
                       (BinOp.Wrap.div (| M.read (| needle |), Value.Integer IntegerKind.U32 64 |))
                   |) in
-                let~ chunk_map_idx :=
+                let~ chunk_map_idx : Ty.path "usize" :=
                   M.alloc (|
                     BinOp.Wrap.div (|
                       M.read (| bucket_idx |),
@@ -79,7 +79,7 @@ Module unicode.
                       |)
                     |)
                   |) in
-                let~ chunk_piece :=
+                let~ chunk_piece : Ty.path "usize" :=
                   M.alloc (|
                     BinOp.Wrap.rem (|
                       M.read (| bucket_idx |),
@@ -88,7 +88,7 @@ Module unicode.
                       |)
                     |)
                   |) in
-                let~ chunk_idx :=
+                let~ chunk_idx : Ty.path "u8" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -101,6 +101,7 @@ Module unicode.
                                   BinOp.lt (|
                                     M.read (| chunk_map_idx |),
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
@@ -130,7 +131,7 @@ Module unicode.
                       ]
                     |)
                   |) in
-                let~ idx :=
+                let~ idx : Ty.path "usize" :=
                   M.alloc (|
                     M.cast
                       (Ty.path "usize")
@@ -144,7 +145,7 @@ Module unicode.
                         |)
                       |))
                   |) in
-                let~ word :=
+                let~ word : Ty.path "u64" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -157,6 +158,7 @@ Module unicode.
                                   BinOp.lt (|
                                     M.read (| idx |),
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                                         "len",
@@ -187,6 +189,7 @@ Module unicode.
                                   BinOp.Wrap.sub (|
                                     M.read (| idx |),
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
                                         "len",
@@ -210,7 +213,7 @@ Module unicode.
                                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let real_idx := M.copy (| γ0_0 |) in
                                     let mapping := M.copy (| γ0_1 |) in
-                                    let~ word :=
+                                    let~ word : Ty.path "u64" :=
                                       M.copy (|
                                         M.SubPointer.get_array_field (|
                                           M.deref (| M.read (| bitset_canonical |) |),
@@ -219,7 +222,7 @@ Module unicode.
                                           |)
                                         |)
                                       |) in
-                                    let~ should_invert :=
+                                    let~ should_invert : Ty.path "bool" :=
                                       M.alloc (|
                                         BinOp.ne (|
                                           BinOp.bit_and
@@ -231,7 +234,7 @@ Module unicode.
                                           Value.Integer IntegerKind.U8 0
                                         |)
                                       |) in
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -243,16 +246,18 @@ Module unicode.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let~ _ :=
-                                                M.write (|
-                                                  word,
-                                                  UnOp.not (| M.read (| word |) |)
+                                              let~ _ : Ty.tuple [] :=
+                                                M.alloc (|
+                                                  M.write (|
+                                                    word,
+                                                    UnOp.not (| M.read (| word |) |)
+                                                  |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                         ]
                                       |) in
-                                    let~ quantity :=
+                                    let~ quantity : Ty.path "u8" :=
                                       M.alloc (|
                                         BinOp.bit_and
                                           (M.read (| mapping |))
@@ -264,7 +269,7 @@ Module unicode.
                                             Value.Integer IntegerKind.U8 1
                                           |))
                                       |) in
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -288,32 +293,39 @@ Module unicode.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let~ _ :=
-                                                let β := word in
-                                                M.write (|
-                                                  β,
-                                                  BinOp.Wrap.shr (|
-                                                    M.read (| β |),
-                                                    M.cast (Ty.path "u64") (M.read (| quantity |))
+                                              let~ _ : Ty.tuple [] :=
+                                                M.alloc (|
+                                                  let β := word in
+                                                  M.write (|
+                                                    β,
+                                                    BinOp.Wrap.shr (|
+                                                      M.read (| β |),
+                                                      M.cast (Ty.path "u64") (M.read (| quantity |))
+                                                    |)
                                                   |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let~ _ :=
-                                                M.write (|
-                                                  word,
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
+                                              (let~ _ : Ty.tuple [] :=
+                                                M.alloc (|
+                                                  M.write (|
+                                                    word,
+                                                    M.call_closure (|
                                                       Ty.path "u64",
-                                                      "rotate_left",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.read (| word |);
-                                                      M.cast (Ty.path "u32") (M.read (| quantity |))
-                                                    ]
+                                                      M.get_associated_function (|
+                                                        Ty.path "u64",
+                                                        "rotate_left",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.read (| word |);
+                                                        M.cast
+                                                          (Ty.path "u32")
+                                                          (M.read (| quantity |))
+                                                      ]
+                                                    |)
                                                   |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)))
@@ -448,11 +460,15 @@ Module unicode.
           let short_offset_runs := M.alloc (| short_offset_runs |) in
           let offsets := M.alloc (| offsets |) in
           M.read (|
-            let~ last_idx :=
+            let~ last_idx : Ty.path "usize" :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "usize"; Ty.path "usize" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                         "binary_search_by_key",
@@ -496,6 +512,7 @@ Module unicode.
                                         ltac:(M.monadic
                                           (let header := M.copy (| γ |) in
                                           M.call_closure (|
+                                            Ty.path "u32",
                                             M.get_trait_method (|
                                               "core::ops::bit::Shl",
                                               Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
@@ -541,9 +558,10 @@ Module unicode.
                   ]
                 |)
               |) in
-            let~ offset_idx :=
+            let~ offset_idx : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_function (| "core::unicode::unicode_data::decode_length", [], [] |),
                   [
                     M.read (|
@@ -555,7 +573,7 @@ Module unicode.
                   ]
                 |)
               |) in
-            let~ length :=
+            let~ length : Ty.path "usize" :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -565,6 +583,10 @@ Module unicode.
                         (let γ :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ],
                                 "get",
@@ -593,6 +615,7 @@ Module unicode.
                         M.alloc (|
                           BinOp.Wrap.sub (|
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_function (|
                                 "core::unicode::unicode_data::decode_length",
                                 [],
@@ -608,6 +631,7 @@ Module unicode.
                         (M.alloc (|
                           BinOp.Wrap.sub (|
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "len",
@@ -623,9 +647,10 @@ Module unicode.
                   ]
                 |)
               |) in
-            let~ prev :=
+            let~ prev : Ty.path "u32" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                     "unwrap_or",
@@ -634,6 +659,7 @@ Module unicode.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                         "map",
@@ -645,6 +671,7 @@ Module unicode.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                           M.get_associated_function (| Ty.path "usize", "checked_sub", [], [] |),
                           [ M.read (| last_idx |); Value.Integer IntegerKind.Usize 1 ]
                         |);
@@ -661,6 +688,7 @@ Module unicode.
                                         ltac:(M.monadic
                                           (let prev := M.copy (| γ |) in
                                           M.call_closure (|
+                                            Ty.path "u32",
                                             M.get_function (|
                                               "core::unicode::unicode_data::decode_prefix_sum",
                                               [],
@@ -685,14 +713,15 @@ Module unicode.
                   ]
                 |)
               |) in
-            let~ total :=
+            let~ total : Ty.path "u32" :=
               M.alloc (| BinOp.Wrap.sub (| M.read (| needle |), M.read (| prev |) |) |) in
-            let~ prefix_sum := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
-            let~ _ :=
+            let~ prefix_sum : Ty.path "u32" := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
+            let~ _ : Ty.tuple [] :=
               M.use
                 (M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -722,10 +751,14 @@ Module unicode.
                         (let iter := M.copy (| γ |) in
                         M.loop (|
                           ltac:(M.monadic
-                            (let~ _ :=
+                            (let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
@@ -762,23 +795,25 @@ Module unicode.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let~ offset :=
+                                      let~ offset : Ty.path "u8" :=
                                         M.copy (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| offsets |) |),
                                             offset_idx
                                           |)
                                         |) in
-                                      let~ _ :=
-                                        let β := prefix_sum in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.add (|
-                                            M.read (| β |),
-                                            M.cast (Ty.path "u32") (M.read (| offset |))
+                                      let~ _ : Ty.tuple [] :=
+                                        M.alloc (|
+                                          let β := prefix_sum in
+                                          M.write (|
+                                            β,
+                                            BinOp.Wrap.add (|
+                                              M.read (| β |),
+                                              M.cast (Ty.path "u32") (M.read (| offset |))
+                                            |)
                                           |)
                                         |) in
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
                                           [
@@ -803,13 +838,15 @@ Module unicode.
                                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                           ]
                                         |) in
-                                      let~ _ :=
-                                        let β := offset_idx in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.add (|
-                                            M.read (| β |),
-                                            Value.Integer IntegerKind.Usize 1
+                                      let~ _ : Ty.tuple [] :=
+                                        M.alloc (|
+                                          let β := offset_idx in
+                                          M.write (|
+                                            β,
+                                            BinOp.Wrap.add (|
+                                              M.read (| β |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -2464,6 +2501,7 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_function (|
                 "core::unicode::unicode_data::skip_search",
                 [ Value.Integer IntegerKind.Usize 53; Value.Integer IntegerKind.Usize 1515 ],
@@ -3496,6 +3534,7 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_function (|
                 "core::unicode::unicode_data::skip_search",
                 [ Value.Integer IntegerKind.Usize 37; Value.Integer IntegerKind.Usize 905 ],
@@ -3928,6 +3967,7 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_function (|
                 "core::unicode::unicode_data::skip_search",
                 [ Value.Integer IntegerKind.Usize 22; Value.Integer IntegerKind.Usize 319 ],
@@ -4014,6 +4054,7 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_function (|
                 "core::unicode::unicode_data::skip_search",
                 [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 5 ],
@@ -4888,6 +4929,7 @@ Module unicode.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_function (|
                     "core::unicode::unicode_data::grapheme_extend::lookup_slow",
                     [],
@@ -4918,6 +4960,7 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_function (|
                 "core::unicode::unicode_data::skip_search",
                 [ Value.Integer IntegerKind.Usize 34; Value.Integer IntegerKind.Usize 751 ],
@@ -5679,6 +5722,7 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_function (|
                 "core::unicode::unicode_data::bitset_search",
                 [
@@ -6132,6 +6176,7 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_function (|
                 "core::unicode::unicode_data::skip_search",
                 [ Value.Integer IntegerKind.Usize 42; Value.Integer IntegerKind.Usize 289 ],
@@ -6828,6 +6873,7 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_function (|
                 "core::unicode::unicode_data::bitset_search",
                 [
@@ -7338,6 +7384,7 @@ Module unicode.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (| Ty.path "char", "is_ascii", [], [] |),
                               [ M.borrow (| Pointer.Kind.Ref, c |) ]
                             |)
@@ -7349,6 +7396,7 @@ Module unicode.
                             M.cast
                               (Ty.path "char")
                               (M.call_closure (|
+                                Ty.path "u8",
                                 M.get_associated_function (|
                                   Ty.path "u8",
                                   "to_ascii_lowercase",
@@ -7370,6 +7418,10 @@ Module unicode.
                     ltac:(M.monadic
                       (M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.path "char" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -7387,6 +7439,16 @@ Module unicode.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 3 ]
+                                    [ Ty.path "char" ];
+                                  Ty.path "usize"
+                                ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -7409,6 +7471,10 @@ Module unicode.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "usize"; Ty.path "usize" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -7462,6 +7528,7 @@ Module unicode.
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                       let key := M.copy (| γ1_0 |) in
                                                       M.call_closure (|
+                                                        Ty.path "core::cmp::Ordering",
                                                         M.get_trait_method (|
                                                           "core::cmp::Ord",
                                                           Ty.path "char",
@@ -7500,7 +7567,7 @@ Module unicode.
                                                 ltac:(M.monadic
                                                   (let i := M.copy (| γ |) in
                                                   M.read (|
-                                                    let~ u :=
+                                                    let~ u : Ty.path "u32" :=
                                                       M.copy (|
                                                         M.SubPointer.get_tuple_field (|
                                                           M.SubPointer.get_array_field (|
@@ -7521,6 +7588,10 @@ Module unicode.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                                          [ Ty.path "char" ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
@@ -7546,6 +7617,19 @@ Module unicode.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      3
+                                                                  ]
+                                                                  [ Ty.path "char" ]
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
@@ -7576,6 +7660,10 @@ Module unicode.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "char" ],
                                                                 M.get_associated_function (|
                                                                   Ty.path "char",
                                                                   "from_u32",
@@ -7627,6 +7715,23 @@ Module unicode.
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "array")
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            IntegerKind.Usize
+                                                                                            3
+                                                                                        ]
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "char"
+                                                                                        ]
+                                                                                    ],
                                                                                   M.get_associated_function (|
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -7750,6 +7855,7 @@ Module unicode.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (| Ty.path "char", "is_ascii", [], [] |),
                               [ M.borrow (| Pointer.Kind.Ref, c |) ]
                             |)
@@ -7761,6 +7867,7 @@ Module unicode.
                             M.cast
                               (Ty.path "char")
                               (M.call_closure (|
+                                Ty.path "u8",
                                 M.get_associated_function (|
                                   Ty.path "u8",
                                   "to_ascii_uppercase",
@@ -7782,6 +7889,10 @@ Module unicode.
                     ltac:(M.monadic
                       (M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.path "char" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -7799,6 +7910,16 @@ Module unicode.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 3 ]
+                                    [ Ty.path "char" ];
+                                  Ty.path "usize"
+                                ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -7821,6 +7942,10 @@ Module unicode.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "usize"; Ty.path "usize" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -7874,6 +7999,7 @@ Module unicode.
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                       let key := M.copy (| γ1_0 |) in
                                                       M.call_closure (|
+                                                        Ty.path "core::cmp::Ordering",
                                                         M.get_trait_method (|
                                                           "core::cmp::Ord",
                                                           Ty.path "char",
@@ -7912,7 +8038,7 @@ Module unicode.
                                                 ltac:(M.monadic
                                                   (let i := M.copy (| γ |) in
                                                   M.read (|
-                                                    let~ u :=
+                                                    let~ u : Ty.path "u32" :=
                                                       M.copy (|
                                                         M.SubPointer.get_tuple_field (|
                                                           M.SubPointer.get_array_field (|
@@ -7933,6 +8059,10 @@ Module unicode.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                                          [ Ty.path "char" ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
@@ -7958,6 +8088,19 @@ Module unicode.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "array")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      3
+                                                                  ]
+                                                                  [ Ty.path "char" ]
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
@@ -7988,6 +8131,10 @@ Module unicode.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "char" ],
                                                                 M.get_associated_function (|
                                                                   Ty.path "char",
                                                                   "from_u32",
@@ -8039,6 +8186,23 @@ Module unicode.
                                                                             (M.read (|
                                                                               M.deref (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "array")
+                                                                                        [
+                                                                                          Value.Integer
+                                                                                            IntegerKind.Usize
+                                                                                            3
+                                                                                        ]
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "char"
+                                                                                        ]
+                                                                                    ],
                                                                                   M.get_associated_function (|
                                                                                     Ty.apply
                                                                                       (Ty.path

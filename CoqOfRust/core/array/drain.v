@@ -21,9 +21,17 @@ Module array.
           (let array := M.alloc (| array |) in
           let func := M.alloc (| func |) in
           M.read (|
-            let~ array :=
+            let~ array :
+                Ty.apply
+                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                    []
+                    [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::mem::manually_drop::ManuallyDrop")
@@ -36,12 +44,13 @@ Module array.
                   [ M.read (| array |) ]
                 |)
               |) in
-            let~ drain :=
+            let~ drain : Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] :=
               M.alloc (|
                 Value.StructTuple
                   "core::array::drain::Drain"
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "iter_mut",
@@ -53,6 +62,10 @@ Module array.
                           Pointer.Kind.MutRef,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                               M.get_trait_method (|
                                 "core::ops::deref::DerefMut",
                                 Ty.apply
@@ -75,6 +88,7 @@ Module array.
               |) in
             M.alloc (|
               M.call_closure (|
+                R,
                 M.get_trait_method (|
                   "core::ops::function::FnOnce",
                   impl_for_'a__FnOnce_Drain_'a__T___arrow_R,
@@ -119,6 +133,7 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (|
                 "core::ptr::drop_in_place",
                 [],
@@ -129,6 +144,7 @@ Module array.
                   Pointer.Kind.MutPointer,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                         "as_mut_slice",
@@ -184,11 +200,21 @@ Module array.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ p :=
+                  let~ p : Ty.apply (Ty.path "*const") [] [ T ] :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::convert::Infallible" ];
+                                Ty.apply (Ty.path "&mut") [] [ T ]
+                              ],
                             M.get_trait_method (|
                               "core::ops::try_trait::Try",
                               Ty.apply
@@ -203,6 +229,10 @@ Module array.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -241,6 +271,7 @@ Module array.
                                   M.read (|
                                     M.return_ (|
                                       M.call_closure (|
+                                        Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                         M.get_trait_method (|
                                           "core::ops::try_trait::FromResidual",
                                           Ty.apply (Ty.path "core::option::Option") [] [ T ],
@@ -284,6 +315,7 @@ Module array.
                       "core::option::Option::Some"
                       [
                         M.call_closure (|
+                          T,
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*const") [] [ T ],
                             "read",
@@ -312,9 +344,10 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ n :=
+              let~ n : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_trait_method (|
                       "core::iter::traits::exact_size::ExactSizeIterator",
                       Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ],
@@ -367,6 +400,7 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_trait_method (|
                 "core::iter::traits::exact_size::ExactSizeIterator",
                 Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -435,12 +469,13 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ p :=
+              let~ p : Ty.apply (Ty.path "*const") [] [ T ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.ConstPointer,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ T ],
                         M.get_trait_method (|
                           "core::iter::traits::unchecked_iterator::UncheckedIterator",
                           Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -466,6 +501,7 @@ Module array.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  T,
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*const") [] [ T ],
                     "read",

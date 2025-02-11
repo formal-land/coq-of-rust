@@ -21,6 +21,7 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
           "call_runtime::AccountId"
           [
             M.call_closure (|
+              Ty.path "u128",
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.path "u128",
@@ -212,6 +213,7 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -344,6 +346,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
                   (M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
+                        Ty.path "never",
                         M.get_function (|
                           "std::panicking::begin_panic",
                           [],
@@ -405,6 +408,7 @@ Module Impl_call_runtime_RuntimeCaller.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.path "call_runtime::Env",
           M.get_associated_function (| Ty.path "call_runtime::RuntimeCaller", "init_env", [], [] |),
           []
         |)))
@@ -424,6 +428,7 @@ Module Impl_call_runtime_RuntimeCaller.
     | [], [], [] =>
       ltac:(M.monadic
         (M.call_closure (|
+          Ty.path "call_runtime::RuntimeCaller",
           M.get_trait_method (|
             "core::default::Default",
             Ty.path "call_runtime::RuntimeCaller",
@@ -463,6 +468,10 @@ Module Impl_call_runtime_RuntimeCaller.
         let receiver := M.alloc (| receiver |) in
         let value := M.alloc (| value |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "call_runtime::RuntimeError" ],
           M.get_associated_function (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -479,6 +488,10 @@ Module Impl_call_runtime_RuntimeCaller.
           |),
           [
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "call_runtime::EnvError" ],
               M.get_associated_function (|
                 Ty.path "call_runtime::Env",
                 "call_runtime",
@@ -490,6 +503,7 @@ Module Impl_call_runtime_RuntimeCaller.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "call_runtime::Env",
                       M.get_associated_function (|
                         Ty.path "call_runtime::RuntimeCaller",
                         "env",
@@ -514,6 +528,10 @@ Module Impl_call_runtime_RuntimeCaller.
                               [
                                 ("dest",
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "call_runtime::MultiAddress")
+                                      []
+                                      [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ],
                                     M.get_trait_method (|
                                       "core::convert::Into",
                                       Ty.path "call_runtime::AccountId",
@@ -568,6 +586,10 @@ Module Impl_call_runtime_RuntimeCaller.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "call_runtime::RuntimeError" ],
           M.get_associated_function (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -584,6 +606,10 @@ Module Impl_call_runtime_RuntimeCaller.
           |),
           [
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "call_runtime::EnvError" ],
               M.get_associated_function (|
                 Ty.path "call_runtime::Env",
                 "call_runtime",
@@ -595,6 +621,7 @@ Module Impl_call_runtime_RuntimeCaller.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "call_runtime::Env",
                       M.get_associated_function (|
                         Ty.path "call_runtime::RuntimeCaller",
                         "env",

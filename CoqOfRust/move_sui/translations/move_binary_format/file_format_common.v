@@ -75,6 +75,7 @@ Module file_format_common.
                 M.cast
                   (Ty.path "u8")
                   (M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (| "core::mem::size_of", [], [ Ty.path "u32" ] |),
                     []
                   |)),
@@ -478,6 +479,10 @@ Module file_format_common.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -748,9 +753,10 @@ Module file_format_common.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "u8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -761,6 +767,7 @@ Module file_format_common.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "core::hash::Hash",
                   Ty.path "u8",
@@ -813,9 +820,10 @@ Module file_format_common.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "u8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -824,9 +832,10 @@ Module file_format_common.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "u8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -977,6 +986,10 @@ Module file_format_common.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -1277,6 +1290,10 @@ Module file_format_common.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -1767,6 +1784,10 @@ Module file_format_common.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -2877,6 +2898,7 @@ Module file_format_common.
       ltac:(M.monadic
         (M.alloc (|
           M.call_closure (|
+            Ty.path "usize",
             M.get_associated_function (| Ty.path "usize", "max_value", [], [] |),
             []
           |)
@@ -2915,6 +2937,10 @@ Module file_format_common.
             [
               ("_binary",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   M.get_trait_method (|
                     "core::default::Default",
                     Ty.apply
@@ -2952,6 +2978,10 @@ Module file_format_common.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
@@ -3012,6 +3042,10 @@ Module file_format_common.
             [
               ("_binary",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -3044,6 +3078,7 @@ Module file_format_common.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply
@@ -3126,7 +3161,7 @@ Module file_format_common.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3136,6 +3171,7 @@ Module file_format_common.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -3150,6 +3186,10 @@ Module file_format_common.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "usize" ],
                                           M.get_associated_function (|
                                             Ty.path "usize",
                                             "checked_add",
@@ -3158,6 +3198,7 @@ Module file_format_common.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "usize",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
@@ -3182,9 +3223,10 @@ Module file_format_common.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple [],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
@@ -3218,6 +3260,7 @@ Module file_format_common.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "anyhow::Error",
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
@@ -3226,6 +3269,7 @@ Module file_format_common.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "alloc::string::String",
                                             M.get_function (|
                                               "core::hint::must_use",
                                               [],
@@ -3233,9 +3277,10 @@ Module file_format_common.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res :=
+                                                let~ res : Ty.path "alloc::string::String" :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_function (|
                                                         "alloc::fmt::format",
                                                         [],
@@ -3243,6 +3288,7 @@ Module file_format_common.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::Arguments",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
@@ -3283,6 +3329,8 @@ Module file_format_common.
                                                                     Value.Array
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
@@ -3298,6 +3346,8 @@ Module file_format_common.
                                                                                   Pointer.Kind.Ref,
                                                                                   M.alloc (|
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "usize",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "move_binary_format::file_format_common::BinaryData",
@@ -3323,6 +3373,8 @@ Module file_format_common.
                                                                           ]
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
@@ -3400,9 +3452,10 @@ Module file_format_common.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ vec_len :=
+                let~ vec_len : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
@@ -3412,7 +3465,7 @@ Module file_format_common.
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vec |) |) |) ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3422,6 +3475,7 @@ Module file_format_common.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -3436,6 +3490,10 @@ Module file_format_common.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "usize" ],
                                           M.get_associated_function (|
                                             Ty.path "usize",
                                             "checked_add",
@@ -3444,6 +3502,7 @@ Module file_format_common.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "usize",
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
@@ -3468,9 +3527,10 @@ Module file_format_common.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple [],
                                 M.get_trait_method (|
                                   "core::iter::traits::collect::Extend",
                                   Ty.apply
@@ -3512,6 +3572,7 @@ Module file_format_common.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "anyhow::Error",
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
@@ -3520,6 +3581,7 @@ Module file_format_common.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "alloc::string::String",
                                             M.get_function (|
                                               "core::hint::must_use",
                                               [],
@@ -3527,9 +3589,10 @@ Module file_format_common.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res :=
+                                                let~ res : Ty.path "alloc::string::String" :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_function (|
                                                         "alloc::fmt::format",
                                                         [],
@@ -3537,6 +3600,7 @@ Module file_format_common.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::Arguments",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
@@ -3580,6 +3644,8 @@ Module file_format_common.
                                                                     Value.Array
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
@@ -3595,6 +3661,8 @@ Module file_format_common.
                                                                                   Pointer.Kind.Ref,
                                                                                   M.alloc (|
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "usize",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "move_binary_format::file_format_common::BinaryData",
@@ -3620,6 +3688,8 @@ Module file_format_common.
                                                                           ]
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
@@ -3635,6 +3705,8 @@ Module file_format_common.
                                                                                   Pointer.Kind.Ref,
                                                                                   M.alloc (|
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "usize",
                                                                                       M.get_associated_function (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -3666,6 +3738,8 @@ Module file_format_common.
                                                                           ]
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
@@ -3729,6 +3803,7 @@ Module file_format_common.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "usize",
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
@@ -3766,6 +3841,7 @@ Module file_format_common.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
@@ -3803,9 +3879,10 @@ Module file_format_common.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -3891,10 +3968,10 @@ Module file_format_common.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.loop (|
                   ltac:(M.monadic
-                    (let~ cur :=
+                    (let~ cur : Ty.path "u64" :=
                       M.alloc (|
                         BinOp.bit_and (M.read (| val |)) (Value.Integer IntegerKind.U64 127)
                       |) in
@@ -3908,10 +3985,23 @@ Module file_format_common.
                                 (M.alloc (| BinOp.ne (| M.read (| cur |), M.read (| val |) |) |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "anyhow::Error"
+                                          ];
+                                        Ty.tuple []
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::Try",
                                       Ty.apply
@@ -3926,6 +4016,10 @@ Module file_format_common.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                         M.get_associated_function (|
                                           Ty.path
                                             "move_binary_format::file_format_common::BinaryData",
@@ -3963,6 +4057,10 @@ Module file_format_common.
                                           M.read (|
                                             M.return_ (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
@@ -4001,11 +4099,16 @@ Module file_format_common.
                                       val))
                                 ]
                               |) in
-                            let~ _ :=
-                              let β := val in
-                              M.write (|
-                                β,
-                                BinOp.Wrap.shr (| M.read (| β |), Value.Integer IntegerKind.I32 7 |)
+                            let~ _ : Ty.tuple [] :=
+                              M.alloc (|
+                                let β := val in
+                                M.write (|
+                                  β,
+                                  BinOp.Wrap.shr (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.I32 7
+                                  |)
+                                |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
@@ -4013,10 +4116,23 @@ Module file_format_common.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "anyhow::Error"
+                                                ];
+                                              Ty.tuple []
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -4031,6 +4147,10 @@ Module file_format_common.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::file_format_common::BinaryData",
@@ -4064,6 +4184,10 @@ Module file_format_common.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -4133,6 +4257,7 @@ Module file_format_common.
         (let binary := M.alloc (| binary |) in
         let value := M.alloc (| value |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "anyhow::Error" ],
           M.get_associated_function (|
             Ty.path "move_binary_format::file_format_common::BinaryData",
             "extend",
@@ -4148,6 +4273,10 @@ Module file_format_common.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 2 ]
+                        [ Ty.path "u8" ],
                       M.get_associated_function (| Ty.path "u16", "to_le_bytes", [], [] |),
                       [ M.read (| value |) ]
                     |)
@@ -4176,6 +4305,7 @@ Module file_format_common.
         (let binary := M.alloc (| binary |) in
         let value := M.alloc (| value |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "anyhow::Error" ],
           M.get_associated_function (|
             Ty.path "move_binary_format::file_format_common::BinaryData",
             "extend",
@@ -4191,6 +4321,10 @@ Module file_format_common.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 4 ]
+                        [ Ty.path "u8" ],
                       M.get_associated_function (| Ty.path "u32", "to_le_bytes", [], [] |),
                       [ M.read (| value |) ]
                     |)
@@ -4219,6 +4353,7 @@ Module file_format_common.
         (let binary := M.alloc (| binary |) in
         let value := M.alloc (| value |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "anyhow::Error" ],
           M.get_associated_function (|
             Ty.path "move_binary_format::file_format_common::BinaryData",
             "extend",
@@ -4234,6 +4369,10 @@ Module file_format_common.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 8 ]
+                        [ Ty.path "u8" ],
                       M.get_associated_function (| Ty.path "u64", "to_le_bytes", [], [] |),
                       [ M.read (| value |) ]
                     |)
@@ -4262,6 +4401,7 @@ Module file_format_common.
         (let binary := M.alloc (| binary |) in
         let value := M.alloc (| value |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "anyhow::Error" ],
           M.get_associated_function (|
             Ty.path "move_binary_format::file_format_common::BinaryData",
             "extend",
@@ -4277,6 +4417,10 @@ Module file_format_common.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 16 ]
+                        [ Ty.path "u8" ],
                       M.get_associated_function (| Ty.path "u128", "to_le_bytes", [], [] |),
                       [ M.read (| value |) ]
                     |)
@@ -4308,6 +4452,7 @@ Module file_format_common.
         (let binary := M.alloc (| binary |) in
         let value := M.alloc (| value |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "anyhow::Error" ],
           M.get_associated_function (|
             Ty.path "move_binary_format::file_format_common::BinaryData",
             "extend",
@@ -4323,6 +4468,10 @@ Module file_format_common.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.path "move_core_types::u256::U256",
                         "to_le_bytes",
@@ -4359,14 +4508,29 @@ Module file_format_common.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ buf :=
+              let~ buf :
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 1 ]
+                    [ Ty.path "u8" ] :=
                 M.alloc (|
                   repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 1 |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; Ty.path "std::io::error::Error"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -4381,6 +4545,10 @@ Module file_format_common.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                           M.get_trait_method (|
                             "std::io::Read",
                             Ty.apply
@@ -4424,6 +4592,10 @@ Module file_format_common.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "u8"; Ty.path "anyhow::Error" ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -4497,14 +4669,29 @@ Module file_format_common.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ buf :=
+              let~ buf :
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 4 ]
+                    [ Ty.path "u8" ] :=
                 M.alloc (|
                   repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; Ty.path "std::io::error::Error"
+                            ];
+                          Ty.tuple []
+                        ],
                       M.get_trait_method (|
                         "core::ops::try_trait::Try",
                         Ty.apply
@@ -4519,6 +4706,10 @@ Module file_format_common.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                           M.get_trait_method (|
                             "std::io::Read",
                             Ty.apply
@@ -4562,6 +4753,10 @@ Module file_format_common.
                             M.read (|
                               M.return_ (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::FromResidual",
                                     Ty.apply
@@ -4605,6 +4800,7 @@ Module file_format_common.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (| Ty.path "u32", "from_le_bytes", [], [] |),
                       [ M.read (| buf |) ]
                     |)
@@ -4654,9 +4850,9 @@ Module file_format_common.
           ltac:(M.monadic
             (M.never_to_any (|
               M.read (|
-                let~ value := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
-                let~ shift := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
-                let~ _ :=
+                let~ value : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
+                let~ shift : Ty.path "u32" := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
+                let~ _ : Ty.tuple [] :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -4667,6 +4863,10 @@ Module file_format_common.
                               (let γ :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "anyhow::Error" ],
                                     M.get_function (|
                                       "move_binary_format::file_format_common::read_u8",
                                       [],
@@ -4687,7 +4887,7 @@ Module file_format_common.
                                   0
                                 |) in
                               let byte := M.copy (| γ0_0 |) in
-                              let~ cur :=
+                              let~ cur : Ty.path "u64" :=
                                 M.alloc (|
                                   M.cast
                                     (Ty.path "u64")
@@ -4695,7 +4895,7 @@ Module file_format_common.
                                       (M.read (| byte |))
                                       (Value.Integer IntegerKind.U8 127))
                                 |) in
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
                                   [
@@ -4728,9 +4928,10 @@ Module file_format_common.
                                                   "core::result::Result::Err"
                                                   [
                                                     M.read (|
-                                                      let~ error :=
+                                                      let~ error : Ty.path "anyhow::Error" :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "anyhow::Error",
                                                             M.get_function (|
                                                               "anyhow::__private::format_err",
                                                               [],
@@ -4738,6 +4939,7 @@ Module file_format_common.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::Arguments",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_const",
@@ -4777,15 +4979,17 @@ Module file_format_common.
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                   ]
                                 |) in
-                              let~ _ :=
-                                let β := value in
-                                M.write (|
-                                  β,
-                                  BinOp.bit_or
-                                    (M.read (| β |))
-                                    (BinOp.Wrap.shl (| M.read (| cur |), M.read (| shift |) |))
+                              let~ _ : Ty.tuple [] :=
+                                M.alloc (|
+                                  let β := value in
+                                  M.write (|
+                                    β,
+                                    BinOp.bit_or
+                                      (M.read (| β |))
+                                      (BinOp.Wrap.shl (| M.read (| cur |), M.read (| shift |) |))
+                                  |)
                                 |) in
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
                                   [
@@ -4809,7 +5013,7 @@ Module file_format_common.
                                         M.alloc (|
                                           M.never_to_any (|
                                             M.read (|
-                                              let~ _ :=
+                                              let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
@@ -4843,9 +5047,11 @@ Module file_format_common.
                                                                   "core::result::Result::Err"
                                                                   [
                                                                     M.read (|
-                                                                      let~ error :=
+                                                                      let~ error :
+                                                                          Ty.path "anyhow::Error" :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.path "anyhow::Error",
                                                                             M.get_function (|
                                                                               "anyhow::__private::format_err",
                                                                               [],
@@ -4853,6 +5059,8 @@ Module file_format_common.
                                                                             |),
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::Arguments",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::Arguments",
@@ -4906,13 +5114,15 @@ Module file_format_common.
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                   ]
                                 |) in
-                              let~ _ :=
-                                let β := shift in
-                                M.write (|
-                                  β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    Value.Integer IntegerKind.U32 7
+                              let~ _ : Ty.tuple [] :=
+                                M.alloc (|
+                                  let β := shift in
+                                  M.write (|
+                                    β,
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.U32 7
+                                    |)
                                   |)
                                 |) in
                               M.match_operator (|
@@ -4944,7 +5154,7 @@ Module file_format_common.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -4960,12 +5170,14 @@ Module file_format_common.
                     "core::result::Result::Err"
                     [
                       M.read (|
-                        let~ error :=
+                        let~ error : Ty.path "anyhow::Error" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "anyhow::Error",
                               M.get_function (| "anyhow::__private::format_err", [], [] |),
                               [
                                 M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
@@ -5158,7 +5370,7 @@ Module file_format_common.
       ltac:(M.monadic
         (let instruction := M.alloc (| instruction |) in
         M.read (|
-          let~ opcode :=
+          let~ opcode : Ty.path "move_binary_format::file_format_common::Opcodes" :=
             M.copy (|
               M.match_operator (|
                 instruction,

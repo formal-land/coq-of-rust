@@ -29,6 +29,10 @@ Module num.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_tuple_field1_finish",
@@ -176,6 +180,10 @@ Module num.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_tuple_field1_finish",
@@ -323,6 +331,10 @@ Module num.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_tuple_field1_finish",
@@ -470,6 +482,10 @@ Module num.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_tuple_field1_finish",
@@ -617,6 +633,10 @@ Module num.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_tuple_field1_finish",
@@ -764,6 +784,10 @@ Module num.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_tuple_field1_finish",
@@ -911,6 +935,10 @@ Module num.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_tuple_field1_finish",
@@ -1058,6 +1086,10 @@ Module num.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_tuple_field1_finish",
@@ -1205,6 +1237,10 @@ Module num.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_tuple_field1_finish",
@@ -1352,6 +1388,10 @@ Module num.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_tuple_field1_finish",
@@ -1499,6 +1539,10 @@ Module num.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_tuple_field1_finish",
@@ -1646,6 +1690,10 @@ Module num.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_tuple_field1_finish",
@@ -2100,12 +2148,17 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_trait_method (| "core::fmt::Debug", T, [], [], "fmt", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2148,12 +2201,17 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_trait_method (| "core::fmt::Display", T, [], [], "fmt", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2196,12 +2254,17 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_trait_method (| "core::fmt::Binary", T, [], [], "fmt", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2244,12 +2307,17 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_trait_method (| "core::fmt::Octal", T, [], [], "fmt", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2292,12 +2360,17 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_trait_method (| "core::fmt::LowerHex", T, [], [], "fmt", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2340,12 +2413,17 @@ Module num.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_trait_method (| "core::fmt::UpperHex", T, [], [], "fmt", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2517,12 +2595,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2537,6 +2617,7 @@ Module num.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2565,12 +2646,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "ne", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2585,6 +2668,7 @@ Module num.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2653,12 +2737,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2676,6 +2762,7 @@ Module num.
                       Pointer.Kind.Ref,
                       M.alloc (|
                         M.call_closure (|
+                          T,
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                             "get",
@@ -2706,12 +2793,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "lt", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2726,6 +2815,7 @@ Module num.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2754,12 +2844,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "le", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2774,6 +2866,7 @@ Module num.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2802,12 +2895,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "gt", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2822,6 +2917,7 @@ Module num.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2850,12 +2946,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "ge", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2870,6 +2968,7 @@ Module num.
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2918,12 +3017,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2941,6 +3042,7 @@ Module num.
                       Pointer.Kind.Ref,
                       M.alloc (|
                         M.call_closure (|
+                          T,
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                             "get",
@@ -2972,6 +3074,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                 "new_unchecked",
@@ -2980,9 +3083,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  T,
                   M.get_trait_method (| "core::cmp::Ord", T, [], [], "max", [], [] |),
                   [
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -2992,6 +3097,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -3021,6 +3127,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                 "new_unchecked",
@@ -3029,9 +3136,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  T,
                   M.get_trait_method (| "core::cmp::Ord", T, [], [], "min", [], [] |),
                   [
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -3041,6 +3150,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -3071,6 +3181,7 @@ Module num.
             let min := M.alloc (| min |) in
             let max := M.alloc (| max |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                 "new_unchecked",
@@ -3079,9 +3190,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  T,
                   M.get_trait_method (| "core::cmp::Ord", T, [], [], "clamp", [], [] |),
                   [
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -3091,6 +3204,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -3100,6 +3214,7 @@ Module num.
                       [ M.read (| min |) ]
                     |);
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -3150,12 +3265,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ H ] |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -3197,6 +3314,7 @@ Module num.
           ltac:(M.monadic
             (let nonzero := M.alloc (| nonzero |) in
             M.call_closure (|
+              T,
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                 "get",
@@ -3240,6 +3358,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                 "new_unchecked",
@@ -3248,9 +3367,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  T,
                   M.get_trait_method (| "core::ops::bit::BitOr", T, [], [ T ], "bitor", [], [] |),
                   [
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -3260,6 +3381,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -3307,6 +3429,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                 "new_unchecked",
@@ -3315,9 +3438,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  T,
                   M.get_trait_method (| "core::ops::bit::BitOr", T, [], [ T ], "bitor", [], [] |),
                   [
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -3365,6 +3490,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                 "new_unchecked",
@@ -3373,10 +3499,12 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  T,
                   M.get_trait_method (| "core::ops::bit::BitOr", T, [], [ T ], "bitor", [], [] |),
                   [
                     M.read (| self |);
                     M.call_closure (|
+                      T,
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                         "get",
@@ -3425,20 +3553,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::bit::BitOr",
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.deref (| M.read (| self |) |),
+                    M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      [],
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ],
-                      "bitor",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
+                      M.get_trait_method (|
+                        "core::ops::bit::BitOr",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        [],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ],
+                        "bitor",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3477,20 +3608,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::bit::BitOr",
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.deref (| M.read (| self |) |),
+                    M.call_closure (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
-                      [],
-                      [ T ],
-                      "bitor",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
+                      M.get_trait_method (|
+                        "core::ops::bit::BitOr",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        [],
+                        [ T ],
+                        "bitor",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3525,6 +3659,10 @@ Module num.
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ],
               M.get_function (|
                 "core::intrinsics::transmute_unchecked",
                 [],
@@ -3579,6 +3717,10 @@ Module num.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                       "new",
@@ -3602,7 +3744,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -3612,6 +3754,7 @@ Module num.
                                   M.use
                                     (M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_function (|
                                           "core::ub_checks::check_language_ub",
                                           [],
@@ -3625,9 +3768,10 @@ Module num.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_associated_function (|
                                         Self,
                                         "precondition_check.new_unchecked",
@@ -3644,6 +3788,7 @@ Module num.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
+                            Ty.path "never",
                             M.get_function (| "core::intrinsics::unreachable", [], [] |),
                             []
                           |)
@@ -3676,7 +3821,16 @@ Module num.
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.read (|
-              let~ opt_n :=
+              let~ opt_n :
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
+                    ] :=
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.MutRef,
@@ -3685,6 +3839,15 @@ Module num.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
+                              ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
                               "cast",
@@ -3698,6 +3861,7 @@ Module num.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply (Ty.path "*mut") [] [ T ],
                                 M.get_function (| "core::ptr::from_mut", [], [ T ] |),
                                 [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| n |) |) |) ]
                               |)
@@ -3710,6 +3874,15 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -3770,6 +3943,15 @@ Module num.
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
+                              ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
                               "from_mut",
@@ -3800,7 +3982,7 @@ Module num.
                                   Pointer.Kind.MutRef,
                                   M.deref (|
                                     M.read (|
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
                                           M.alloc (| Value.Tuple [] |),
                                           [
@@ -3810,6 +3992,7 @@ Module num.
                                                   M.use
                                                     (M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_function (|
                                                           "core::intrinsics::ub_checks",
                                                           [],
@@ -3823,9 +4006,10 @@ Module num.
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.tuple [],
                                                       M.get_associated_function (|
                                                         Self,
                                                         "precondition_check.from_mut_unchecked",
@@ -3842,6 +4026,7 @@ Module num.
                                       M.alloc (|
                                         M.never_to_any (|
                                           M.call_closure (|
+                                            Ty.path "never",
                                             M.get_function (|
                                               "core::intrinsics::unreachable",
                                               [],
@@ -3894,6 +4079,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              T,
               M.get_function (|
                 "core::intrinsics::transmute_unchecked",
                 [],
@@ -3939,12 +4125,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u8" ] |),
               [
                 M.read (|
                   M.use
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "u8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                           "get",
@@ -3978,12 +4166,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u8" ] |),
               [
                 M.read (|
                   M.use
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "u8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                           "get",
@@ -4017,6 +4207,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -4025,9 +4216,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "u8", "count_ones", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -4060,12 +4253,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u8",
                     M.get_associated_function (| Ty.path "u8", "rotate_left", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                           "get",
@@ -4080,6 +4275,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "new_unchecked",
@@ -4110,12 +4306,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u8",
                     M.get_associated_function (| Ty.path "u8", "rotate_right", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                           "get",
@@ -4130,6 +4328,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "new_unchecked",
@@ -4160,12 +4359,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u8",
                     M.get_associated_function (| Ty.path "u8", "swap_bytes", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                           "get",
@@ -4179,6 +4380,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "new_unchecked",
@@ -4208,12 +4410,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u8",
                     M.get_associated_function (| Ty.path "u8", "reverse_bits", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                           "get",
@@ -4227,6 +4431,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "new_unchecked",
@@ -4257,12 +4462,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u8",
                     M.get_associated_function (| Ty.path "u8", "from_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                           "get",
@@ -4276,6 +4483,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "new_unchecked",
@@ -4305,12 +4513,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u8",
                     M.get_associated_function (| Ty.path "u8", "from_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                           "get",
@@ -4324,6 +4534,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "new_unchecked",
@@ -4353,12 +4564,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u8",
                     M.get_associated_function (| Ty.path "u8", "to_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                           "get",
@@ -4372,6 +4585,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "new_unchecked",
@@ -4401,12 +4615,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u8",
                     M.get_associated_function (| Ty.path "u8", "to_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                           "get",
@@ -4420,6 +4636,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "new_unchecked",
@@ -4443,6 +4660,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -4454,6 +4672,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                       "new",
@@ -4476,6 +4698,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -4487,6 +4710,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                       "new",
@@ -4533,9 +4760,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                             M.get_associated_function (| Ty.path "u8", "checked_add", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "u8",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -4563,6 +4792,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -4607,6 +4837,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                 "new_unchecked",
@@ -4615,9 +4846,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_associated_function (| Ty.path "u8", "saturating_add", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -4651,6 +4884,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                 "new_unchecked",
@@ -4659,9 +4893,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_associated_function (| Ty.path "u8", "unchecked_add", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -4711,6 +4947,7 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                             M.get_associated_function (|
                               Ty.path "u8",
                               "checked_next_power_of_two",
@@ -4719,6 +4956,7 @@ Module num.
                             |),
                             [
                               M.call_closure (|
+                                Ty.path "u8",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -4745,6 +4983,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -4787,6 +5026,7 @@ Module num.
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
+                Ty.path "u32",
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                   "leading_zeros",
@@ -4813,9 +5053,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::num::int_log10::u8", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "get",
@@ -4848,6 +5090,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                 "new_unchecked",
@@ -4856,9 +5099,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_associated_function (| Ty.path "u8", "midpoint", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -4868,6 +5113,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -4903,9 +5149,11 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.lt (|
               M.call_closure (|
+                Ty.path "u32",
                 M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u8" ] |),
                 [
                   M.call_closure (|
+                    Ty.path "u8",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                       "get",
@@ -4943,12 +5191,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u8",
                     M.get_associated_function (| Ty.path "u8", "isqrt", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                           "get",
@@ -4962,6 +5212,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "new_unchecked",
@@ -5009,9 +5260,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                             M.get_associated_function (| Ty.path "u8", "checked_mul", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "u8",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -5024,6 +5277,7 @@ Module num.
                                 [ M.read (| self |) ]
                               |);
                               M.call_closure (|
+                                Ty.path "u8",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -5050,6 +5304,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -5095,6 +5350,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                 "new_unchecked",
@@ -5103,9 +5359,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_associated_function (| Ty.path "u8", "saturating_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -5115,6 +5373,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -5147,6 +5406,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                 "new_unchecked",
@@ -5155,9 +5415,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_associated_function (| Ty.path "u8", "unchecked_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -5167,6 +5429,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -5217,9 +5480,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                             M.get_associated_function (| Ty.path "u8", "checked_pow", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "u8",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -5247,6 +5512,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -5292,6 +5558,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                 "new_unchecked",
@@ -5300,9 +5567,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_associated_function (| Ty.path "u8", "saturating_pow", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "get",
@@ -5347,6 +5616,13 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                      Ty.path "core::num::error::ParseIntError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -5358,6 +5634,10 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                         "new",
@@ -5369,6 +5649,19 @@ Module num.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::ParseIntError"
+                                      ];
+                                    Ty.path "u8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -5383,6 +5676,10 @@ Module num.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "core::num::error::ParseIntError" ],
                                     M.get_associated_function (|
                                       Ty.path "u8",
                                       "from_str_radix",
@@ -5415,6 +5712,16 @@ Module num.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u8" ];
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -5500,10 +5807,12 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "u8",
               M.get_function (| "core::intrinsics::unchecked_div", [], [ Ty.path "u8" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "get",
@@ -5542,20 +5851,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::arith::Div",
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.deref (| M.read (| self |) |),
+                    M.call_closure (|
                       Ty.path "u8",
-                      [],
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
-                      "div",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                      M.get_trait_method (|
+                        "core::ops::arith::Div",
+                        Ty.path "u8",
+                        [],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
+                        "div",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5592,10 +5904,12 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "u8",
               M.get_function (| "core::intrinsics::unchecked_rem", [], [ Ty.path "u8" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                     "get",
@@ -5634,20 +5948,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::arith::Rem",
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.deref (| M.read (| self |) |),
+                    M.call_closure (|
                       Ty.path "u8",
-                      [],
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
-                      "rem",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "u8",
+                        [],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
+                        "rem",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5693,12 +6010,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u16" ] |),
               [
                 M.read (|
                   M.use
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "u16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                           "get",
@@ -5732,12 +6051,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u16" ] |),
               [
                 M.read (|
                   M.use
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "u16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                           "get",
@@ -5771,6 +6092,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -5779,9 +6101,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "u16", "count_ones", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -5814,12 +6138,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u16",
                     M.get_associated_function (| Ty.path "u16", "rotate_left", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                           "get",
@@ -5834,6 +6160,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "new_unchecked",
@@ -5864,12 +6191,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u16",
                     M.get_associated_function (| Ty.path "u16", "rotate_right", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                           "get",
@@ -5884,6 +6213,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "new_unchecked",
@@ -5914,12 +6244,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u16",
                     M.get_associated_function (| Ty.path "u16", "swap_bytes", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                           "get",
@@ -5933,6 +6265,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "new_unchecked",
@@ -5962,12 +6295,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u16",
                     M.get_associated_function (| Ty.path "u16", "reverse_bits", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                           "get",
@@ -5981,6 +6316,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "new_unchecked",
@@ -6011,12 +6347,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u16",
                     M.get_associated_function (| Ty.path "u16", "from_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                           "get",
@@ -6030,6 +6368,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "new_unchecked",
@@ -6059,12 +6398,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u16",
                     M.get_associated_function (| Ty.path "u16", "from_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                           "get",
@@ -6078,6 +6419,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "new_unchecked",
@@ -6107,12 +6449,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u16",
                     M.get_associated_function (| Ty.path "u16", "to_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                           "get",
@@ -6126,6 +6470,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "new_unchecked",
@@ -6155,12 +6500,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u16",
                     M.get_associated_function (| Ty.path "u16", "to_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                           "get",
@@ -6174,6 +6521,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "new_unchecked",
@@ -6197,6 +6545,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -6208,6 +6557,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                       "new",
@@ -6230,6 +6583,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -6241,6 +6595,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                       "new",
@@ -6287,9 +6645,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                             M.get_associated_function (| Ty.path "u16", "checked_add", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "u16",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -6317,6 +6677,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -6361,6 +6722,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                 "new_unchecked",
@@ -6369,9 +6731,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u16",
                   M.get_associated_function (| Ty.path "u16", "saturating_add", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -6405,6 +6769,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                 "new_unchecked",
@@ -6413,9 +6778,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u16",
                   M.get_associated_function (| Ty.path "u16", "unchecked_add", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -6465,6 +6832,7 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                             M.get_associated_function (|
                               Ty.path "u16",
                               "checked_next_power_of_two",
@@ -6473,6 +6841,7 @@ Module num.
                             |),
                             [
                               M.call_closure (|
+                                Ty.path "u16",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -6499,6 +6868,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -6541,6 +6911,7 @@ Module num.
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
+                Ty.path "u32",
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                   "leading_zeros",
@@ -6567,9 +6938,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::num::int_log10::u16", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "u16",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "get",
@@ -6602,6 +6975,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                 "new_unchecked",
@@ -6610,9 +6984,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u16",
                   M.get_associated_function (| Ty.path "u16", "midpoint", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -6622,6 +6998,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -6657,9 +7034,11 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.lt (|
               M.call_closure (|
+                Ty.path "u32",
                 M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u16" ] |),
                 [
                   M.call_closure (|
+                    Ty.path "u16",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                       "get",
@@ -6697,12 +7076,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u16",
                     M.get_associated_function (| Ty.path "u16", "isqrt", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                           "get",
@@ -6716,6 +7097,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "new_unchecked",
@@ -6763,9 +7145,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                             M.get_associated_function (| Ty.path "u16", "checked_mul", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "u16",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -6778,6 +7162,7 @@ Module num.
                                 [ M.read (| self |) ]
                               |);
                               M.call_closure (|
+                                Ty.path "u16",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -6804,6 +7189,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -6849,6 +7235,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                 "new_unchecked",
@@ -6857,9 +7244,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u16",
                   M.get_associated_function (| Ty.path "u16", "saturating_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -6869,6 +7258,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -6901,6 +7291,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                 "new_unchecked",
@@ -6909,9 +7300,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u16",
                   M.get_associated_function (| Ty.path "u16", "unchecked_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -6921,6 +7314,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -6971,9 +7365,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                             M.get_associated_function (| Ty.path "u16", "checked_pow", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "u16",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -7001,6 +7397,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -7046,6 +7443,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                 "new_unchecked",
@@ -7054,9 +7452,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u16",
                   M.get_associated_function (| Ty.path "u16", "saturating_pow", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "get",
@@ -7101,6 +7501,13 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                      Ty.path "core::num::error::ParseIntError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -7112,6 +7519,10 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                         "new",
@@ -7123,6 +7534,19 @@ Module num.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::ParseIntError"
+                                      ];
+                                    Ty.path "u16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -7137,6 +7561,10 @@ Module num.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u16"; Ty.path "core::num::error::ParseIntError" ],
                                     M.get_associated_function (|
                                       Ty.path "u16",
                                       "from_str_radix",
@@ -7169,6 +7597,16 @@ Module num.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u16" ];
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -7254,10 +7692,12 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "u16",
               M.get_function (| "core::intrinsics::unchecked_div", [], [ Ty.path "u16" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
+                  Ty.path "u16",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "get",
@@ -7296,20 +7736,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::arith::Div",
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.deref (| M.read (| self |) |),
+                    M.call_closure (|
                       Ty.path "u16",
-                      [],
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
-                      "div",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                      M.get_trait_method (|
+                        "core::ops::arith::Div",
+                        Ty.path "u16",
+                        [],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
+                        "div",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7346,10 +7789,12 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "u16",
               M.get_function (| "core::intrinsics::unchecked_rem", [], [ Ty.path "u16" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
+                  Ty.path "u16",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                     "get",
@@ -7388,20 +7833,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::arith::Rem",
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.deref (| M.read (| self |) |),
+                    M.call_closure (|
                       Ty.path "u16",
-                      [],
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
-                      "rem",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "u16",
+                        [],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
+                        "rem",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7447,12 +7895,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u32" ] |),
               [
                 M.read (|
                   M.use
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "u32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                           "get",
@@ -7486,12 +7936,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u32" ] |),
               [
                 M.read (|
                   M.use
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "u32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                           "get",
@@ -7525,6 +7977,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -7533,9 +7986,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "u32", "count_ones", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
@@ -7568,12 +8023,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u32",
                     M.get_associated_function (| Ty.path "u32", "rotate_left", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                           "get",
@@ -7588,6 +8045,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "new_unchecked",
@@ -7618,12 +8076,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u32",
                     M.get_associated_function (| Ty.path "u32", "rotate_right", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                           "get",
@@ -7638,6 +8098,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "new_unchecked",
@@ -7668,12 +8129,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u32",
                     M.get_associated_function (| Ty.path "u32", "swap_bytes", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                           "get",
@@ -7687,6 +8150,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "new_unchecked",
@@ -7716,12 +8180,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u32",
                     M.get_associated_function (| Ty.path "u32", "reverse_bits", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                           "get",
@@ -7735,6 +8201,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "new_unchecked",
@@ -7765,12 +8232,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u32",
                     M.get_associated_function (| Ty.path "u32", "from_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                           "get",
@@ -7784,6 +8253,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "new_unchecked",
@@ -7813,12 +8283,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u32",
                     M.get_associated_function (| Ty.path "u32", "from_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                           "get",
@@ -7832,6 +8304,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "new_unchecked",
@@ -7861,12 +8334,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u32",
                     M.get_associated_function (| Ty.path "u32", "to_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                           "get",
@@ -7880,6 +8355,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "new_unchecked",
@@ -7909,12 +8385,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u32",
                     M.get_associated_function (| Ty.path "u32", "to_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                           "get",
@@ -7928,6 +8406,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "new_unchecked",
@@ -7951,6 +8430,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -7962,6 +8442,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                       "new",
@@ -7984,6 +8468,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -7995,6 +8480,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                       "new",
@@ -8041,9 +8530,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                             M.get_associated_function (| Ty.path "u32", "checked_add", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "u32",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -8071,6 +8562,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -8115,6 +8607,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -8123,9 +8616,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "u32", "saturating_add", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
@@ -8159,6 +8654,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -8167,9 +8663,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "u32", "unchecked_add", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
@@ -8219,6 +8717,7 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                             M.get_associated_function (|
                               Ty.path "u32",
                               "checked_next_power_of_two",
@@ -8227,6 +8726,7 @@ Module num.
                             |),
                             [
                               M.call_closure (|
+                                Ty.path "u32",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -8253,6 +8753,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -8295,6 +8796,7 @@ Module num.
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
+                Ty.path "u32",
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                   "leading_zeros",
@@ -8321,9 +8823,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::num::int_log10::u32", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "get",
@@ -8356,6 +8860,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -8364,9 +8869,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "u32", "midpoint", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
@@ -8376,6 +8883,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
@@ -8411,9 +8919,11 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.lt (|
               M.call_closure (|
+                Ty.path "u32",
                 M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u32" ] |),
                 [
                   M.call_closure (|
+                    Ty.path "u32",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                       "get",
@@ -8451,12 +8961,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u32",
                     M.get_associated_function (| Ty.path "u32", "isqrt", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                           "get",
@@ -8470,6 +8982,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "new_unchecked",
@@ -8517,9 +9030,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                             M.get_associated_function (| Ty.path "u32", "checked_mul", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "u32",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -8532,6 +9047,7 @@ Module num.
                                 [ M.read (| self |) ]
                               |);
                               M.call_closure (|
+                                Ty.path "u32",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -8558,6 +9074,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -8603,6 +9120,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -8611,9 +9129,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "u32", "saturating_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
@@ -8623,6 +9143,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
@@ -8655,6 +9176,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -8663,9 +9185,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "u32", "unchecked_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
@@ -8675,6 +9199,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
@@ -8725,9 +9250,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                             M.get_associated_function (| Ty.path "u32", "checked_pow", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "u32",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -8755,6 +9282,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -8800,6 +9328,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -8808,9 +9337,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "u32", "saturating_pow", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "get",
@@ -8855,6 +9386,13 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                      Ty.path "core::num::error::ParseIntError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -8866,6 +9404,10 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                         "new",
@@ -8877,6 +9419,19 @@ Module num.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::ParseIntError"
+                                      ];
+                                    Ty.path "u32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -8891,6 +9446,10 @@ Module num.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u32"; Ty.path "core::num::error::ParseIntError" ],
                                     M.get_associated_function (|
                                       Ty.path "u32",
                                       "from_str_radix",
@@ -8923,6 +9482,16 @@ Module num.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u32" ];
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -9008,10 +9577,12 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::unchecked_div", [], [ Ty.path "u32" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "get",
@@ -9050,20 +9621,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::arith::Div",
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.deref (| M.read (| self |) |),
+                    M.call_closure (|
                       Ty.path "u32",
-                      [],
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
-                      "div",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                      M.get_trait_method (|
+                        "core::ops::arith::Div",
+                        Ty.path "u32",
+                        [],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
+                        "div",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9100,10 +9674,12 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::unchecked_rem", [], [ Ty.path "u32" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                     "get",
@@ -9142,20 +9718,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::arith::Rem",
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.deref (| M.read (| self |) |),
+                    M.call_closure (|
                       Ty.path "u32",
-                      [],
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
-                      "rem",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "u32",
+                        [],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
+                        "rem",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9201,12 +9780,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u64" ] |),
               [
                 M.read (|
                   M.use
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "u64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                           "get",
@@ -9240,12 +9821,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u64" ] |),
               [
                 M.read (|
                   M.use
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "u64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                           "get",
@@ -9279,6 +9862,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -9287,9 +9871,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "u64", "count_ones", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "get",
@@ -9322,12 +9908,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "rotate_left", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                           "get",
@@ -9342,6 +9930,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new_unchecked",
@@ -9372,12 +9961,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "rotate_right", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                           "get",
@@ -9392,6 +9983,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new_unchecked",
@@ -9422,12 +10014,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "swap_bytes", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                           "get",
@@ -9441,6 +10035,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new_unchecked",
@@ -9470,12 +10065,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "reverse_bits", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                           "get",
@@ -9489,6 +10086,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new_unchecked",
@@ -9519,12 +10117,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "from_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                           "get",
@@ -9538,6 +10138,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new_unchecked",
@@ -9567,12 +10168,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "from_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                           "get",
@@ -9586,6 +10189,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new_unchecked",
@@ -9615,12 +10219,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "to_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                           "get",
@@ -9634,6 +10240,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new_unchecked",
@@ -9663,12 +10270,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "to_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                           "get",
@@ -9682,6 +10291,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new_unchecked",
@@ -9705,6 +10315,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -9716,6 +10327,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       "new",
@@ -9738,6 +10353,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -9749,6 +10365,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       "new",
@@ -9795,9 +10415,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                             M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "u64",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -9825,6 +10447,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -9869,6 +10492,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                 "new_unchecked",
@@ -9877,9 +10501,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_associated_function (| Ty.path "u64", "saturating_add", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "get",
@@ -9913,6 +10539,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                 "new_unchecked",
@@ -9921,9 +10548,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_associated_function (| Ty.path "u64", "unchecked_add", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "get",
@@ -9973,6 +10602,7 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                             M.get_associated_function (|
                               Ty.path "u64",
                               "checked_next_power_of_two",
@@ -9981,6 +10611,7 @@ Module num.
                             |),
                             [
                               M.call_closure (|
+                                Ty.path "u64",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -10007,6 +10638,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -10049,6 +10681,7 @@ Module num.
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
+                Ty.path "u32",
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                   "leading_zeros",
@@ -10075,9 +10708,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::num::int_log10::u64", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "get",
@@ -10110,6 +10745,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                 "new_unchecked",
@@ -10118,9 +10754,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_associated_function (| Ty.path "u64", "midpoint", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "get",
@@ -10130,6 +10768,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "get",
@@ -10165,9 +10804,11 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.lt (|
               M.call_closure (|
+                Ty.path "u32",
                 M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u64" ] |),
                 [
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       "get",
@@ -10205,12 +10846,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "isqrt", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                           "get",
@@ -10224,6 +10867,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new_unchecked",
@@ -10271,9 +10915,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                             M.get_associated_function (| Ty.path "u64", "checked_mul", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "u64",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -10286,6 +10932,7 @@ Module num.
                                 [ M.read (| self |) ]
                               |);
                               M.call_closure (|
+                                Ty.path "u64",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -10312,6 +10959,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -10357,6 +11005,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                 "new_unchecked",
@@ -10365,9 +11014,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_associated_function (| Ty.path "u64", "saturating_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "get",
@@ -10377,6 +11028,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "get",
@@ -10409,6 +11061,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                 "new_unchecked",
@@ -10417,9 +11070,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_associated_function (| Ty.path "u64", "unchecked_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "get",
@@ -10429,6 +11084,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "get",
@@ -10479,9 +11135,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                             M.get_associated_function (| Ty.path "u64", "checked_pow", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "u64",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -10509,6 +11167,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -10554,6 +11213,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                 "new_unchecked",
@@ -10562,9 +11222,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_associated_function (| Ty.path "u64", "saturating_pow", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "get",
@@ -10609,6 +11271,13 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                      Ty.path "core::num::error::ParseIntError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -10620,6 +11289,10 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                         "new",
@@ -10631,6 +11304,19 @@ Module num.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::ParseIntError"
+                                      ];
+                                    Ty.path "u64"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -10645,6 +11331,10 @@ Module num.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u64"; Ty.path "core::num::error::ParseIntError" ],
                                     M.get_associated_function (|
                                       Ty.path "u64",
                                       "from_str_radix",
@@ -10677,6 +11367,16 @@ Module num.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u64" ];
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -10762,10 +11462,12 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "u64",
               M.get_function (| "core::intrinsics::unchecked_div", [], [ Ty.path "u64" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "get",
@@ -10804,20 +11506,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::arith::Div",
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.deref (| M.read (| self |) |),
+                    M.call_closure (|
                       Ty.path "u64",
-                      [],
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
-                      "div",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                      M.get_trait_method (|
+                        "core::ops::arith::Div",
+                        Ty.path "u64",
+                        [],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
+                        "div",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10854,10 +11559,12 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "u64",
               M.get_function (| "core::intrinsics::unchecked_rem", [], [ Ty.path "u64" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "get",
@@ -10896,20 +11603,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::arith::Rem",
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.deref (| M.read (| self |) |),
+                    M.call_closure (|
                       Ty.path "u64",
-                      [],
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
-                      "rem",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "u64",
+                        [],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
+                        "rem",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10955,12 +11665,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u128" ] |),
               [
                 M.read (|
                   M.use
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "u128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                           "get",
@@ -10994,12 +11706,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u128" ] |),
               [
                 M.read (|
                   M.use
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "u128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                           "get",
@@ -11033,6 +11747,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -11041,9 +11756,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "u128", "count_ones", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "get",
@@ -11076,12 +11793,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u128",
                     M.get_associated_function (| Ty.path "u128", "rotate_left", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                           "get",
@@ -11096,6 +11815,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "new_unchecked",
@@ -11126,12 +11846,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u128",
                     M.get_associated_function (| Ty.path "u128", "rotate_right", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                           "get",
@@ -11146,6 +11868,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "new_unchecked",
@@ -11176,12 +11899,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u128",
                     M.get_associated_function (| Ty.path "u128", "swap_bytes", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                           "get",
@@ -11195,6 +11920,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "new_unchecked",
@@ -11224,12 +11950,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u128",
                     M.get_associated_function (| Ty.path "u128", "reverse_bits", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                           "get",
@@ -11243,6 +11971,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "new_unchecked",
@@ -11273,12 +12002,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u128",
                     M.get_associated_function (| Ty.path "u128", "from_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                           "get",
@@ -11292,6 +12023,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "new_unchecked",
@@ -11321,12 +12053,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u128",
                     M.get_associated_function (| Ty.path "u128", "from_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                           "get",
@@ -11340,6 +12074,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "new_unchecked",
@@ -11369,12 +12104,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u128",
                     M.get_associated_function (| Ty.path "u128", "to_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                           "get",
@@ -11388,6 +12125,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "new_unchecked",
@@ -11417,12 +12155,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u128",
                     M.get_associated_function (| Ty.path "u128", "to_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                           "get",
@@ -11436,6 +12176,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "new_unchecked",
@@ -11459,6 +12200,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -11470,6 +12212,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                       "new",
@@ -11492,6 +12238,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -11503,6 +12250,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                       "new",
@@ -11549,9 +12300,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                             M.get_associated_function (| Ty.path "u128", "checked_add", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "u128",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -11579,6 +12332,10 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "u128" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -11623,6 +12380,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 "new_unchecked",
@@ -11631,9 +12389,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u128",
                   M.get_associated_function (| Ty.path "u128", "saturating_add", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "get",
@@ -11667,6 +12427,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 "new_unchecked",
@@ -11675,9 +12436,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u128",
                   M.get_associated_function (| Ty.path "u128", "unchecked_add", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "get",
@@ -11727,6 +12490,7 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                             M.get_associated_function (|
                               Ty.path "u128",
                               "checked_next_power_of_two",
@@ -11735,6 +12499,7 @@ Module num.
                             |),
                             [
                               M.call_closure (|
+                                Ty.path "u128",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -11761,6 +12526,10 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "u128" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -11803,6 +12572,7 @@ Module num.
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
+                Ty.path "u32",
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                   "leading_zeros",
@@ -11829,9 +12599,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::num::int_log10::u128", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "u128",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "get",
@@ -11864,6 +12636,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 "new_unchecked",
@@ -11872,9 +12645,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u128",
                   M.get_associated_function (| Ty.path "u128", "midpoint", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "get",
@@ -11884,6 +12659,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "u128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "get",
@@ -11919,9 +12695,11 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.lt (|
               M.call_closure (|
+                Ty.path "u32",
                 M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u128" ] |),
                 [
                   M.call_closure (|
+                    Ty.path "u128",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                       "get",
@@ -11959,12 +12737,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "u128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u128",
                     M.get_associated_function (| Ty.path "u128", "isqrt", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "u128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                           "get",
@@ -11978,6 +12758,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "new_unchecked",
@@ -12025,9 +12806,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                             M.get_associated_function (| Ty.path "u128", "checked_mul", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "u128",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -12040,6 +12823,7 @@ Module num.
                                 [ M.read (| self |) ]
                               |);
                               M.call_closure (|
+                                Ty.path "u128",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -12066,6 +12850,10 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "u128" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -12111,6 +12899,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 "new_unchecked",
@@ -12119,9 +12908,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u128",
                   M.get_associated_function (| Ty.path "u128", "saturating_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "get",
@@ -12131,6 +12922,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "u128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "get",
@@ -12163,6 +12955,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 "new_unchecked",
@@ -12171,9 +12964,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u128",
                   M.get_associated_function (| Ty.path "u128", "unchecked_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "get",
@@ -12183,6 +12978,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "u128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "get",
@@ -12233,9 +13029,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
                             M.get_associated_function (| Ty.path "u128", "checked_pow", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "u128",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -12263,6 +13061,10 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "u128" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -12308,6 +13110,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 "new_unchecked",
@@ -12316,9 +13119,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u128",
                   M.get_associated_function (| Ty.path "u128", "saturating_pow", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "u128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "get",
@@ -12363,6 +13168,13 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                      Ty.path "core::num::error::ParseIntError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -12374,6 +13186,10 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                         "new",
@@ -12385,6 +13201,19 @@ Module num.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::ParseIntError"
+                                      ];
+                                    Ty.path "u128"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -12399,6 +13228,10 @@ Module num.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u128"; Ty.path "core::num::error::ParseIntError" ],
                                     M.get_associated_function (|
                                       Ty.path "u128",
                                       "from_str_radix",
@@ -12431,6 +13264,16 @@ Module num.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "u128" ];
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -12516,10 +13359,12 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "u128",
               M.get_function (| "core::intrinsics::unchecked_div", [], [ Ty.path "u128" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
+                  Ty.path "u128",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "get",
@@ -12558,20 +13403,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::arith::Div",
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.deref (| M.read (| self |) |),
+                    M.call_closure (|
                       Ty.path "u128",
-                      [],
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
-                      "div",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                      M.get_trait_method (|
+                        "core::ops::arith::Div",
+                        Ty.path "u128",
+                        [],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
+                        "div",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12608,10 +13456,12 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "u128",
               M.get_function (| "core::intrinsics::unchecked_rem", [], [ Ty.path "u128" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
+                  Ty.path "u128",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                     "get",
@@ -12650,20 +13500,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::arith::Rem",
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.deref (| M.read (| self |) |),
+                    M.call_closure (|
                       Ty.path "u128",
-                      [],
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
-                      "rem",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "u128",
+                        [],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
+                        "rem",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12709,12 +13562,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "usize" ] |),
               [
                 M.read (|
                   M.use
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "get",
@@ -12748,12 +13603,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "usize" ] |),
               [
                 M.read (|
                   M.use
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "get",
@@ -12787,6 +13644,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -12795,9 +13653,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "usize", "count_ones", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "get",
@@ -12830,12 +13690,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (| Ty.path "usize", "rotate_left", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "get",
@@ -12850,6 +13712,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "new_unchecked",
@@ -12880,12 +13743,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (| Ty.path "usize", "rotate_right", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "get",
@@ -12900,6 +13765,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "new_unchecked",
@@ -12930,12 +13796,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (| Ty.path "usize", "swap_bytes", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "get",
@@ -12949,6 +13817,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "new_unchecked",
@@ -12978,12 +13847,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (| Ty.path "usize", "reverse_bits", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "get",
@@ -12997,6 +13868,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "new_unchecked",
@@ -13027,12 +13899,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (| Ty.path "usize", "from_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "get",
@@ -13046,6 +13920,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "new_unchecked",
@@ -13075,12 +13950,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (| Ty.path "usize", "from_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "get",
@@ -13094,6 +13971,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "new_unchecked",
@@ -13123,12 +14001,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (| Ty.path "usize", "to_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "get",
@@ -13142,6 +14022,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "new_unchecked",
@@ -13171,12 +14052,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (| Ty.path "usize", "to_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "get",
@@ -13190,6 +14073,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "new_unchecked",
@@ -13213,6 +14097,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -13224,6 +14109,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                       "new",
@@ -13246,6 +14135,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -13257,6 +14147,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                       "new",
@@ -13303,9 +14197,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                             M.get_associated_function (| Ty.path "usize", "checked_add", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -13333,6 +14229,10 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -13377,6 +14277,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "new_unchecked",
@@ -13385,9 +14286,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (| Ty.path "usize", "saturating_add", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "get",
@@ -13421,6 +14324,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "new_unchecked",
@@ -13429,9 +14333,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (| Ty.path "usize", "unchecked_add", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "get",
@@ -13481,6 +14387,7 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                             M.get_associated_function (|
                               Ty.path "usize",
                               "checked_next_power_of_two",
@@ -13489,6 +14396,7 @@ Module num.
                             |),
                             [
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -13515,6 +14423,10 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -13557,6 +14469,7 @@ Module num.
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
+                Ty.path "u32",
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   "leading_zeros",
@@ -13583,9 +14496,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::num::int_log10::usize", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "get",
@@ -13618,6 +14533,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let rhs := M.alloc (| rhs |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "new_unchecked",
@@ -13626,9 +14542,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (| Ty.path "usize", "midpoint", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "get",
@@ -13638,6 +14556,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "get",
@@ -13673,9 +14592,11 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.lt (|
               M.call_closure (|
+                Ty.path "u32",
                 M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "usize" ] |),
                 [
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                       "get",
@@ -13713,12 +14634,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (| Ty.path "usize", "isqrt", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "get",
@@ -13732,6 +14655,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "new_unchecked",
@@ -13779,9 +14703,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                             M.get_associated_function (| Ty.path "usize", "checked_mul", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -13794,6 +14720,7 @@ Module num.
                                 [ M.read (| self |) ]
                               |);
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -13820,6 +14747,10 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -13865,6 +14796,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "new_unchecked",
@@ -13873,9 +14805,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (| Ty.path "usize", "saturating_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "get",
@@ -13885,6 +14819,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "get",
@@ -13917,6 +14852,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "new_unchecked",
@@ -13925,9 +14861,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (| Ty.path "usize", "unchecked_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "get",
@@ -13937,6 +14875,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "get",
@@ -13987,9 +14926,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                             M.get_associated_function (| Ty.path "usize", "checked_pow", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -14017,6 +14958,10 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -14062,6 +15007,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "new_unchecked",
@@ -14070,9 +15016,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (| Ty.path "usize", "saturating_pow", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "get",
@@ -14117,6 +15065,13 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                      Ty.path "core::num::error::ParseIntError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -14128,6 +15083,10 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
@@ -14139,6 +15098,19 @@ Module num.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::ParseIntError"
+                                      ];
+                                    Ty.path "usize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -14153,6 +15125,11 @@ Module num.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "usize"; Ty.path "core::num::error::ParseIntError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "usize",
                                       "from_str_radix",
@@ -14185,6 +15162,16 @@ Module num.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "usize" ];
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -14270,10 +15257,12 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_function (| "core::intrinsics::unchecked_div", [], [ Ty.path "usize" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "get",
@@ -14312,20 +15301,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::arith::Div",
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.deref (| M.read (| self |) |),
+                    M.call_closure (|
                       Ty.path "usize",
-                      [],
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
-                      "div",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                      M.get_trait_method (|
+                        "core::ops::arith::Div",
+                        Ty.path "usize",
+                        [],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
+                        "div",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14362,10 +15354,12 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_function (| "core::intrinsics::unchecked_rem", [], [ Ty.path "usize" ] |),
               [
                 M.read (| self |);
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "get",
@@ -14404,20 +15398,23 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::arith::Rem",
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.deref (| M.read (| self |) |),
+                    M.call_closure (|
                       Ty.path "usize",
-                      [],
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
-                      "rem",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                      M.get_trait_method (|
+                        "core::ops::arith::Rem",
+                        Ty.path "usize",
+                        [],
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
+                        "rem",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14463,11 +15460,13 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u8" ] |),
               [
                 M.cast
                   (Ty.path "u8")
                   (M.call_closure (|
+                    Ty.path "i8",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                       "get",
@@ -14499,11 +15498,13 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u8" ] |),
               [
                 M.cast
                   (Ty.path "u8")
                   (M.call_closure (|
+                    Ty.path "i8",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                       "get",
@@ -14535,6 +15536,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -14543,9 +15545,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "i8", "count_ones", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -14578,12 +15582,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i8",
                     M.get_associated_function (| Ty.path "i8", "rotate_left", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                           "get",
@@ -14598,6 +15604,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                     "new_unchecked",
@@ -14628,12 +15635,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i8",
                     M.get_associated_function (| Ty.path "i8", "rotate_right", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                           "get",
@@ -14648,6 +15657,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                     "new_unchecked",
@@ -14678,12 +15688,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i8",
                     M.get_associated_function (| Ty.path "i8", "swap_bytes", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                           "get",
@@ -14697,6 +15709,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                     "new_unchecked",
@@ -14726,12 +15739,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i8",
                     M.get_associated_function (| Ty.path "i8", "reverse_bits", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                           "get",
@@ -14745,6 +15760,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                     "new_unchecked",
@@ -14775,12 +15791,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i8",
                     M.get_associated_function (| Ty.path "i8", "from_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                           "get",
@@ -14794,6 +15812,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                     "new_unchecked",
@@ -14823,12 +15842,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i8",
                     M.get_associated_function (| Ty.path "i8", "from_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                           "get",
@@ -14842,6 +15863,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                     "new_unchecked",
@@ -14871,12 +15893,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i8",
                     M.get_associated_function (| Ty.path "i8", "to_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                           "get",
@@ -14890,6 +15914,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                     "new_unchecked",
@@ -14919,12 +15944,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i8",
                     M.get_associated_function (| Ty.path "i8", "to_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                           "get",
@@ -14938,6 +15965,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                     "new_unchecked",
@@ -14961,6 +15989,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -14972,6 +16001,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                       "new",
@@ -14994,6 +16027,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -15005,6 +16039,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                       "new",
@@ -15032,6 +16070,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                 "new_unchecked",
@@ -15040,9 +16079,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_associated_function (| Ty.path "i8", "abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -15085,9 +16126,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
                             M.get_associated_function (| Ty.path "i8", "checked_abs", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "i8",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -15114,6 +16157,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -15158,9 +16202,11 @@ Module num.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.path "i8"; Ty.path "bool" ],
                     M.get_associated_function (| Ty.path "i8", "overflowing_abs", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                           "get",
@@ -15183,6 +16229,7 @@ Module num.
                         Value.Tuple
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -15219,6 +16266,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                 "new_unchecked",
@@ -15227,9 +16275,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_associated_function (| Ty.path "i8", "saturating_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -15261,6 +16311,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                 "new_unchecked",
@@ -15269,9 +16320,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_associated_function (| Ty.path "i8", "wrapping_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -15303,6 +16356,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
                 "new_unchecked",
@@ -15311,9 +16365,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_associated_function (| Ty.path "i8", "unsigned_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -15344,9 +16400,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (| Ty.path "i8", "is_positive", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                     "get",
@@ -15374,9 +16432,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (| Ty.path "i8", "is_negative", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                     "get",
@@ -15410,7 +16470,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -15419,6 +16479,7 @@ Module num.
                             (let γ :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
                                   M.get_associated_function (|
                                     Ty.path "i8",
                                     "checked_neg",
@@ -15427,6 +16488,7 @@ Module num.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "i8",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::num::nonzero::NonZero")
@@ -15456,6 +16518,10 @@ Module num.
                                       "core::option::Option::Some"
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::num::nonzero::NonZero")
+                                            []
+                                            [ Ty.path "i8" ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::num::nonzero::NonZero")
@@ -15500,9 +16566,11 @@ Module num.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.path "i8"; Ty.path "bool" ],
                     M.get_associated_function (| Ty.path "i8", "overflowing_neg", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                           "get",
@@ -15525,6 +16593,7 @@ Module num.
                         Value.Tuple
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -15565,7 +16634,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -15574,6 +16643,15 @@ Module num.
                             (let γ :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "i8" ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::num::nonzero::NonZero")
@@ -15622,12 +16700,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i8" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i8",
                     M.get_associated_function (| Ty.path "i8", "wrapping_neg", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i8",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                           "get",
@@ -15641,6 +16721,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                     "new_unchecked",
@@ -15689,9 +16770,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
                             M.get_associated_function (| Ty.path "i8", "checked_mul", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "i8",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -15704,6 +16787,7 @@ Module num.
                                 [ M.read (| self |) ]
                               |);
                               M.call_closure (|
+                                Ty.path "i8",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -15730,6 +16814,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -15775,6 +16860,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                 "new_unchecked",
@@ -15783,9 +16869,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_associated_function (| Ty.path "i8", "saturating_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -15795,6 +16883,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -15827,6 +16916,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                 "new_unchecked",
@@ -15835,9 +16925,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_associated_function (| Ty.path "i8", "unchecked_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -15847,6 +16939,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -15897,9 +16990,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
                             M.get_associated_function (| Ty.path "i8", "checked_pow", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "i8",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -15927,6 +17022,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -15972,6 +17068,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                 "new_unchecked",
@@ -15980,9 +17077,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_associated_function (| Ty.path "i8", "saturating_pow", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -16027,6 +17126,13 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                      Ty.path "core::num::error::ParseIntError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -16038,6 +17144,10 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "new",
@@ -16049,6 +17159,19 @@ Module num.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::ParseIntError"
+                                      ];
+                                    Ty.path "i8"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -16063,6 +17186,10 @@ Module num.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i8"; Ty.path "core::num::error::ParseIntError" ],
                                     M.get_associated_function (|
                                       Ty.path "i8",
                                       "from_str_radix",
@@ -16095,6 +17222,16 @@ Module num.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i8" ];
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -16180,6 +17317,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                 "new_unchecked",
@@ -16188,6 +17326,7 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i8",
                   M.get_trait_method (|
                     "core::ops::arith::Neg",
                     Ty.path "i8",
@@ -16199,6 +17338,7 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i8",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
                         "get",
@@ -16252,11 +17392,13 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u16" ] |),
               [
                 M.cast
                   (Ty.path "u16")
                   (M.call_closure (|
+                    Ty.path "i16",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                       "get",
@@ -16288,11 +17430,13 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u16" ] |),
               [
                 M.cast
                   (Ty.path "u16")
                   (M.call_closure (|
+                    Ty.path "i16",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                       "get",
@@ -16324,6 +17468,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -16332,9 +17477,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "i16", "count_ones", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
@@ -16367,12 +17514,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i16",
                     M.get_associated_function (| Ty.path "i16", "rotate_left", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                           "get",
@@ -16387,6 +17536,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                     "new_unchecked",
@@ -16417,12 +17567,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i16",
                     M.get_associated_function (| Ty.path "i16", "rotate_right", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                           "get",
@@ -16437,6 +17589,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                     "new_unchecked",
@@ -16467,12 +17620,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i16",
                     M.get_associated_function (| Ty.path "i16", "swap_bytes", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                           "get",
@@ -16486,6 +17641,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                     "new_unchecked",
@@ -16515,12 +17671,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i16",
                     M.get_associated_function (| Ty.path "i16", "reverse_bits", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                           "get",
@@ -16534,6 +17692,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                     "new_unchecked",
@@ -16564,12 +17723,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i16",
                     M.get_associated_function (| Ty.path "i16", "from_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                           "get",
@@ -16583,6 +17744,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                     "new_unchecked",
@@ -16612,12 +17774,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i16",
                     M.get_associated_function (| Ty.path "i16", "from_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                           "get",
@@ -16631,6 +17795,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                     "new_unchecked",
@@ -16660,12 +17825,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i16",
                     M.get_associated_function (| Ty.path "i16", "to_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                           "get",
@@ -16679,6 +17846,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                     "new_unchecked",
@@ -16708,12 +17876,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i16",
                     M.get_associated_function (| Ty.path "i16", "to_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                           "get",
@@ -16727,6 +17897,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                     "new_unchecked",
@@ -16750,6 +17921,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -16761,6 +17933,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                       "new",
@@ -16783,6 +17959,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -16794,6 +17971,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                       "new",
@@ -16821,6 +18002,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                 "new_unchecked",
@@ -16829,9 +18011,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i16",
                   M.get_associated_function (| Ty.path "i16", "abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
@@ -16874,9 +18058,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
                             M.get_associated_function (| Ty.path "i16", "checked_abs", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "i16",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -16903,6 +18089,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -16947,9 +18134,11 @@ Module num.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.path "i16"; Ty.path "bool" ],
                     M.get_associated_function (| Ty.path "i16", "overflowing_abs", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                           "get",
@@ -16972,6 +18161,7 @@ Module num.
                         Value.Tuple
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -17008,6 +18198,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                 "new_unchecked",
@@ -17016,9 +18207,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i16",
                   M.get_associated_function (| Ty.path "i16", "saturating_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
@@ -17050,6 +18243,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                 "new_unchecked",
@@ -17058,9 +18252,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i16",
                   M.get_associated_function (| Ty.path "i16", "wrapping_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
@@ -17092,6 +18288,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
                 "new_unchecked",
@@ -17100,9 +18297,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u16",
                   M.get_associated_function (| Ty.path "i16", "unsigned_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
@@ -17133,9 +18332,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (| Ty.path "i16", "is_positive", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "i16",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                     "get",
@@ -17163,9 +18364,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (| Ty.path "i16", "is_negative", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "i16",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                     "get",
@@ -17199,7 +18402,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -17208,6 +18411,7 @@ Module num.
                             (let γ :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
                                   M.get_associated_function (|
                                     Ty.path "i16",
                                     "checked_neg",
@@ -17216,6 +18420,7 @@ Module num.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "i16",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::num::nonzero::NonZero")
@@ -17245,6 +18450,10 @@ Module num.
                                       "core::option::Option::Some"
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::num::nonzero::NonZero")
+                                            []
+                                            [ Ty.path "i16" ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::num::nonzero::NonZero")
@@ -17289,9 +18498,11 @@ Module num.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.path "i16"; Ty.path "bool" ],
                     M.get_associated_function (| Ty.path "i16", "overflowing_neg", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                           "get",
@@ -17314,6 +18525,7 @@ Module num.
                         Value.Tuple
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -17354,7 +18566,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -17363,6 +18575,15 @@ Module num.
                             (let γ :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "i16" ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::num::nonzero::NonZero")
@@ -17411,12 +18632,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i16" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i16",
                     M.get_associated_function (| Ty.path "i16", "wrapping_neg", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i16",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                           "get",
@@ -17430,6 +18653,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                     "new_unchecked",
@@ -17478,9 +18702,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
                             M.get_associated_function (| Ty.path "i16", "checked_mul", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "i16",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -17493,6 +18719,7 @@ Module num.
                                 [ M.read (| self |) ]
                               |);
                               M.call_closure (|
+                                Ty.path "i16",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -17519,6 +18746,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -17564,6 +18792,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                 "new_unchecked",
@@ -17572,9 +18801,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i16",
                   M.get_associated_function (| Ty.path "i16", "saturating_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
@@ -17584,6 +18815,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "i16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
@@ -17616,6 +18848,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                 "new_unchecked",
@@ -17624,9 +18857,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i16",
                   M.get_associated_function (| Ty.path "i16", "unchecked_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
@@ -17636,6 +18871,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "i16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
@@ -17686,9 +18922,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
                             M.get_associated_function (| Ty.path "i16", "checked_pow", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "i16",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -17716,6 +18954,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -17761,6 +19000,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                 "new_unchecked",
@@ -17769,9 +19009,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i16",
                   M.get_associated_function (| Ty.path "i16", "saturating_pow", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
@@ -17816,6 +19058,13 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                      Ty.path "core::num::error::ParseIntError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -17827,6 +19076,10 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "new",
@@ -17838,6 +19091,19 @@ Module num.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::ParseIntError"
+                                      ];
+                                    Ty.path "i16"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -17852,6 +19118,10 @@ Module num.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i16"; Ty.path "core::num::error::ParseIntError" ],
                                     M.get_associated_function (|
                                       Ty.path "i16",
                                       "from_str_radix",
@@ -17884,6 +19154,16 @@ Module num.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i16" ];
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -17969,6 +19249,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                 "new_unchecked",
@@ -17977,6 +19258,7 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i16",
                   M.get_trait_method (|
                     "core::ops::arith::Neg",
                     Ty.path "i16",
@@ -17988,6 +19270,7 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i16",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
                         "get",
@@ -18041,11 +19324,13 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u32" ] |),
               [
                 M.cast
                   (Ty.path "u32")
                   (M.call_closure (|
+                    Ty.path "i32",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                       "get",
@@ -18077,11 +19362,13 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u32" ] |),
               [
                 M.cast
                   (Ty.path "u32")
                   (M.call_closure (|
+                    Ty.path "i32",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                       "get",
@@ -18113,6 +19400,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -18121,9 +19409,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "i32", "count_ones", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "get",
@@ -18156,12 +19446,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i32",
                     M.get_associated_function (| Ty.path "i32", "rotate_left", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                           "get",
@@ -18176,6 +19468,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                     "new_unchecked",
@@ -18206,12 +19499,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i32",
                     M.get_associated_function (| Ty.path "i32", "rotate_right", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                           "get",
@@ -18226,6 +19521,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                     "new_unchecked",
@@ -18256,12 +19552,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i32",
                     M.get_associated_function (| Ty.path "i32", "swap_bytes", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                           "get",
@@ -18275,6 +19573,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                     "new_unchecked",
@@ -18304,12 +19603,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i32",
                     M.get_associated_function (| Ty.path "i32", "reverse_bits", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                           "get",
@@ -18323,6 +19624,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                     "new_unchecked",
@@ -18353,12 +19655,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i32",
                     M.get_associated_function (| Ty.path "i32", "from_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                           "get",
@@ -18372,6 +19676,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                     "new_unchecked",
@@ -18401,12 +19706,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i32",
                     M.get_associated_function (| Ty.path "i32", "from_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                           "get",
@@ -18420,6 +19727,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                     "new_unchecked",
@@ -18449,12 +19757,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i32",
                     M.get_associated_function (| Ty.path "i32", "to_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                           "get",
@@ -18468,6 +19778,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                     "new_unchecked",
@@ -18497,12 +19808,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i32",
                     M.get_associated_function (| Ty.path "i32", "to_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                           "get",
@@ -18516,6 +19829,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                     "new_unchecked",
@@ -18539,6 +19853,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -18550,6 +19865,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                       "new",
@@ -18572,6 +19891,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -18583,6 +19903,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                       "new",
@@ -18610,6 +19934,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 "new_unchecked",
@@ -18618,9 +19943,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i32",
                   M.get_associated_function (| Ty.path "i32", "abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "get",
@@ -18663,9 +19990,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                             M.get_associated_function (| Ty.path "i32", "checked_abs", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "i32",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -18692,6 +20021,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -18736,9 +20066,11 @@ Module num.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.path "i32"; Ty.path "bool" ],
                     M.get_associated_function (| Ty.path "i32", "overflowing_abs", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                           "get",
@@ -18761,6 +20093,7 @@ Module num.
                         Value.Tuple
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -18797,6 +20130,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 "new_unchecked",
@@ -18805,9 +20139,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i32",
                   M.get_associated_function (| Ty.path "i32", "saturating_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "get",
@@ -18839,6 +20175,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 "new_unchecked",
@@ -18847,9 +20184,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i32",
                   M.get_associated_function (| Ty.path "i32", "wrapping_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "get",
@@ -18881,6 +20220,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -18889,9 +20229,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "i32", "unsigned_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "get",
@@ -18922,9 +20264,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (| Ty.path "i32", "is_positive", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "i32",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                     "get",
@@ -18952,9 +20296,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (| Ty.path "i32", "is_negative", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "i32",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                     "get",
@@ -18988,7 +20334,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -18997,6 +20343,7 @@ Module num.
                             (let γ :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                                   M.get_associated_function (|
                                     Ty.path "i32",
                                     "checked_neg",
@@ -19005,6 +20352,7 @@ Module num.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "i32",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::num::nonzero::NonZero")
@@ -19034,6 +20382,10 @@ Module num.
                                       "core::option::Option::Some"
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::num::nonzero::NonZero")
+                                            []
+                                            [ Ty.path "i32" ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::num::nonzero::NonZero")
@@ -19078,9 +20430,11 @@ Module num.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.path "i32"; Ty.path "bool" ],
                     M.get_associated_function (| Ty.path "i32", "overflowing_neg", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                           "get",
@@ -19103,6 +20457,7 @@ Module num.
                         Value.Tuple
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -19143,7 +20498,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -19152,6 +20507,15 @@ Module num.
                             (let γ :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "i32" ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::num::nonzero::NonZero")
@@ -19200,12 +20564,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i32" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i32",
                     M.get_associated_function (| Ty.path "i32", "wrapping_neg", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i32",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                           "get",
@@ -19219,6 +20585,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                     "new_unchecked",
@@ -19267,9 +20634,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                             M.get_associated_function (| Ty.path "i32", "checked_mul", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "i32",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -19282,6 +20651,7 @@ Module num.
                                 [ M.read (| self |) ]
                               |);
                               M.call_closure (|
+                                Ty.path "i32",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -19308,6 +20678,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -19353,6 +20724,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 "new_unchecked",
@@ -19361,9 +20733,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i32",
                   M.get_associated_function (| Ty.path "i32", "saturating_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "get",
@@ -19373,6 +20747,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "i32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "get",
@@ -19405,6 +20780,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 "new_unchecked",
@@ -19413,9 +20789,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i32",
                   M.get_associated_function (| Ty.path "i32", "unchecked_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "get",
@@ -19425,6 +20803,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "i32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "get",
@@ -19475,9 +20854,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                             M.get_associated_function (| Ty.path "i32", "checked_pow", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "i32",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -19505,6 +20886,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -19550,6 +20932,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 "new_unchecked",
@@ -19558,9 +20941,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i32",
                   M.get_associated_function (| Ty.path "i32", "saturating_pow", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "get",
@@ -19605,6 +20990,13 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                      Ty.path "core::num::error::ParseIntError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -19616,6 +21008,10 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "new",
@@ -19627,6 +21023,19 @@ Module num.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::ParseIntError"
+                                      ];
+                                    Ty.path "i32"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -19641,6 +21050,10 @@ Module num.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                                     M.get_associated_function (|
                                       Ty.path "i32",
                                       "from_str_radix",
@@ -19673,6 +21086,16 @@ Module num.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i32" ];
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -19758,6 +21181,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                 "new_unchecked",
@@ -19766,6 +21190,7 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i32",
                   M.get_trait_method (|
                     "core::ops::arith::Neg",
                     Ty.path "i32",
@@ -19777,6 +21202,7 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i32",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
                         "get",
@@ -19830,11 +21256,13 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u64" ] |),
               [
                 M.cast
                   (Ty.path "u64")
                   (M.call_closure (|
+                    Ty.path "i64",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                       "get",
@@ -19866,11 +21294,13 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u64" ] |),
               [
                 M.cast
                   (Ty.path "u64")
                   (M.call_closure (|
+                    Ty.path "i64",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                       "get",
@@ -19902,6 +21332,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -19910,9 +21341,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "i64", "count_ones", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "get",
@@ -19945,12 +21378,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i64",
                     M.get_associated_function (| Ty.path "i64", "rotate_left", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                           "get",
@@ -19965,6 +21400,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                     "new_unchecked",
@@ -19995,12 +21431,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i64",
                     M.get_associated_function (| Ty.path "i64", "rotate_right", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                           "get",
@@ -20015,6 +21453,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                     "new_unchecked",
@@ -20045,12 +21484,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i64",
                     M.get_associated_function (| Ty.path "i64", "swap_bytes", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                           "get",
@@ -20064,6 +21505,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                     "new_unchecked",
@@ -20093,12 +21535,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i64",
                     M.get_associated_function (| Ty.path "i64", "reverse_bits", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                           "get",
@@ -20112,6 +21556,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                     "new_unchecked",
@@ -20142,12 +21587,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i64",
                     M.get_associated_function (| Ty.path "i64", "from_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                           "get",
@@ -20161,6 +21608,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                     "new_unchecked",
@@ -20190,12 +21638,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i64",
                     M.get_associated_function (| Ty.path "i64", "from_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                           "get",
@@ -20209,6 +21659,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                     "new_unchecked",
@@ -20238,12 +21689,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i64",
                     M.get_associated_function (| Ty.path "i64", "to_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                           "get",
@@ -20257,6 +21710,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                     "new_unchecked",
@@ -20286,12 +21740,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i64",
                     M.get_associated_function (| Ty.path "i64", "to_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                           "get",
@@ -20305,6 +21761,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                     "new_unchecked",
@@ -20328,6 +21785,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -20339,6 +21797,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                       "new",
@@ -20361,6 +21823,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -20372,6 +21835,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                       "new",
@@ -20399,6 +21866,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
@@ -20407,9 +21875,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i64",
                   M.get_associated_function (| Ty.path "i64", "abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "get",
@@ -20452,9 +21922,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
                             M.get_associated_function (| Ty.path "i64", "checked_abs", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "i64",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -20481,6 +21953,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -20525,9 +21998,11 @@ Module num.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.path "i64"; Ty.path "bool" ],
                     M.get_associated_function (| Ty.path "i64", "overflowing_abs", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                           "get",
@@ -20550,6 +22025,7 @@ Module num.
                         Value.Tuple
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -20586,6 +22062,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
@@ -20594,9 +22071,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i64",
                   M.get_associated_function (| Ty.path "i64", "saturating_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "get",
@@ -20628,6 +22107,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
@@ -20636,9 +22116,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i64",
                   M.get_associated_function (| Ty.path "i64", "wrapping_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "get",
@@ -20670,6 +22152,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                 "new_unchecked",
@@ -20678,9 +22161,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u64",
                   M.get_associated_function (| Ty.path "i64", "unsigned_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "get",
@@ -20711,9 +22196,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (| Ty.path "i64", "is_positive", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "i64",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                     "get",
@@ -20741,9 +22228,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (| Ty.path "i64", "is_negative", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "i64",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                     "get",
@@ -20777,7 +22266,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -20786,6 +22275,7 @@ Module num.
                             (let γ :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
                                   M.get_associated_function (|
                                     Ty.path "i64",
                                     "checked_neg",
@@ -20794,6 +22284,7 @@ Module num.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "i64",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::num::nonzero::NonZero")
@@ -20823,6 +22314,10 @@ Module num.
                                       "core::option::Option::Some"
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::num::nonzero::NonZero")
+                                            []
+                                            [ Ty.path "i64" ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::num::nonzero::NonZero")
@@ -20867,9 +22362,11 @@ Module num.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.path "i64"; Ty.path "bool" ],
                     M.get_associated_function (| Ty.path "i64", "overflowing_neg", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                           "get",
@@ -20892,6 +22389,7 @@ Module num.
                         Value.Tuple
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -20932,7 +22430,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -20941,6 +22439,15 @@ Module num.
                             (let γ :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "i64" ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::num::nonzero::NonZero")
@@ -20989,12 +22496,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i64",
                     M.get_associated_function (| Ty.path "i64", "wrapping_neg", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i64",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                           "get",
@@ -21008,6 +22517,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                     "new_unchecked",
@@ -21056,9 +22566,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
                             M.get_associated_function (| Ty.path "i64", "checked_mul", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "i64",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -21071,6 +22583,7 @@ Module num.
                                 [ M.read (| self |) ]
                               |);
                               M.call_closure (|
+                                Ty.path "i64",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -21097,6 +22610,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -21142,6 +22656,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
@@ -21150,9 +22665,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i64",
                   M.get_associated_function (| Ty.path "i64", "saturating_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "get",
@@ -21162,6 +22679,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "i64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "get",
@@ -21194,6 +22712,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
@@ -21202,9 +22721,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i64",
                   M.get_associated_function (| Ty.path "i64", "unchecked_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "get",
@@ -21214,6 +22735,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "i64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "get",
@@ -21264,9 +22786,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
                             M.get_associated_function (| Ty.path "i64", "checked_pow", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "i64",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -21294,6 +22818,7 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -21339,6 +22864,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
@@ -21347,9 +22873,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i64",
                   M.get_associated_function (| Ty.path "i64", "saturating_pow", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "get",
@@ -21394,6 +22922,13 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                      Ty.path "core::num::error::ParseIntError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -21405,6 +22940,10 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "new",
@@ -21416,6 +22955,19 @@ Module num.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::ParseIntError"
+                                      ];
+                                    Ty.path "i64"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -21430,6 +22982,10 @@ Module num.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i64"; Ty.path "core::num::error::ParseIntError" ],
                                     M.get_associated_function (|
                                       Ty.path "i64",
                                       "from_str_radix",
@@ -21462,6 +23018,16 @@ Module num.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i64" ];
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -21547,6 +23113,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                 "new_unchecked",
@@ -21555,6 +23122,7 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i64",
                   M.get_trait_method (|
                     "core::ops::arith::Neg",
                     Ty.path "i64",
@@ -21566,6 +23134,7 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i64",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
                         "get",
@@ -21619,11 +23188,13 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "u128" ] |),
               [
                 M.cast
                   (Ty.path "u128")
                   (M.call_closure (|
+                    Ty.path "i128",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                       "get",
@@ -21655,11 +23226,13 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "u128" ] |),
               [
                 M.cast
                   (Ty.path "u128")
                   (M.call_closure (|
+                    Ty.path "i128",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                       "get",
@@ -21691,6 +23264,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -21699,9 +23273,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "i128", "count_ones", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "get",
@@ -21734,12 +23310,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i128",
                     M.get_associated_function (| Ty.path "i128", "rotate_left", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                           "get",
@@ -21754,6 +23332,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                     "new_unchecked",
@@ -21784,12 +23363,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i128",
                     M.get_associated_function (| Ty.path "i128", "rotate_right", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                           "get",
@@ -21804,6 +23385,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                     "new_unchecked",
@@ -21834,12 +23416,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i128",
                     M.get_associated_function (| Ty.path "i128", "swap_bytes", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                           "get",
@@ -21853,6 +23437,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                     "new_unchecked",
@@ -21882,12 +23467,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i128",
                     M.get_associated_function (| Ty.path "i128", "reverse_bits", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                           "get",
@@ -21901,6 +23488,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                     "new_unchecked",
@@ -21931,12 +23519,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i128",
                     M.get_associated_function (| Ty.path "i128", "from_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                           "get",
@@ -21950,6 +23540,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                     "new_unchecked",
@@ -21979,12 +23570,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i128",
                     M.get_associated_function (| Ty.path "i128", "from_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                           "get",
@@ -21998,6 +23591,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                     "new_unchecked",
@@ -22027,12 +23621,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i128",
                     M.get_associated_function (| Ty.path "i128", "to_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                           "get",
@@ -22046,6 +23642,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                     "new_unchecked",
@@ -22075,12 +23672,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i128",
                     M.get_associated_function (| Ty.path "i128", "to_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                           "get",
@@ -22094,6 +23693,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                     "new_unchecked",
@@ -22117,6 +23717,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -22128,6 +23729,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                       "new",
@@ -22150,6 +23755,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -22161,6 +23767,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                       "new",
@@ -22188,6 +23798,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
@@ -22196,9 +23807,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_associated_function (| Ty.path "i128", "abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "get",
@@ -22241,9 +23854,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
                             M.get_associated_function (| Ty.path "i128", "checked_abs", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "i128",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -22270,6 +23885,10 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "i128" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -22314,9 +23933,11 @@ Module num.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.path "i128"; Ty.path "bool" ],
                     M.get_associated_function (| Ty.path "i128", "overflowing_abs", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                           "get",
@@ -22339,6 +23960,10 @@ Module num.
                         Value.Tuple
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "i128" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -22375,6 +24000,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
@@ -22383,9 +24009,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_associated_function (| Ty.path "i128", "saturating_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "get",
@@ -22417,6 +24045,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
@@ -22425,9 +24054,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_associated_function (| Ty.path "i128", "wrapping_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "get",
@@ -22459,6 +24090,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
                 "new_unchecked",
@@ -22467,9 +24099,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u128",
                   M.get_associated_function (| Ty.path "i128", "unsigned_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "get",
@@ -22500,9 +24134,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (| Ty.path "i128", "is_positive", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                     "get",
@@ -22530,9 +24166,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (| Ty.path "i128", "is_negative", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                     "get",
@@ -22566,7 +24204,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -22575,6 +24213,7 @@ Module num.
                             (let γ :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
                                   M.get_associated_function (|
                                     Ty.path "i128",
                                     "checked_neg",
@@ -22583,6 +24222,7 @@ Module num.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "i128",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::num::nonzero::NonZero")
@@ -22612,6 +24252,10 @@ Module num.
                                       "core::option::Option::Some"
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::num::nonzero::NonZero")
+                                            []
+                                            [ Ty.path "i128" ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::num::nonzero::NonZero")
@@ -22656,9 +24300,11 @@ Module num.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.path "i128"; Ty.path "bool" ],
                     M.get_associated_function (| Ty.path "i128", "overflowing_neg", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                           "get",
@@ -22681,6 +24327,10 @@ Module num.
                         Value.Tuple
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "i128" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -22721,7 +24371,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -22730,6 +24380,15 @@ Module num.
                             (let γ :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "i128" ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::num::nonzero::NonZero")
@@ -22778,12 +24437,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "i128" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "i128",
                     M.get_associated_function (| Ty.path "i128", "wrapping_neg", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "i128",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                           "get",
@@ -22797,6 +24458,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                     "new_unchecked",
@@ -22845,9 +24507,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
                             M.get_associated_function (| Ty.path "i128", "checked_mul", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "i128",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -22860,6 +24524,7 @@ Module num.
                                 [ M.read (| self |) ]
                               |);
                               M.call_closure (|
+                                Ty.path "i128",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -22886,6 +24551,10 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "i128" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -22931,6 +24600,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
@@ -22939,9 +24609,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_associated_function (| Ty.path "i128", "saturating_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "get",
@@ -22951,6 +24623,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "i128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "get",
@@ -22983,6 +24656,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
@@ -22991,9 +24665,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_associated_function (| Ty.path "i128", "unchecked_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "get",
@@ -23003,6 +24679,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "i128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "get",
@@ -23053,9 +24730,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
                             M.get_associated_function (| Ty.path "i128", "checked_pow", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "i128",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -23083,6 +24762,10 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "i128" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -23128,6 +24811,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
@@ -23136,9 +24820,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_associated_function (| Ty.path "i128", "saturating_pow", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "i128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "get",
@@ -23183,6 +24869,13 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
+                      Ty.path "core::num::error::ParseIntError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -23194,6 +24887,10 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "new",
@@ -23205,6 +24902,19 @@ Module num.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::ParseIntError"
+                                      ];
+                                    Ty.path "i128"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -23219,6 +24929,10 @@ Module num.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "i128"; Ty.path "core::num::error::ParseIntError" ],
                                     M.get_associated_function (|
                                       Ty.path "i128",
                                       "from_str_radix",
@@ -23251,6 +24965,16 @@ Module num.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "i128" ];
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -23336,6 +25060,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                 "new_unchecked",
@@ -23344,6 +25069,7 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "i128",
                   M.get_trait_method (|
                     "core::ops::arith::Neg",
                     Ty.path "i128",
@@ -23355,6 +25081,7 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "i128",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
                         "get",
@@ -23408,11 +25135,13 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::ctlz_nonzero", [], [ Ty.path "usize" ] |),
               [
                 M.cast
                   (Ty.path "usize")
                   (M.call_closure (|
+                    Ty.path "isize",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                       "get",
@@ -23444,11 +25173,13 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "u32",
               M.get_function (| "core::intrinsics::cttz_nonzero", [], [ Ty.path "usize" ] |),
               [
                 M.cast
                   (Ty.path "usize")
                   (M.call_closure (|
+                    Ty.path "isize",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                       "get",
@@ -23480,6 +25211,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
                 "new_unchecked",
@@ -23488,9 +25220,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "isize", "count_ones", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "isize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "get",
@@ -23523,12 +25257,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_associated_function (| Ty.path "isize", "rotate_left", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "isize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                           "get",
@@ -23543,6 +25279,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                     "new_unchecked",
@@ -23573,12 +25310,14 @@ Module num.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_associated_function (| Ty.path "isize", "rotate_right", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "isize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                           "get",
@@ -23593,6 +25332,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                     "new_unchecked",
@@ -23623,12 +25363,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_associated_function (| Ty.path "isize", "swap_bytes", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "isize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                           "get",
@@ -23642,6 +25384,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                     "new_unchecked",
@@ -23671,12 +25414,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_associated_function (| Ty.path "isize", "reverse_bits", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "isize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                           "get",
@@ -23690,6 +25435,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                     "new_unchecked",
@@ -23720,12 +25466,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_associated_function (| Ty.path "isize", "from_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "isize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                           "get",
@@ -23739,6 +25487,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                     "new_unchecked",
@@ -23768,12 +25517,14 @@ Module num.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_associated_function (| Ty.path "isize", "from_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "isize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                           "get",
@@ -23787,6 +25538,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                     "new_unchecked",
@@ -23816,12 +25568,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_associated_function (| Ty.path "isize", "to_be", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "isize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                           "get",
@@ -23835,6 +25589,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                     "new_unchecked",
@@ -23864,12 +25619,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_associated_function (| Ty.path "isize", "to_le", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "isize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                           "get",
@@ -23883,6 +25640,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                     "new_unchecked",
@@ -23906,6 +25664,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -23917,6 +25676,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                       "new",
@@ -23939,6 +25702,7 @@ Module num.
           ltac:(M.monadic
             (M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -23950,6 +25714,10 @@ Module num.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                       "new",
@@ -23977,6 +25745,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                 "new_unchecked",
@@ -23985,9 +25754,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_associated_function (| Ty.path "isize", "abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "isize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "get",
@@ -24030,9 +25801,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
                             M.get_associated_function (| Ty.path "isize", "checked_abs", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "isize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -24059,6 +25832,10 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "isize" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -24103,9 +25880,11 @@ Module num.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.path "isize"; Ty.path "bool" ],
                     M.get_associated_function (| Ty.path "isize", "overflowing_abs", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "isize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                           "get",
@@ -24128,6 +25907,10 @@ Module num.
                         Value.Tuple
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "isize" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -24164,6 +25947,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                 "new_unchecked",
@@ -24172,9 +25956,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_associated_function (| Ty.path "isize", "saturating_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "isize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "get",
@@ -24206,6 +25992,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                 "new_unchecked",
@@ -24214,9 +26001,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_associated_function (| Ty.path "isize", "wrapping_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "isize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "get",
@@ -24248,6 +26037,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 "new_unchecked",
@@ -24256,9 +26046,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (| Ty.path "isize", "unsigned_abs", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "isize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "get",
@@ -24289,9 +26081,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (| Ty.path "isize", "is_positive", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                     "get",
@@ -24319,9 +26113,11 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (| Ty.path "isize", "is_negative", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                     "get",
@@ -24355,7 +26151,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -24364,6 +26160,7 @@ Module num.
                             (let γ :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
                                   M.get_associated_function (|
                                     Ty.path "isize",
                                     "checked_neg",
@@ -24372,6 +26169,7 @@ Module num.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "isize",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "core::num::nonzero::NonZero")
@@ -24401,6 +26199,10 @@ Module num.
                                       "core::option::Option::Some"
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::num::nonzero::NonZero")
+                                            []
+                                            [ Ty.path "isize" ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::num::nonzero::NonZero")
@@ -24445,9 +26247,11 @@ Module num.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.path "isize"; Ty.path "bool" ],
                     M.get_associated_function (| Ty.path "isize", "overflowing_neg", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "isize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                           "get",
@@ -24470,6 +26274,10 @@ Module num.
                         Value.Tuple
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "isize" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -24510,7 +26318,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -24519,6 +26327,15 @@ Module num.
                             (let γ :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "isize" ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::num::nonzero::NonZero")
@@ -24567,12 +26384,14 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ result :=
+              let~ result : Ty.path "isize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "isize",
                     M.get_associated_function (| Ty.path "isize", "wrapping_neg", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "isize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                           "get",
@@ -24586,6 +26405,7 @@ Module num.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                     "new_unchecked",
@@ -24634,9 +26454,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
                             M.get_associated_function (| Ty.path "isize", "checked_mul", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "isize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -24649,6 +26471,7 @@ Module num.
                                 [ M.read (| self |) ]
                               |);
                               M.call_closure (|
+                                Ty.path "isize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -24675,6 +26498,10 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "isize" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -24720,6 +26547,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                 "new_unchecked",
@@ -24728,9 +26556,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_associated_function (| Ty.path "isize", "saturating_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "isize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "get",
@@ -24740,6 +26570,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "isize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "get",
@@ -24772,6 +26603,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                 "new_unchecked",
@@ -24780,9 +26612,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_associated_function (| Ty.path "isize", "unchecked_mul", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "isize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "get",
@@ -24792,6 +26626,7 @@ Module num.
                       [ M.read (| self |) ]
                     |);
                     M.call_closure (|
+                      Ty.path "isize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "get",
@@ -24842,9 +26677,11 @@ Module num.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
                             M.get_associated_function (| Ty.path "isize", "checked_pow", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "isize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -24872,6 +26709,10 @@ Module num.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "isize" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::num::nonzero::NonZero")
@@ -24917,6 +26758,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                 "new_unchecked",
@@ -24925,9 +26767,11 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_associated_function (| Ty.path "isize", "saturating_pow", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "isize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "get",
@@ -24972,6 +26816,13 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                      Ty.path "core::num::error::ParseIntError"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -24983,6 +26834,10 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "new",
@@ -24994,6 +26849,19 @@ Module num.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::num::error::ParseIntError"
+                                      ];
+                                    Ty.path "isize"
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -25008,6 +26876,11 @@ Module num.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "isize"; Ty.path "core::num::error::ParseIntError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "isize",
                                       "from_str_radix",
@@ -25040,6 +26913,16 @@ Module num.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::num::nonzero::NonZero")
+                                                  []
+                                                  [ Ty.path "isize" ];
+                                                Ty.path "core::num::error::ParseIntError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -25125,6 +27008,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                 "new_unchecked",
@@ -25133,6 +27017,7 @@ Module num.
               |),
               [
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_trait_method (|
                     "core::ops::arith::Neg",
                     Ty.path "isize",
@@ -25144,6 +27029,7 @@ Module num.
                   |),
                   [
                     M.call_closure (|
+                      Ty.path "isize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
                         "get",

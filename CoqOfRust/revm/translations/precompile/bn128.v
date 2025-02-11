@@ -8,6 +8,7 @@ Module bn128.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
+              Ty.path "alloy_primitives::bits::address::Address",
               M.get_function (| "revm_precompile::u64_to_address", [], [] |),
               [ Value.Integer IntegerKind.U64 6 ]
             |)
@@ -54,6 +55,15 @@ Module bn128.
                                           ltac:(M.monadic
                                             (let gas_limit := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileOutput";
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileErrors"
+                                                ],
                                               M.get_function (|
                                                 "revm_precompile::bn128::run_add",
                                                 [],
@@ -64,6 +74,15 @@ Module bn128.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u8" ]
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
                                                         Ty.path "bytes::bytes::Bytes",
@@ -78,6 +97,10 @@ Module bn128.
                                                           Pointer.Kind.Ref,
                                                           M.deref (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "bytes::bytes::Bytes" ],
                                                               M.get_trait_method (|
                                                                 "core::ops::deref::Deref",
                                                                 Ty.path
@@ -158,6 +181,15 @@ Module bn128.
                                           ltac:(M.monadic
                                             (let gas_limit := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileOutput";
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileErrors"
+                                                ],
                                               M.get_function (|
                                                 "revm_precompile::bn128::run_add",
                                                 [],
@@ -168,6 +200,15 @@ Module bn128.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u8" ]
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
                                                         Ty.path "bytes::bytes::Bytes",
@@ -182,6 +223,10 @@ Module bn128.
                                                           Pointer.Kind.Ref,
                                                           M.deref (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "bytes::bytes::Bytes" ],
                                                               M.get_trait_method (|
                                                                 "core::ops::deref::Deref",
                                                                 Ty.path
@@ -232,6 +277,7 @@ Module bn128.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
+              Ty.path "alloy_primitives::bits::address::Address",
               M.get_function (| "revm_precompile::u64_to_address", [], [] |),
               [ Value.Integer IntegerKind.U64 7 ]
             |)
@@ -278,6 +324,15 @@ Module bn128.
                                           ltac:(M.monadic
                                             (let gas_limit := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileOutput";
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileErrors"
+                                                ],
                                               M.get_function (|
                                                 "revm_precompile::bn128::run_mul",
                                                 [],
@@ -288,6 +343,15 @@ Module bn128.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u8" ]
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
                                                         Ty.path "bytes::bytes::Bytes",
@@ -302,6 +366,10 @@ Module bn128.
                                                           Pointer.Kind.Ref,
                                                           M.deref (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "bytes::bytes::Bytes" ],
                                                               M.get_trait_method (|
                                                                 "core::ops::deref::Deref",
                                                                 Ty.path
@@ -382,6 +450,15 @@ Module bn128.
                                           ltac:(M.monadic
                                             (let gas_limit := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileOutput";
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileErrors"
+                                                ],
                                               M.get_function (|
                                                 "revm_precompile::bn128::run_mul",
                                                 [],
@@ -392,6 +469,15 @@ Module bn128.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u8" ]
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
                                                         Ty.path "bytes::bytes::Bytes",
@@ -406,6 +492,10 @@ Module bn128.
                                                           Pointer.Kind.Ref,
                                                           M.deref (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "bytes::bytes::Bytes" ],
                                                               M.get_trait_method (|
                                                                 "core::ops::deref::Deref",
                                                                 Ty.path
@@ -456,6 +546,7 @@ Module bn128.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
+              Ty.path "alloy_primitives::bits::address::Address",
               M.get_function (| "revm_precompile::u64_to_address", [], [] |),
               [ Value.Integer IntegerKind.U64 8 ]
             |)
@@ -510,6 +601,15 @@ Module bn128.
                                           ltac:(M.monadic
                                             (let gas_limit := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileOutput";
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileErrors"
+                                                ],
                                               M.get_function (|
                                                 "revm_precompile::bn128::run_pair",
                                                 [],
@@ -520,6 +620,15 @@ Module bn128.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u8" ]
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
                                                         Ty.path "bytes::bytes::Bytes",
@@ -534,6 +643,10 @@ Module bn128.
                                                           Pointer.Kind.Ref,
                                                           M.deref (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "bytes::bytes::Bytes" ],
                                                               M.get_trait_method (|
                                                                 "core::ops::deref::Deref",
                                                                 Ty.path
@@ -626,6 +739,15 @@ Module bn128.
                                           ltac:(M.monadic
                                             (let gas_limit := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileOutput";
+                                                  Ty.path
+                                                    "revm_precompile::interface::PrecompileErrors"
+                                                ],
                                               M.get_function (|
                                                 "revm_precompile::bn128::run_pair",
                                                 [],
@@ -636,6 +758,15 @@ Module bn128.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u8" ]
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
                                                         Ty.path "bytes::bytes::Bytes",
@@ -650,6 +781,10 @@ Module bn128.
                                                           Pointer.Kind.Ref,
                                                           M.deref (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "bytes::bytes::Bytes" ],
                                                               M.get_trait_method (|
                                                                 "core::ops::deref::Deref",
                                                                 Ty.path
@@ -751,6 +886,10 @@ Module bn128.
       ltac:(M.monadic
         (let input := M.alloc (| input |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "substrate_bn::Fq"; Ty.path "revm_precompile::interface::PrecompileError" ],
           M.get_associated_function (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -767,6 +906,10 @@ Module bn128.
           |),
           [
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "substrate_bn::Fq"; Ty.path "substrate_bn::FieldError" ],
               M.get_associated_function (| Ty.path "substrate_bn::Fq", "from_slice", [], [] |),
               [
                 M.borrow (|
@@ -776,6 +919,10 @@ Module bn128.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                           M.get_trait_method (|
                             "core::ops::index::Index",
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -840,11 +987,24 @@ Module bn128.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ px :=
+              let~ px : Ty.path "substrate_bn::Fq" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "revm_precompile::interface::PrecompileError"
+                              ];
+                            Ty.path "substrate_bn::Fq"
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -862,6 +1022,13 @@ Module bn128.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "substrate_bn::Fq";
+                                Ty.path "revm_precompile::interface::PrecompileError"
+                              ],
                             M.get_function (| "revm_precompile::bn128::read_fq", [], [] |),
                             [
                               M.borrow (|
@@ -871,6 +1038,10 @@ Module bn128.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                         M.get_trait_method (|
                                           "core::ops::index::Index",
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -922,6 +1093,13 @@ Module bn128.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "substrate_bn::G1";
+                                        Ty.path "revm_precompile::interface::PrecompileError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -964,11 +1142,24 @@ Module bn128.
                     ]
                   |)
                 |) in
-              let~ py :=
+              let~ py : Ty.path "substrate_bn::Fq" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "revm_precompile::interface::PrecompileError"
+                              ];
+                            Ty.path "substrate_bn::Fq"
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -986,6 +1177,13 @@ Module bn128.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "substrate_bn::Fq";
+                                Ty.path "revm_precompile::interface::PrecompileError"
+                              ],
                             M.get_function (| "revm_precompile::bn128::read_fq", [], [] |),
                             [
                               M.borrow (|
@@ -995,6 +1193,10 @@ Module bn128.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                         M.get_trait_method (|
                                           "core::ops::index::Index",
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -1046,6 +1248,13 @@ Module bn128.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "substrate_bn::G1";
+                                        Ty.path "revm_precompile::interface::PrecompileError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1090,6 +1299,13 @@ Module bn128.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "substrate_bn::G1";
+                      Ty.path "revm_precompile::interface::PrecompileError"
+                    ],
                   M.get_function (| "revm_precompile::bn128::new_g1_point", [], [] |),
                   [ M.read (| px |); M.read (| py |) ]
                 |)
@@ -1130,6 +1346,7 @@ Module bn128.
                       (M.alloc (|
                         LogicalOp.and (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.path "substrate_bn::Fq",
@@ -1145,6 +1362,7 @@ Module bn128.
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "substrate_bn::Fq",
                                     M.get_associated_function (|
                                       Ty.path "substrate_bn::Fq",
                                       "zero",
@@ -1159,6 +1377,7 @@ Module bn128.
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 Ty.path "substrate_bn::Fq",
@@ -1174,6 +1393,7 @@ Module bn128.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "substrate_bn::Fq",
                                       M.get_associated_function (|
                                         Ty.path "substrate_bn::Fq",
                                         "zero",
@@ -1194,6 +1414,7 @@ Module bn128.
                       "core::result::Result::Ok"
                       [
                         M.call_closure (|
+                          Ty.path "substrate_bn::G1",
                           M.get_trait_method (|
                             "substrate_bn::Group",
                             Ty.path "substrate_bn::G1",
@@ -1211,6 +1432,13 @@ Module bn128.
                 ltac:(M.monadic
                   (M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "substrate_bn::G1";
+                          Ty.path "revm_precompile::interface::PrecompileError"
+                        ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1227,6 +1455,10 @@ Module bn128.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "substrate_bn::G1"; Ty.path "substrate_bn::groups::Error" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -1246,6 +1478,13 @@ Module bn128.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "substrate_bn::AffineG1";
+                                  Ty.path "substrate_bn::groups::Error"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "substrate_bn::AffineG1",
                                 "new",
@@ -1324,7 +1563,7 @@ Module bn128.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1345,6 +1584,7 @@ Module bn128.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "revm_precompile::interface::PrecompileErrors",
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
@@ -1368,9 +1608,27 @@ Module bn128.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ input :=
+              let~ input :
+                  Ty.apply
+                    (Ty.path "alloc::borrow::Cow")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 128 ]
+                        [ Ty.path "u8" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 128 ]
+                          [ Ty.path "u8" ]
+                      ],
                     M.get_function (|
                       "revm_precompile::utilities::right_pad",
                       [ Value.Integer IntegerKind.Usize 128 ],
@@ -1379,11 +1637,24 @@ Module bn128.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                   |)
                 |) in
-              let~ p1 :=
+              let~ p1 : Ty.path "substrate_bn::G1" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "revm_precompile::interface::PrecompileError"
+                              ];
+                            Ty.path "substrate_bn::G1"
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -1401,6 +1672,13 @@ Module bn128.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "substrate_bn::G1";
+                                Ty.path "revm_precompile::interface::PrecompileError"
+                              ],
                             M.get_function (| "revm_precompile::bn128::read_point", [], [] |),
                             [
                               M.borrow (|
@@ -1410,6 +1688,10 @@ Module bn128.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                         M.get_trait_method (|
                                           "core::ops::index::Index",
                                           Ty.apply
@@ -1432,6 +1714,15 @@ Module bn128.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 128 ]
+                                                      [ Ty.path "u8" ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::deref::Deref",
                                                   Ty.apply
@@ -1482,6 +1773,13 @@ Module bn128.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1524,11 +1822,24 @@ Module bn128.
                     ]
                   |)
                 |) in
-              let~ p2 :=
+              let~ p2 : Ty.path "substrate_bn::G1" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "revm_precompile::interface::PrecompileError"
+                              ];
+                            Ty.path "substrate_bn::G1"
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -1546,6 +1857,13 @@ Module bn128.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "substrate_bn::G1";
+                                Ty.path "revm_precompile::interface::PrecompileError"
+                              ],
                             M.get_function (| "revm_precompile::bn128::read_point", [], [] |),
                             [
                               M.borrow (|
@@ -1555,6 +1873,10 @@ Module bn128.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                         M.get_trait_method (|
                                           "core::ops::index::Index",
                                           Ty.apply
@@ -1577,6 +1899,15 @@ Module bn128.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 128 ]
+                                                      [ Ty.path "u8" ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::deref::Deref",
                                                   Ty.apply
@@ -1627,6 +1958,13 @@ Module bn128.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1669,11 +2007,15 @@ Module bn128.
                     ]
                   |)
                 |) in
-              let~ output :=
+              let~ output :
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 64 ]
+                    [ Ty.path "u8" ] :=
                 M.alloc (|
                   repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 64 |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1682,6 +2024,10 @@ Module bn128.
                         (let γ :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.path "substrate_bn::AffineG1" ],
                               M.get_associated_function (|
                                 Ty.path "substrate_bn::AffineG1",
                                 "from_jacobian",
@@ -1690,6 +2036,7 @@ Module bn128.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.path "substrate_bn::G1",
                                   M.get_trait_method (|
                                     "core::ops::arith::Add",
                                     Ty.path "substrate_bn::G1",
@@ -1711,9 +2058,10 @@ Module bn128.
                             0
                           |) in
                         let sum := M.copy (| γ0_0 |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -1725,6 +2073,10 @@ Module bn128.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "substrate_bn::FieldError" ],
                                   M.get_associated_function (|
                                     Ty.path "substrate_bn::Fq",
                                     "to_big_endian",
@@ -1736,6 +2088,7 @@ Module bn128.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "substrate_bn::Fq",
                                           M.get_associated_function (|
                                             Ty.path "substrate_bn::AffineG1",
                                             "x",
@@ -1753,6 +2106,10 @@ Module bn128.
                                           Pointer.Kind.MutRef,
                                           M.deref (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                               M.get_trait_method (|
                                                 "core::ops::index::IndexMut",
                                                 Ty.apply
@@ -1786,9 +2143,10 @@ Module bn128.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -1800,6 +2158,10 @@ Module bn128.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "substrate_bn::FieldError" ],
                                   M.get_associated_function (|
                                     Ty.path "substrate_bn::Fq",
                                     "to_big_endian",
@@ -1811,6 +2173,7 @@ Module bn128.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "substrate_bn::Fq",
                                           M.get_associated_function (|
                                             Ty.path "substrate_bn::AffineG1",
                                             "y",
@@ -1828,6 +2191,10 @@ Module bn128.
                                           Pointer.Kind.MutRef,
                                           M.deref (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                               M.get_trait_method (|
                                                 "core::ops::index::IndexMut",
                                                 Ty.apply
@@ -1870,6 +2237,7 @@ Module bn128.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.path "revm_precompile::interface::PrecompileOutput",
                       M.get_associated_function (|
                         Ty.path "revm_precompile::interface::PrecompileOutput",
                         "new",
@@ -1879,6 +2247,7 @@ Module bn128.
                       [
                         M.read (| gas_cost |);
                         M.call_closure (|
+                          Ty.path "alloy_primitives::bytes_::Bytes",
                           M.get_trait_method (|
                             "core::convert::Into",
                             Ty.apply
@@ -1936,7 +2305,7 @@ Module bn128.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1957,6 +2326,7 @@ Module bn128.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "revm_precompile::interface::PrecompileErrors",
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
@@ -1980,9 +2350,27 @@ Module bn128.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ input :=
+              let~ input :
+                  Ty.apply
+                    (Ty.path "alloc::borrow::Cow")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 96 ]
+                        [ Ty.path "u8" ]
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 96 ]
+                          [ Ty.path "u8" ]
+                      ],
                     M.get_function (|
                       "revm_precompile::utilities::right_pad",
                       [ Value.Integer IntegerKind.Usize 96 ],
@@ -1991,11 +2379,24 @@ Module bn128.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |) ]
                   |)
                 |) in
-              let~ p :=
+              let~ p : Ty.path "substrate_bn::G1" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "revm_precompile::interface::PrecompileError"
+                              ];
+                            Ty.path "substrate_bn::G1"
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -2013,6 +2414,13 @@ Module bn128.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "substrate_bn::G1";
+                                Ty.path "revm_precompile::interface::PrecompileError"
+                              ],
                             M.get_function (| "revm_precompile::bn128::read_point", [], [] |),
                             [
                               M.borrow (|
@@ -2022,6 +2430,10 @@ Module bn128.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                         M.get_trait_method (|
                                           "core::ops::index::Index",
                                           Ty.apply
@@ -2044,6 +2456,15 @@ Module bn128.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 96 ]
+                                                      [ Ty.path "u8" ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::deref::Deref",
                                                   Ty.apply
@@ -2094,6 +2515,13 @@ Module bn128.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -2136,9 +2564,10 @@ Module bn128.
                     ]
                   |)
                 |) in
-              let~ fr :=
+              let~ fr : Ty.path "substrate_bn::Fr" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "substrate_bn::Fr",
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -2150,6 +2579,10 @@ Module bn128.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "substrate_bn::Fr"; Ty.path "substrate_bn::FieldError" ],
                         M.get_associated_function (|
                           Ty.path "substrate_bn::Fr",
                           "from_slice",
@@ -2164,6 +2597,10 @@ Module bn128.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
                                       Ty.apply
@@ -2186,6 +2623,15 @@ Module bn128.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 96 ]
+                                                  [ Ty.path "u8" ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -2224,11 +2670,15 @@ Module bn128.
                     ]
                   |)
                 |) in
-              let~ output :=
+              let~ output :
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 64 ]
+                    [ Ty.path "u8" ] :=
                 M.alloc (|
                   repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 64 |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2237,6 +2687,10 @@ Module bn128.
                         (let γ :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.path "substrate_bn::AffineG1" ],
                               M.get_associated_function (|
                                 Ty.path "substrate_bn::AffineG1",
                                 "from_jacobian",
@@ -2245,6 +2699,7 @@ Module bn128.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.path "substrate_bn::G1",
                                   M.get_trait_method (|
                                     "core::ops::arith::Mul",
                                     Ty.path "substrate_bn::G1",
@@ -2266,9 +2721,10 @@ Module bn128.
                             0
                           |) in
                         let mul := M.copy (| γ0_0 |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -2280,6 +2736,10 @@ Module bn128.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "substrate_bn::FieldError" ],
                                   M.get_associated_function (|
                                     Ty.path "substrate_bn::Fq",
                                     "to_big_endian",
@@ -2291,6 +2751,7 @@ Module bn128.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "substrate_bn::Fq",
                                           M.get_associated_function (|
                                             Ty.path "substrate_bn::AffineG1",
                                             "x",
@@ -2308,6 +2769,10 @@ Module bn128.
                                           Pointer.Kind.MutRef,
                                           M.deref (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                               M.get_trait_method (|
                                                 "core::ops::index::IndexMut",
                                                 Ty.apply
@@ -2341,9 +2806,10 @@ Module bn128.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -2355,6 +2821,10 @@ Module bn128.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.path "substrate_bn::FieldError" ],
                                   M.get_associated_function (|
                                     Ty.path "substrate_bn::Fq",
                                     "to_big_endian",
@@ -2366,6 +2836,7 @@ Module bn128.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "substrate_bn::Fq",
                                           M.get_associated_function (|
                                             Ty.path "substrate_bn::AffineG1",
                                             "y",
@@ -2383,6 +2854,10 @@ Module bn128.
                                           Pointer.Kind.MutRef,
                                           M.deref (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                               M.get_trait_method (|
                                                 "core::ops::index::IndexMut",
                                                 Ty.apply
@@ -2425,6 +2900,7 @@ Module bn128.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.path "revm_precompile::interface::PrecompileOutput",
                       M.get_associated_function (|
                         Ty.path "revm_precompile::interface::PrecompileOutput",
                         "new",
@@ -2434,6 +2910,7 @@ Module bn128.
                       [
                         M.read (| gas_cost |);
                         M.call_closure (|
+                          Ty.path "alloy_primitives::bytes_::Bytes",
                           M.get_trait_method (|
                             "core::convert::Into",
                             Ty.apply
@@ -2536,7 +3013,7 @@ Module bn128.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ gas_used :=
+              let~ gas_used : Ty.path "u64" :=
                 M.alloc (|
                   BinOp.Wrap.add (|
                     BinOp.Wrap.mul (|
@@ -2544,6 +3021,7 @@ Module bn128.
                         (Ty.path "u64")
                         (BinOp.Wrap.div (|
                           M.call_closure (|
+                            Ty.path "usize",
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "len",
@@ -2559,7 +3037,7 @@ Module bn128.
                     M.read (| pair_base_cost |)
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2580,6 +3058,7 @@ Module bn128.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "revm_precompile::interface::PrecompileErrors",
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
@@ -2603,7 +3082,7 @@ Module bn128.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -2615,6 +3094,7 @@ Module bn128.
                               BinOp.ne (|
                                 BinOp.Wrap.rem (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
@@ -2645,6 +3125,7 @@ Module bn128.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "revm_precompile::interface::PrecompileErrors",
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "revm_precompile::interface::PrecompileError",
@@ -2668,7 +3149,7 @@ Module bn128.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ success :=
+              let~ success : Ty.path "bool" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -2679,6 +3160,7 @@ Module bn128.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "is_empty",
@@ -2698,10 +3180,11 @@ Module bn128.
                           M.alloc (| Value.Bool true |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (let~ elements :=
+                          (let~ elements : Ty.path "usize" :=
                             M.alloc (|
                               BinOp.Wrap.div (|
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
@@ -2720,9 +3203,25 @@ Module bn128.
                                 |)
                               |)
                             |) in
-                          let~ points :=
+                          let~ points :
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.tuple
+                                    [ Ty.path "substrate_bn::G1"; Ty.path "substrate_bn::G2" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.tuple
+                                      [ Ty.path "substrate_bn::G1"; Ty.path "substrate_bn::G2" ];
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
@@ -2739,11 +3238,15 @@ Module bn128.
                                 [ M.read (| elements |) ]
                               |)
                             |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.use
                               (M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ],
                                     M.get_trait_method (|
                                       "core::iter::traits::collect::IntoIterator",
                                       Ty.apply
@@ -2772,10 +3275,14 @@ Module bn128.
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
                                         ltac:(M.monadic
-                                          (let~ _ :=
+                                          (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "usize" ],
                                                   M.get_trait_method (|
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
@@ -2818,7 +3325,17 @@ Module bn128.
                                                         0
                                                       |) in
                                                     let idx := M.copy (| γ0_0 |) in
-                                                    let~ read_fq_at :=
+                                                    let~ read_fq_at :
+                                                        Ty.function
+                                                          [ Ty.tuple [ Ty.path "usize" ] ]
+                                                          (Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "substrate_bn::Fq";
+                                                              Ty.path
+                                                                "revm_precompile::interface::PrecompileError"
+                                                            ]) :=
                                                       M.alloc (|
                                                         M.closure
                                                           (fun γ =>
@@ -2834,7 +3351,7 @@ Module bn128.
                                                                           (let n :=
                                                                             M.copy (| γ |) in
                                                                           M.read (|
-                                                                            let~ _ :=
+                                                                            let~ _ : Ty.tuple [] :=
                                                                               M.match_operator (|
                                                                                 M.alloc (|
                                                                                   Value.Tuple []
@@ -2856,7 +3373,9 @@ Module bn128.
                                                                                           Value.Bool
                                                                                             true
                                                                                         |) in
-                                                                                      let~ _ :=
+                                                                                      let~ _ :
+                                                                                          Ty.tuple
+                                                                                            [] :=
                                                                                         M.match_operator (|
                                                                                           M.alloc (|
                                                                                             Value.Tuple
@@ -2898,6 +3417,8 @@ Module bn128.
                                                                                                 M.alloc (|
                                                                                                   M.never_to_any (|
                                                                                                     M.call_closure (|
+                                                                                                      Ty.path
+                                                                                                        "never",
                                                                                                       M.get_function (|
                                                                                                         "core::panicking::panic",
                                                                                                         [],
@@ -2932,7 +3453,8 @@ Module bn128.
                                                                                       |)))
                                                                                 ]
                                                                               |) in
-                                                                            let~ start :=
+                                                                            let~ start :
+                                                                                Ty.path "usize" :=
                                                                               M.alloc (|
                                                                                 BinOp.Wrap.add (|
                                                                                   BinOp.Wrap.mul (|
@@ -2952,9 +3474,33 @@ Module bn128.
                                                                                   |)
                                                                                 |)
                                                                               |) in
-                                                                            let~ slice :=
+                                                                            let~ slice :
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "slice")
+                                                                                      []
+                                                                                      [ Ty.path "u8"
+                                                                                      ]
+                                                                                  ] :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "slice")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "u8"
+                                                                                        ]
+                                                                                    ],
                                                                                   M.get_associated_function (|
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -3006,6 +3552,16 @@ Module bn128.
                                                                               |) in
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "substrate_bn::Fq";
+                                                                                    Ty.path
+                                                                                      "revm_precompile::interface::PrecompileError"
+                                                                                  ],
                                                                                 M.get_associated_function (|
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -3036,6 +3592,16 @@ Module bn128.
                                                                                 |),
                                                                                 [
                                                                                   M.call_closure (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "substrate_bn::Fq";
+                                                                                        Ty.path
+                                                                                          "substrate_bn::FieldError"
+                                                                                      ],
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "substrate_bn::Fq",
@@ -3088,11 +3654,27 @@ Module bn128.
                                                                   "wrong number of arguments"
                                                               end))
                                                       |) in
-                                                    let~ ax :=
+                                                    let~ ax : Ty.path "substrate_bn::Fq" :=
                                                       M.copy (|
                                                         M.match_operator (|
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::control_flow::ControlFlow")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileError"
+                                                                    ];
+                                                                  Ty.path "substrate_bn::Fq"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
@@ -3111,6 +3693,14 @@ Module bn128.
                                                               |),
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path "substrate_bn::Fq";
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileError"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::function::Fn",
                                                                     Ty.function
@@ -3164,6 +3754,16 @@ Module bn128.
                                                                     M.read (|
                                                                       M.return_ (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileOutput";
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileErrors"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::try_trait::FromResidual",
                                                                             Ty.apply
@@ -3212,11 +3812,27 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ ay :=
+                                                    let~ ay : Ty.path "substrate_bn::Fq" :=
                                                       M.copy (|
                                                         M.match_operator (|
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::control_flow::ControlFlow")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileError"
+                                                                    ];
+                                                                  Ty.path "substrate_bn::Fq"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
@@ -3235,6 +3851,14 @@ Module bn128.
                                                               |),
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path "substrate_bn::Fq";
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileError"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::function::Fn",
                                                                     Ty.function
@@ -3288,6 +3912,16 @@ Module bn128.
                                                                     M.read (|
                                                                       M.return_ (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileOutput";
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileErrors"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::try_trait::FromResidual",
                                                                             Ty.apply
@@ -3336,11 +3970,27 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ bay :=
+                                                    let~ bay : Ty.path "substrate_bn::Fq" :=
                                                       M.copy (|
                                                         M.match_operator (|
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::control_flow::ControlFlow")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileError"
+                                                                    ];
+                                                                  Ty.path "substrate_bn::Fq"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
@@ -3359,6 +4009,14 @@ Module bn128.
                                                               |),
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path "substrate_bn::Fq";
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileError"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::function::Fn",
                                                                     Ty.function
@@ -3412,6 +4070,16 @@ Module bn128.
                                                                     M.read (|
                                                                       M.return_ (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileOutput";
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileErrors"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::try_trait::FromResidual",
                                                                             Ty.apply
@@ -3460,11 +4128,27 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ bax :=
+                                                    let~ bax : Ty.path "substrate_bn::Fq" :=
                                                       M.copy (|
                                                         M.match_operator (|
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::control_flow::ControlFlow")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileError"
+                                                                    ];
+                                                                  Ty.path "substrate_bn::Fq"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
@@ -3483,6 +4167,14 @@ Module bn128.
                                                               |),
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path "substrate_bn::Fq";
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileError"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::function::Fn",
                                                                     Ty.function
@@ -3536,6 +4228,16 @@ Module bn128.
                                                                     M.read (|
                                                                       M.return_ (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileOutput";
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileErrors"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::try_trait::FromResidual",
                                                                             Ty.apply
@@ -3584,11 +4286,27 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ bby :=
+                                                    let~ bby : Ty.path "substrate_bn::Fq" :=
                                                       M.copy (|
                                                         M.match_operator (|
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::control_flow::ControlFlow")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileError"
+                                                                    ];
+                                                                  Ty.path "substrate_bn::Fq"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
@@ -3607,6 +4325,14 @@ Module bn128.
                                                               |),
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path "substrate_bn::Fq";
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileError"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::function::Fn",
                                                                     Ty.function
@@ -3660,6 +4386,16 @@ Module bn128.
                                                                     M.read (|
                                                                       M.return_ (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileOutput";
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileErrors"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::try_trait::FromResidual",
                                                                             Ty.apply
@@ -3708,11 +4444,27 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ bbx :=
+                                                    let~ bbx : Ty.path "substrate_bn::Fq" :=
                                                       M.copy (|
                                                         M.match_operator (|
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::control_flow::ControlFlow")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileError"
+                                                                    ];
+                                                                  Ty.path "substrate_bn::Fq"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
@@ -3731,6 +4483,14 @@ Module bn128.
                                                               |),
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path "substrate_bn::Fq";
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileError"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::function::Fn",
                                                                     Ty.function
@@ -3784,6 +4544,16 @@ Module bn128.
                                                                     M.read (|
                                                                       M.return_ (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileOutput";
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileErrors"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::try_trait::FromResidual",
                                                                             Ty.apply
@@ -3832,11 +4602,27 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ a :=
+                                                    let~ a : Ty.path "substrate_bn::G1" :=
                                                       M.copy (|
                                                         M.match_operator (|
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::control_flow::ControlFlow")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileError"
+                                                                    ];
+                                                                  Ty.path "substrate_bn::G1"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
@@ -3855,6 +4641,14 @@ Module bn128.
                                                               |),
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path "substrate_bn::G1";
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileError"
+                                                                    ],
                                                                   M.get_function (|
                                                                     "revm_precompile::bn128::new_g1_point",
                                                                     [],
@@ -3881,6 +4675,16 @@ Module bn128.
                                                                     M.read (|
                                                                       M.return_ (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileOutput";
+                                                                              Ty.path
+                                                                                "revm_precompile::interface::PrecompileErrors"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::try_trait::FromResidual",
                                                                             Ty.apply
@@ -3929,11 +4733,12 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ b :=
+                                                    let~ b : Ty.path "substrate_bn::G2" :=
                                                       M.copy (|
-                                                        let~ ba :=
+                                                        let~ ba : Ty.path "substrate_bn::Fq2" :=
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path "substrate_bn::Fq2",
                                                               M.get_associated_function (|
                                                                 Ty.path "substrate_bn::Fq2",
                                                                 "new",
@@ -3943,9 +4748,10 @@ Module bn128.
                                                               [ M.read (| bax |); M.read (| bay |) ]
                                                             |)
                                                           |) in
-                                                        let~ bb :=
+                                                        let~ bb : Ty.path "substrate_bn::Fq2" :=
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path "substrate_bn::Fq2",
                                                               M.get_associated_function (|
                                                                 Ty.path "substrate_bn::Fq2",
                                                                 "new",
@@ -3965,6 +4771,7 @@ Module bn128.
                                                                     (M.alloc (|
                                                                       LogicalOp.and (|
                                                                         M.call_closure (|
+                                                                          Ty.path "bool",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "substrate_bn::Fq2",
@@ -3981,6 +4788,7 @@ Module bn128.
                                                                         |),
                                                                         ltac:(M.monadic
                                                                           (M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "substrate_bn::Fq2",
@@ -4004,6 +4812,7 @@ Module bn128.
                                                                   |) in
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "substrate_bn::G2",
                                                                     M.get_trait_method (|
                                                                       "substrate_bn::Group",
                                                                       Ty.path "substrate_bn::G2",
@@ -4020,6 +4829,7 @@ Module bn128.
                                                               ltac:(M.monadic
                                                                 (M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "substrate_bn::G2",
                                                                     M.get_trait_method (|
                                                                       "core::convert::From",
                                                                       Ty.path "substrate_bn::G2",
@@ -4037,6 +4847,24 @@ Module bn128.
                                                                         M.match_operator (|
                                                                           M.alloc (|
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::ops::control_flow::ControlFlow")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::convert::Infallible";
+                                                                                      Ty.path
+                                                                                        "revm_precompile::interface::PrecompileError"
+                                                                                    ];
+                                                                                  Ty.path
+                                                                                    "substrate_bn::AffineG2"
+                                                                                ],
                                                                               M.get_trait_method (|
                                                                                 "core::ops::try_trait::Try",
                                                                                 Ty.apply
@@ -4057,6 +4885,16 @@ Module bn128.
                                                                               |),
                                                                               [
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "substrate_bn::AffineG2";
+                                                                                      Ty.path
+                                                                                        "revm_precompile::interface::PrecompileError"
+                                                                                    ],
                                                                                   M.get_associated_function (|
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -4087,6 +4925,16 @@ Module bn128.
                                                                                   |),
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::result::Result")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "substrate_bn::AffineG2";
+                                                                                          Ty.path
+                                                                                            "substrate_bn::groups::Error"
+                                                                                        ],
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "substrate_bn::AffineG2",
@@ -4151,6 +4999,16 @@ Module bn128.
                                                                                     M.read (|
                                                                                       M.return_ (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::result::Result")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "revm_precompile::interface::PrecompileOutput";
+                                                                                              Ty.path
+                                                                                                "revm_precompile::interface::PrecompileErrors"
+                                                                                            ],
                                                                                           M.get_trait_method (|
                                                                                             "core::ops::try_trait::FromResidual",
                                                                                             Ty.apply
@@ -4212,9 +5070,10 @@ Module bn128.
                                                           ]
                                                         |)
                                                       |) in
-                                                    let~ _ :=
+                                                    let~ _ : Ty.tuple [] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.tuple [],
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "alloc::vec::Vec")
@@ -4248,15 +5107,31 @@ Module bn128.
                                       |)))
                                 ]
                               |)) in
-                          let~ mul :=
+                          let~ mul : Ty.path "substrate_bn::Gt" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "substrate_bn::Gt",
                                 M.get_function (| "substrate_bn::pairing_batch", [], [] |),
                                 [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.path "substrate_bn::G1";
+                                                    Ty.path "substrate_bn::G2"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -4290,6 +5165,7 @@ Module bn128.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_trait_method (|
                                 "core::cmp::PartialEq",
                                 Ty.path "substrate_bn::Gt",
@@ -4305,6 +5181,7 @@ Module bn128.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "substrate_bn::Gt",
                                       M.get_associated_function (|
                                         Ty.path "substrate_bn::Gt",
                                         "one",
@@ -4326,6 +5203,7 @@ Module bn128.
                   "core::result::Result::Ok"
                   [
                     M.call_closure (|
+                      Ty.path "revm_precompile::interface::PrecompileOutput",
                       M.get_associated_function (|
                         Ty.path "revm_precompile::interface::PrecompileOutput",
                         "new",
@@ -4335,6 +5213,7 @@ Module bn128.
                       [
                         M.read (| gas_used |);
                         M.call_closure (|
+                          Ty.path "alloy_primitives::bytes_::Bytes",
                           M.get_function (|
                             "revm_precompile::utilities::bool_to_bytes32",
                             [],

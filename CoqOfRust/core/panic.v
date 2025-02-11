@@ -14,6 +14,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -38,6 +39,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -62,6 +64,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -86,6 +89,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -110,6 +114,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -132,6 +137,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -154,6 +160,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -176,6 +183,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -198,6 +206,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -220,6 +229,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -242,6 +252,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -264,6 +275,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -286,6 +298,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -308,6 +321,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -330,6 +344,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -352,6 +367,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -374,6 +390,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -396,6 +413,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -418,6 +436,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -440,6 +459,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -462,6 +482,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -484,6 +505,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -506,6 +528,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -528,6 +551,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -550,6 +574,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -572,6 +597,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -596,6 +622,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -618,6 +645,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -640,6 +668,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -662,6 +691,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -686,6 +716,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -708,6 +739,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -732,6 +764,7 @@ Module intrinsics.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "never",
               M.get_function (| "core::panicking::panic_explicit", [], [] |),
               []
             |)))
@@ -757,6 +790,7 @@ Module panic.
       ltac:(M.monadic
         (let f := M.alloc (| f |) in
         M.call_closure (|
+          R,
           M.get_trait_method (|
             "core::ops::function::FnOnce",
             F,

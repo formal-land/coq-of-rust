@@ -22,6 +22,7 @@ Module fmt.
       ltac:(M.monadic
         (let args := M.alloc (| args |) in
         M.call_closure (|
+          Ty.path "alloc::string::String",
           M.get_associated_function (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -37,6 +38,10 @@ Module fmt.
           |),
           [
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "as_str", [], [] |),
               [ M.borrow (| Pointer.Kind.Ref, args |) ]
             |);
@@ -52,6 +57,7 @@ Module fmt.
                           fun γ =>
                             ltac:(M.monadic
                               (M.call_closure (|
+                                Ty.path "alloc::string::String",
                                 M.get_function (| "alloc::fmt::format.format_inner", [], [] |),
                                 [ M.read (| args |) ]
                               |)))
@@ -93,9 +99,10 @@ Module fmt.
         ltac:(M.monadic
           (let args := M.alloc (| args |) in
           M.read (|
-            let~ capacity :=
+            let~ capacity : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.path "core::fmt::Arguments",
                     "estimated_capacity",
@@ -105,9 +112,10 @@ Module fmt.
                   [ M.borrow (| Pointer.Kind.Ref, args |) ]
                 |)
               |) in
-            let~ output :=
+            let~ output : Ty.path "alloc::string::String" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "alloc::string::String",
                   M.get_associated_function (|
                     Ty.path "alloc::string::String",
                     "with_capacity",
@@ -117,9 +125,10 @@ Module fmt.
                   [ M.read (| capacity |) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::result::Result")
@@ -131,6 +140,10 @@ Module fmt.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.get_trait_method (|
                         "core::fmt::Write",
                         Ty.path "alloc::string::String",

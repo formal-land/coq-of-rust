@@ -15,7 +15,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ raw_p :=
+        let~ raw_p : Ty.apply (Ty.path "*const") [] [ Ty.path "u32" ] :=
           M.alloc (|
             M.borrow (|
               Pointer.Kind.ConstPointer,
@@ -24,7 +24,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -44,6 +44,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|
+                        Ty.path "never",
                         M.get_function (| "core::panicking::panic", [], [] |),
                         [ M.read (| Value.String "assertion failed: *raw_p == 10" |) ]
                       |)

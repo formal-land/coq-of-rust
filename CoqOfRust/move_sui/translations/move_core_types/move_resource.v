@@ -14,6 +14,7 @@ Module move_resource.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
+            Ty.path "move_core_types::identifier::Identifier",
             M.get_trait_method (|
               "alloc::borrow::ToOwned",
               Ty.path "move_core_types::identifier::IdentStr",
@@ -52,6 +53,7 @@ Module move_resource.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
+            Ty.path "move_core_types::identifier::Identifier",
             M.get_trait_method (|
               "alloc::borrow::ToOwned",
               Ty.path "move_core_types::identifier::IdentStr",
@@ -90,6 +92,11 @@ Module move_resource.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "move_core_types::language_storage::TypeTag"; Ty.path "alloc::alloc::Global"
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
@@ -122,6 +129,7 @@ Module move_resource.
                 |));
               ("name",
                 M.call_closure (|
+                  Ty.path "move_core_types::identifier::Identifier",
                   M.get_trait_method (|
                     "move_core_types::move_resource::MoveStructType",
                     Self,
@@ -135,6 +143,7 @@ Module move_resource.
                 |));
               ("module",
                 M.call_closure (|
+                  Ty.path "move_core_types::identifier::Identifier",
                   M.get_trait_method (|
                     "move_core_types::move_resource::MoveStructType",
                     Self,
@@ -148,6 +157,13 @@ Module move_resource.
                 |));
               ("type_params",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_core_types::language_storage::TypeTag";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "move_core_types::move_resource::MoveStructType",
                     Self,
@@ -179,6 +195,10 @@ Module move_resource.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.path "move_core_types::language_storage::StructTag",
               "access_vector",
@@ -190,6 +210,7 @@ Module move_resource.
                 Pointer.Kind.Ref,
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_core_types::language_storage::StructTag",
                     M.get_trait_method (|
                       "move_core_types::move_resource::MoveStructType",
                       Self,

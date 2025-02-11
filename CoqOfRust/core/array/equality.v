@@ -25,6 +25,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::array::equality::SpecArrayEq",
                 T,
@@ -61,6 +62,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::array::equality::SpecArrayEq",
                 T,
@@ -114,9 +116,23 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ b :=
+              let~ b :
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ];
+                      Ty.path "core::array::TryFromSliceError"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ];
+                        Ty.path "core::array::TryFromSliceError"
+                      ],
                     M.get_trait_method (|
                       "core::convert::TryInto",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
@@ -143,6 +159,7 @@ Module array.
                       let b := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "array") [ N ] [ T ],
@@ -196,9 +213,23 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ b :=
+              let~ b :
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ];
+                      Ty.path "core::array::TryFromSliceError"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ];
+                        Ty.path "core::array::TryFromSliceError"
+                      ],
                     M.get_trait_method (|
                       "core::convert::TryInto",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
@@ -225,6 +256,7 @@ Module array.
                       let b := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "array") [ N ] [ T ],
@@ -291,9 +323,23 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ b :=
+              let~ b :
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ];
+                      Ty.path "core::array::TryFromSliceError"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ];
+                        Ty.path "core::array::TryFromSliceError"
+                      ],
                     M.get_trait_method (|
                       "core::convert::TryInto",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
@@ -320,6 +366,7 @@ Module array.
                       let b := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "array") [ N ] [ T ],
@@ -373,9 +420,23 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ b :=
+              let~ b :
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ];
+                      Ty.path "core::array::TryFromSliceError"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ];
+                        Ty.path "core::array::TryFromSliceError"
+                      ],
                     M.get_trait_method (|
                       "core::convert::TryInto",
                       Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
@@ -402,6 +463,7 @@ Module array.
                       let b := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.apply (Ty.path "array") [ N ] [ T ],
@@ -464,6 +526,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "array") [ N ] [ T ],
@@ -503,6 +566,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "array") [ N ] [ T ],
@@ -557,6 +621,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -596,6 +661,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -648,6 +714,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "array") [ N ] [ T ],
@@ -687,6 +754,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "array") [ N ] [ T ],
@@ -741,6 +809,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -780,6 +849,7 @@ Module array.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -847,6 +917,7 @@ Module array.
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -861,6 +932,7 @@ Module array.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "array") [ N ] [ T ],
@@ -881,6 +953,7 @@ Module array.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Other ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "array") [ N ] [ Other ],
@@ -921,6 +994,7 @@ Module array.
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "slice") [] [ T ],
@@ -935,6 +1009,7 @@ Module array.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "array") [ N ] [ T ],
@@ -955,6 +1030,7 @@ Module array.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Other ] ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply (Ty.path "array") [ N ] [ Other ],
@@ -1014,6 +1090,7 @@ Module array.
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_function (|
                 "core::intrinsics::raw_eq",
                 [],
@@ -1022,6 +1099,7 @@ Module array.
               [
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| a |) |) |);
                 M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                   M.get_function (|
                     "core::intrinsics::transmute",
                     [],
@@ -1057,6 +1135,7 @@ Module array.
             let b := M.alloc (| b |) in
             UnOp.not (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::array::equality::SpecArrayEq",
                   T,

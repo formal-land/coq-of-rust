@@ -32,6 +32,7 @@ Module array.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "is_ascii",
@@ -50,6 +51,15 @@ Module array.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ N ]
+                                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ],
                                     "as_ascii_unchecked",
@@ -97,11 +107,24 @@ Module array.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ byte_ptr :=
+              let~ byte_ptr :
+                  Ty.apply
+                    (Ty.path "*const")
+                    []
+                    [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ] :=
                 M.alloc (|
                   M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
                 |) in
-              let~ ascii_ptr :=
+              let~ ascii_ptr :
+                  Ty.apply
+                    (Ty.path "*const")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ N ]
+                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                    ] :=
                 M.alloc (|
                   M.cast
                     (Ty.apply

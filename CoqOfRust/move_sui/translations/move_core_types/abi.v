@@ -51,6 +51,7 @@ Module abi.
                         "move_core_types::abi::ScriptABI::TransactionScript"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::abi::TransactionScriptABI",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_core_types::abi::TransactionScriptABI",
@@ -79,6 +80,7 @@ Module abi.
                         "move_core_types::abi::ScriptABI::ScriptFunction"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::abi::ScriptFunctionABI",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_core_types::abi::ScriptFunctionABI",
@@ -132,6 +134,10 @@ Module abi.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -163,6 +169,10 @@ Module abi.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -207,9 +217,10 @@ Module abi.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -218,9 +229,10 @@ Module abi.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "isize",
@@ -254,6 +266,7 @@ Module abi.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.path "move_core_types::abi::TransactionScriptABI",
@@ -281,6 +294,7 @@ Module abi.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "core::hash::Hash",
                           Ty.path "move_core_types::abi::ScriptFunctionABI",
@@ -370,9 +384,10 @@ Module abi.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -381,9 +396,10 @@ Module abi.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -422,6 +438,7 @@ Module abi.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -467,6 +484,7 @@ Module abi.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -495,6 +513,7 @@ Module abi.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
+                                  Ty.path "never",
                                   M.get_function (| "core::intrinsics::unreachable", [], [] |),
                                   []
                                 |)
@@ -543,6 +562,10 @@ Module abi.
                       let __field0 := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.associated; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -572,6 +595,10 @@ Module abi.
                       let __field0 := M.alloc (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.associated; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -613,6 +640,10 @@ Module abi.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_core_types::abi::ScriptABI"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -657,11 +688,15 @@ Module abi.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state :=
+                  let~ __serde_state : Ty.associated :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.associated; Ty.associated ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -727,10 +762,14 @@ Module abi.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -795,10 +834,14 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -863,10 +906,14 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -931,10 +978,14 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -1007,10 +1058,14 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -1085,6 +1140,7 @@ Module abi.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
                         Ty.associated,
@@ -1119,6 +1175,10 @@ Module abi.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_core_types::abi::ScriptFunctionABI"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -1163,11 +1223,15 @@ Module abi.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state :=
+                  let~ __serde_state : Ty.associated :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.associated; Ty.associated ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -1233,10 +1297,14 @@ Module abi.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -1301,10 +1369,14 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -1369,10 +1441,14 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -1457,10 +1533,14 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -1533,10 +1613,14 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -1611,6 +1695,7 @@ Module abi.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
                         Ty.associated,
@@ -1645,6 +1730,10 @@ Module abi.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_core_types::abi::TransactionScriptABI"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -1689,11 +1778,15 @@ Module abi.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state :=
+                  let~ __serde_state : Ty.associated :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.associated; Ty.associated ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -1750,10 +1843,14 @@ Module abi.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -1818,10 +1915,14 @@ Module abi.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -1888,6 +1989,7 @@ Module abi.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
                         Ty.associated,
@@ -1922,6 +2024,10 @@ Module abi.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -1966,11 +2072,15 @@ Module abi.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state :=
+                  let~ __serde_state : Ty.associated :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.associated; Ty.associated ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -2024,10 +2134,14 @@ Module abi.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -2094,6 +2208,7 @@ Module abi.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
                         Ty.associated,
@@ -2128,6 +2243,10 @@ Module abi.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_core_types::abi::TypeArgumentABI"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -2199,6 +2318,7 @@ Module abi.
             [
               ("name",
                 M.call_closure (|
+                  Ty.path "alloc::string::String",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
@@ -2226,6 +2346,7 @@ Module abi.
                 |));
               ("module_name",
                 M.call_closure (|
+                  Ty.path "move_core_types::language_storage::ModuleId",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "move_core_types::language_storage::ModuleId",
@@ -2253,6 +2374,7 @@ Module abi.
                 |));
               ("doc",
                 M.call_closure (|
+                  Ty.path "alloc::string::String",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
@@ -2280,6 +2402,13 @@ Module abi.
                 |));
               ("ty_args",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_core_types::abi::TypeArgumentABI";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -2313,6 +2442,10 @@ Module abi.
                 |));
               ("args",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -2365,6 +2498,10 @@ Module abi.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field5_finish",
@@ -2479,9 +2616,10 @@ Module abi.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "alloc::string::String",
@@ -2509,9 +2647,10 @@ Module abi.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "move_core_types::language_storage::ModuleId",
@@ -2539,9 +2678,10 @@ Module abi.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "alloc::string::String",
@@ -2569,9 +2709,10 @@ Module abi.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.apply
@@ -2607,6 +2748,7 @@ Module abi.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "core::hash::Hash",
                   Ty.apply
@@ -2727,6 +2869,7 @@ Module abi.
               LogicalOp.and (|
                 LogicalOp.and (|
                   M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "alloc::string::String",
@@ -2757,6 +2900,7 @@ Module abi.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "move_core_types::language_storage::ModuleId",
@@ -2788,6 +2932,7 @@ Module abi.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "alloc::string::String",
@@ -2819,6 +2964,7 @@ Module abi.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply
@@ -2864,6 +3010,7 @@ Module abi.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.apply
@@ -2956,6 +3103,7 @@ Module abi.
             [
               ("name",
                 M.call_closure (|
+                  Ty.path "alloc::string::String",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
@@ -2983,6 +3131,7 @@ Module abi.
                 |));
               ("doc",
                 M.call_closure (|
+                  Ty.path "alloc::string::String",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
@@ -3010,6 +3159,10 @@ Module abi.
                 |));
               ("code",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -3040,6 +3193,13 @@ Module abi.
                 |));
               ("ty_args",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_core_types::abi::TypeArgumentABI";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -3073,6 +3233,10 @@ Module abi.
                 |));
               ("args",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -3125,6 +3289,10 @@ Module abi.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field5_finish",
@@ -3236,9 +3404,10 @@ Module abi.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "alloc::string::String",
@@ -3266,9 +3435,10 @@ Module abi.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "alloc::string::String",
@@ -3296,9 +3466,10 @@ Module abi.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.apply
@@ -3329,9 +3500,10 @@ Module abi.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.apply
@@ -3367,6 +3539,7 @@ Module abi.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "core::hash::Hash",
                   Ty.apply
@@ -3487,6 +3660,7 @@ Module abi.
               LogicalOp.and (|
                 LogicalOp.and (|
                   M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.path "alloc::string::String",
@@ -3517,6 +3691,7 @@ Module abi.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "alloc::string::String",
@@ -3548,6 +3723,7 @@ Module abi.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.apply
@@ -3587,6 +3763,7 @@ Module abi.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply
@@ -3632,6 +3809,7 @@ Module abi.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.apply
@@ -3709,6 +3887,7 @@ Module abi.
             [
               ("name",
                 M.call_closure (|
+                  Ty.path "alloc::string::String",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
@@ -3736,6 +3915,7 @@ Module abi.
                 |));
               ("type_tag",
                 M.call_closure (|
+                  Ty.path "move_core_types::language_storage::TypeTag",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "move_core_types::language_storage::TypeTag",
@@ -3784,6 +3964,10 @@ Module abi.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
@@ -3853,9 +4037,10 @@ Module abi.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "alloc::string::String",
@@ -3885,6 +4070,7 @@ Module abi.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "core::hash::Hash",
                   Ty.path "move_core_types::language_storage::TypeTag",
@@ -3985,6 +4171,7 @@ Module abi.
           let other := M.alloc (| other |) in
           LogicalOp.and (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "alloc::string::String",
@@ -4015,6 +4202,7 @@ Module abi.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_core_types::language_storage::TypeTag",
@@ -4079,6 +4267,7 @@ Module abi.
             [
               ("name",
                 M.call_closure (|
+                  Ty.path "alloc::string::String",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
@@ -4127,6 +4316,10 @@ Module abi.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
@@ -4182,6 +4375,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (|
               "core::hash::Hash",
               Ty.path "alloc::string::String",
@@ -4272,6 +4466,7 @@ Module abi.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.path "alloc::string::String",
@@ -4371,6 +4566,7 @@ Module abi.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.path "alloc::string::String",
@@ -4418,6 +4614,7 @@ Module abi.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.path "alloc::string::String",
@@ -4465,6 +4662,7 @@ Module abi.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply
@@ -4515,6 +4713,15 @@ Module abi.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.path "move_core_types::abi::TypeArgumentABI" ]
+                  ],
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply
@@ -4568,6 +4775,10 @@ Module abi.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "move_core_types::abi::ArgumentABI" ] ],
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply
@@ -4663,6 +4874,7 @@ Module abi.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.path "alloc::string::String",
@@ -4739,6 +4951,7 @@ Module abi.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.path "alloc::string::String",
@@ -4786,6 +4999,15 @@ Module abi.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.path "move_core_types::abi::TypeArgumentABI" ]
+                  ],
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply
@@ -4839,6 +5061,10 @@ Module abi.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "move_core_types::abi::ArgumentABI" ] ],
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.apply
@@ -4988,6 +5214,7 @@ Module abi.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::abi::TransactionScriptABI",
                                   "name",
@@ -5014,6 +5241,7 @@ Module abi.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::abi::ScriptFunctionABI",
                                   "name",
@@ -5071,6 +5299,7 @@ Module abi.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::abi::TransactionScriptABI",
                                   "doc",
@@ -5097,6 +5326,7 @@ Module abi.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::abi::ScriptFunctionABI",
                                   "doc",
@@ -5154,6 +5384,15 @@ Module abi.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [ Ty.path "move_core_types::abi::TypeArgumentABI" ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::abi::TransactionScriptABI",
                                   "ty_args",
@@ -5180,6 +5419,15 @@ Module abi.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [ Ty.path "move_core_types::abi::TypeArgumentABI" ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::abi::ScriptFunctionABI",
                                   "ty_args",
@@ -5237,6 +5485,15 @@ Module abi.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [ Ty.path "move_core_types::abi::ArgumentABI" ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::abi::TransactionScriptABI",
                                   "args",
@@ -5263,6 +5520,15 @@ Module abi.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [ Ty.path "move_core_types::abi::ArgumentABI" ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::abi::ScriptFunctionABI",
                                   "args",
@@ -5323,6 +5589,7 @@ Module abi.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.path "alloc::string::String",
@@ -5422,6 +5689,7 @@ Module abi.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 M.get_trait_method (|
                   "core::ops::deref::Deref",
                   Ty.path "alloc::string::String",

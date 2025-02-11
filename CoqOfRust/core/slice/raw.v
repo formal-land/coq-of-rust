@@ -30,7 +30,7 @@ Module slice.
           (let data := M.alloc (| data |) in
           let len := M.alloc (| len |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -40,14 +40,16 @@ Module slice.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
                               []
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_function (|
                               "core::slice::raw::from_raw_parts.precondition_check",
                               [],
@@ -58,10 +60,12 @@ Module slice.
                                 (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
                                 (M.read (| data |));
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_function (| "core::mem::size_of", [], [ T ] |),
                                 []
                               |);
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_function (| "core::mem::align_of", [], [ T ] |),
                                 []
                               |);
@@ -81,6 +85,7 @@ Module slice.
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         M.get_function (| "core::ptr::slice_from_raw_parts", [], [ T ] |),
                         [ M.read (| data |); M.read (| len |) ]
                       |)
@@ -129,7 +134,7 @@ Module slice.
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.read (|
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -139,6 +144,7 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_function (|
                                         "core::ub_checks::check_language_ub",
                                         [],
@@ -152,9 +158,10 @@ Module slice.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.tuple [],
                                     M.get_function (|
                                       "core::slice::raw::from_raw_parts_mut.precondition_check",
                                       [],
@@ -165,10 +172,12 @@ Module slice.
                                         (Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ])
                                         (M.read (| data |));
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_function (| "core::mem::size_of", [], [ T ] |),
                                         []
                                       |);
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_function (| "core::mem::align_of", [], [ T ] |),
                                         []
                                       |);
@@ -188,6 +197,10 @@ Module slice.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "*mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                 M.get_function (|
                                   "core::ptr::slice_from_raw_parts_mut",
                                   [],
@@ -226,6 +239,10 @@ Module slice.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ],
                 M.get_function (| "core::array::from_ref", [], [ T ] |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
               |)
@@ -254,6 +271,10 @@ Module slice.
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ],
                     M.get_function (| "core::array::from_mut", [], [ T ] |),
                     [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| s |) |) |) ]
                   |)
@@ -282,6 +303,7 @@ Module slice.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 M.get_function (| "core::slice::raw::from_raw_parts", [], [ T ] |),
                 [
                   M.read (|
@@ -292,6 +314,7 @@ Module slice.
                     |)
                   |);
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ T ],
                       "sub_ptr",
@@ -346,6 +369,7 @@ Module slice.
                     Pointer.Kind.MutRef,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         M.get_function (| "core::slice::raw::from_raw_parts_mut", [], [ T ] |),
                         [
                           M.read (|
@@ -356,6 +380,7 @@ Module slice.
                             |)
                           |);
                           M.call_closure (|
+                            Ty.path "usize",
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
                               "sub_ptr",

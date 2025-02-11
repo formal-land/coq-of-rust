@@ -14,9 +14,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ child :=
+        let~ child : Ty.path "std::process::Child" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "std::process::Child",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -28,12 +29,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "std::process::Child"; Ty.path "std::io::error::Error" ],
                   M.get_associated_function (| Ty.path "std::process::Command", "spawn", [], [] |),
                   [
                     M.borrow (|
                       Pointer.Kind.MutRef,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "&mut") [] [ Ty.path "std::process::Command" ],
                           M.get_associated_function (|
                             Ty.path "std::process::Command",
                             "arg",
@@ -45,6 +51,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Pointer.Kind.MutRef,
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "std::process::Command",
                                   M.get_associated_function (|
                                     Ty.path "std::process::Command",
                                     "new",
@@ -65,9 +72,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _result :=
+        let~ _result : Ty.path "std::process::ExitStatus" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "std::process::ExitStatus",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -79,19 +87,25 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "std::process::ExitStatus"; Ty.path "std::io::error::Error" ],
                   M.get_associated_function (| Ty.path "std::process::Child", "wait", [], [] |),
                   [ M.borrow (| Pointer.Kind.MutRef, child |) ]
                 |)
               ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",

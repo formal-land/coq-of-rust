@@ -6,6 +6,10 @@ Definition value_KECCAK_EMPTY : Value.t :=
     ltac:(M.monadic
       (M.alloc (|
         M.call_closure (|
+          Ty.apply
+            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+            [ Value.Integer IntegerKind.Usize 32 ]
+            [],
           M.get_associated_function (|
             Ty.apply
               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")

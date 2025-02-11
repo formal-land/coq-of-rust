@@ -98,7 +98,7 @@ Module num.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ get_shift :=
+                  let~ get_shift : Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize") :=
                     M.alloc (|
                       M.closure
                         (fun γ =>
@@ -157,9 +157,10 @@ Module num.
                             | _ => M.impossible "wrong number of arguments"
                             end))
                     |) in
-                  let~ fp_zero :=
+                  let~ fp_zero : Ty.path "core::num::dec2flt::common::BiasedFp" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "core::num::dec2flt::common::BiasedFp",
                         M.get_associated_function (|
                           Ty.path "core::num::dec2flt::common::BiasedFp",
                           "zero_pow2",
@@ -169,9 +170,10 @@ Module num.
                         [ Value.Integer IntegerKind.I32 0 ]
                       |)
                     |) in
-                  let~ fp_inf :=
+                  let~ fp_inf : Ty.path "core::num::dec2flt::common::BiasedFp" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "core::num::dec2flt::common::BiasedFp",
                         M.get_associated_function (|
                           Ty.path "core::num::dec2flt::common::BiasedFp",
                           "zero_pow2",
@@ -185,14 +187,15 @@ Module num.
                         ]
                       |)
                     |) in
-                  let~ d :=
+                  let~ d : Ty.path "core::num::dec2flt::decimal::Decimal" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "core::num::dec2flt::decimal::Decimal",
                         M.get_function (| "core::num::dec2flt::decimal::parse_decimal", [], [] |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -266,8 +269,8 @@ Module num.
                             |)))
                       ]
                     |) in
-                  let~ exp2 := M.alloc (| Value.Integer IntegerKind.I32 0 |) in
-                  let~ _ :=
+                  let~ exp2 : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 0 |) in
+                  let~ _ : Ty.tuple [] :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -294,7 +297,7 @@ Module num.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ n :=
+                                let~ n : Ty.path "usize" :=
                                   M.alloc (|
                                     M.cast
                                       (Ty.path "usize")
@@ -306,9 +309,10 @@ Module num.
                                         |)
                                       |))
                                   |) in
-                                let~ shift :=
+                                let~ shift : Ty.path "usize" :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_trait_method (|
                                         "core::ops::function::Fn",
                                         Ty.function
@@ -326,9 +330,10 @@ Module num.
                                       ]
                                     |)
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_associated_function (|
                                         Ty.path "core::num::dec2flt::decimal::Decimal",
                                         "right_shift",
@@ -338,7 +343,7 @@ Module num.
                                       [ M.borrow (| Pointer.Kind.MutRef, d |); M.read (| shift |) ]
                                     |)
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
                                     [
@@ -376,13 +381,15 @@ Module num.
                                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                                let~ _ :=
-                                  let β := exp2 in
-                                  M.write (|
-                                    β,
-                                    BinOp.Wrap.add (|
-                                      M.read (| β |),
-                                      M.cast (Ty.path "i32") (M.read (| shift |))
+                                let~ _ : Ty.tuple [] :=
+                                  M.alloc (|
+                                    let β := exp2 in
+                                    M.write (|
+                                      β,
+                                      BinOp.Wrap.add (|
+                                        M.read (| β |),
+                                        M.cast (Ty.path "i32") (M.read (| shift |))
+                                      |)
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -391,7 +398,7 @@ Module num.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -402,7 +409,7 @@ Module num.
                           ]
                         |)))
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -429,7 +436,7 @@ Module num.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ shift :=
+                                let~ shift : Ty.path "usize" :=
                                   M.copy (|
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
@@ -528,6 +535,7 @@ Module num.
                                           ltac:(M.monadic
                                             (M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "usize",
                                                 M.get_trait_method (|
                                                   "core::ops::function::Fn",
                                                   Ty.function
@@ -561,9 +569,10 @@ Module num.
                                       ]
                                     |)
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_associated_function (|
                                         Ty.path "core::num::dec2flt::decimal::Decimal",
                                         "left_shift",
@@ -573,7 +582,7 @@ Module num.
                                       [ M.borrow (| Pointer.Kind.MutRef, d |); M.read (| shift |) ]
                                     |)
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
                                     [
@@ -609,13 +618,15 @@ Module num.
                                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                                let~ _ :=
-                                  let β := exp2 in
-                                  M.write (|
-                                    β,
-                                    BinOp.Wrap.sub (|
-                                      M.read (| β |),
-                                      M.cast (Ty.path "i32") (M.read (| shift |))
+                                let~ _ : Ty.tuple [] :=
+                                  M.alloc (|
+                                    let β := exp2 in
+                                    M.write (|
+                                      β,
+                                      BinOp.Wrap.sub (|
+                                        M.read (| β |),
+                                        M.cast (Ty.path "i32") (M.read (| shift |))
+                                      |)
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -624,7 +635,7 @@ Module num.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -635,13 +646,15 @@ Module num.
                           ]
                         |)))
                     |) in
-                  let~ _ :=
-                    let β := exp2 in
-                    M.write (|
-                      β,
-                      BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.I32 1 |)
+                  let~ _ : Ty.tuple [] :=
+                    M.alloc (|
+                      let β := exp2 in
+                      M.write (|
+                        β,
+                        BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.I32 1 |)
+                      |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.loop (|
                       ltac:(M.monadic
                         (M.match_operator (|
@@ -668,7 +681,7 @@ Module num.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ n :=
+                                let~ n : Ty.path "usize" :=
                                   M.alloc (|
                                     M.cast
                                       (Ty.path "usize")
@@ -683,7 +696,7 @@ Module num.
                                         M.read (| exp2 |)
                                       |))
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
                                     [
@@ -705,21 +718,24 @@ Module num.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ :=
-                                            M.write (|
-                                              n,
-                                              M.read (|
-                                                M.get_constant
-                                                  "core::num::dec2flt::slow::parse_long_mantissa::MAX_SHIFT"
+                                          let~ _ : Ty.tuple [] :=
+                                            M.alloc (|
+                                              M.write (|
+                                                n,
+                                                M.read (|
+                                                  M.get_constant
+                                                    "core::num::dec2flt::slow::parse_long_mantissa::MAX_SHIFT"
+                                                |)
                                               |)
                                             |) in
                                           M.alloc (| Value.Tuple [] |)));
                                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_associated_function (|
                                         Ty.path "core::num::dec2flt::decimal::Decimal",
                                         "right_shift",
@@ -729,13 +745,15 @@ Module num.
                                       [ M.borrow (| Pointer.Kind.MutRef, d |); M.read (| n |) ]
                                     |)
                                   |) in
-                                let~ _ :=
-                                  let β := exp2 in
-                                  M.write (|
-                                    β,
-                                    BinOp.Wrap.add (|
-                                      M.read (| β |),
-                                      M.cast (Ty.path "i32") (M.read (| n |))
+                                let~ _ : Ty.tuple [] :=
+                                  M.alloc (|
+                                    let β := exp2 in
+                                    M.write (|
+                                      β,
+                                      BinOp.Wrap.add (|
+                                        M.read (| β |),
+                                        M.cast (Ty.path "i32") (M.read (| n |))
+                                      |)
                                     |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
@@ -744,7 +762,7 @@ Module num.
                                 (M.alloc (|
                                   M.never_to_any (|
                                     M.read (|
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.alloc (|
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |) in
@@ -755,7 +773,7 @@ Module num.
                           ]
                         |)))
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -786,9 +804,10 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.path "core::num::dec2flt::decimal::Decimal",
                           "left_shift",
@@ -807,9 +826,10 @@ Module num.
                         ]
                       |)
                     |) in
-                  let~ mantissa :=
+                  let~ mantissa : Ty.path "u64" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "u64",
                         M.get_associated_function (|
                           Ty.path "core::num::dec2flt::decimal::Decimal",
                           "round",
@@ -819,7 +839,7 @@ Module num.
                         [ M.borrow (| Pointer.Kind.Ref, d |) ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -844,9 +864,10 @@ Module num.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.tuple [],
                                   M.get_associated_function (|
                                     Ty.path "core::num::dec2flt::decimal::Decimal",
                                     "right_shift",
@@ -859,23 +880,31 @@ Module num.
                                   ]
                                 |)
                               |) in
-                            let~ _ :=
-                              let β := exp2 in
-                              M.write (|
-                                β,
-                                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |)
+                            let~ _ : Ty.tuple [] :=
+                              M.alloc (|
+                                let β := exp2 in
+                                M.write (|
+                                  β,
+                                  BinOp.Wrap.add (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.I32 1
+                                  |)
+                                |)
                               |) in
-                            let~ _ :=
-                              M.write (|
-                                mantissa,
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::num::dec2flt::decimal::Decimal",
-                                    "round",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, d |) ]
+                            let~ _ : Ty.tuple [] :=
+                              M.alloc (|
+                                M.write (|
+                                  mantissa,
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    M.get_associated_function (|
+                                      Ty.path "core::num::dec2flt::decimal::Decimal",
+                                      "round",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.borrow (| Pointer.Kind.Ref, d |) ]
+                                  |)
                                 |)
                               |) in
                             M.match_operator (|
@@ -916,7 +945,7 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ power2 :=
+                  let~ power2 : Ty.path "i32" :=
                     M.alloc (|
                       BinOp.Wrap.sub (|
                         M.read (| exp2 |),
@@ -925,7 +954,7 @@ Module num.
                         |)
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -947,32 +976,39 @@ Module num.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
-                              let β := power2 in
-                              M.write (|
-                                β,
-                                BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.I32 1 |)
+                            let~ _ : Ty.tuple [] :=
+                              M.alloc (|
+                                let β := power2 in
+                                M.write (|
+                                  β,
+                                  BinOp.Wrap.sub (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.I32 1
+                                  |)
+                                |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ :=
-                    let β := mantissa in
-                    M.write (|
-                      β,
-                      BinOp.bit_and
-                        (M.read (| β |))
-                        (BinOp.Wrap.sub (|
-                          BinOp.Wrap.shl (|
-                            Value.Integer IntegerKind.U64 1,
-                            M.read (|
-                              M.get_constant
-                                "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
-                            |)
-                          |),
-                          Value.Integer IntegerKind.U64 1
-                        |))
+                  let~ _ : Ty.tuple [] :=
+                    M.alloc (|
+                      let β := mantissa in
+                      M.write (|
+                        β,
+                        BinOp.bit_and
+                          (M.read (| β |))
+                          (BinOp.Wrap.sub (|
+                            BinOp.Wrap.shl (|
+                              Value.Integer IntegerKind.U64 1,
+                              M.read (|
+                                M.get_constant
+                                  "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
+                              |)
+                            |),
+                            Value.Integer IntegerKind.U64 1
+                          |))
+                      |)
                     |) in
                   M.alloc (|
                     Value.StructRecord

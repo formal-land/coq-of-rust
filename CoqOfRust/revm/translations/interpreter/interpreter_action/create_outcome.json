@@ -226,7 +226,7 @@
                                       "body": {
                                         "Let": {
                                           "name": "self",
-                                          "is_user": false,
+                                          "ty": null,
                                           "init": {
                                             "Call": {
                                               "func": {
@@ -243,7 +243,7 @@
                                           "body": {
                                             "Let": {
                                               "name": "f",
-                                              "is_user": false,
+                                              "ty": null,
                                               "init": {
                                                 "Call": {
                                                   "func": {
@@ -606,7 +606,44 @@
                                                       }
                                                     }
                                                   ],
-                                                  "kind": "Closure"
+                                                  "kind": {
+                                                    "Closure": {
+                                                      "Application": {
+                                                        "func": {
+                                                          "Path": {
+                                                            "path": [
+                                                              "core",
+                                                              "result",
+                                                              "Result"
+                                                            ]
+                                                          }
+                                                        },
+                                                        "consts": [],
+                                                        "tys": [
+                                                          {
+                                                            "Tuple": {
+                                                              "tys": []
+                                                            }
+                                                          },
+                                                          {
+                                                            "Application": {
+                                                              "func": {
+                                                                "Path": {
+                                                                  "path": [
+                                                                    "core",
+                                                                    "fmt",
+                                                                    "Error"
+                                                                  ]
+                                                                }
+                                                              },
+                                                              "consts": [],
+                                                              "tys": []
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
                                                 }
                                               }
                                             }
@@ -720,7 +757,7 @@
                                       "body": {
                                         "Let": {
                                           "name": "self",
-                                          "is_user": false,
+                                          "ty": null,
                                           "init": {
                                             "Call": {
                                               "func": {
@@ -853,7 +890,23 @@
                                                           }
                                                         }
                                                       ],
-                                                      "kind": "Closure"
+                                                      "kind": {
+                                                        "Closure": {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "revm_interpreter",
+                                                                  "interpreter",
+                                                                  "InterpreterResult"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": []
+                                                          }
+                                                        }
+                                                      }
                                                     }
                                                   }
                                                 ],
@@ -984,7 +1037,40 @@
                                                           }
                                                         }
                                                       ],
-                                                      "kind": "Closure"
+                                                      "kind": {
+                                                        "Closure": {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "core",
+                                                                  "option",
+                                                                  "Option"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "Application": {
+                                                                  "func": {
+                                                                    "Path": {
+                                                                      "path": [
+                                                                        "alloy_primitives",
+                                                                        "bits",
+                                                                        "address",
+                                                                        "Address"
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": []
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
                                                     }
                                                   }
                                                 ]
@@ -1169,7 +1255,7 @@
                                       "body": {
                                         "Let": {
                                           "name": "self",
-                                          "is_user": false,
+                                          "ty": null,
                                           "init": {
                                             "Call": {
                                               "func": {
@@ -1186,7 +1272,7 @@
                                           "body": {
                                             "Let": {
                                               "name": "other",
-                                              "is_user": false,
+                                              "ty": null,
                                               "init": {
                                                 "Call": {
                                                   "func": {
@@ -1356,7 +1442,15 @@
                                                           }
                                                         }
                                                       ],
-                                                      "kind": "Closure"
+                                                      "kind": {
+                                                        "Closure": {
+                                                          "Path": {
+                                                            "path": [
+                                                              "bool"
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
                                                     }
                                                   },
                                                   "rhs": {
@@ -1546,7 +1640,15 @@
                                                           }
                                                         }
                                                       ],
-                                                      "kind": "Closure"
+                                                      "kind": {
+                                                        "Closure": {
+                                                          "Path": {
+                                                            "path": [
+                                                              "bool"
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
                                                     }
                                                   }
                                                 }
@@ -1656,7 +1758,7 @@
                                       "body": {
                                         "Let": {
                                           "name": "self",
-                                          "is_user": false,
+                                          "ty": null,
                                           "init": {
                                             "Call": {
                                               "func": {
@@ -1861,7 +1963,7 @@
                                     "body": {
                                       "Let": {
                                         "name": "result",
-                                        "is_user": false,
+                                        "ty": null,
                                         "init": {
                                           "Call": {
                                             "func": {
@@ -1878,7 +1980,7 @@
                                         "body": {
                                           "Let": {
                                             "name": "address",
-                                            "is_user": false,
+                                            "ty": null,
                                             "init": {
                                               "Call": {
                                                 "func": {
@@ -2027,7 +2129,7 @@
                                     "body": {
                                       "Let": {
                                         "name": "self",
-                                        "is_user": false,
+                                        "ty": null,
                                         "init": {
                                           "Call": {
                                             "func": {
@@ -2220,7 +2322,7 @@
                                     "body": {
                                       "Let": {
                                         "name": "self",
-                                        "is_user": false,
+                                        "ty": null,
                                         "init": {
                                           "Call": {
                                             "func": {
@@ -2413,7 +2515,7 @@
                                     "body": {
                                       "Let": {
                                         "name": "self",
-                                        "is_user": false,
+                                        "ty": null,
                                         "init": {
                                           "Call": {
                                             "func": {

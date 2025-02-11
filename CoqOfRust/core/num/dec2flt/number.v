@@ -109,6 +109,10 @@ Module num.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field4_finish",
@@ -217,6 +221,7 @@ Module num.
                 [
                   ("exponent",
                     M.call_closure (|
+                      Ty.path "i64",
                       M.get_trait_method (|
                         "core::default::Default",
                         Ty.path "i64",
@@ -230,6 +235,7 @@ Module num.
                     |));
                   ("mantissa",
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_trait_method (|
                         "core::default::Default",
                         Ty.path "u64",
@@ -243,6 +249,7 @@ Module num.
                     |));
                   ("negative",
                     M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::default::Default",
                         Ty.path "bool",
@@ -256,6 +263,7 @@ Module num.
                     |));
                   ("many_digits",
                     M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::default::Default",
                         Ty.path "bool",
@@ -552,9 +560,10 @@ Module num.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ _cw :=
+                    let~ _cw : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_function (|
                             "core::num::dec2flt::fpu::fpu_precision::set_precision",
                             [],
@@ -572,6 +581,7 @@ Module num.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "core::num::dec2flt::number::Number",
                                       "is_fast_path",
@@ -588,7 +598,7 @@ Module num.
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ value :=
+                            let~ value : F :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -617,9 +627,10 @@ Module num.
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
-                                        let~ value :=
+                                        let~ value : F :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              F,
                                               M.get_trait_method (|
                                                 "core::num::dec2flt::float::RawFloat",
                                                 F,
@@ -666,6 +677,7 @@ Module num.
                                                   |) in
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    F,
                                                     M.get_trait_method (|
                                                       "core::ops::arith::Div",
                                                       F,
@@ -678,6 +690,7 @@ Module num.
                                                     [
                                                       M.read (| value |);
                                                       M.call_closure (|
+                                                        F,
                                                         M.get_trait_method (|
                                                           "core::num::dec2flt::float::RawFloat",
                                                           F,
@@ -708,6 +721,7 @@ Module num.
                                               ltac:(M.monadic
                                                 (M.alloc (|
                                                   M.call_closure (|
+                                                    F,
                                                     M.get_trait_method (|
                                                       "core::ops::arith::Mul",
                                                       F,
@@ -720,6 +734,7 @@ Module num.
                                                     [
                                                       M.read (| value |);
                                                       M.call_closure (|
+                                                        F,
                                                         M.get_trait_method (|
                                                           "core::num::dec2flt::float::RawFloat",
                                                           F,
@@ -748,7 +763,7 @@ Module num.
                                         |)));
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let~ shift :=
+                                        (let~ shift : Ty.path "i64" :=
                                           M.alloc (|
                                             BinOp.Wrap.sub (|
                                               M.read (|
@@ -764,11 +779,21 @@ Module num.
                                               |)
                                             |)
                                           |) in
-                                        let~ mantissa :=
+                                        let~ mantissa : Ty.path "u64" :=
                                           M.copy (|
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "core::convert::Infallible" ];
+                                                      Ty.path "u64"
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
@@ -783,6 +808,10 @@ Module num.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "u64" ],
                                                       M.get_associated_function (|
                                                         Ty.path "u64",
                                                         "checked_mul",
@@ -828,6 +857,10 @@ Module num.
                                                         M.read (|
                                                           M.return_ (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [ F ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
@@ -867,7 +900,7 @@ Module num.
                                               ]
                                             |)
                                           |) in
-                                        let~ _ :=
+                                        let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (| Value.Tuple [] |),
                                             [
@@ -906,6 +939,7 @@ Module num.
                                           |) in
                                         M.alloc (|
                                           M.call_closure (|
+                                            F,
                                             M.get_trait_method (|
                                               "core::ops::arith::Mul",
                                               F,
@@ -917,6 +951,7 @@ Module num.
                                             |),
                                             [
                                               M.call_closure (|
+                                                F,
                                                 M.get_trait_method (|
                                                   "core::num::dec2flt::float::RawFloat",
                                                   F,
@@ -929,6 +964,7 @@ Module num.
                                                 [ M.read (| mantissa |) ]
                                               |);
                                               M.call_closure (|
+                                                F,
                                                 M.get_trait_method (|
                                                   "core::num::dec2flt::float::RawFloat",
                                                   F,
@@ -953,7 +989,7 @@ Module num.
                                   ]
                                 |)
                               |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 M.alloc (| Value.Tuple [] |),
                                 [
@@ -971,20 +1007,23 @@ Module num.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let~ _ :=
-                                        M.write (|
-                                          value,
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Neg",
+                                      let~ _ : Ty.tuple [] :=
+                                        M.alloc (|
+                                          M.write (|
+                                            value,
+                                            M.call_closure (|
                                               F,
-                                              [],
-                                              [],
-                                              "neg",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| value |) ]
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Neg",
+                                                F,
+                                                [],
+                                                [],
+                                                "neg",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.read (| value |) ]
+                                            |)
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));

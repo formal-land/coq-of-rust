@@ -112,9 +112,25 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ contacts :=
+        let~ contacts :
+            Ty.apply
+              (Ty.path "std::collections::hash::map::HashMap")
+              []
+              [
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                Ty.path "std::hash::random::RandomState"
+              ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "std::collections::hash::map::HashMap")
+                []
+                [
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                  Ty.path "std::hash::random::RandomState"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
@@ -131,9 +147,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let~ _ :=
+        let~ _ :
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
@@ -154,9 +178,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ :
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
@@ -177,9 +209,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ :
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
@@ -200,9 +240,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ :
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
@@ -223,10 +271,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "std::collections::hash::map::HashMap")
@@ -256,12 +308,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let γ0_0 := M.read (| γ0_0 |) in
                   let number := M.copy (| γ0_0 |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -294,6 +348,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -308,6 +363,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                         M.get_function (|
                                                           "hash_map::call",
                                                           [],
@@ -339,12 +395,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (| Value.Tuple [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ _ :=
+                  (let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
@@ -373,9 +431,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let~ _ :=
+        let~ _ :
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
@@ -396,10 +462,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "std::collections::hash::map::HashMap")
@@ -429,12 +499,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   let γ0_0 := M.read (| γ0_0 |) in
                   let number := M.copy (| γ0_0 |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -467,6 +539,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -481,6 +554,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                         M.get_function (|
                                                           "hash_map::call",
                                                           [],
@@ -512,12 +586,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (| Value.Tuple [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ _ :=
+                  (let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
@@ -546,9 +622,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let~ _ :=
+        let~ _ :
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
@@ -575,6 +659,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           (M.match_operator (|
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "std::collections::hash::map::Iter")
+                  []
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply
@@ -592,6 +683,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "std::collections::hash::map::Iter")
+                      []
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "std::collections::hash::map::HashMap")
@@ -616,10 +714,26 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   (let iter := M.copy (| γ |) in
                   M.loop (|
                     ltac:(M.monadic
-                      (let~ _ :=
+                      (let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -661,13 +775,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 let contact := M.copy (| γ1_0 |) in
                                 let γ1_1 := M.read (| γ1_1 |) in
                                 let number := M.copy (| γ1_1 |) in
-                                let~ _ :=
-                                  let~ _ :=
+                                let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_function (| "std::io::stdio::_print", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -701,6 +817,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_display",
@@ -730,6 +847,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                             ]
                                                           |);
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_display",
@@ -749,6 +867,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     Pointer.Kind.Ref,
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [ Ty.path "str" ],
                                                                         M.get_function (|
                                                                           "hash_map::call",
                                                                           [],

@@ -19,9 +19,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ strings :=
+        let~ strings :
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
@@ -31,6 +39,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 M.read (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
@@ -70,6 +88,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         M.match_operator (|
           M.alloc (|
             M.call_closure (|
+              Ty.tuple
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+                      Ty.path "alloc::alloc::Global"
+                    ];
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+                      Ty.path "alloc::alloc::Global"
+                    ]
+                ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
@@ -120,6 +161,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::map::Map")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                        []
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.function
+                        [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ])
+                    ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
@@ -146,6 +205,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                        []
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
@@ -176,6 +242,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ltac:(M.monadic
                                       (let s := M.copy (| γ |) in
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError"
+                                          ],
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "parse",
@@ -214,9 +285,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let numbers := M.copy (| γ0_0 |) in
                 let errors := M.copy (| γ0_1 |) in
-                let~ numbers :=
+                let~ numbers :
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -255,6 +334,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::map::Map")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::into_iter::IntoIter")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ];
+                              Ty.function
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                                ]
+                                (Ty.path "i32")
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
@@ -285,6 +387,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "alloc::vec::into_iter::IntoIter")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
@@ -319,9 +431,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       ]
                     |)
                   |) in
-                let~ errors :=
+                let~ errors :
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "core::num::error::ParseIntError"; Ty.path "alloc::alloc::Global"
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "core::num::error::ParseIntError"; Ty.path "alloc::alloc::Global"
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -363,6 +485,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::map::Map")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::into_iter::IntoIter")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ];
+                              Ty.function
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]
+                                ]
+                                (Ty.path "core::num::error::ParseIntError")
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
                             Ty.apply
@@ -393,6 +538,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "alloc::vec::into_iter::IntoIter")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::collect::IntoIterator",
                                 Ty.apply
@@ -427,13 +582,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       ]
                     |)
                   |) in
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -466,6 +623,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_debug",
@@ -497,13 +655,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -536,6 +696,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_debug",

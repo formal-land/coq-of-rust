@@ -47,6 +47,7 @@ Module iter.
                 "core::iter::sources::from_fn::FromFn"
                 [
                   M.call_closure (|
+                    F,
                     M.get_trait_method (| "core::clone::Clone", F, [], [], "clone", [], [] |),
                     [
                       M.borrow (|
@@ -96,6 +97,7 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 M.get_trait_method (|
                   "core::ops::function::FnMut",
                   F,
@@ -147,6 +149,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
@@ -158,6 +164,7 @@ Module iter.
                     Pointer.Kind.MutRef,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "core::fmt::builders::DebugStruct",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_struct",

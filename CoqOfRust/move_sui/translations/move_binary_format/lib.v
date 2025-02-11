@@ -146,6 +146,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -445,9 +446,10 @@ Module Impl_core_hash_Hash_for_move_binary_format_IndexKind.
         (let self := M.alloc (| self |) in
         let state := M.alloc (| state |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -458,6 +460,7 @@ Module Impl_core_hash_Hash_for_move_binary_format_IndexKind.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "core::hash::Hash",
                 Ty.path "isize",
@@ -499,9 +502,10 @@ Module Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -510,9 +514,10 @@ Module Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -523,6 +528,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
               [
                 M.borrow (|
@@ -570,9 +576,10 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_IndexKind.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -581,9 +588,10 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_IndexKind.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -616,9 +624,10 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_IndexKind.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -627,9 +636,10 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_IndexKind.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -640,6 +650,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_IndexKind.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (|
                 "core::cmp::PartialOrd",
                 Ty.path "isize",
@@ -784,7 +795,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.read (|
-          let~ desc :=
+          let~ desc : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
             M.copy (|
               M.match_operator (|
                 self,
@@ -1028,6 +1039,10 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -1112,6 +1127,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -1214,9 +1230,10 @@ Module Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -1225,9 +1242,10 @@ Module Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -1238,6 +1256,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
               [
                 M.borrow (|
@@ -1285,9 +1304,10 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_SignatureTokenKind.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -1296,9 +1316,10 @@ Module Impl_core_cmp_PartialEq_for_move_binary_format_SignatureTokenKind.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -1331,9 +1352,10 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_SignatureTokenKind.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -1342,9 +1364,10 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_SignatureTokenKind.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -1355,6 +1378,7 @@ Module Impl_core_cmp_PartialOrd_for_move_binary_format_SignatureTokenKind.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (|
                 "core::cmp::PartialOrd",
                 Ty.path "isize",
@@ -1411,7 +1435,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_SignatureTokenKind.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.read (|
-          let~ desc :=
+          let~ desc : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
             M.copy (|
               M.match_operator (|
                 self,
@@ -1458,6 +1482,10 @@ Module Impl_core_fmt_Display_for_move_binary_format_SignatureTokenKind.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);

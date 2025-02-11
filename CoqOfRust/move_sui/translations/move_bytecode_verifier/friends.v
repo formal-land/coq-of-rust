@@ -13,6 +13,10 @@ Module friends.
       ltac:(M.monadic
         (let module := M.alloc (| module |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
           M.get_associated_function (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -29,6 +33,10 @@ Module friends.
           |),
           [
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
               M.get_function (| "move_bytecode_verifier::friends::verify_module_impl", [], [] |),
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
             |);
@@ -45,6 +53,7 @@ Module friends.
                             ltac:(M.monadic
                               (let e := M.copy (| γ |) in
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::VMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "finish",
@@ -57,6 +66,7 @@ Module friends.
                                     "move_binary_format::errors::Location::Module"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_core_types::language_storage::ModuleId",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "self_id",
@@ -128,9 +138,17 @@ Module friends.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ self_handle :=
+              let~ self_handle :
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::ModuleHandle" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "self_handle",
@@ -140,7 +158,7 @@ Module friends.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -150,6 +168,7 @@ Module friends.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -164,6 +183,18 @@ Module friends.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::ModuleHandle"
+                                              ]
+                                          ],
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "friend_decls",
@@ -196,6 +227,7 @@ Module friends.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "new",
@@ -216,9 +248,17 @@ Module friends.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ self_address :=
+              let~ self_address :
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_core_types::account_address::AccountAddress" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_core_types::account_address::AccountAddress" ],
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "address_identifier_at",
@@ -231,6 +271,10 @@ Module friends.
                         M.SubPointer.get_struct_record_field (|
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "module_handle_at",
@@ -240,6 +284,7 @@ Module friends.
                               [
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |);
                                 M.call_closure (|
+                                  Ty.path "move_binary_format::file_format::ModuleHandleIndex",
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "self_handle_idx",
@@ -263,9 +308,10 @@ Module friends.
                     ]
                   |)
                 |) in
-              let~ has_external_friend :=
+              let~ has_external_friend : Ty.path "bool" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply
@@ -295,6 +341,10 @@ Module friends.
                         Pointer.Kind.MutRef,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              []
+                              [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "slice")
@@ -309,6 +359,16 @@ Module friends.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::ModuleHandle"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "friend_decls",
@@ -341,6 +401,7 @@ Module friends.
                                       ltac:(M.monadic
                                         (let handle := M.copy (| γ |) in
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
                                             Ty.apply
@@ -369,6 +430,13 @@ Module friends.
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_core_types::account_address::AccountAddress"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "move_binary_format::file_format::CompiledModule",
@@ -402,7 +470,7 @@ Module friends.
                     ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -419,6 +487,7 @@ Module friends.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "new",

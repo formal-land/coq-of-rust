@@ -16,6 +16,7 @@ Module collections.
             (let v := M.alloc (| v |) in
             let change := M.alloc (| change |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (|
                 "alloc::collections::btree::mem::replace",
                 [],
@@ -38,6 +39,7 @@ Module collections.
                                   Value.Tuple
                                     [
                                       M.call_closure (|
+                                        T,
                                         M.get_trait_method (|
                                           "core::ops::function::FnOnce",
                                           impl_FnOnce_T__arrow_T,
@@ -88,13 +90,14 @@ Module collections.
             (let v := M.alloc (| v |) in
             let change := M.alloc (| change |) in
             M.read (|
-              let~ guard :=
+              let~ guard : Ty.path "alloc::collections::btree::mem::replace::PanicGuard" :=
                 M.alloc (|
                   Value.StructTuple "alloc::collections::btree::mem::replace::PanicGuard" []
                 |) in
-              let~ value :=
+              let~ value : T :=
                 M.alloc (|
                   M.call_closure (|
+                    T,
                     M.get_function (| "core::ptr::read", [], [ T ] |),
                     [ M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| v |) |) |) ]
                   |)
@@ -102,6 +105,7 @@ Module collections.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ T; R ],
                     M.get_trait_method (|
                       "core::ops::function::FnOnce",
                       impl_FnOnce_T__arrow__T__R_,
@@ -121,10 +125,11 @@ Module collections.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let new_value := M.copy (| γ0_0 |) in
                       let ret := M.copy (| γ0_1 |) in
-                      let~ _ :=
-                        let~ _ :=
+                      let~ _ : Ty.tuple [] :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_function (| "core::ptr::write", [], [ T ] |),
                               [
                                 M.borrow (|
@@ -136,9 +141,10 @@ Module collections.
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_function (|
                               "core::mem::forget",
                               [],
@@ -180,7 +186,11 @@ Module collections.
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 M.never_to_any (|
-                  M.call_closure (| M.get_function (| "core::intrinsics::abort", [], [] |), [] |)
+                  M.call_closure (|
+                    Ty.path "never",
+                    M.get_function (| "core::intrinsics::abort", [], [] |),
+                    []
+                  |)
                 |)))
             | _, _, _ => M.impossible "wrong number of arguments"
             end.

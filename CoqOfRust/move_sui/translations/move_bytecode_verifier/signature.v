@@ -52,6 +52,10 @@ Module signature.
         ltac:(M.monadic
           (let module := M.alloc (| module |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -68,6 +72,10 @@ Module signature.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                   "verify_module_impl",
@@ -89,6 +97,7 @@ Module signature.
                               ltac:(M.monadic
                                 (let e := M.copy (| γ |) in
                                 M.call_closure (|
+                                  Ty.path "move_binary_format::errors::VMError",
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "finish",
@@ -101,6 +110,7 @@ Module signature.
                                       "move_binary_format::errors::Location::Module"
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_core_types::language_storage::ModuleId",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -151,7 +161,7 @@ Module signature.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ sig_check :=
+                let~ sig_check : Ty.path "move_bytecode_verifier::signature::SignatureChecker" :=
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::signature::SignatureChecker"
@@ -159,6 +169,26 @@ Module signature.
                         ("module", M.read (| module |));
                         ("abilities_cache",
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "std::collections::hash::map::HashMap")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::SignatureIndex";
+                                Ty.apply
+                                  (Ty.path "std::collections::hash::set::HashSet")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_binary_format::file_format::AbilitySet";
+                                        Ty.path "alloc::alloc::Global"
+                                      ];
+                                    Ty.path "std::hash::random::RandomState"
+                                  ];
+                                Ty.path "std::hash::random::RandomState"
+                              ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "std::collections::hash::map::HashMap")
@@ -188,10 +218,23 @@ Module signature.
                           |))
                       ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -206,6 +249,10 @@ Module signature.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                               "verify_signature_pool",
@@ -218,6 +265,15 @@ Module signature.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::Signature" ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "signatures",
@@ -253,6 +309,13 @@ Module signature.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -294,10 +357,23 @@ Module signature.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -312,6 +388,10 @@ Module signature.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                               "verify_function_signatures",
@@ -324,6 +404,18 @@ Module signature.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionHandle"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "function_handles",
@@ -359,6 +451,13 @@ Module signature.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -400,10 +499,23 @@ Module signature.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -418,6 +530,10 @@ Module signature.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                               "verify_fields",
@@ -430,6 +546,18 @@ Module signature.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::StructDefinition"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "struct_defs",
@@ -465,6 +593,13 @@ Module signature.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -508,6 +643,10 @@ Module signature.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                       "verify_code_units",
@@ -520,6 +659,15 @@ Module signature.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                              ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::CompiledModule",
                               "function_handles",
@@ -534,6 +682,15 @@ Module signature.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                              ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::CompiledModule",
                               "function_defs",
@@ -573,11 +730,12 @@ Module signature.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -594,6 +752,7 @@ Module signature.
                                 ("start", Value.Integer IntegerKind.Usize 0);
                                 ("end_",
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -620,10 +779,14 @@ Module signature.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -667,6 +830,20 @@ Module signature.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -685,6 +862,14 @@ Module signature.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_bytecode_verifier::signature::SignatureChecker",
@@ -698,6 +883,8 @@ Module signature.
                                                         M.deref (| M.read (| self |) |)
                                                       |);
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::file_format::SignatureIndex",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::file_format::SignatureIndex",
@@ -727,6 +914,14 @@ Module signature.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -820,7 +1015,13 @@ Module signature.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ err_handler :=
+                let~ err_handler :
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [ Ty.path "move_binary_format::errors::PartialVMError"; Ty.path "usize" ]
+                      ]
+                      (Ty.path "move_binary_format::errors::PartialVMError") :=
                   M.alloc (|
                     M.closure
                       (fun γ =>
@@ -841,6 +1042,8 @@ Module signature.
                                             ltac:(M.monadic
                                               (let idx := M.copy (| γ |) in
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
@@ -850,6 +1053,8 @@ Module signature.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
@@ -878,11 +1083,20 @@ Module signature.
                           | _ => M.impossible "wrong number of arguments"
                           end))
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -902,6 +1116,15 @@ Module signature.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -916,6 +1139,10 @@ Module signature.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -943,10 +1170,26 @@ Module signature.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionHandle"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -998,10 +1241,24 @@ Module signature.
                                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let idx := M.copy (| γ1_0 |) in
                                           let fh := M.copy (| γ1_1 |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ];
+                                                      Ty.tuple []
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
@@ -1020,6 +1277,14 @@ Module signature.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
@@ -1048,6 +1313,14 @@ Module signature.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ],
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "move_bytecode_verifier::signature::SignatureChecker",
@@ -1071,6 +1344,18 @@ Module signature.
                                                               Pointer.Kind.Ref,
                                                               M.deref (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::AbilitySet"
+                                                                        ]
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::deref::Deref",
                                                                     Ty.apply
@@ -1124,6 +1409,8 @@ Module signature.
                                                                           (let err :=
                                                                             M.copy (| γ |) in
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
                                                                             M.get_trait_method (|
                                                                               "core::ops::function::Fn",
                                                                               Ty.function
@@ -1189,6 +1476,14 @@ Module signature.
                                                         M.read (|
                                                           M.return_ (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
@@ -1233,10 +1528,24 @@ Module signature.
                                                     val))
                                               ]
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ];
+                                                      Ty.tuple []
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
@@ -1255,6 +1564,14 @@ Module signature.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
@@ -1283,6 +1600,14 @@ Module signature.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ],
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "move_bytecode_verifier::signature::SignatureChecker",
@@ -1306,6 +1631,18 @@ Module signature.
                                                               Pointer.Kind.Ref,
                                                               M.deref (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::AbilitySet"
+                                                                        ]
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::deref::Deref",
                                                                     Ty.apply
@@ -1359,6 +1696,8 @@ Module signature.
                                                                           (let err :=
                                                                             M.copy (| γ |) in
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
                                                                             M.get_trait_method (|
                                                                               "core::ops::function::Fn",
                                                                               Ty.function
@@ -1424,6 +1763,14 @@ Module signature.
                                                         M.read (|
                                                           M.return_ (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
@@ -1478,6 +1825,7 @@ Module signature.
                                                       (M.alloc (|
                                                         UnOp.not (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "alloc::vec::Vec")
@@ -1570,11 +1918,20 @@ Module signature.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -1594,6 +1951,15 @@ Module signature.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -1608,6 +1974,10 @@ Module signature.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -1636,10 +2006,26 @@ Module signature.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::StructDefinition"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -1691,7 +2077,20 @@ Module signature.
                                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let struct_def_idx := M.copy (| γ1_0 |) in
                                           let struct_def := M.copy (| γ1_1 |) in
-                                          let~ fields :=
+                                          let~ fields :
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FieldDefinition";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ]
+                                                ] :=
                                             M.copy (|
                                               M.match_operator (|
                                                 M.alloc (|
@@ -1732,9 +2131,23 @@ Module signature.
                                                 ]
                                               |)
                                             |) in
-                                          let~ struct_handle :=
+                                          let~ struct_handle :
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::StructHandle"
+                                                ] :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::StructHandle"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::file_format::CompiledModule",
@@ -1765,7 +2178,18 @@ Module signature.
                                                 ]
                                               |)
                                             |) in
-                                          let~ err_handler :=
+                                          let~ err_handler :
+                                              Ty.function
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::errors::PartialVMError";
+                                                      Ty.path "usize"
+                                                    ]
+                                                ]
+                                                (Ty.path
+                                                  "move_binary_format::errors::PartialVMError") :=
                                             M.alloc (|
                                               M.closure
                                                 (fun γ =>
@@ -1787,6 +2211,8 @@ Module signature.
                                                                         (let idx :=
                                                                           M.copy (| γ |) in
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
@@ -1796,6 +2222,8 @@ Module signature.
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
@@ -1834,6 +2262,19 @@ Module signature.
                                             (M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "core::iter::adapters::enumerate::Enumerate")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::slice::iter::Iter")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::FieldDefinition"
+                                                        ]
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::iter::traits::collect::IntoIterator",
                                                     Ty.apply
@@ -1857,6 +2298,19 @@ Module signature.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::iter::adapters::enumerate::Enumerate")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::slice::iter::Iter")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::FieldDefinition"
+                                                            ]
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
@@ -1874,6 +2328,13 @@ Module signature.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::slice::iter::Iter")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::FieldDefinition"
+                                                            ],
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "slice")
@@ -1891,6 +2352,18 @@ Module signature.
                                                               Pointer.Kind.Ref,
                                                               M.deref (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::FieldDefinition"
+                                                                        ]
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::deref::Deref",
                                                                     Ty.apply
@@ -1932,10 +2405,26 @@ Module signature.
                                                     (let iter := M.copy (| γ |) in
                                                     M.loop (|
                                                       ltac:(M.monadic
-                                                        (let~ _ :=
+                                                        (let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.path "usize";
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::FieldDefinition"
+                                                                          ]
+                                                                      ]
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::iter::traits::iterator::Iterator",
                                                                   Ty.apply
@@ -2006,10 +2495,27 @@ Module signature.
                                                                     M.copy (| γ1_0 |) in
                                                                   let field_def :=
                                                                     M.copy (| γ1_1 |) in
-                                                                  let~ _ :=
+                                                                  let~ _ : Ty.tuple [] :=
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::ops::control_flow::ControlFlow")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::convert::Infallible";
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ];
+                                                                              Ty.tuple []
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::try_trait::Try",
                                                                             Ty.apply
@@ -2029,6 +2535,15 @@ Module signature.
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ],
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -2058,6 +2573,15 @@ Module signature.
                                                                               |),
                                                                               [
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.tuple [];
+                                                                                      Ty.path
+                                                                                        "move_binary_format::errors::PartialVMError"
+                                                                                    ],
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "move_bytecode_verifier::signature::SignatureChecker",
@@ -2117,6 +2641,8 @@ Module signature.
                                                                                                       γ
                                                                                                     |) in
                                                                                                   M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "move_binary_format::errors::PartialVMError",
                                                                                                     M.get_trait_method (|
                                                                                                       "core::ops::function::Fn",
                                                                                                       Ty.function
@@ -2188,6 +2714,16 @@ Module signature.
                                                                                 M.read (|
                                                                                   M.return_ (|
                                                                                     M.call_closure (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::result::Result")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.tuple
+                                                                                            [];
+                                                                                          Ty.path
+                                                                                            "move_binary_format::errors::PartialVMError"
+                                                                                        ],
                                                                                       M.get_trait_method (|
                                                                                         "core::ops::try_trait::FromResidual",
                                                                                         Ty.apply
@@ -2240,9 +2776,28 @@ Module signature.
                                                                             val))
                                                                       ]
                                                                     |) in
-                                                                  let~ type_param_constraints :=
+                                                                  let~ type_param_constraints :
+                                                                      Ty.apply
+                                                                        (Ty.path "alloc::vec::Vec")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::AbilitySet";
+                                                                          Ty.path
+                                                                            "alloc::alloc::Global"
+                                                                        ] :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::vec::Vec")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::AbilitySet";
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ],
                                                                         M.get_trait_method (|
                                                                           "core::iter::traits::iterator::Iterator",
                                                                           Ty.associated,
@@ -2265,6 +2820,7 @@ Module signature.
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.associated,
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "move_binary_format::file_format::StructHandle",
@@ -2286,10 +2842,27 @@ Module signature.
                                                                         ]
                                                                       |)
                                                                     |) in
-                                                                  let~ _ :=
+                                                                  let~ _ : Ty.tuple [] :=
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::ops::control_flow::ControlFlow")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::convert::Infallible";
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ];
+                                                                              Ty.tuple []
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::try_trait::Try",
                                                                             Ty.apply
@@ -2309,6 +2882,15 @@ Module signature.
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ],
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -2338,6 +2920,15 @@ Module signature.
                                                                               |),
                                                                               [
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.tuple [];
+                                                                                      Ty.path
+                                                                                        "move_binary_format::errors::PartialVMError"
+                                                                                    ],
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "move_bytecode_verifier::signature::SignatureChecker",
@@ -2379,6 +2970,20 @@ Module signature.
                                                                                       Pointer.Kind.Ref,
                                                                                       M.deref (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "&")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "slice")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "move_binary_format::file_format::AbilitySet"
+                                                                                                ]
+                                                                                            ],
                                                                                           M.get_trait_method (|
                                                                                             "core::ops::deref::Deref",
                                                                                             Ty.apply
@@ -2433,6 +3038,8 @@ Module signature.
                                                                                                       γ
                                                                                                     |) in
                                                                                                   M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "move_binary_format::errors::PartialVMError",
                                                                                                     M.get_trait_method (|
                                                                                                       "core::ops::function::Fn",
                                                                                                       Ty.function
@@ -2504,6 +3111,16 @@ Module signature.
                                                                                 M.read (|
                                                                                   M.return_ (|
                                                                                     M.call_closure (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::result::Result")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.tuple
+                                                                                            [];
+                                                                                          Ty.path
+                                                                                            "move_binary_format::errors::PartialVMError"
+                                                                                        ],
                                                                                       M.get_trait_method (|
                                                                                         "core::ops::try_trait::FromResidual",
                                                                                         Ty.apply
@@ -2556,10 +3173,27 @@ Module signature.
                                                                             val))
                                                                       ]
                                                                     |) in
-                                                                  let~ _ :=
+                                                                  let~ _ : Ty.tuple [] :=
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::ops::control_flow::ControlFlow")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::convert::Infallible";
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ];
+                                                                              Ty.tuple []
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::try_trait::Try",
                                                                             Ty.apply
@@ -2579,6 +3213,15 @@ Module signature.
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ],
                                                                               M.get_associated_function (|
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -2608,6 +3251,15 @@ Module signature.
                                                                               |),
                                                                               [
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.tuple [];
+                                                                                      Ty.path
+                                                                                        "move_binary_format::errors::PartialVMError"
+                                                                                    ],
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "move_bytecode_verifier::signature::SignatureChecker",
@@ -2651,6 +3303,20 @@ Module signature.
                                                                                       Pointer.Kind.Ref,
                                                                                       M.deref (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "&")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "slice")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "move_binary_format::file_format::StructTypeParameter"
+                                                                                                ]
+                                                                                            ],
                                                                                           M.get_trait_method (|
                                                                                             "core::ops::deref::Deref",
                                                                                             Ty.apply
@@ -2713,6 +3379,8 @@ Module signature.
                                                                                                       γ
                                                                                                     |) in
                                                                                                   M.call_closure (|
+                                                                                                    Ty.path
+                                                                                                      "move_binary_format::errors::PartialVMError",
                                                                                                     M.get_trait_method (|
                                                                                                       "core::ops::function::Fn",
                                                                                                       Ty.function
@@ -2784,6 +3452,16 @@ Module signature.
                                                                                 M.read (|
                                                                                   M.return_ (|
                                                                                     M.call_closure (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::result::Result")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.tuple
+                                                                                            [];
+                                                                                          Ty.path
+                                                                                            "move_binary_format::errors::PartialVMError"
+                                                                                        ],
                                                                                       M.get_trait_method (|
                                                                                         "core::ops::try_trait::FromResidual",
                                                                                         Ty.apply
@@ -2891,11 +3569,20 @@ Module signature.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -2915,6 +3602,16 @@ Module signature.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -2929,6 +3626,11 @@ Module signature.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -2959,10 +3661,26 @@ Module signature.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionDefinition"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -3014,7 +3732,14 @@ Module signature.
                                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let func_def_idx := M.copy (| γ1_0 |) in
                                           let func_def := M.copy (| γ1_1 |) in
-                                          let~ code :=
+                                          let~ code :
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::CodeUnit"
+                                                ] :=
                                             M.copy (|
                                               M.match_operator (|
                                                 M.alloc (|
@@ -3055,7 +3780,14 @@ Module signature.
                                                 ]
                                               |)
                                             |) in
-                                          let~ func_handle :=
+                                          let~ func_handle :
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionHandle"
+                                                ] :=
                                             M.alloc (|
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
@@ -3082,6 +3814,20 @@ Module signature.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -3100,6 +3846,14 @@ Module signature.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -3128,6 +3882,14 @@ Module signature.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.tuple [];
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_bytecode_verifier::signature::SignatureChecker",
@@ -3148,6 +3910,18 @@ Module signature.
                                                             Pointer.Kind.Ref,
                                                             M.deref (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "slice")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::AbilitySet"
+                                                                      ]
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::ops::deref::Deref",
                                                                   Ty.apply
@@ -3200,6 +3974,8 @@ Module signature.
                                                                         (let err :=
                                                                           M.copy (| γ |) in
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
@@ -3209,6 +3985,8 @@ Module signature.
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
@@ -3274,6 +4052,14 @@ Module signature.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -3488,10 +4274,23 @@ Module signature.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -3506,6 +4305,10 @@ Module signature.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                               "check_instantiation",
@@ -3545,6 +4348,13 @@ Module signature.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -3586,11 +4396,20 @@ Module signature.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -3610,6 +4429,15 @@ Module signature.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -3624,6 +4452,10 @@ Module signature.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -3638,6 +4470,18 @@ Module signature.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::Bytecode"
+                                                ]
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::deref::Deref",
                                             Ty.apply
@@ -3679,10 +4523,26 @@ Module signature.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::Bytecode"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -3734,7 +4594,15 @@ Module signature.
                                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let offset := M.copy (| γ1_0 |) in
                                           let instr := M.copy (| γ1_1 |) in
-                                          let~ result :=
+                                          let~ result :
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.tuple [];
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError"
+                                                ] :=
                                             M.copy (|
                                               M.match_operator (|
                                                 instr,
@@ -3749,9 +4617,23 @@ Module signature.
                                                           0
                                                         |) in
                                                       let idx := M.alloc (| γ1_0 |) in
-                                                      let~ func_inst :=
+                                                      let~ func_inst :
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::FunctionInstantiation"
+                                                            ] :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::FunctionInstantiation"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_binary_format::file_format::CompiledModule",
@@ -3780,9 +4662,23 @@ Module signature.
                                                             ]
                                                           |)
                                                         |) in
-                                                      let~ func_handle :=
+                                                      let~ func_handle :
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::FunctionHandle"
+                                                            ] :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::FunctionHandle"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_binary_format::file_format::CompiledModule",
@@ -3817,13 +4713,33 @@ Module signature.
                                                             ]
                                                           |)
                                                         |) in
-                                                      let~ type_arguments :=
+                                                      let~ type_arguments :
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "alloc::vec::Vec")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::SignatureToken";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ]
+                                                            ] :=
                                                         M.alloc (|
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
                                                             M.SubPointer.get_struct_tuple_field (|
                                                               M.deref (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::Signature"
+                                                                    ],
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_binary_format::file_format::CompiledModule",
@@ -3863,10 +4779,26 @@ Module signature.
                                                             |)
                                                           |)
                                                         |) in
-                                                      let~ _ :=
+                                                      let~ _ : Ty.tuple [] :=
                                                         M.match_operator (|
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::control_flow::ControlFlow")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ];
+                                                                  Ty.tuple []
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::Try",
                                                                 Ty.apply
@@ -3885,6 +4817,14 @@ Module signature.
                                                               |),
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ],
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_bytecode_verifier::signature::SignatureChecker",
@@ -3903,6 +4843,18 @@ Module signature.
                                                                       Pointer.Kind.Ref,
                                                                       M.deref (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "slice")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::SignatureToken"
+                                                                                ]
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::deref::Deref",
                                                                             Ty.apply
@@ -3954,6 +4906,15 @@ Module signature.
                                                                     M.read (|
                                                                       M.return_ (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::try_trait::FromResidual",
                                                                             Ty.apply
@@ -4002,6 +4963,14 @@ Module signature.
                                                         |) in
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ],
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "move_bytecode_verifier::signature::SignatureChecker",
@@ -4033,6 +5002,18 @@ Module signature.
                                                               Pointer.Kind.Ref,
                                                               M.deref (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "slice")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::SignatureToken"
+                                                                        ]
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::deref::Deref",
                                                                     Ty.apply
@@ -4062,6 +5043,20 @@ Module signature.
                                                               |)
                                                             |);
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::iter::adapters::copied::Copied")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::slice::iter::Iter")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::AbilitySet"
+                                                                    ]
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::iter::traits::iterator::Iterator",
                                                                 Ty.apply
@@ -4083,6 +5078,14 @@ Module signature.
                                                               |),
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::slice::iter::Iter")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::AbilitySet"
+                                                                    ],
                                                                   M.get_associated_function (|
                                                                     Ty.apply
                                                                       (Ty.path "slice")
@@ -4100,6 +5103,18 @@ Module signature.
                                                                       Pointer.Kind.Ref,
                                                                       M.deref (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "slice")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::AbilitySet"
+                                                                                ]
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::deref::Deref",
                                                                             Ty.apply
@@ -4236,9 +5251,23 @@ Module signature.
                                                             match γ with
                                                             | [ idx ] =>
                                                               ltac:(M.monadic
-                                                                (let~ struct_inst :=
+                                                                (let~ struct_inst :
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::StructDefInstantiation"
+                                                                      ] :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
@@ -4269,9 +5298,23 @@ Module signature.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let~ struct_def :=
+                                                                let~ struct_def :
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::StructDefinition"
+                                                                      ] :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::StructDefinition"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
@@ -4308,9 +5351,23 @@ Module signature.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let~ struct_handle :=
+                                                                let~ struct_handle :
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::StructHandle"
+                                                                      ] :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::StructHandle"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
@@ -4347,13 +5404,35 @@ Module signature.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let~ type_arguments :=
+                                                                let~ type_arguments :
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::vec::Vec")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::SignatureToken";
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ]
+                                                                      ] :=
                                                                   M.alloc (|
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         M.deref (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::Signature"
+                                                                              ],
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "move_binary_format::file_format::CompiledModule",
@@ -4397,10 +5476,27 @@ Module signature.
                                                                       |)
                                                                     |)
                                                                   |) in
-                                                                let~ _ :=
+                                                                let~ _ : Ty.tuple [] :=
                                                                   M.match_operator (|
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::ops::control_flow::ControlFlow")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible";
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ];
+                                                                            Ty.tuple []
+                                                                          ],
                                                                         M.get_trait_method (|
                                                                           "core::ops::try_trait::Try",
                                                                           Ty.apply
@@ -4420,6 +5516,15 @@ Module signature.
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple [];
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ],
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "move_bytecode_verifier::signature::SignatureChecker",
@@ -4438,6 +5543,19 @@ Module signature.
                                                                                 Pointer.Kind.Ref,
                                                                                 M.deref (|
                                                                                   M.call_closure (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "slice")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "move_binary_format::file_format::SignatureToken"
+                                                                                          ]
+                                                                                      ],
                                                                                     M.get_trait_method (|
                                                                                       "core::ops::deref::Deref",
                                                                                       Ty.apply
@@ -4490,6 +5608,15 @@ Module signature.
                                                                               M.read (|
                                                                                 M.return_ (|
                                                                                   M.call_closure (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.tuple [];
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                      ],
                                                                                     M.get_trait_method (|
                                                                                       "core::ops::try_trait::FromResidual",
                                                                                       Ty.apply
@@ -4544,6 +5671,15 @@ Module signature.
                                                                   |) in
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ],
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "move_bytecode_verifier::signature::SignatureChecker",
@@ -4562,6 +5698,18 @@ Module signature.
                                                                         Pointer.Kind.Ref,
                                                                         M.deref (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path "slice")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::SignatureToken"
+                                                                                  ]
+                                                                              ],
                                                                             M.get_trait_method (|
                                                                               "core::ops::deref::Deref",
                                                                               Ty.apply
@@ -4594,6 +5742,7 @@ Module signature.
                                                                         |)
                                                                       |);
                                                                       M.call_closure (|
+                                                                        Ty.associated,
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::file_format::StructHandle",
@@ -4661,9 +5810,23 @@ Module signature.
                                                             match γ with
                                                             | [ idx ] =>
                                                               ltac:(M.monadic
-                                                                (let~ field_inst :=
+                                                                (let~ field_inst :
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::FieldInstantiation"
+                                                                      ] :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::FieldInstantiation"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
@@ -4694,9 +5857,23 @@ Module signature.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let~ field_handle :=
+                                                                let~ field_handle :
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::FieldHandle"
+                                                                      ] :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::FieldHandle"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
@@ -4733,9 +5910,23 @@ Module signature.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let~ struct_def :=
+                                                                let~ struct_def :
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::StructDefinition"
+                                                                      ] :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::StructDefinition"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
@@ -4772,9 +5963,23 @@ Module signature.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let~ struct_handle :=
+                                                                let~ struct_handle :
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::StructHandle"
+                                                                      ] :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::StructHandle"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
@@ -4811,13 +6016,35 @@ Module signature.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                let~ type_arguments :=
+                                                                let~ type_arguments :
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::vec::Vec")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::SignatureToken";
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ]
+                                                                      ] :=
                                                                   M.alloc (|
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         M.deref (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::Signature"
+                                                                              ],
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "move_binary_format::file_format::CompiledModule",
@@ -4861,10 +6088,27 @@ Module signature.
                                                                       |)
                                                                     |)
                                                                   |) in
-                                                                let~ _ :=
+                                                                let~ _ : Ty.tuple [] :=
                                                                   M.match_operator (|
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::ops::control_flow::ControlFlow")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible";
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ];
+                                                                            Ty.tuple []
+                                                                          ],
                                                                         M.get_trait_method (|
                                                                           "core::ops::try_trait::Try",
                                                                           Ty.apply
@@ -4884,6 +6128,15 @@ Module signature.
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple [];
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ],
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "move_bytecode_verifier::signature::SignatureChecker",
@@ -4902,6 +6155,19 @@ Module signature.
                                                                                 Pointer.Kind.Ref,
                                                                                 M.deref (|
                                                                                   M.call_closure (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "slice")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "move_binary_format::file_format::SignatureToken"
+                                                                                          ]
+                                                                                      ],
                                                                                     M.get_trait_method (|
                                                                                       "core::ops::deref::Deref",
                                                                                       Ty.apply
@@ -4954,6 +6220,15 @@ Module signature.
                                                                               M.read (|
                                                                                 M.return_ (|
                                                                                   M.call_closure (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.tuple [];
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                      ],
                                                                                     M.get_trait_method (|
                                                                                       "core::ops::try_trait::FromResidual",
                                                                                       Ty.apply
@@ -5008,6 +6283,15 @@ Module signature.
                                                                   |) in
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ],
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "move_bytecode_verifier::signature::SignatureChecker",
@@ -5026,6 +6310,18 @@ Module signature.
                                                                         Pointer.Kind.Ref,
                                                                         M.deref (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path "slice")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::SignatureToken"
+                                                                                  ]
+                                                                              ],
                                                                             M.get_trait_method (|
                                                                               "core::ops::deref::Deref",
                                                                               Ty.apply
@@ -5058,6 +6354,7 @@ Module signature.
                                                                         |)
                                                                       |);
                                                                       M.call_closure (|
+                                                                        Ty.associated,
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::file_format::StructHandle",
@@ -5203,13 +6500,35 @@ Module signature.
                                                             match γ with
                                                             | [ idx ] =>
                                                               ltac:(M.monadic
-                                                                (let~ type_arguments :=
+                                                                (let~ type_arguments :
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::vec::Vec")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::SignatureToken";
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ]
+                                                                      ] :=
                                                                   M.alloc (|
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.SubPointer.get_struct_tuple_field (|
                                                                         M.deref (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::Signature"
+                                                                              ],
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "move_binary_format::file_format::CompiledModule",
@@ -5247,7 +6566,7 @@ Module signature.
                                                                       |)
                                                                     |)
                                                                   |) in
-                                                                let~ _ :=
+                                                                let~ _ : Ty.tuple [] :=
                                                                   M.match_operator (|
                                                                     M.alloc (| Value.Tuple [] |),
                                                                     [
@@ -5258,6 +6577,7 @@ Module signature.
                                                                               (M.alloc (|
                                                                                 BinOp.ne (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "usize",
                                                                                     M.get_associated_function (|
                                                                                       Ty.apply
                                                                                         (Ty.path
@@ -5302,6 +6622,8 @@ Module signature.
                                                                                     "core::result::Result::Err"
                                                                                     [
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError",
                                                                                         M.get_associated_function (|
                                                                                           Ty.path
                                                                                             "move_binary_format::errors::PartialVMError",
@@ -5311,6 +6633,8 @@ Module signature.
                                                                                         |),
                                                                                         [
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "move_binary_format::errors::PartialVMError",
                                                                                             M.get_associated_function (|
                                                                                               Ty.path
                                                                                                 "move_binary_format::errors::PartialVMError",
@@ -5325,6 +6649,8 @@ Module signature.
                                                                                             ]
                                                                                           |);
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "alloc::string::String",
                                                                                             M.get_function (|
                                                                                               "core::hint::must_use",
                                                                                               [],
@@ -5336,9 +6662,13 @@ Module signature.
                                                                                             [
                                                                                               M.read (|
                                                                                                 let~
-                                                                                                      res :=
+                                                                                                      res :
+                                                                                                    Ty.path
+                                                                                                      "alloc::string::String" :=
                                                                                                   M.alloc (|
                                                                                                     M.call_closure (|
+                                                                                                      Ty.path
+                                                                                                        "alloc::string::String",
                                                                                                       M.get_function (|
                                                                                                         "alloc::fmt::format",
                                                                                                         [],
@@ -5346,6 +6676,8 @@ Module signature.
                                                                                                       |),
                                                                                                       [
                                                                                                         M.call_closure (|
+                                                                                                          Ty.path
+                                                                                                            "core::fmt::Arguments",
                                                                                                           M.get_associated_function (|
                                                                                                             Ty.path
                                                                                                               "core::fmt::Arguments",
@@ -5380,6 +6712,8 @@ Module signature.
                                                                                                                     Value.Array
                                                                                                                       [
                                                                                                                         M.call_closure (|
+                                                                                                                          Ty.path
+                                                                                                                            "core::fmt::rt::Argument",
                                                                                                                           M.get_associated_function (|
                                                                                                                             Ty.path
                                                                                                                               "core::fmt::rt::Argument",
@@ -5398,6 +6732,8 @@ Module signature.
                                                                                                                                   Pointer.Kind.Ref,
                                                                                                                                   M.alloc (|
                                                                                                                                     M.call_closure (|
+                                                                                                                                      Ty.path
+                                                                                                                                        "usize",
                                                                                                                                       M.get_associated_function (|
                                                                                                                                         Ty.apply
                                                                                                                                           (Ty.path
@@ -5460,6 +6796,15 @@ Module signature.
                                                                   |) in
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ],
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "move_bytecode_verifier::signature::SignatureChecker",
@@ -5478,6 +6823,18 @@ Module signature.
                                                                         Pointer.Kind.Ref,
                                                                         M.deref (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path "slice")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::SignatureToken"
+                                                                                  ]
+                                                                              ],
                                                                             M.get_trait_method (|
                                                                               "core::ops::deref::Deref",
                                                                               Ty.apply
@@ -6100,6 +7457,20 @@ Module signature.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -6118,6 +7489,14 @@ Module signature.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -6160,6 +7539,8 @@ Module signature.
                                                                         (let err :=
                                                                           M.copy (| γ |) in
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
@@ -6171,6 +7552,8 @@ Module signature.
                                                                             M.read (| err |);
                                                                             Value.UnicodeChar 32;
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "alloc::string::String",
                                                                               M.get_function (|
                                                                                 "core::hint::must_use",
                                                                                 [],
@@ -6181,9 +7564,13 @@ Module signature.
                                                                               |),
                                                                               [
                                                                                 M.read (|
-                                                                                  let~ res :=
+                                                                                  let~ res :
+                                                                                      Ty.path
+                                                                                        "alloc::string::String" :=
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "alloc::string::String",
                                                                                         M.get_function (|
                                                                                           "alloc::fmt::format",
                                                                                           [],
@@ -6191,6 +7578,8 @@ Module signature.
                                                                                         |),
                                                                                         [
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "core::fmt::Arguments",
                                                                                             M.get_associated_function (|
                                                                                               Ty.path
                                                                                                 "core::fmt::Arguments",
@@ -6229,6 +7618,8 @@ Module signature.
                                                                                                       Value.Array
                                                                                                         [
                                                                                                           M.call_closure (|
+                                                                                                            Ty.path
+                                                                                                              "core::fmt::rt::Argument",
                                                                                                             M.get_associated_function (|
                                                                                                               Ty.path
                                                                                                                 "core::fmt::rt::Argument",
@@ -6293,6 +7684,14 @@ Module signature.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -6410,7 +7809,7 @@ Module signature.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     ty,
                     [
@@ -6427,6 +7826,19 @@ Module signature.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -6444,6 +7856,13 @@ Module signature.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                                       "check_phantom_params",
@@ -6484,6 +7903,13 @@ Module signature.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.tuple [];
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -6552,9 +7978,19 @@ Module signature.
                                   let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                   let idx := M.alloc (| γ1_0 |) in
                                   let type_arguments := M.alloc (| γ1_1 |) in
-                                  let~ sh :=
+                                  let~ sh :
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::StructHandle"
+                                        ] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::StructHandle"
+                                          ],
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "struct_handle_at",
@@ -6582,6 +8018,18 @@ Module signature.
                                     (M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::slice::iter::Iter")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken"
+                                                ]
+                                            ],
                                           M.get_trait_method (|
                                             "core::iter::traits::collect::IntoIterator",
                                             Ty.apply
@@ -6604,6 +8052,19 @@ Module signature.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path
+                                                  "core::iter::adapters::enumerate::Enumerate")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::slice::iter::Iter")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]
+                                                ],
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
@@ -6621,6 +8082,13 @@ Module signature.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::slice::iter::Iter")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "slice")
@@ -6638,6 +8106,18 @@ Module signature.
                                                       Pointer.Kind.Ref,
                                                       M.deref (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::SignatureToken"
+                                                                ]
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::deref::Deref",
                                                             Ty.apply
@@ -6678,10 +8158,26 @@ Module signature.
                                             (let iter := M.copy (| γ |) in
                                             M.loop (|
                                               ltac:(M.monadic
-                                                (let~ _ :=
+                                                (let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [
+                                                            Ty.tuple
+                                                              [
+                                                                Ty.path "usize";
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::SignatureToken"
+                                                                  ]
+                                                              ]
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::iter::traits::iterator::Iterator",
                                                           Ty.apply
@@ -6749,10 +8245,27 @@ Module signature.
                                                             |) in
                                                           let i := M.copy (| γ1_0 |) in
                                                           let ty := M.copy (| γ1_1 |) in
-                                                          let~ _ :=
+                                                          let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::ops::control_flow::ControlFlow")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible";
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ];
+                                                                      Ty.tuple []
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::try_trait::Try",
                                                                     Ty.apply
@@ -6772,6 +8285,15 @@ Module signature.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_bytecode_verifier::signature::SignatureChecker",
@@ -6796,6 +8318,13 @@ Module signature.
                                                                           M.SubPointer.get_struct_record_field (|
                                                                             M.deref (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::StructTypeParameter"
+                                                                                  ],
                                                                                 M.get_trait_method (|
                                                                                   "core::ops::index::Index",
                                                                                   Ty.apply
@@ -6865,6 +8394,15 @@ Module signature.
                                                                         M.read (|
                                                                           M.return_ (|
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ],
                                                                               M.get_trait_method (|
                                                                                 "core::ops::try_trait::FromResidual",
                                                                                 Ty.apply
@@ -6974,6 +8512,8 @@ Module signature.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
@@ -6983,6 +8523,8 @@ Module signature.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError",
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::errors::PartialVMError",
@@ -6997,6 +8539,7 @@ Module signature.
                                                     ]
                                                   |);
                                                   M.call_closure (|
+                                                    Ty.path "alloc::string::String",
                                                     M.get_trait_method (|
                                                       "alloc::string::ToString",
                                                       Ty.path "str",
@@ -7186,11 +8729,15 @@ Module signature.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -7217,6 +8764,10 @@ Module signature.
                               M.SubPointer.get_struct_tuple_field (|
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::Signature" ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "signature_at",
@@ -7253,10 +8804,22 @@ Module signature.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -7339,6 +8902,23 @@ Module signature.
                                                             (M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::ops::control_flow::ControlFlow")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible";
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ];
+                                                                      Ty.tuple []
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::try_trait::Try",
                                                                     Ty.apply
@@ -7358,6 +8938,15 @@ Module signature.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_bytecode_verifier::signature::SignatureChecker",
@@ -7403,6 +8992,15 @@ Module signature.
                                                                         M.read (|
                                                                           M.return_ (|
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ],
                                                                               M.get_trait_method (|
                                                                                 "core::ops::try_trait::FromResidual",
                                                                                 Ty.apply
@@ -7462,6 +9060,21 @@ Module signature.
                                                   (M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ];
+                                                            Ty.tuple []
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
@@ -7480,6 +9093,14 @@ Module signature.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_bytecode_verifier::signature::SignatureChecker",
@@ -7516,6 +9137,15 @@ Module signature.
                                                               M.read (|
                                                                 M.return_ (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::try_trait::FromResidual",
                                                                       Ty.apply
@@ -7597,11 +9227,15 @@ Module signature.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -7628,10 +9262,22 @@ Module signature.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -7678,6 +9324,20 @@ Module signature.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -7696,6 +9356,14 @@ Module signature.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_bytecode_verifier::signature::SignatureChecker",
@@ -7732,6 +9400,14 @@ Module signature.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -7976,6 +9652,7 @@ Module signature.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::errors::PartialVMError",
                                         "with_message",
@@ -7984,6 +9661,7 @@ Module signature.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_binary_format::errors::PartialVMError",
                                           M.get_associated_function (|
                                             Ty.path "move_binary_format::errors::PartialVMError",
                                             "new",
@@ -7997,6 +9675,7 @@ Module signature.
                                           ]
                                         |);
                                         M.call_closure (|
+                                          Ty.path "alloc::string::String",
                                           M.get_trait_method (|
                                             "alloc::string::ToString",
                                             Ty.path "str",
@@ -8034,6 +9713,10 @@ Module signature.
                     let ty := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                         M.get_associated_function (|
                           Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                           "check_signature_token",
@@ -8075,6 +9758,13 @@ Module signature.
                             let type_arguments := M.alloc (| γ1_1 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                                   "check_signature_tokens",
@@ -8087,6 +9777,18 @@ Module signature.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -8156,7 +9858,7 @@ Module signature.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -8165,6 +9867,30 @@ Module signature.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "std::collections::hash::set::HashSet")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::AbilitySet";
+                                                Ty.path "alloc::alloc::Global"
+                                              ];
+                                            Ty.path "std::hash::random::RandomState"
+                                          ]
+                                      ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "std::collections::hash::map::HashMap")
@@ -8222,6 +9948,7 @@ Module signature.
                                     M.use
                                       (M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "std::collections::hash::set::HashSet")
@@ -8283,11 +10010,15 @@ Module signature.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -8314,6 +10045,10 @@ Module signature.
                               M.SubPointer.get_struct_tuple_field (|
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::Signature" ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "signature_at",
@@ -8350,10 +10085,22 @@ Module signature.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -8400,6 +10147,20 @@ Module signature.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -8418,6 +10179,14 @@ Module signature.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_bytecode_verifier::signature::SignatureChecker",
@@ -8458,6 +10227,14 @@ Module signature.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -8508,9 +10285,45 @@ Module signature.
                             |)))
                       ]
                     |)) in
-                let~ checked_abilities :=
+                let~ checked_abilities :
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "std::collections::hash::set::HashSet")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::AbilitySet";
+                                Ty.path "alloc::alloc::Global"
+                              ];
+                            Ty.path "std::hash::random::RandomState"
+                          ]
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "std::collections::hash::set::HashSet")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.path "move_binary_format::file_format::AbilitySet";
+                                  Ty.path "alloc::alloc::Global"
+                                ];
+                              Ty.path "std::hash::random::RandomState"
+                            ]
+                        ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::map::Entry")
@@ -8537,6 +10350,25 @@ Module signature.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "std::collections::hash::map::Entry")
+                            []
+                            [
+                              Ty.path "move_binary_format::file_format::SignatureIndex";
+                              Ty.apply
+                                (Ty.path "std::collections::hash::set::HashSet")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::AbilitySet";
+                                      Ty.path "alloc::alloc::Global"
+                                    ];
+                                  Ty.path "std::hash::random::RandomState"
+                                ]
+                            ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "std::collections::hash::map::HashMap")
@@ -8577,9 +10409,10 @@ Module signature.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.path "bool" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "bool",
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::set::HashSet")
@@ -8604,6 +10437,13 @@ Module signature.
                           M.deref (| M.read (| checked_abilities |) |)
                         |);
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.path "move_binary_format::file_format::AbilitySet";
+                              Ty.path "alloc::alloc::Global"
+                            ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
@@ -8670,6 +10510,7 @@ Module signature.
                             (M.alloc (|
                               BinOp.ge (|
                                 M.call_closure (|
+                                  Ty.path "u32",
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "version",
@@ -8698,11 +10539,13 @@ Module signature.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.use
                             (M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path
+                                    "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
                                   M.get_trait_method (|
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.path
@@ -8715,6 +10558,8 @@ Module signature.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.path
+                                        "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::SignatureToken",
                                         "preorder_traversal",
@@ -8737,10 +10582,22 @@ Module signature.
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
                                       ltac:(M.monadic
-                                        (let~ _ :=
+                                        (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::SignatureToken"
+                                                      ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.path
@@ -8784,6 +10641,21 @@ Module signature.
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ];
+                                                            Ty.tuple []
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
@@ -8802,6 +10674,14 @@ Module signature.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_bytecode_verifier::signature::SignatureChecker",
@@ -8844,6 +10724,15 @@ Module signature.
                                                               M.read (|
                                                                 M.return_ (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::try_trait::FromResidual",
                                                                       Ty.apply
@@ -8903,6 +10792,10 @@ Module signature.
                       ltac:(M.monadic
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                               "check_type_instantiation_",
@@ -9007,9 +10900,17 @@ Module signature.
                             let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let idx := M.alloc (| γ1_0 |) in
                             let type_arguments := M.alloc (| γ1_1 |) in
-                            let~ sh :=
+                            let~ sh :
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructHandle" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::StructHandle" ],
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "struct_handle_at",
@@ -9035,6 +10936,13 @@ Module signature.
                               |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ],
                                 M.get_associated_function (|
                                   Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                                   "check_generic_instance",
@@ -9047,6 +10955,18 @@ Module signature.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -9073,6 +10993,7 @@ Module signature.
                                     |)
                                   |);
                                   M.call_closure (|
+                                    Ty.associated,
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::StructHandle",
                                       "type_param_constraints",
@@ -9295,7 +11216,7 @@ Module signature.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -9306,6 +11227,7 @@ Module signature.
                               (M.alloc (|
                                 BinOp.ne (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -9324,6 +11246,7 @@ Module signature.
                                     ]
                                   |),
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_trait_method (|
                                       "core::iter::traits::exact_size::ExactSizeIterator",
                                       impl_ExactSizeIterator_Item___AbilitySet_,
@@ -9347,6 +11270,7 @@ Module signature.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::errors::PartialVMError",
                                           "with_message",
@@ -9355,6 +11279,7 @@ Module signature.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "move_binary_format::errors::PartialVMError",
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::errors::PartialVMError",
                                               "new",
@@ -9368,6 +11293,7 @@ Module signature.
                                             ]
                                           |);
                                           M.call_closure (|
+                                            Ty.path "alloc::string::String",
                                             M.get_function (|
                                               "core::hint::must_use",
                                               [],
@@ -9375,9 +11301,10 @@ Module signature.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res :=
+                                                let~ res : Ty.path "alloc::string::String" :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_function (|
                                                         "alloc::fmt::format",
                                                         [],
@@ -9385,6 +11312,7 @@ Module signature.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::Arguments",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
@@ -9421,6 +11349,8 @@ Module signature.
                                                                     Value.Array
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
@@ -9436,6 +11366,8 @@ Module signature.
                                                                                   Pointer.Kind.Ref,
                                                                                   M.alloc (|
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "usize",
                                                                                       M.get_trait_method (|
                                                                                         "core::iter::traits::exact_size::ExactSizeIterator",
                                                                                         impl_ExactSizeIterator_Item___AbilitySet_,
@@ -9459,6 +11391,8 @@ Module signature.
                                                                           ]
                                                                         |);
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
@@ -9474,6 +11408,8 @@ Module signature.
                                                                                   Pointer.Kind.Ref,
                                                                                   M.alloc (|
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "usize",
                                                                                       M.get_associated_function (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -9528,11 +11464,21 @@ Module signature.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::zip::Zip")
+                            []
+                            [
+                              impl_ExactSizeIterator_Item___AbilitySet_;
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -9553,6 +11499,16 @@ Module signature.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::zip::Zip")
+                                []
+                                [
+                                  impl_ExactSizeIterator_Item___AbilitySet_;
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 impl_ExactSizeIterator_Item___AbilitySet_,
@@ -9575,6 +11531,7 @@ Module signature.
                               |),
                               [
                                 M.call_closure (|
+                                  impl_ExactSizeIterator_Item___AbilitySet_,
                                   M.get_trait_method (|
                                     "core::iter::traits::collect::IntoIterator",
                                     impl_ExactSizeIterator_Item___AbilitySet_,
@@ -9598,10 +11555,27 @@ Module signature.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::AbilitySet";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -9654,11 +11628,29 @@ Module signature.
                                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let constraint := M.copy (| γ1_0 |) in
                                           let ty := M.copy (| γ1_1 |) in
-                                          let~ given :=
+                                          let~ given :
+                                              Ty.path
+                                                "move_binary_format::file_format::AbilitySet" :=
                                             M.copy (|
                                               M.match_operator (|
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "core::ops::control_flow::ControlFlow")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ];
+                                                        Ty.path
+                                                          "move_binary_format::file_format::AbilitySet"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::Try",
                                                       Ty.apply
@@ -9678,6 +11670,15 @@ Module signature.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::AbilitySet";
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::file_format::CompiledModule",
@@ -9728,6 +11729,14 @@ Module signature.
                                                           M.read (|
                                                             M.return_ (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path
+                                                                      "move_binary_format::errors::PartialVMError"
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
@@ -9784,6 +11793,7 @@ Module signature.
                                                       (M.alloc (|
                                                         UnOp.not (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_binary_format::file_format::AbilitySet",
@@ -9811,6 +11821,8 @@ Module signature.
                                                             "core::result::Result::Err"
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError",
@@ -9820,6 +11832,8 @@ Module signature.
                                                                 |),
                                                                 [
                                                                   M.call_closure (|
+                                                                    Ty.path
+                                                                      "move_binary_format::errors::PartialVMError",
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "move_binary_format::errors::PartialVMError",
@@ -9834,6 +11848,7 @@ Module signature.
                                                                     ]
                                                                   |);
                                                                   M.call_closure (|
+                                                                    Ty.path "alloc::string::String",
                                                                     M.get_function (|
                                                                       "core::hint::must_use",
                                                                       [],
@@ -9844,9 +11859,13 @@ Module signature.
                                                                     |),
                                                                     [
                                                                       M.read (|
-                                                                        let~ res :=
+                                                                        let~ res :
+                                                                            Ty.path
+                                                                              "alloc::string::String" :=
                                                                           M.alloc (|
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "alloc::string::String",
                                                                               M.get_function (|
                                                                                 "alloc::fmt::format",
                                                                                 [],
@@ -9854,6 +11873,8 @@ Module signature.
                                                                               |),
                                                                               [
                                                                                 M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::Arguments",
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "core::fmt::Arguments",
@@ -9896,6 +11917,8 @@ Module signature.
                                                                                             Value.Array
                                                                                               [
                                                                                                 M.call_closure (|
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::rt::Argument",
                                                                                                   M.get_associated_function (|
                                                                                                     Ty.path
                                                                                                       "core::fmt::rt::Argument",
@@ -9919,6 +11942,8 @@ Module signature.
                                                                                                   ]
                                                                                                 |);
                                                                                                 M.call_closure (|
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::rt::Argument",
                                                                                                   M.get_associated_function (|
                                                                                                     Ty.path
                                                                                                       "core::fmt::rt::Argument",
@@ -9948,6 +11973,8 @@ Module signature.
                                                                                                   ]
                                                                                                 |);
                                                                                                 M.call_closure (|
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::rt::Argument",
                                                                                                   M.get_associated_function (|
                                                                                                     Ty.path
                                                                                                       "core::fmt::rt::Argument",

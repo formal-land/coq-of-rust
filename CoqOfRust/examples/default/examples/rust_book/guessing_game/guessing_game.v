@@ -12,6 +12,7 @@ Definition gen_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
     ltac:(M.monadic
       (M.never_to_any (|
         M.call_closure (|
+          Ty.path "never",
           M.get_function (| "core::panicking::panic", [], [] |),
           [ M.read (| Value.String "not yet implemented" |) ]
         |)
@@ -61,13 +62,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
@@ -93,19 +96,25 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ secret_number :=
+        let~ secret_number : Ty.path "u32" :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "guessing_game::gen_range", [], [] |), [] |)
+            M.call_closure (|
+              Ty.path "u32",
+              M.get_function (| "guessing_game::gen_range", [], [] |),
+              []
+            |)
           |) in
         M.loop (|
           ltac:(M.monadic
-            (let~ _ :=
-              let~ _ :=
+            (let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
@@ -132,16 +141,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
-            let~ guess :=
+            let~ guess : Ty.path "alloc::string::String" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "alloc::string::String",
                   M.get_associated_function (| Ty.path "alloc::string::String", "new", [], [] |),
                   []
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::result::Result")
@@ -153,6 +164,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "usize"; Ty.path "std::io::error::Error" ],
                       M.get_associated_function (|
                         Ty.path "std::io::stdio::Stdin",
                         "read_line",
@@ -164,6 +179,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Pointer.Kind.Ref,
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "std::io::stdio::Stdin",
                               M.get_function (| "std::io::stdio::stdin", [], [] |),
                               []
                             |)
@@ -182,23 +198,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ]
                 |)
               |) in
-            let~ guess :=
+            let~ guess : Ty.path "u32" :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "u32"; Ty.path "core::num::error::ParseIntError" ],
                       M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "u32" ] |),
                       [
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                               M.get_associated_function (| Ty.path "str", "trim", [], [] |),
                               [
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                       M.get_trait_method (|
                                         "core::ops::deref::Deref",
                                         Ty.path "alloc::string::String",
@@ -242,13 +264,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ]
                 |)
               |) in
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_v1",
@@ -281,6 +305,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Value.Array
                                     [
                                       M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::rt::Argument",
                                           "new_display",
@@ -308,6 +333,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "u32", [], [], "cmp", [], [] |),
                   [
                     M.borrow (| Pointer.Kind.Ref, guess |);
@@ -322,12 +348,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_function (| "std::io::stdio::_print", [], [] |),
                           [
                             M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
@@ -356,12 +384,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_function (| "std::io::stdio::_print", [], [] |),
                           [
                             M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
@@ -393,13 +423,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (|
                       M.never_to_any (|
                         M.read (|
-                          let~ _ :=
-                            let~ _ :=
+                          let~ _ : Ty.tuple [] :=
+                            let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.tuple [],
                                   M.get_function (| "std::io::stdio::_print", [], [] |),
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::Arguments",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_const",

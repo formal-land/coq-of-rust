@@ -36,6 +36,7 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
         let other := M.alloc (| other |) in
         LogicalOp.and (|
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialEq", A, [], [ A ], "eq", [], [] |),
             [
               M.borrow (|
@@ -58,6 +59,7 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
           |),
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ],
@@ -135,6 +137,7 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
         let other := M.alloc (| other |) in
         LogicalOp.and (|
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialEq", A, [], [ A ], "eq", [], [] |),
             [
               M.borrow (|
@@ -157,6 +160,7 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
           |),
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "core::marker::PhantomData") [] [ B ],
@@ -231,19 +235,31 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _tuple1 :=
+        let~ _tuple1 :
+            Ty.apply
+              (Ty.path "generics_phantom_type::PhantomTuple")
+              []
+              [ Ty.path "char"; Ty.path "f32" ] :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type::PhantomTuple"
               [ Value.UnicodeChar 81; Value.StructTuple "core::marker::PhantomData" [] ]
           |) in
-        let~ _tuple2 :=
+        let~ _tuple2 :
+            Ty.apply
+              (Ty.path "generics_phantom_type::PhantomTuple")
+              []
+              [ Ty.path "char"; Ty.path "f64" ] :=
           M.alloc (|
             Value.StructTuple
               "generics_phantom_type::PhantomTuple"
               [ Value.UnicodeChar 81; Value.StructTuple "core::marker::PhantomData" [] ]
           |) in
-        let~ _struct1 :=
+        let~ _struct1 :
+            Ty.apply
+              (Ty.path "generics_phantom_type::PhantomStruct")
+              []
+              [ Ty.path "char"; Ty.path "f32" ] :=
           M.alloc (|
             Value.StructRecord
               "generics_phantom_type::PhantomStruct"
@@ -252,7 +268,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ("phantom", Value.StructTuple "core::marker::PhantomData" [])
               ]
           |) in
-        let~ _struct2 :=
+        let~ _struct2 :
+            Ty.apply
+              (Ty.path "generics_phantom_type::PhantomStruct")
+              []
+              [ Ty.path "char"; Ty.path "f64" ] :=
           M.alloc (|
             Value.StructRecord
               "generics_phantom_type::PhantomStruct"

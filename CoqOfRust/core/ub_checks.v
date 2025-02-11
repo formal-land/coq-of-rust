@@ -27,6 +27,7 @@ Module hint.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
                             M.read (|
@@ -75,6 +76,7 @@ Module hint.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
                             M.read (|
@@ -131,6 +133,7 @@ Module intrinsics.
                             LogicalOp.and (|
                               LogicalOp.and (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_function (|
                                     "core::ub_checks::is_aligned_and_not_null",
                                     [],
@@ -140,6 +143,7 @@ Module intrinsics.
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_function (|
                                       "core::ub_checks::is_aligned_and_not_null",
                                       [],
@@ -153,6 +157,7 @@ Module intrinsics.
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_function (| "core::ub_checks::is_nonoverlapping", [], [] |),
                                   [
                                     M.read (| src |);
@@ -168,6 +173,7 @@ Module intrinsics.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
                             M.read (|
@@ -219,6 +225,7 @@ Module intrinsics.
                           UnOp.not (|
                             LogicalOp.and (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_function (|
                                   "core::ub_checks::is_aligned_and_not_null",
                                   [],
@@ -228,6 +235,7 @@ Module intrinsics.
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_function (|
                                     "core::ub_checks::is_aligned_and_not_null",
                                     [],
@@ -245,6 +253,7 @@ Module intrinsics.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
                             M.read (|
@@ -294,6 +303,7 @@ Module intrinsics.
                         (M.alloc (|
                           UnOp.not (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_function (|
                                 "core::ub_checks::is_aligned_and_not_null",
                                 [],
@@ -307,6 +317,7 @@ Module intrinsics.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
                             M.read (|
@@ -363,6 +374,7 @@ Module ptr.
                             LogicalOp.and (|
                               LogicalOp.and (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_function (|
                                     "core::ub_checks::is_aligned_and_not_null",
                                     [],
@@ -375,6 +387,7 @@ Module ptr.
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_function (|
                                       "core::ub_checks::is_aligned_and_not_null",
                                       [],
@@ -388,6 +401,7 @@ Module ptr.
                               |),
                               ltac:(M.monadic
                                 (M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_function (| "core::ub_checks::is_nonoverlapping", [], [] |),
                                   [
                                     (* MutToConstPointer *) M.pointer_coercion (M.read (| x |));
@@ -403,6 +417,7 @@ Module ptr.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
                             M.read (|
@@ -452,6 +467,7 @@ Module ptr.
                         (M.alloc (|
                           UnOp.not (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_function (|
                                 "core::ub_checks::is_aligned_and_not_null",
                                 [],
@@ -465,6 +481,7 @@ Module ptr.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
                             M.read (|
@@ -514,6 +531,7 @@ Module ptr.
                         (M.alloc (|
                           UnOp.not (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_function (|
                                 "core::ub_checks::is_aligned_and_not_null",
                                 [],
@@ -527,6 +545,7 @@ Module ptr.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
                             M.read (|
@@ -576,6 +595,7 @@ Module ptr.
                         (M.alloc (|
                           UnOp.not (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_function (|
                                 "core::ub_checks::is_aligned_and_not_null",
                                 [],
@@ -592,6 +612,7 @@ Module ptr.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
                             M.read (|
@@ -641,6 +662,7 @@ Module ptr.
                         (M.alloc (|
                           UnOp.not (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_function (|
                                 "core::ub_checks::is_aligned_and_not_null",
                                 [],
@@ -654,6 +676,7 @@ Module ptr.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
                             M.read (|
@@ -703,6 +726,7 @@ Module ptr.
                         (M.alloc (|
                           UnOp.not (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_function (|
                                 "core::ub_checks::is_aligned_and_not_null",
                                 [],
@@ -719,6 +743,7 @@ Module ptr.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
+                          Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
                             M.read (|
@@ -766,9 +791,14 @@ Module ub_checks.
     | [], [], [] =>
       ltac:(M.monadic
         (LogicalOp.and (|
-          M.call_closure (| M.get_function (| "core::intrinsics::ub_checks", [], [] |), [] |),
+          M.call_closure (|
+            Ty.path "bool",
+            M.get_function (| "core::intrinsics::ub_checks", [], [] |),
+            []
+          |),
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "bool",
               M.get_function (|
                 "core::intrinsics::const_eval_select",
                 [],
@@ -839,6 +869,7 @@ Module ub_checks.
         LogicalOp.and (|
           UnOp.not (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                 "is_null",
@@ -850,6 +881,7 @@ Module ub_checks.
           |),
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                 "is_aligned_to",
@@ -879,7 +911,7 @@ Module ub_checks.
         (let size := M.alloc (| size |) in
         let len := M.alloc (| len |) in
         M.read (|
-          let~ max_len :=
+          let~ max_len : Ty.path "usize" :=
             M.copy (|
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -953,6 +985,7 @@ Module ub_checks.
         let size := M.alloc (| size |) in
         let count := M.alloc (| count |) in
         M.call_closure (|
+          Ty.path "bool",
           M.get_function (|
             "core::intrinsics::const_eval_select",
             [],
@@ -1022,9 +1055,10 @@ Module ub_checks.
           let size := M.alloc (| size |) in
           let count := M.alloc (| count |) in
           M.read (|
-            let~ src_usize :=
+            let~ src_usize : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                     "addr",
@@ -1034,9 +1068,10 @@ Module ub_checks.
                   [ M.read (| src |) ]
                 |)
               |) in
-            let~ dst_usize :=
+            let~ dst_usize : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
                     "addr",
@@ -1049,6 +1084,7 @@ Module ub_checks.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                   M.get_associated_function (| Ty.path "usize", "checked_mul", [], [] |),
                   [ M.read (| size |); M.read (| count |) ]
                 |)
@@ -1063,9 +1099,10 @@ Module ub_checks.
                         0
                       |) in
                     let size := M.copy (| γ0_0 |) in
-                    let~ diff :=
+                    let~ diff : Ty.path "usize" :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "usize",
                           M.get_associated_function (| Ty.path "usize", "abs_diff", [], [] |),
                           [ M.read (| src_usize |); M.read (| dst_usize |) ]
                         |)
@@ -1154,6 +1191,7 @@ Module char.
                           (M.alloc (|
                             UnOp.not (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
@@ -1171,6 +1209,13 @@ Module char.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "char";
+                                            Ty.path "core::char::convert::CharTryFromError"
+                                          ],
                                         M.get_function (|
                                           "core::char::convert::char_try_from_u32",
                                           [],
@@ -1188,6 +1233,7 @@ Module char.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
+                            Ty.path "never",
                             M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                             [
                               M.read (|
@@ -1246,6 +1292,7 @@ Module slice.
                             UnOp.not (|
                               LogicalOp.and (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_function (|
                                     "core::ub_checks::is_aligned_and_not_null",
                                     [],
@@ -1258,6 +1305,7 @@ Module slice.
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_function (|
                                       "core::ub_checks::is_valid_allocation_size",
                                       [],
@@ -1272,6 +1320,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
+                            Ty.path "never",
                             M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                             [
                               M.read (|
@@ -1324,6 +1373,7 @@ Module slice.
                             UnOp.not (|
                               LogicalOp.and (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_function (|
                                     "core::ub_checks::is_aligned_and_not_null",
                                     [],
@@ -1336,6 +1386,7 @@ Module slice.
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_function (|
                                       "core::ub_checks::is_valid_allocation_size",
                                       [],
@@ -1350,6 +1401,7 @@ Module slice.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
+                            Ty.path "never",
                             M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                             [
                               M.read (|

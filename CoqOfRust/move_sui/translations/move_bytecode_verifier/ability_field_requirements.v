@@ -13,6 +13,10 @@ Module ability_field_requirements.
       ltac:(M.monadic
         (let module := M.alloc (| module |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
           M.get_associated_function (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -29,6 +33,10 @@ Module ability_field_requirements.
           |),
           [
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
               M.get_function (|
                 "move_bytecode_verifier::ability_field_requirements::verify_module_impl",
                 [],
@@ -49,6 +57,7 @@ Module ability_field_requirements.
                             ltac:(M.monadic
                               (let e := M.copy (| γ |) in
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::VMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "finish",
@@ -61,6 +70,7 @@ Module ability_field_requirements.
                                     "move_binary_format::errors::Location::Module"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_core_types::language_storage::ModuleId",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "self_id",
@@ -133,11 +143,20 @@ Module ability_field_requirements.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -157,6 +176,15 @@ Module ability_field_requirements.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -171,6 +199,10 @@ Module ability_field_requirements.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -185,6 +217,18 @@ Module ability_field_requirements.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::StructDefinition"
+                                              ]
+                                          ],
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "struct_defs",
@@ -213,10 +257,26 @@ Module ability_field_requirements.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.path "usize";
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::StructDefinition"
+                                                ]
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -265,9 +325,23 @@ Module ability_field_requirements.
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let idx := M.copy (| γ1_0 |) in
                                         let struct_def := M.copy (| γ1_1 |) in
-                                        let~ sh :=
+                                        let~ sh :
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::StructHandle"
+                                              ] :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::StructHandle"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
@@ -290,7 +364,20 @@ Module ability_field_requirements.
                                               ]
                                             |)
                                           |) in
-                                        let~ fields :=
+                                        let~ fields :
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FieldDefinition";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ]
+                                              ] :=
                                           M.copy (|
                                             M.match_operator (|
                                               M.alloc (|
@@ -331,9 +418,11 @@ Module ability_field_requirements.
                                               ]
                                             |)
                                           |) in
-                                        let~ required_abilities :=
+                                        let~ required_abilities :
+                                            Ty.path "move_binary_format::file_format::AbilitySet" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "move_binary_format::file_format::AbilitySet",
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
@@ -376,6 +465,23 @@ Module ability_field_requirements.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::iter::adapters::map::Map")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySetIterator";
+                                                      Ty.function
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::Ability"
+                                                            ]
+                                                        ]
+                                                        (Ty.path
+                                                          "move_binary_format::file_format::Ability")
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.path
@@ -401,6 +507,8 @@ Module ability_field_requirements.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySetIterator",
                                                       M.get_trait_method (|
                                                         "core::iter::traits::collect::IntoIterator",
                                                         Ty.path
@@ -434,6 +542,8 @@ Module ability_field_requirements.
                                                                     ltac:(M.monadic
                                                                       (let a := M.copy (| γ |) in
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::Ability",
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::file_format::Ability",
@@ -474,6 +584,8 @@ Module ability_field_requirements.
                                                                           (let required :=
                                                                             M.copy (| γ |) in
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::AbilitySet",
                                                                             M.get_trait_method (|
                                                                               "core::ops::bit::BitOr",
                                                                               Ty.path
@@ -502,9 +614,25 @@ Module ability_field_requirements.
                                               ]
                                             |)
                                           |) in
-                                        let~ type_parameter_abilities :=
+                                        let~ type_parameter_abilities :
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::AbilitySet";
+                                                Ty.path "alloc::alloc::Global"
+                                              ] :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::AbilitySet";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
@@ -551,6 +679,33 @@ Module ability_field_requirements.
                                               |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::iter::adapters::map::Map")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::slice::iter::Iter")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructTypeParameter"
+                                                        ];
+                                                      Ty.function
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::StructTypeParameter"
+                                                                ]
+                                                            ]
+                                                        ]
+                                                        (Ty.path
+                                                          "move_binary_format::file_format::AbilitySet")
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.apply
@@ -586,6 +741,13 @@ Module ability_field_requirements.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::slice::iter::Iter")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructTypeParameter"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "slice")
@@ -603,6 +765,18 @@ Module ability_field_requirements.
                                                           Pointer.Kind.Ref,
                                                           M.deref (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::StructTypeParameter"
+                                                                    ]
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::deref::Deref",
                                                                 Ty.apply
@@ -663,6 +837,13 @@ Module ability_field_requirements.
                                           (M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::slice::iter::Iter")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FieldDefinition"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::collect::IntoIterator",
                                                   Ty.apply
@@ -693,10 +874,22 @@ Module ability_field_requirements.
                                                   (let iter := M.copy (| γ |) in
                                                   M.loop (|
                                                     ltac:(M.monadic
-                                                      (let~ _ :=
+                                                      (let~ _ : Ty.tuple [] :=
                                                         M.match_operator (|
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::FieldDefinition"
+                                                                    ]
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::iter::traits::iterator::Iterator",
                                                                 Ty.apply
@@ -748,11 +941,31 @@ Module ability_field_requirements.
                                                                     0
                                                                   |) in
                                                                 let field := M.copy (| γ0_0 |) in
-                                                                let~ field_abilities :=
+                                                                let~ field_abilities :
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::AbilitySet" :=
                                                                   M.copy (|
                                                                     M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::ops::control_flow::ControlFlow")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::convert::Infallible";
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ];
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::AbilitySet"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::ops::try_trait::Try",
                                                                             Ty.apply
@@ -773,6 +986,16 @@ Module ability_field_requirements.
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::AbilitySet";
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ],
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_binary_format::file_format::CompiledModule",
@@ -814,6 +1037,20 @@ Module ability_field_requirements.
                                                                                   Pointer.Kind.Ref,
                                                                                   M.deref (|
                                                                                     M.call_closure (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "slice")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "move_binary_format::file_format::AbilitySet"
+                                                                                            ]
+                                                                                        ],
                                                                                       M.get_trait_method (|
                                                                                         "core::ops::deref::Deref",
                                                                                         Ty.apply
@@ -867,6 +1104,16 @@ Module ability_field_requirements.
                                                                                 M.read (|
                                                                                   M.return_ (|
                                                                                     M.call_closure (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::result::Result")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.tuple
+                                                                                            [];
+                                                                                          Ty.path
+                                                                                            "move_binary_format::errors::PartialVMError"
+                                                                                        ],
                                                                                       M.get_trait_method (|
                                                                                         "core::ops::try_trait::FromResidual",
                                                                                         Ty.apply
@@ -930,6 +1177,7 @@ Module ability_field_requirements.
                                                                             (M.alloc (|
                                                                               UnOp.not (|
                                                                                 M.call_closure (|
+                                                                                  Ty.path "bool",
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "move_binary_format::file_format::AbilitySet",
@@ -961,6 +1209,8 @@ Module ability_field_requirements.
                                                                                   "core::result::Result::Err"
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "move_binary_format::errors::PartialVMError",
                                                                                       M.get_function (|
                                                                                         "move_binary_format::errors::verification_error",
                                                                                         [],

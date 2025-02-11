@@ -30,6 +30,7 @@ Module account_address.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "core::cmp::Ordering",
             M.get_trait_method (|
               "core::cmp::Ord",
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
@@ -90,6 +91,7 @@ Module account_address.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
@@ -193,6 +195,7 @@ Module account_address.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
@@ -244,6 +247,7 @@ Module account_address.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.call_closure (|
+            Ty.tuple [],
             M.get_trait_method (|
               "core::hash::Hash",
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
@@ -369,6 +373,7 @@ Module account_address.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
+              Ty.path "move_core_types::account_address::AccountAddress",
               M.get_associated_function (|
                 Ty.path "move_core_types::account_address::AccountAddress",
                 "get_hex_address_one",
@@ -389,6 +394,7 @@ Module account_address.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
+              Ty.path "move_core_types::account_address::AccountAddress",
               M.get_associated_function (|
                 Ty.path "move_core_types::account_address::AccountAddress",
                 "get_hex_address_two",
@@ -414,22 +420,28 @@ Module account_address.
       | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let~ addr :=
+            let~ addr :
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [ Ty.path "u8" ] :=
               M.alloc (|
                 repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |)
               |) in
-            let~ _ :=
-              M.write (|
-                M.SubPointer.get_array_field (|
-                  addr,
-                  M.alloc (|
-                    BinOp.Wrap.sub (|
-                      M.read (| M.get_constant "move_core_types::account_address::LENGTH" |),
-                      Value.Integer IntegerKind.Usize 1
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.SubPointer.get_array_field (|
+                    addr,
+                    M.alloc (|
+                      BinOp.Wrap.sub (|
+                        M.read (| M.get_constant "move_core_types::account_address::LENGTH" |),
+                        Value.Integer IntegerKind.Usize 1
+                      |)
                     |)
-                  |)
-                |),
-                Value.Integer IntegerKind.U8 1
+                  |),
+                  Value.Integer IntegerKind.U8 1
+                |)
               |) in
             M.alloc (|
               Value.StructTuple
@@ -456,22 +468,28 @@ Module account_address.
       | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let~ addr :=
+            let~ addr :
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [ Ty.path "u8" ] :=
               M.alloc (|
                 repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |)
               |) in
-            let~ _ :=
-              M.write (|
-                M.SubPointer.get_array_field (|
-                  addr,
-                  M.alloc (|
-                    BinOp.Wrap.sub (|
-                      M.read (| M.get_constant "move_core_types::account_address::LENGTH" |),
-                      Value.Integer IntegerKind.Usize 1
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                M.write (|
+                  M.SubPointer.get_array_field (|
+                    addr,
+                    M.alloc (|
+                      BinOp.Wrap.sub (|
+                        M.read (| M.get_constant "move_core_types::account_address::LENGTH" |),
+                        Value.Integer IntegerKind.Usize 1
+                      |)
                     |)
-                  |)
-                |),
-                Value.Integer IntegerKind.U8 2
+                  |),
+                  Value.Integer IntegerKind.U8 2
+                |)
               |) in
             M.alloc (|
               Value.StructTuple
@@ -498,10 +516,19 @@ Module account_address.
       | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let~ rng := M.alloc (| Value.StructTuple "rand_core::os::OsRng" [] |) in
-            let~ buf :=
+            let~ rng : Ty.path "rand_core::os::OsRng" :=
+              M.alloc (| Value.StructTuple "rand_core::os::OsRng" [] |) in
+            let~ buf :
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [ Ty.path "u8" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [ Ty.path "u8" ],
                   M.get_trait_method (|
                     "rand::rng::Rng",
                     Ty.path "rand_core::os::OsRng",
@@ -543,6 +570,7 @@ Module account_address.
           (let self := M.alloc (| self |) in
           let with_prefix := M.alloc (| with_prefix |) in
           M.call_closure (|
+            Ty.path "alloc::string::String",
             M.get_trait_method (|
               "alloc::string::ToString",
               Ty.associated,
@@ -557,6 +585,7 @@ Module account_address.
                 Pointer.Kind.Ref,
                 M.alloc (|
                   M.call_closure (|
+                    Ty.associated,
                     M.get_associated_function (|
                       Ty.path "move_core_types::account_address::AccountAddress",
                       "to_canonical_display",
@@ -649,9 +678,10 @@ Module account_address.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ hex_str :=
+            let~ hex_str : Ty.path "alloc::string::String" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "alloc::string::String",
                   M.get_trait_method (|
                     "alloc::string::ToString",
                     Ty.path "str",
@@ -666,6 +696,7 @@ Module account_address.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.get_associated_function (|
                             Ty.path "str",
                             "trim_start_matches",
@@ -677,6 +708,7 @@ Module account_address.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                   M.get_trait_method (|
                                     "core::ops::deref::Deref",
                                     Ty.path "alloc::string::String",
@@ -691,6 +723,7 @@ Module account_address.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "alloc::string::String",
                                           M.get_function (|
                                             "hex::encode",
                                             [],
@@ -734,6 +767,7 @@ Module account_address.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_associated_function (|
                               Ty.path "alloc::string::String",
                               "is_empty",
@@ -746,6 +780,7 @@ Module account_address.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "alloc::string::String",
                         M.get_trait_method (|
                           "alloc::string::ToString",
                           Ty.path "str",
@@ -785,6 +820,10 @@ Module account_address.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
               "to_vec",
@@ -860,7 +899,7 @@ Module account_address.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -871,6 +910,7 @@ Module account_address.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "str",
                                       "starts_with",
@@ -907,10 +947,11 @@ Module account_address.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ hex_len :=
+                let~ hex_len : Ty.path "usize" :=
                   M.alloc (|
                     BinOp.Wrap.sub (|
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (| Ty.path "str", "len", [], [] |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| literal |) |) |) ]
                       |),
@@ -937,9 +978,10 @@ Module account_address.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ hex_str :=
+                        let~ hex_str : Ty.path "alloc::string::String" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "alloc::string::String",
                               M.get_associated_function (|
                                 Ty.path "alloc::string::String",
                                 "with_capacity",
@@ -956,11 +998,15 @@ Module account_address.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.use
                             (M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ],
                                   M.get_trait_method (|
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
@@ -999,10 +1045,14 @@ Module account_address.
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
                                       ltac:(M.monadic
-                                        (let~ _ :=
+                                        (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "usize" ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -1044,9 +1094,10 @@ Module account_address.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.tuple [],
                                                         M.get_associated_function (|
                                                           Ty.path "alloc::string::String",
                                                           "push",
@@ -1069,9 +1120,10 @@ Module account_address.
                                     |)))
                               ]
                             |)) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_associated_function (|
                                 Ty.path "alloc::string::String",
                                 "push_str",
@@ -1087,6 +1139,7 @@ Module account_address.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                           M.get_trait_method (|
                                             "core::ops::index::Index",
                                             Ty.path "str",
@@ -1120,6 +1173,13 @@ Module account_address.
                           |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "move_core_types::account_address::AccountAddress";
+                                Ty.path "move_core_types::account_address::AccountAddressParseError"
+                              ],
                             M.get_associated_function (|
                               Ty.path "move_core_types::account_address::AccountAddress",
                               "from_hex",
@@ -1133,6 +1193,13 @@ Module account_address.
                       ltac:(M.monadic
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "move_core_types::account_address::AccountAddress";
+                                Ty.path "move_core_types::account_address::AccountAddressParseError"
+                              ],
                             M.get_associated_function (|
                               Ty.path "move_core_types::account_address::AccountAddress",
                               "from_hex",
@@ -1144,6 +1211,7 @@ Module account_address.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                     M.get_trait_method (|
                                       "core::ops::index::Index",
                                       Ty.path "str",
@@ -1195,15 +1263,18 @@ Module account_address.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "alloc::string::String",
             M.get_function (| "core::hint::must_use", [], [ Ty.path "alloc::string::String" ] |),
             [
               M.read (|
-                let~ res :=
+                let~ res : Ty.path "alloc::string::String" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "alloc::string::String",
                       M.get_function (| "alloc::fmt::format", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -1229,6 +1300,7 @@ Module account_address.
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
@@ -1243,6 +1315,7 @@ Module account_address.
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_core_types::account_address::AccountAddress",
@@ -1297,6 +1370,13 @@ Module account_address.
         ltac:(M.monadic
           (let hex := M.alloc (| hex |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "move_core_types::account_address::AccountAddress";
+                Ty.path "move_core_types::account_address::AccountAddressParseError"
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1328,6 +1408,16 @@ Module account_address.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [ Ty.path "u8" ];
+                    Ty.path "move_core_types::account_address::AccountAddressParseError"
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -1350,6 +1440,16 @@ Module account_address.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 32 ]
+                          [ Ty.path "u8" ];
+                        Ty.path "hex::error::FromHexError"
+                      ],
                     M.get_trait_method (|
                       "hex::FromHex",
                       Ty.apply
@@ -1404,15 +1504,18 @@ Module account_address.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "alloc::string::String",
             M.get_function (| "core::hint::must_use", [], [ Ty.path "alloc::string::String" ] |),
             [
               M.read (|
-                let~ res :=
+                let~ res : Ty.path "alloc::string::String" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "alloc::string::String",
                       M.get_function (| "alloc::fmt::format", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -1438,6 +1541,7 @@ Module account_address.
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_lower_hex",
@@ -1492,6 +1596,13 @@ Module account_address.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "move_core_types::account_address::AccountAddress";
+                Ty.path "move_core_types::account_address::AccountAddressParseError"
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1523,6 +1634,16 @@ Module account_address.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [ Ty.path "u8" ];
+                    Ty.path "move_core_types::account_address::AccountAddressParseError"
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -1545,6 +1666,16 @@ Module account_address.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 32 ]
+                          [ Ty.path "u8" ];
+                        Ty.path "core::array::TryFromSliceError"
+                      ],
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.apply
@@ -1560,6 +1691,10 @@ Module account_address.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                         M.get_trait_method (|
                           "core::convert::AsRef",
                           T,
@@ -1617,6 +1752,10 @@ Module account_address.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "move_core_types::gas_algebra::GasQuantity")
+              []
+              [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "move_core_types::gas_algebra::GasQuantity")
@@ -1740,10 +1879,15 @@ Module account_address.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
+                Ty.path "core::fmt::Arguments",
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.borrow (|
@@ -1764,6 +1908,7 @@ Module account_address.
                           Value.Array
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::rt::Argument",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_lower_hex",
@@ -1817,10 +1962,15 @@ Module account_address.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
+                Ty.path "core::fmt::Arguments",
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.borrow (|
@@ -1841,6 +1991,7 @@ Module account_address.
                           Value.Array
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::rt::Argument",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_lower_hex",
@@ -1904,7 +2055,7 @@ Module account_address.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1914,6 +2065,7 @@ Module account_address.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Formatter",
                                     "alternate",
@@ -1925,10 +2077,23 @@ Module account_address.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::fmt::Error"
+                                        ];
+                                      Ty.tuple []
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::Try",
                                     Ty.apply
@@ -1943,6 +2108,10 @@ Module account_address.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "write_fmt",
@@ -1955,6 +2124,7 @@ Module account_address.
                                           M.deref (| M.read (| f |) |)
                                         |);
                                         M.call_closure (|
+                                          Ty.path "core::fmt::Arguments",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
@@ -1995,6 +2165,10 @@ Module account_address.
                                         M.read (|
                                           M.return_ (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
@@ -2037,11 +2211,12 @@ Module account_address.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -2077,10 +2252,14 @@ Module account_address.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -2121,10 +2300,23 @@ Module account_address.
                                               0
                                             |) in
                                           let byte := M.copy (| γ0_0 |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path "core::fmt::Error"
+                                                        ];
+                                                      Ty.tuple []
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
@@ -2139,6 +2331,10 @@ Module account_address.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Formatter",
                                                         "write_fmt",
@@ -2151,6 +2347,7 @@ Module account_address.
                                                           M.deref (| M.read (| f |) |)
                                                         |);
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::Arguments",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1_formatted",
@@ -2180,6 +2377,8 @@ Module account_address.
                                                                     Value.Array
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
@@ -2218,6 +2417,8 @@ Module account_address.
                                                                     Value.Array
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Placeholder",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Placeholder",
@@ -2254,6 +2455,7 @@ Module account_address.
                                                               |)
                                                             |);
                                                             M.call_closure (|
+                                                              Ty.path "core::fmt::rt::UnsafeArg",
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::UnsafeArg",
                                                                 "new",
@@ -2284,6 +2486,13 @@ Module account_address.
                                                         M.read (|
                                                           M.return_ (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path "core::fmt::Error"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
@@ -2372,7 +2581,7 @@ Module account_address.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2382,6 +2591,7 @@ Module account_address.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Formatter",
                                     "alternate",
@@ -2393,10 +2603,23 @@ Module account_address.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::fmt::Error"
+                                        ];
+                                      Ty.tuple []
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::Try",
                                     Ty.apply
@@ -2411,6 +2634,10 @@ Module account_address.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Formatter",
                                         "write_fmt",
@@ -2423,6 +2650,7 @@ Module account_address.
                                           M.deref (| M.read (| f |) |)
                                         |);
                                         M.call_closure (|
+                                          Ty.path "core::fmt::Arguments",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
@@ -2463,6 +2691,10 @@ Module account_address.
                                         M.read (|
                                           M.return_ (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
@@ -2505,11 +2737,12 @@ Module account_address.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -2545,10 +2778,14 @@ Module account_address.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -2589,10 +2826,23 @@ Module account_address.
                                               0
                                             |) in
                                           let byte := M.copy (| γ0_0 |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path "core::fmt::Error"
+                                                        ];
+                                                      Ty.tuple []
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
@@ -2607,6 +2857,10 @@ Module account_address.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Formatter",
                                                         "write_fmt",
@@ -2619,6 +2873,7 @@ Module account_address.
                                                           M.deref (| M.read (| f |) |)
                                                         |);
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::Arguments",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1_formatted",
@@ -2648,6 +2903,8 @@ Module account_address.
                                                                     Value.Array
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
@@ -2686,6 +2943,8 @@ Module account_address.
                                                                     Value.Array
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Placeholder",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Placeholder",
@@ -2722,6 +2981,7 @@ Module account_address.
                                                               |)
                                                             |);
                                                             M.call_closure (|
+                                                              Ty.path "core::fmt::rt::UnsafeArg",
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::UnsafeArg",
                                                                 "new",
@@ -2752,6 +3012,13 @@ Module account_address.
                                                         M.read (|
                                                           M.return_ (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path "core::fmt::Error"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
@@ -2829,6 +3096,7 @@ Module account_address.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
+            Ty.path "move_core_types::account_address::AccountAddress",
             M.get_associated_function (|
               Ty.path "move_core_types::account_address::AccountAddress",
               "new",
@@ -2873,6 +3141,13 @@ Module account_address.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "move_core_types::account_address::AccountAddress";
+                Ty.path "move_core_types::account_address::AccountAddressParseError"
+              ],
             M.get_associated_function (|
               Ty.path "move_core_types::account_address::AccountAddress",
               "from_bytes",
@@ -2912,6 +3187,13 @@ Module account_address.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "move_core_types::account_address::AccountAddress";
+                Ty.path "move_core_types::account_address::AccountAddressParseError"
+              ],
             M.get_associated_function (|
               Ty.path "move_core_types::account_address::AccountAddress",
               "from_bytes",
@@ -2956,6 +3238,10 @@ Module account_address.
         ltac:(M.monadic
           (let addr := M.alloc (| addr |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
               "to_vec",
@@ -3000,6 +3286,10 @@ Module account_address.
         ltac:(M.monadic
           (let addr := M.alloc (| addr |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
               "to_vec",
@@ -3121,6 +3411,7 @@ Module account_address.
         ltac:(M.monadic
           (let addr := M.alloc (| addr |) in
           M.call_closure (|
+            Ty.path "alloc::string::String",
             M.get_function (|
               "hex::encode",
               [],
@@ -3128,6 +3419,7 @@ Module account_address.
             |),
             [
               M.call_closure (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 M.get_trait_method (|
                   "core::convert::AsRef",
                   Ty.path "move_core_types::account_address::AccountAddress",
@@ -3174,6 +3466,13 @@ Module account_address.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "move_core_types::account_address::AccountAddress";
+                Ty.path "move_core_types::account_address::AccountAddressParseError"
+              ],
             M.get_associated_function (|
               Ty.path "move_core_types::account_address::AccountAddress",
               "from_hex",
@@ -3224,6 +3523,13 @@ Module account_address.
                     (let γ :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "move_core_types::account_address::AccountAddress";
+                              Ty.path "move_core_types::account_address::AccountAddressParseError"
+                            ],
                           M.get_associated_function (|
                             Ty.path "move_core_types::account_address::AccountAddress",
                             "from_hex_literal",
@@ -3243,6 +3549,13 @@ Module account_address.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "move_core_types::account_address::AccountAddress";
+                            Ty.path "move_core_types::account_address::AccountAddressParseError"
+                          ],
                         M.get_associated_function (|
                           Ty.path "move_core_types::account_address::AccountAddress",
                           "from_hex",
@@ -3308,6 +3621,7 @@ Module account_address.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "serde::de::Deserializer",
                                   D,
@@ -3322,11 +3636,21 @@ Module account_address.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ s :=
+                        let~ s : Ty.path "alloc::string::String" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "core::convert::Infallible"; Ty.associated ];
+                                      Ty.path "alloc::string::String"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::Try",
                                     Ty.apply
@@ -3341,6 +3665,10 @@ Module account_address.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "alloc::string::String"; Ty.associated ],
                                       M.get_trait_method (|
                                         "serde::de::Deserialize",
                                         Ty.path "alloc::string::String",
@@ -3370,6 +3698,14 @@ Module account_address.
                                         M.read (|
                                           M.return_ (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::account_address::AccountAddress";
+                                                  Ty.associated
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
@@ -3415,6 +3751,13 @@ Module account_address.
                           |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "move_core_types::account_address::AccountAddress";
+                                Ty.associated
+                              ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
@@ -3438,6 +3781,14 @@ Module account_address.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "move_core_types::account_address::AccountAddress";
+                                    Ty.path
+                                      "move_core_types::account_address::AccountAddressParseError"
+                                  ],
                                 M.get_trait_method (|
                                   "core::str::traits::FromStr",
                                   Ty.path "move_core_types::account_address::AccountAddress",
@@ -3452,6 +3803,7 @@ Module account_address.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.path "alloc::string::String",
@@ -3489,11 +3841,22 @@ Module account_address.
                         |)));
                     fun γ =>
                       ltac:(M.monadic
-                        (let~ value :=
+                        (let~ value :
+                            Ty.path "move_core_types::account_address::deserialize::Value" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "core::convert::Infallible"; Ty.associated ];
+                                      Ty.path "move_core_types::account_address::deserialize::Value"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::Try",
                                     Ty.apply
@@ -3512,6 +3875,14 @@ Module account_address.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_core_types::account_address::deserialize::Value";
+                                          Ty.associated
+                                        ],
                                       M.get_trait_method (|
                                         "serde::de::Deserialize",
                                         Ty.path
@@ -3542,6 +3913,14 @@ Module account_address.
                                         M.read (|
                                           M.return_ (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::account_address::AccountAddress";
+                                                  Ty.associated
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
@@ -3590,6 +3969,7 @@ Module account_address.
                             "core::result::Result::Ok"
                             [
                               M.call_closure (|
+                                Ty.path "move_core_types::account_address::AccountAddress",
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::account_address::AccountAddress",
                                   "new",
@@ -3655,6 +4035,7 @@ Module account_address.
                       M.use
                         (M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               S,
@@ -3670,6 +4051,10 @@ Module account_address.
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.associated; Ty.associated ],
                         M.get_trait_method (|
                           "serde::ser::Serialize",
                           Ty.path "alloc::string::String",
@@ -3684,6 +4069,7 @@ Module account_address.
                             Pointer.Kind.Ref,
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "alloc::string::String",
                                 M.get_associated_function (|
                                   Ty.path "move_core_types::account_address::AccountAddress",
                                   "to_hex",
@@ -3702,6 +4088,10 @@ Module account_address.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.associated; Ty.associated ],
                         M.get_trait_method (|
                           "serde::ser::Serializer",
                           S,
@@ -3800,6 +4190,10 @@ Module account_address.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -3839,10 +4233,15 @@ Module account_address.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
+                Ty.path "core::fmt::Arguments",
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.borrow (|
@@ -3872,6 +4271,7 @@ Module account_address.
                           Value.Array
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::rt::Argument",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",

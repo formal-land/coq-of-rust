@@ -23,6 +23,10 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
@@ -95,6 +99,7 @@ Module interpreter.
               [
                 ("idx",
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.path "usize",
@@ -108,6 +113,7 @@ Module interpreter.
                   |));
                 ("pc",
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.path "usize",
@@ -283,9 +289,10 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "usize",
@@ -315,6 +322,7 @@ Module interpreter.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "usize",
@@ -413,6 +421,14 @@ Module interpreter.
               [
                 ("return_stack",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path
+                          "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame";
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -447,6 +463,7 @@ Module interpreter.
                   |));
                 ("current_code_idx",
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "usize",
@@ -496,6 +513,10 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
@@ -574,6 +595,14 @@ Module interpreter.
               [
                 ("return_stack",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path
+                          "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame";
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.apply
@@ -594,6 +623,7 @@ Module interpreter.
                   |));
                 ("current_code_idx",
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_trait_method (|
                       "core::default::Default",
                       Ty.path "usize",
@@ -642,6 +672,7 @@ Module interpreter.
             let other := M.alloc (| other |) in
             LogicalOp.and (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.apply
@@ -775,6 +806,14 @@ Module interpreter.
               [
                 ("return_stack",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [
+                        Ty.path
+                          "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame";
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::vec::Vec")
@@ -809,6 +848,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -850,6 +890,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -891,6 +932,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -934,14 +976,16 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                    "current_code_idx"
-                  |),
-                  M.read (| idx |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                      "current_code_idx"
+                    |),
+                    M.read (| idx |)
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -968,6 +1012,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -1038,7 +1083,7 @@ Module interpreter.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1049,6 +1094,7 @@ Module interpreter.
                                 (M.alloc (|
                                   BinOp.ge (|
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
@@ -1084,9 +1130,10 @@ Module interpreter.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::vec::Vec")
@@ -1125,14 +1172,16 @@ Module interpreter.
                         ]
                       |)
                     |) in
-                  let~ _ :=
-                    M.write (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                        "current_code_idx"
-                      |),
-                      M.read (| new_idx |)
+                  let~ _ : Ty.tuple [] :=
+                    M.alloc (|
+                      M.write (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                          "current_code_idx"
+                        |),
+                        M.read (| new_idx |)
+                      |)
                     |) in
                   M.alloc (| Value.Bool true |)
                 |)))
@@ -1154,6 +1203,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -1177,6 +1227,13 @@ Module interpreter.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.path
+                        "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -1214,18 +1271,20 @@ Module interpreter.
                                 ltac:(M.monadic
                                   (let i := M.copy (| γ |) in
                                   M.read (|
-                                    let~ _ :=
-                                      M.write (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                                          "current_code_idx"
-                                        |),
-                                        M.read (|
+                                    let~ _ : Ty.tuple [] :=
+                                      M.alloc (|
+                                        M.write (|
                                           M.SubPointer.get_struct_record_field (|
-                                            i,
-                                            "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
-                                            "idx"
+                                            M.deref (| M.read (| self |) |),
+                                            "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                                            "current_code_idx"
+                                          |),
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              i,
+                                              "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame",
+                                              "idx"
+                                            |)
                                           |)
                                         |)
                                       |) in
@@ -1256,14 +1315,16 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let idx := M.alloc (| idx |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
-                    "current_code_idx"
-                  |),
-                  M.read (| idx |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl",
+                      "current_code_idx"
+                    |),
+                    M.read (| idx |)
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))

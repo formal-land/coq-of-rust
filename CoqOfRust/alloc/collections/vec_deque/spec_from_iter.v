@@ -35,6 +35,10 @@ Module collections.
             ltac:(M.monadic
               (let iterator := M.alloc (| iterator |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::collections::vec_deque::VecDeque")
+                  []
+                  [ T; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::convert::Into",
                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
@@ -51,6 +55,7 @@ Module collections.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                     M.get_trait_method (|
                       "core::iter::traits::collect::FromIterator",
                       Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
@@ -100,6 +105,10 @@ Module collections.
             ltac:(M.monadic
               (let iterator := M.alloc (| iterator |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::collections::vec_deque::VecDeque")
+                  []
+                  [ T; Ty.path "alloc::alloc::Global" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::into_iter::IntoIter")
@@ -155,6 +164,10 @@ Module collections.
             ltac:(M.monadic
               (let iterator := M.alloc (| iterator |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::collections::vec_deque::VecDeque")
+                  []
+                  [ T; Ty.path "alloc::alloc::Global" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::vec_deque::into_iter::IntoIter")

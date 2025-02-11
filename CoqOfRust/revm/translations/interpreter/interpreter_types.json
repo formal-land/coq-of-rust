@@ -1394,7 +1394,7 @@
                           "body": {
                             "Let": {
                               "name": "self",
-                              "is_user": false,
+                              "ty": null,
                               "init": {
                                 "Call": {
                                   "func": {
@@ -1411,7 +1411,7 @@
                               "body": {
                                 "Let": {
                                   "name": "offset",
-                                  "is_user": false,
+                                  "ty": null,
                                   "init": {
                                     "Call": {
                                       "func": {
@@ -1428,7 +1428,7 @@
                                   "body": {
                                     "Let": {
                                       "name": "len",
-                                      "is_user": false,
+                                      "ty": null,
                                       "init": {
                                         "Call": {
                                           "func": {
@@ -1569,7 +1569,9 @@
                                               }
                                             }
                                           ],
-                                          "kind": "Closure"
+                                          "kind": {
+                                            "Closure": "Associated"
+                                          }
                                         }
                                       }
                                     }
@@ -1833,7 +1835,7 @@
                           "body": {
                             "Let": {
                               "name": "self",
-                              "is_user": false,
+                              "ty": null,
                               "init": {
                                 "Call": {
                                   "func": {
@@ -1912,7 +1914,15 @@
                                             }
                                           }
                                         ],
-                                        "kind": "Closure"
+                                        "kind": {
+                                          "Closure": {
+                                            "Path": {
+                                              "path": [
+                                                "usize"
+                                              ]
+                                            }
+                                          }
+                                        }
                                       }
                                     },
                                     {
@@ -2235,7 +2245,7 @@
                           "body": {
                             "Let": {
                               "name": "self",
-                              "is_user": false,
+                              "ty": null,
                               "init": {
                                 "Call": {
                                   "func": {
@@ -2314,7 +2324,15 @@
                                             }
                                           }
                                         ],
-                                        "kind": "Closure"
+                                        "kind": {
+                                          "Closure": {
+                                            "Path": {
+                                              "path": [
+                                                "usize"
+                                              ]
+                                            }
+                                          }
+                                        }
                                       }
                                     },
                                     {
@@ -2482,7 +2500,7 @@
                           "body": {
                             "Let": {
                               "name": "self",
-                              "is_user": false,
+                              "ty": null,
                               "init": {
                                 "Call": {
                                   "func": {
@@ -2499,7 +2517,7 @@
                               "body": {
                                 "Let": {
                                   "name": "value",
-                                  "is_user": false,
+                                  "ty": null,
                                   "init": {
                                     "Call": {
                                       "func": {
@@ -2662,11 +2680,53 @@
                                                 }
                                               }
                                             ],
-                                            "kind": "Closure"
+                                            "kind": {
+                                              "Closure": {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "ruint",
+                                                        "Uint"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [
+                                                    {
+                                                      "Literal": {
+                                                        "Integer": {
+                                                          "kind": "Usize",
+                                                          "negative_sign": false,
+                                                          "value": 256
+                                                        }
+                                                      }
+                                                    },
+                                                    {
+                                                      "Literal": {
+                                                        "Integer": {
+                                                          "kind": "Usize",
+                                                          "negative_sign": false,
+                                                          "value": 4
+                                                        }
+                                                      }
+                                                    }
+                                                  ],
+                                                  "tys": []
+                                                }
+                                              }
+                                            }
                                           }
                                         }
                                       ],
-                                      "kind": "Closure"
+                                      "kind": {
+                                        "Closure": {
+                                          "Path": {
+                                            "path": [
+                                              "bool"
+                                            ]
+                                          }
+                                        }
+                                      }
                                     }
                                   }
                                 }
@@ -3034,7 +3094,7 @@
                           "body": {
                             "Let": {
                               "name": "self",
-                              "is_user": false,
+                              "ty": null,
                               "init": {
                                 "Call": {
                                   "func": {
@@ -3460,7 +3520,134 @@
                                             }
                                           }
                                         ],
-                                        "kind": "Closure"
+                                        "kind": {
+                                          "Closure": {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "core",
+                                                    "option",
+                                                    "Option"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Tuple": {
+                                                    "tys": [
+                                                      {
+                                                        "Application": {
+                                                          "func": {
+                                                            "Path": {
+                                                              "path": [
+                                                                "array"
+                                                              ]
+                                                            }
+                                                          },
+                                                          "consts": [
+                                                            {
+                                                              "Literal": {
+                                                                "Integer": {
+                                                                  "kind": "Usize",
+                                                                  "negative_sign": false,
+                                                                  "value": 0
+                                                                }
+                                                              }
+                                                            }
+                                                          ],
+                                                          "tys": [
+                                                            {
+                                                              "Application": {
+                                                                "func": {
+                                                                  "Path": {
+                                                                    "path": [
+                                                                      "ruint",
+                                                                      "Uint"
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "consts": [
+                                                                  {
+                                                                    "Literal": {
+                                                                      "Integer": {
+                                                                        "kind": "Usize",
+                                                                        "negative_sign": false,
+                                                                        "value": 256
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "Literal": {
+                                                                      "Integer": {
+                                                                        "kind": "Usize",
+                                                                        "negative_sign": false,
+                                                                        "value": 4
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                ],
+                                                                "tys": []
+                                                              }
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "Application": {
+                                                          "func": {
+                                                            "Path": {
+                                                              "path": [
+                                                                "&mut"
+                                                              ]
+                                                            }
+                                                          },
+                                                          "consts": [],
+                                                          "tys": [
+                                                            {
+                                                              "Application": {
+                                                                "func": {
+                                                                  "Path": {
+                                                                    "path": [
+                                                                      "ruint",
+                                                                      "Uint"
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "consts": [
+                                                                  {
+                                                                    "Literal": {
+                                                                      "Integer": {
+                                                                        "kind": "Usize",
+                                                                        "negative_sign": false,
+                                                                        "value": 256
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "Literal": {
+                                                                      "Integer": {
+                                                                        "kind": "Usize",
+                                                                        "negative_sign": false,
+                                                                        "value": 4
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                ],
+                                                                "tys": []
+                                                              }
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
                                       }
                                     },
                                     {
@@ -3607,7 +3794,7 @@
                                                   "body": {
                                                     "Let": {
                                                       "name": "γ0_0",
-                                                      "is_user": false,
+                                                      "ty": null,
                                                       "init": {
                                                         "Call": {
                                                           "func": {
@@ -3627,7 +3814,7 @@
                                                       "body": {
                                                         "Let": {
                                                           "name": "γ0_1",
-                                                          "is_user": false,
+                                                          "ty": null,
                                                           "init": {
                                                             "Call": {
                                                               "func": {
@@ -3647,7 +3834,7 @@
                                                           "body": {
                                                             "Let": {
                                                               "name": "top",
-                                                              "is_user": false,
+                                                              "ty": null,
                                                               "init": {
                                                                 "Call": {
                                                                   "func": {
@@ -3692,7 +3879,71 @@
                                       }
                                     }
                                   ],
-                                  "kind": "Closure"
+                                  "kind": {
+                                    "Closure": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "core",
+                                              "option",
+                                              "Option"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&mut"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "ruint",
+                                                          "Uint"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [
+                                                      {
+                                                        "Literal": {
+                                                          "Integer": {
+                                                            "kind": "Usize",
+                                                            "negative_sign": false,
+                                                            "value": 256
+                                                          }
+                                                        }
+                                                      },
+                                                      {
+                                                        "Literal": {
+                                                          "Integer": {
+                                                            "kind": "Usize",
+                                                            "negative_sign": false,
+                                                            "value": 4
+                                                          }
+                                                        }
+                                                      }
+                                                    ],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
                                 }
                               }
                             }
@@ -3785,7 +4036,7 @@
                           "body": {
                             "Let": {
                               "name": "self",
-                              "is_user": false,
+                              "ty": null,
                               "init": {
                                 "Call": {
                                   "func": {
@@ -4077,7 +4328,81 @@
                                             }
                                           }
                                         ],
-                                        "kind": "Closure"
+                                        "kind": {
+                                          "Closure": {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "core",
+                                                    "option",
+                                                    "Option"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "array"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [
+                                                      {
+                                                        "Literal": {
+                                                          "Integer": {
+                                                            "kind": "Usize",
+                                                            "negative_sign": false,
+                                                            "value": 1
+                                                          }
+                                                        }
+                                                      }
+                                                    ],
+                                                    "tys": [
+                                                      {
+                                                        "Application": {
+                                                          "func": {
+                                                            "Path": {
+                                                              "path": [
+                                                                "ruint",
+                                                                "Uint"
+                                                              ]
+                                                            }
+                                                          },
+                                                          "consts": [
+                                                            {
+                                                              "Literal": {
+                                                                "Integer": {
+                                                                  "kind": "Usize",
+                                                                  "negative_sign": false,
+                                                                  "value": 256
+                                                                }
+                                                              }
+                                                            },
+                                                            {
+                                                              "Literal": {
+                                                                "Integer": {
+                                                                  "kind": "Usize",
+                                                                  "negative_sign": false,
+                                                                  "value": 4
+                                                                }
+                                                              }
+                                                            }
+                                                          ],
+                                                          "tys": []
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
                                       }
                                     },
                                     {
@@ -4171,7 +4496,7 @@
                                                   "body": {
                                                     "Let": {
                                                       "name": "γ0_0",
-                                                      "is_user": false,
+                                                      "ty": null,
                                                       "init": {
                                                         "Call": {
                                                           "func": {
@@ -4191,7 +4516,7 @@
                                                       "body": {
                                                         "Let": {
                                                           "name": "value",
-                                                          "is_user": false,
+                                                          "ty": null,
                                                           "init": {
                                                             "Call": {
                                                               "func": {
@@ -4234,7 +4559,57 @@
                                       }
                                     }
                                   ],
-                                  "kind": "Closure"
+                                  "kind": {
+                                    "Closure": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "core",
+                                              "option",
+                                              "Option"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "ruint",
+                                                    "Uint"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [
+                                                {
+                                                  "Literal": {
+                                                    "Integer": {
+                                                      "kind": "Usize",
+                                                      "negative_sign": false,
+                                                      "value": 256
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "Literal": {
+                                                    "Integer": {
+                                                      "kind": "Usize",
+                                                      "negative_sign": false,
+                                                      "value": 4
+                                                    }
+                                                  }
+                                                }
+                                              ],
+                                              "tys": []
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
                                 }
                               }
                             }
@@ -4310,7 +4685,7 @@
                           "body": {
                             "Let": {
                               "name": "self",
-                              "is_user": false,
+                              "ty": null,
                               "init": {
                                 "Call": {
                                   "func": {
@@ -4520,7 +4895,57 @@
                                             }
                                           }
                                         ],
-                                        "kind": "Closure"
+                                        "kind": {
+                                          "Closure": {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "core",
+                                                    "option",
+                                                    "Option"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "ruint",
+                                                          "Uint"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [
+                                                      {
+                                                        "Literal": {
+                                                          "Integer": {
+                                                            "kind": "Usize",
+                                                            "negative_sign": false,
+                                                            "value": 256
+                                                          }
+                                                        }
+                                                      },
+                                                      {
+                                                        "Literal": {
+                                                          "Integer": {
+                                                            "kind": "Usize",
+                                                            "negative_sign": false,
+                                                            "value": 4
+                                                          }
+                                                        }
+                                                      }
+                                                    ],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
                                       }
                                     },
                                     {
@@ -4590,7 +5015,7 @@
                                                   "body": {
                                                     "Let": {
                                                       "name": "value",
-                                                      "is_user": false,
+                                                      "ty": null,
                                                       "init": {
                                                         "Call": {
                                                           "func": {
@@ -4748,11 +5173,60 @@
                                                                     }
                                                                   }
                                                                 ],
-                                                                "kind": "Closure"
+                                                                "kind": {
+                                                                  "Closure": {
+                                                                    "Application": {
+                                                                      "func": {
+                                                                        "Path": {
+                                                                          "path": [
+                                                                            "array"
+                                                                          ]
+                                                                        }
+                                                                      },
+                                                                      "consts": [
+                                                                        {
+                                                                          "Literal": {
+                                                                            "Integer": {
+                                                                              "kind": "Usize",
+                                                                              "negative_sign": false,
+                                                                              "value": 20
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      ],
+                                                                      "tys": [
+                                                                        {
+                                                                          "Path": {
+                                                                            "path": [
+                                                                              "u8"
+                                                                            ]
+                                                                          }
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  }
+                                                                }
                                                               }
                                                             }
                                                           ],
-                                                          "kind": "Closure"
+                                                          "kind": {
+                                                            "Closure": {
+                                                              "Application": {
+                                                                "func": {
+                                                                  "Path": {
+                                                                    "path": [
+                                                                      "alloy_primitives",
+                                                                      "bits",
+                                                                      "address",
+                                                                      "Address"
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "consts": [],
+                                                                "tys": []
+                                                              }
+                                                            }
+                                                          }
                                                         }
                                                       }
                                                     }
@@ -4769,7 +5243,40 @@
                                       }
                                     }
                                   ],
-                                  "kind": "Closure"
+                                  "kind": {
+                                    "Closure": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "core",
+                                              "option",
+                                              "Option"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "alloy_primitives",
+                                                    "bits",
+                                                    "address",
+                                                    "Address"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": []
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
                                 }
                               }
                             }

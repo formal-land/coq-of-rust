@@ -8,6 +8,7 @@ Module slice.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
               [ Value.Integer IntegerKind.U8 1 ]
             |)
@@ -22,6 +23,7 @@ Module slice.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
               [ Value.Integer IntegerKind.U8 128 ]
             |)
@@ -36,6 +38,7 @@ Module slice.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
+              Ty.path "usize",
               M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
               []
             |)
@@ -59,6 +62,7 @@ Module slice.
             BinOp.bit_and
               (BinOp.bit_and
                 (M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (| Ty.path "usize", "wrapping_sub", [], [] |),
                   [ M.read (| x |); M.read (| M.get_constant "core::slice::memchr::LO_USIZE" |) ]
                 |))
@@ -92,7 +96,7 @@ Module slice.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -103,6 +107,7 @@ Module slice.
                               (M.alloc (|
                                 BinOp.lt (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
@@ -129,6 +134,10 @@ Module slice.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ],
                                     M.get_function (|
                                       "core::slice::memchr::memchr_naive",
                                       [],
@@ -151,6 +160,7 @@ Module slice.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                     M.get_function (| "core::slice::memchr::memchr_aligned", [], [] |),
                     [
                       M.read (| x |);
@@ -191,8 +201,8 @@ Module slice.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ i := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-                let~ _ :=
+                let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+                let~ _ : Ty.tuple [] :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -206,6 +216,7 @@ Module slice.
                                     BinOp.lt (|
                                       M.read (| i |),
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
@@ -226,7 +237,7 @@ Module slice.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
                                   [
@@ -264,13 +275,15 @@ Module slice.
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                   ]
                                 |) in
-                              let~ _ :=
-                                let β := i in
-                                M.write (|
-                                  β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    Value.Integer IntegerKind.Usize 1
+                              let~ _ : Ty.tuple [] :=
+                                M.alloc (|
+                                  let β := i in
+                                  M.write (|
+                                    β,
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -279,7 +292,7 @@ Module slice.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -360,9 +373,10 @@ Module slice.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ len :=
+                let~ len : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
@@ -372,9 +386,10 @@ Module slice.
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| text |) |) |) ]
                     |)
                   |) in
-                let~ ptr :=
+                let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "as_ptr",
@@ -384,9 +399,10 @@ Module slice.
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| text |) |) |) ]
                     |)
                   |) in
-                let~ offset :=
+                let~ offset : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "align_offset",
@@ -399,7 +415,7 @@ Module slice.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -415,34 +431,44 @@ Module slice.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
-                            M.write (|
-                              offset,
-                              M.read (|
-                                M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ :=
-                                          M.use
-                                            (M.alloc (|
-                                              BinOp.lt (| M.read (| offset |), M.read (| len |) |)
-                                            |)) in
-                                        let _ :=
-                                          M.is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Bool true
-                                          |) in
-                                        offset));
-                                    fun γ => ltac:(M.monadic len)
-                                  ]
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                offset,
+                                M.read (|
+                                  M.match_operator (|
+                                    M.alloc (| Value.Tuple [] |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ :=
+                                            M.use
+                                              (M.alloc (|
+                                                BinOp.lt (| M.read (| offset |), M.read (| len |) |)
+                                              |)) in
+                                          let _ :=
+                                            M.is_constant_or_break_match (|
+                                              M.read (| γ |),
+                                              Value.Bool true
+                                            |) in
+                                          offset));
+                                      fun γ => ltac:(M.monadic len)
+                                    ]
+                                  |)
                                 |)
                               |)
                             |) in
-                          let~ slice :=
+                          let~ slice :
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 M.get_function (|
                                   "core::slice::raw::from_raw_parts",
                                   [],
@@ -450,6 +476,7 @@ Module slice.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "as_ptr",
@@ -475,6 +502,10 @@ Module slice.
                                   (let γ :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
                                         M.get_function (|
                                           "core::slice::memchr::memchr_naive",
                                           [],
@@ -513,14 +544,15 @@ Module slice.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ repeated_x :=
+                let~ repeated_x : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
                       [ M.read (| x |) ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -549,13 +581,14 @@ Module slice.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ _ :=
-                                let~ u :=
+                              let~ _ : Ty.tuple [] :=
+                                let~ u : Ty.path "usize" :=
                                   M.copy (|
                                     M.deref (|
                                       M.cast
                                         (Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ])
                                         (M.call_closure (|
+                                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                             "add",
@@ -566,12 +599,13 @@ Module slice.
                                         |))
                                     |)
                                   |) in
-                                let~ v :=
+                                let~ v : Ty.path "usize" :=
                                   M.copy (|
                                     M.deref (|
                                       M.cast
                                         (Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ])
                                         (M.call_closure (|
+                                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                             "add",
@@ -590,9 +624,10 @@ Module slice.
                                         |))
                                     |)
                                   |) in
-                                let~ zu :=
+                                let~ zu : Ty.path "bool" :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_function (|
                                         "core::slice::memchr::contains_zero_byte",
                                         [],
@@ -601,9 +636,10 @@ Module slice.
                                       [ BinOp.bit_xor (M.read (| u |)) (M.read (| repeated_x |)) ]
                                     |)
                                   |) in
-                                let~ zv :=
+                                let~ zv : Ty.path "bool" :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_function (|
                                         "core::slice::memchr::contains_zero_byte",
                                         [],
@@ -636,17 +672,19 @@ Module slice.
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                   ]
                                 |) in
-                              let~ _ :=
-                                let β := offset in
-                                M.write (|
-                                  β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    BinOp.Wrap.mul (|
-                                      M.read (|
-                                        M.get_constant "core::slice::memchr::USIZE_BYTES"
-                                      |),
-                                      Value.Integer IntegerKind.Usize 2
+                              let~ _ : Ty.tuple [] :=
+                                M.alloc (|
+                                  let β := offset in
+                                  M.write (|
+                                    β,
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      BinOp.Wrap.mul (|
+                                        M.read (|
+                                          M.get_constant "core::slice::memchr::USIZE_BYTES"
+                                        |),
+                                        Value.Integer IntegerKind.Usize 2
+                                      |)
                                     |)
                                   |)
                                 |) in
@@ -656,7 +694,7 @@ Module slice.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -667,12 +705,15 @@ Module slice.
                         ]
                       |)))
                   |) in
-                let~ slice :=
+                let~ slice :
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                       M.get_function (| "core::slice::raw::from_raw_parts", [], [ Ty.path "u8" ] |),
                       [
                         M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                             "add",
@@ -681,6 +722,7 @@ Module slice.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "as_ptr",
@@ -694,6 +736,7 @@ Module slice.
                         |);
                         BinOp.Wrap.sub (|
                           M.call_closure (|
+                            Ty.path "usize",
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "len",
@@ -715,6 +758,7 @@ Module slice.
                         (let γ :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                               M.get_function (| "core::slice::memchr::memchr_naive", [], [] |),
                               [
                                 M.read (| x |);
@@ -810,9 +854,10 @@ Module slice.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ len :=
+                let~ len : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
@@ -822,9 +867,10 @@ Module slice.
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| text |) |) |) ]
                     |)
                   |) in
-                let~ ptr :=
+                let~ ptr : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "as_ptr",
@@ -838,6 +884,26 @@ Module slice.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
+                              ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                          ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                           "align_to",
@@ -859,6 +925,7 @@ Module slice.
                             Value.Tuple
                               [
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "len",
@@ -875,6 +942,7 @@ Module slice.
                                 BinOp.Wrap.sub (|
                                   M.read (| len |),
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
@@ -900,8 +968,8 @@ Module slice.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let min_aligned_offset := M.copy (| γ0_0 |) in
                         let max_aligned_offset := M.copy (| γ0_1 |) in
-                        let~ offset := M.copy (| max_aligned_offset |) in
-                        let~ _ :=
+                        let~ offset : Ty.path "usize" := M.copy (| max_aligned_offset |) in
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -910,6 +978,10 @@ Module slice.
                                   (let γ :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -934,6 +1006,10 @@ Module slice.
                                             Pointer.Kind.MutRef,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::slice::iter::Iter")
+                                                  []
+                                                  [ Ty.path "u8" ],
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "iter",
@@ -945,6 +1021,15 @@ Module slice.
                                                     Pointer.Kind.Ref,
                                                     M.deref (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "slice")
+                                                              []
+                                                              [ Ty.path "u8" ]
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::index::Index",
                                                           Ty.apply
@@ -1030,21 +1115,23 @@ Module slice.
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |) in
-                        let~ repeated_x :=
+                        let~ repeated_x : Ty.path "usize" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
                               [ M.read (| x |) ]
                             |)
                           |) in
-                        let~ chunk_bytes :=
+                        let~ chunk_bytes : Ty.path "usize" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
                               []
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.loop (|
                             ltac:(M.monadic
                               (M.match_operator (|
@@ -1065,13 +1152,14 @@ Module slice.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let~ _ :=
-                                        let~ u :=
+                                      let~ _ : Ty.tuple [] :=
+                                        let~ u : Ty.path "usize" :=
                                           M.copy (|
                                             M.deref (|
                                               M.cast
                                                 (Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ])
                                                 (M.call_closure (|
+                                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                   M.get_associated_function (|
                                                     Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                     "add",
@@ -1091,12 +1179,13 @@ Module slice.
                                                 |))
                                             |)
                                           |) in
-                                        let~ v :=
+                                        let~ v : Ty.path "usize" :=
                                           M.copy (|
                                             M.deref (|
                                               M.cast
                                                 (Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ])
                                                 (M.call_closure (|
+                                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                   M.get_associated_function (|
                                                     Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                     "add",
@@ -1113,9 +1202,10 @@ Module slice.
                                                 |))
                                             |)
                                           |) in
-                                        let~ zu :=
+                                        let~ zu : Ty.path "bool" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "bool",
                                               M.get_function (|
                                                 "core::slice::memchr::contains_zero_byte",
                                                 [],
@@ -1128,9 +1218,10 @@ Module slice.
                                               ]
                                             |)
                                           |) in
-                                        let~ zv :=
+                                        let~ zv : Ty.path "bool" :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.path "bool",
                                               M.get_function (|
                                                 "core::slice::memchr::contains_zero_byte",
                                                 [],
@@ -1167,15 +1258,17 @@ Module slice.
                                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                           ]
                                         |) in
-                                      let~ _ :=
-                                        let β := offset in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.sub (|
-                                            M.read (| β |),
-                                            BinOp.Wrap.mul (|
-                                              Value.Integer IntegerKind.Usize 2,
-                                              M.read (| chunk_bytes |)
+                                      let~ _ : Ty.tuple [] :=
+                                        M.alloc (|
+                                          let β := offset in
+                                          M.write (|
+                                            β,
+                                            BinOp.Wrap.sub (|
+                                              M.read (| β |),
+                                              BinOp.Wrap.mul (|
+                                                Value.Integer IntegerKind.Usize 2,
+                                                M.read (| chunk_bytes |)
+                                              |)
                                             |)
                                           |)
                                         |) in
@@ -1185,7 +1278,7 @@ Module slice.
                                       (M.alloc (|
                                         M.never_to_any (|
                                           M.read (|
-                                            let~ _ :=
+                                            let~ _ : Ty.tuple [] :=
                                               M.alloc (|
                                                 M.never_to_any (| M.read (| M.break (||) |) |)
                                               |) in
@@ -1198,6 +1291,7 @@ Module slice.
                           |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
@@ -1216,6 +1310,10 @@ Module slice.
                                 Pointer.Kind.MutRef,
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "u8" ],
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "iter",
@@ -1227,6 +1325,10 @@ Module slice.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                             M.get_trait_method (|
                                               "core::ops::index::Index",
                                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],

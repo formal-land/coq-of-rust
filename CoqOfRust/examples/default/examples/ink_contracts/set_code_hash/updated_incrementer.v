@@ -21,6 +21,7 @@ Module Impl_core_default_Default_for_updated_incrementer_AccountId.
           "updated_incrementer::AccountId"
           [
             M.call_closure (|
+              Ty.path "u128",
               M.get_trait_method (|
                 "core::default::Default",
                 Ty.path "u128",
@@ -145,6 +146,7 @@ Module Impl_updated_incrementer_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.path "updated_incrementer::Env",
           M.get_associated_function (|
             Ty.path "updated_incrementer::Incrementer",
             "init_env",
@@ -170,6 +172,7 @@ Module Impl_updated_incrementer_Incrementer.
       ltac:(M.monadic
         (M.never_to_any (|
           M.call_closure (|
+            Ty.path "never",
             M.get_function (|
               "core::panicking::unreachable_display",
               [],
@@ -209,21 +212,25 @@ Module Impl_updated_incrementer_Incrementer.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
-            let β :=
-              M.SubPointer.get_struct_record_field (|
-                M.deref (| M.read (| self |) |),
-                "updated_incrementer::Incrementer",
-                "count"
-              |) in
-            M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 4 |) |) in
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            M.alloc (|
+              let β :=
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "updated_incrementer::Incrementer",
+                  "count"
+                |) in
+              M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 4 |) |)
+            |) in
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -259,6 +266,7 @@ Module Impl_updated_incrementer_Incrementer.
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_display",
@@ -338,9 +346,10 @@ Module Impl_updated_incrementer_Incrementer.
         (let self := M.alloc (| self |) in
         let code_hash := M.alloc (| code_hash |) in
         M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -353,6 +362,10 @@ Module Impl_updated_incrementer_Incrementer.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "updated_incrementer::Error" ],
                     M.get_associated_function (|
                       Ty.path "updated_incrementer::Env",
                       "set_code_hash",
@@ -369,6 +382,7 @@ Module Impl_updated_incrementer_Incrementer.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "updated_incrementer::Env",
                             M.get_associated_function (|
                               Ty.path "updated_incrementer::Incrementer",
                               "env",
@@ -399,6 +413,7 @@ Module Impl_updated_incrementer_Incrementer.
                                     (let err := M.copy (| γ |) in
                                     M.never_to_any (|
                                       M.call_closure (|
+                                        Ty.path "never",
                                         M.get_function (|
                                           "std::panicking::begin_panic",
                                           [],
@@ -419,13 +434,15 @@ Module Impl_updated_incrementer_Incrementer.
                 ]
               |)
             |) in
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
@@ -458,6 +475,7 @@ Module Impl_updated_incrementer_Incrementer.
                                 Value.Array
                                   [
                                     M.call_closure (|
+                                      Ty.path "core::fmt::rt::Argument",
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::rt::Argument",
                                         "new_debug",

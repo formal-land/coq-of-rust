@@ -26,19 +26,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ a :=
+        let~ a : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "diverging_functions_no_info_in_return_type::some_fn", [], [] |),
               []
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "std::io::stdio::_print", [], [] |),
               [
                 M.call_closure (|
+                  Ty.path "core::fmt::Arguments",
                   M.get_associated_function (|
                     Ty.path "core::fmt::Arguments",
                     "new_const",

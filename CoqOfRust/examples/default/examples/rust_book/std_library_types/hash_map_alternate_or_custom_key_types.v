@@ -36,6 +36,7 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
         let other := M.alloc (| other |) in
         LogicalOp.and (|
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -66,6 +67,7 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
           |),
           ltac:(M.monadic
             (M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -155,9 +157,10 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
         (let self := M.alloc (| self |) in
         let state := M.alloc (| state |) in
         M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "core::hash::Hash",
                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -187,6 +190,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "core::hash::Hash",
                 Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -275,13 +279,15 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
       let username := M.alloc (| username |) in
       let password := M.alloc (| password |) in
       M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -314,6 +320,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -338,13 +345,15 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -377,6 +386,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -401,13 +411,15 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
@@ -433,7 +445,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ logon :=
+        let~ logon : Ty.path "hash_map_alternate_or_custom_key_types::Account" :=
           M.alloc (|
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::Account"
@@ -445,6 +457,15 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
         M.match_operator (|
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" ]
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
@@ -473,13 +494,15 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let account_info := M.copy (| γ0_0 |) in
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
@@ -505,13 +528,15 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -544,6 +569,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -577,13 +603,15 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                       |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -616,6 +644,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -652,12 +681,14 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
-                (let~ _ :=
+                (let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
@@ -719,9 +750,25 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ accounts :=
+        let~ accounts :
+            Ty.apply
+              (Ty.path "std::collections::hash::map::HashMap")
+              []
+              [
+                Ty.path "hash_map_alternate_or_custom_key_types::Account";
+                Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
+                Ty.path "std::hash::random::RandomState"
+              ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "std::collections::hash::map::HashMap")
+                []
+                [
+                  Ty.path "hash_map_alternate_or_custom_key_types::Account";
+                  Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
+                  Ty.path "std::hash::random::RandomState"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
@@ -738,7 +785,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let~ account :=
+        let~ account : Ty.path "hash_map_alternate_or_custom_key_types::Account" :=
           M.alloc (|
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::Account"
@@ -755,7 +802,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |))
               ]
           |) in
-        let~ account_info :=
+        let~ account_info : Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" :=
           M.alloc (|
             Value.StructRecord
               "hash_map_alternate_or_custom_key_types::AccountInfo"
@@ -772,9 +819,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |))
               ]
           |) in
-        let~ _ :=
+        let~ _ :
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "std::collections::hash::map::HashMap")
@@ -795,9 +850,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [], [] |),
               [
                 M.borrow (|
@@ -815,9 +871,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "hash_map_alternate_or_custom_key_types::try_logon", [], [] |),
               [
                 M.borrow (|

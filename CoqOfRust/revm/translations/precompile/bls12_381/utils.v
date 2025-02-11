@@ -128,7 +128,7 @@ Module bls12_381.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -139,6 +139,7 @@ Module bls12_381.
                               (M.alloc (|
                                 BinOp.ne (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
@@ -169,6 +170,17 @@ Module bls12_381.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "split_at_mut",
@@ -190,9 +202,10 @@ Module bls12_381.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let padding := M.copy (| γ0_0 |) in
                         let rest := M.copy (| γ0_1 |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "fill",
@@ -208,12 +221,14 @@ Module bls12_381.
                               ]
                             |)
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_function (| "blst::blst_bendian_from_fp", [], [] |),
                               [
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "as_mut_ptr",
@@ -268,7 +283,7 @@ Module bls12_381.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -279,6 +294,7 @@ Module bls12_381.
                               (M.alloc (|
                                 BinOp.ne (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
@@ -311,6 +327,7 @@ Module bls12_381.
                                         "revm_precompile::interface::PrecompileError::Other"
                                         [
                                           M.call_closure (|
+                                            Ty.path "alloc::string::String",
                                             M.get_function (|
                                               "core::hint::must_use",
                                               [],
@@ -318,9 +335,10 @@ Module bls12_381.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res :=
+                                                let~ res : Ty.path "alloc::string::String" :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_function (|
                                                         "alloc::fmt::format",
                                                         [],
@@ -328,6 +346,7 @@ Module bls12_381.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::Arguments",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
@@ -369,6 +388,7 @@ Module bls12_381.
                                                                             Pointer.Kind.Ref,
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "usize",
                                                                                 M.get_associated_function (|
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -409,6 +429,8 @@ Module bls12_381.
                                                                             Value.Array
                                                                               [
                                                                                 M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
@@ -434,6 +456,8 @@ Module bls12_381.
                                                                                   ]
                                                                                 |);
                                                                                 M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
@@ -486,6 +510,17 @@ Module bls12_381.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "split_at",
@@ -507,7 +542,7 @@ Module bls12_381.
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let padding := M.copy (| γ0_0 |) in
                         let unpadded := M.copy (| γ0_1 |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -518,6 +553,7 @@ Module bls12_381.
                                       (M.alloc (|
                                         UnOp.not (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_trait_method (|
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
@@ -542,6 +578,10 @@ Module bls12_381.
                                                 Pointer.Kind.MutRef,
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::slice::iter::Iter")
+                                                      []
+                                                      [ Ty.path "u8" ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "slice")
@@ -601,6 +641,7 @@ Module bls12_381.
                                                 "revm_precompile::interface::PrecompileError::Other"
                                                 [
                                                   M.call_closure (|
+                                                    Ty.path "alloc::string::String",
                                                     M.get_function (|
                                                       "core::hint::must_use",
                                                       [],
@@ -608,9 +649,11 @@ Module bls12_381.
                                                     |),
                                                     [
                                                       M.read (|
-                                                        let~ res :=
+                                                        let~ res :
+                                                            Ty.path "alloc::string::String" :=
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.path "alloc::string::String",
                                                               M.get_function (|
                                                                 "alloc::fmt::format",
                                                                 [],
@@ -618,6 +661,7 @@ Module bls12_381.
                                                               |),
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path "core::fmt::Arguments",
                                                                   M.get_associated_function (|
                                                                     Ty.path "core::fmt::Arguments",
                                                                     "new_v1",
@@ -654,6 +698,8 @@ Module bls12_381.
                                                                             Value.Array
                                                                               [
                                                                                 M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
@@ -705,6 +751,15 @@ Module bls12_381.
                             "core::result::Result::Ok"
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 48 ]
+                                      [ Ty.path "u8" ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
@@ -727,6 +782,21 @@ Module bls12_381.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 48 ]
+                                              [ Ty.path "u8" ]
+                                          ];
+                                        Ty.path "core::array::TryFromSliceError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::convert::TryInto",
                                       Ty.apply
@@ -801,7 +871,7 @@ Module bls12_381.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -812,6 +882,7 @@ Module bls12_381.
                               (M.alloc (|
                                 BinOp.ne (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
@@ -844,6 +915,7 @@ Module bls12_381.
                                         "revm_precompile::interface::PrecompileError::Other"
                                         [
                                           M.call_closure (|
+                                            Ty.path "alloc::string::String",
                                             M.get_function (|
                                               "core::hint::must_use",
                                               [],
@@ -851,9 +923,10 @@ Module bls12_381.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res :=
+                                                let~ res : Ty.path "alloc::string::String" :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_function (|
                                                         "alloc::fmt::format",
                                                         [],
@@ -861,6 +934,7 @@ Module bls12_381.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::Arguments",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
@@ -902,6 +976,7 @@ Module bls12_381.
                                                                             Pointer.Kind.Ref,
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.path "usize",
                                                                                 M.get_associated_function (|
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -942,6 +1017,8 @@ Module bls12_381.
                                                                             Value.Array
                                                                               [
                                                                                 M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
@@ -967,6 +1044,8 @@ Module bls12_381.
                                                                                   ]
                                                                                 |);
                                                                                 M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "core::fmt::rt::Argument",
@@ -1016,9 +1095,10 @@ Module bls12_381.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ out :=
+                let~ out : Ty.path "blst::blst_scalar" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "blst::blst_scalar",
                       M.get_trait_method (|
                         "core::default::Default",
                         Ty.path "blst::blst_scalar",
@@ -1031,9 +1111,10 @@ Module bls12_381.
                       []
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "blst::blst_scalar_from_bendian", [], [] |),
                       [
                         M.borrow (|
@@ -1041,6 +1122,7 @@ Module bls12_381.
                           M.deref (| M.borrow (| Pointer.Kind.MutRef, out |) |)
                         |);
                         M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "as_ptr",
@@ -1083,11 +1165,18 @@ Module bls12_381.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::zip::Zip")
+                            []
+                            [
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -1105,6 +1194,13 @@ Module bls12_381.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::zip::Zip")
+                                []
+                                [
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
@@ -1116,6 +1212,7 @@ Module bls12_381.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "iter",
@@ -1130,6 +1227,7 @@ Module bls12_381.
                                   ]
                                 |);
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "iter",
@@ -1155,10 +1253,20 @@ Module bls12_381.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "u8" ];
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -1214,6 +1322,7 @@ Module bls12_381.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "core::cmp::Ordering",
                                                 M.get_trait_method (|
                                                   "core::cmp::Ord",
                                                   Ty.path "u8",
@@ -1313,7 +1422,7 @@ Module bls12_381.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1324,6 +1433,7 @@ Module bls12_381.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_function (|
                                       "revm_precompile::bls12_381::utils::is_valid_be",
                                       [],
@@ -1351,6 +1461,7 @@ Module bls12_381.
                                         "revm_precompile::interface::PrecompileError::Other"
                                         [
                                           M.call_closure (|
+                                            Ty.path "alloc::string::String",
                                             M.get_trait_method (|
                                               "alloc::string::ToString",
                                               Ty.path "str",
@@ -1378,9 +1489,10 @@ Module bls12_381.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ fp :=
+                let~ fp : Ty.path "blst::blst_fp" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "blst::blst_fp",
                       M.get_trait_method (|
                         "core::default::Default",
                         Ty.path "blst::blst_fp",
@@ -1393,10 +1505,11 @@ Module bls12_381.
                       []
                     |)
                   |) in
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "blst::blst_fp_from_bendian", [], [] |),
                         [
                           M.borrow (|
@@ -1404,6 +1517,7 @@ Module bls12_381.
                             M.deref (| M.borrow (| Pointer.Kind.MutRef, fp |) |)
                           |);
                           M.call_closure (|
+                            Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                               "as_ptr",

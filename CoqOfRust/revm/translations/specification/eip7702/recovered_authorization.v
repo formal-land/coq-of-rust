@@ -31,6 +31,10 @@ Module eip7702.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
@@ -107,6 +111,7 @@ Module eip7702.
               [
                 ("inner",
                   M.call_closure (|
+                    Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
@@ -134,6 +139,10 @@ Module eip7702.
                   |));
                 ("authority",
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "alloy_primitives::bits::address::Address" ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply
@@ -186,9 +195,10 @@ Module eip7702.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
@@ -218,6 +228,7 @@ Module eip7702.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.apply
@@ -324,6 +335,7 @@ Module eip7702.
             let other := M.alloc (| other |) in
             LogicalOp.and (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
@@ -354,6 +366,7 @@ Module eip7702.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply
@@ -529,9 +542,17 @@ Module eip7702.
           ltac:(M.monadic
             (let signed_auth := M.alloc (| signed_auth |) in
             M.read (|
-              let~ authority :=
+              let~ authority :
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "alloy_primitives::bits::address::Address" ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "alloy_primitives::bits::address::Address" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -546,6 +567,13 @@ Module eip7702.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "alloy_primitives::bits::address::Address";
+                            Ty.path "alloy_primitives::signature::error::SignatureError"
+                          ],
                         M.get_associated_function (|
                           Ty.path "alloy_eip7702::auth_list::SignedAuthorization",
                           "recover_authority",
@@ -559,6 +587,8 @@ Module eip7702.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path
+                    "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
                   M.get_associated_function (|
                     Ty.path
                       "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization",
@@ -603,6 +633,7 @@ Module eip7702.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "alloy_eip7702::auth_list::Authorization" ],
                   M.get_trait_method (|
                     "core::ops::deref::Deref",
                     Ty.path "alloy_eip7702::auth_list::SignedAuthorization",

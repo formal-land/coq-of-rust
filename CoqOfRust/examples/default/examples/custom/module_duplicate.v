@@ -13,13 +13,15 @@ Module foo.
       | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let~ _ :=
-              let~ _ :=
+            let~ _ : Ty.tuple [] :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
                     [
                       M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
                           "new_const",
@@ -65,13 +67,15 @@ Module foo.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ _ :=
-            let~ _ :=
+          let~ _ : Ty.tuple [] :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
                   [
                     M.call_closure (|
+                      Ty.path "core::fmt::Arguments",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_const",
@@ -95,9 +99,10 @@ Module foo.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "module_duplicate::foo::gre::f_foo_gre", [], [] |),
                 []
               |)
@@ -121,9 +126,13 @@ Definition f (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
-            M.call_closure (| M.get_function (| "module_duplicate::foo::f_foo", [], [] |), [] |)
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_function (| "module_duplicate::foo::f_foo", [], [] |),
+              []
+            |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

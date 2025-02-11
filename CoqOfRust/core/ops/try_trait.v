@@ -23,6 +23,7 @@ Module ops.
         ltac:(M.monadic
           (let yeeted := M.alloc (| yeeted |) in
           M.call_closure (|
+            T,
             M.get_trait_method (|
               "core::ops::try_trait::FromResidual",
               T,
@@ -86,6 +87,7 @@ Module ops.
                                 "core::ops::try_trait::NeverShortCircuit"
                                 [
                                   M.call_closure (|
+                                    T,
                                     M.get_trait_method (|
                                       "core::ops::function::FnMut",
                                       impl_FnMut_A__arrow_T,
@@ -146,6 +148,7 @@ Module ops.
                                         "core::ops::try_trait::NeverShortCircuit"
                                         [
                                           M.call_closure (|
+                                            T,
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               impl_FnMut_A__B__arrow_T,
@@ -321,6 +324,10 @@ Module ops.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",

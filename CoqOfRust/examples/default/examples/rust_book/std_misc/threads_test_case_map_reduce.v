@@ -93,7 +93,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ data :=
+        let~ data : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
           M.copy (|
             Value.String
               "86967897737416471853297327050364959
@@ -105,9 +105,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
 69920216438980873548808413720956532
 16278424637452589860345374828574668"
           |) in
-        let~ children :=
+        let~ children :
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [
+                Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ];
+                Ty.path "alloc::alloc::Global"
+              ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ];
+                  Ty.path "alloc::alloc::Global"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -123,18 +137,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |)
           |) in
-        let~ chunked_data :=
+        let~ chunked_data : Ty.path "core::str::iter::SplitWhitespace" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "core::str::iter::SplitWhitespace",
               M.get_associated_function (| Ty.path "str", "split_whitespace", [], [] |),
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |) ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.use
             (M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                    []
+                    [ Ty.path "core::str::iter::SplitWhitespace" ],
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply
@@ -149,6 +168,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                        []
+                        [ Ty.path "core::str::iter::SplitWhitespace" ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.path "core::str::iter::SplitWhitespace",
@@ -169,10 +192,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.tuple
+                                      [ Ty.path "usize"; Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                      ]
+                                  ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -211,13 +242,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                   let i := M.copy (| γ1_0 |) in
                                   let data_segment := M.copy (| γ1_1 |) in
-                                  let~ _ :=
-                                    let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.tuple [],
                                           M.get_function (| "std::io::stdio::_print", [], [] |),
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::Arguments",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
@@ -253,6 +286,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         Value.Array
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path "core::fmt::rt::Argument",
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_display",
@@ -272,6 +306,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                               ]
                                                             |);
                                                             M.call_closure (|
+                                                              Ty.path "core::fmt::rt::Argument",
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::rt::Argument",
                                                                 "new_display",
@@ -306,9 +341,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -327,6 +363,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         [
                                           M.borrow (| Pointer.Kind.MutRef, children |);
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "std::thread::JoinHandle")
+                                              []
+                                              [ Ty.path "u32" ],
                                             M.get_function (|
                                               "std::thread::spawn",
                                               [],
@@ -348,9 +388,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (M.read (|
-                                                                  let~ result :=
+                                                                  let~ result : Ty.path "u32" :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.path "u32",
                                                                         M.get_trait_method (|
                                                                           "core::iter::traits::iterator::Iterator",
                                                                           Ty.apply
@@ -376,6 +417,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::iter::adapters::map::Map")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::str::iter::Chars";
+                                                                                Ty.function
+                                                                                  [
+                                                                                    Ty.tuple
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "char"
+                                                                                      ]
+                                                                                  ]
+                                                                                  (Ty.path "u32")
+                                                                              ],
                                                                             M.get_trait_method (|
                                                                               "core::iter::traits::iterator::Iterator",
                                                                               Ty.path
@@ -399,6 +457,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                             |),
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::str::iter::Chars",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path "str",
                                                                                   "chars",
@@ -435,6 +495,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                                     γ
                                                                                                   |) in
                                                                                                 M.call_closure (|
+                                                                                                  Ty.path
+                                                                                                    "u32",
                                                                                                   M.get_associated_function (|
                                                                                                     Ty.apply
                                                                                                       (Ty.path
@@ -450,6 +512,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                                   |),
                                                                                                   [
                                                                                                     M.call_closure (|
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "core::option::Option")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "u32"
+                                                                                                        ],
                                                                                                       M.get_associated_function (|
                                                                                                         Ty.path
                                                                                                           "char",
@@ -488,10 +558,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                         ]
                                                                       |)
                                                                     |) in
-                                                                  let~ _ :=
-                                                                    let~ _ :=
+                                                                  let~ _ : Ty.tuple [] :=
+                                                                    let~ _ : Ty.tuple [] :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.tuple [],
                                                                           M.get_function (|
                                                                             "std::io::stdio::_print",
                                                                             [],
@@ -499,6 +570,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "core::fmt::Arguments",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "core::fmt::Arguments",
@@ -542,6 +615,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                         Value.Array
                                                                                           [
                                                                                             M.call_closure (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::Argument",
                                                                                               M.get_associated_function (|
                                                                                                 Ty.path
                                                                                                   "core::fmt::rt::Argument",
@@ -565,6 +640,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                               ]
                                                                                             |);
                                                                                             M.call_closure (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::Argument",
                                                                                               M.get_associated_function (|
                                                                                                 Ty.path
                                                                                                   "core::fmt::rt::Argument",
@@ -616,9 +693,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |)))
               ]
             |)) in
-        let~ final_result :=
+        let~ final_result : Ty.path "u32" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "u32",
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
                 Ty.apply
@@ -647,6 +725,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::map::Map")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                        []
+                        [
+                          Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ];
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.function
+                        [
+                          Ty.tuple
+                            [ Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ] ]
+                        ]
+                        (Ty.path "u32")
+                    ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
@@ -672,6 +768,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                        []
+                        [
+                          Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.path "u32" ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         Ty.apply
@@ -702,6 +805,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ltac:(M.monadic
                                       (let c := M.copy (| γ |) in
                                       M.call_closure (|
+                                        Ty.path "u32",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -726,6 +830,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "u32";
+                                                Ty.apply
+                                                  (Ty.path "alloc::boxed::Box")
+                                                  []
+                                                  [
+                                                    Ty.dyn
+                                                      [
+                                                        ("core::any::Any::Trait", []);
+                                                        ("core::marker::Send::AutoTrait", [])
+                                                      ];
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ]
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "std::thread::JoinHandle")
@@ -748,13 +869,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -787,6 +910,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",

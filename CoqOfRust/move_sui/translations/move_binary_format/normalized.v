@@ -212,6 +212,7 @@ Module normalized.
                         [
                           ("address",
                             M.call_closure (|
+                              Ty.path "move_core_types::account_address::AccountAddress",
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::account_address::AccountAddress",
@@ -226,6 +227,7 @@ Module normalized.
                             |));
                           ("module",
                             M.call_closure (|
+                              Ty.path "move_core_types::identifier::Identifier",
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::identifier::Identifier",
@@ -240,6 +242,7 @@ Module normalized.
                             |));
                           ("name",
                             M.call_closure (|
+                              Ty.path "move_core_types::identifier::Identifier",
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::identifier::Identifier",
@@ -254,6 +257,13 @@ Module normalized.
                             |));
                           ("type_arguments",
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.path "move_binary_format::normalized::Type";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.apply
@@ -289,6 +299,13 @@ Module normalized.
                         "move_binary_format::normalized::Type::Vector"
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path "move_binary_format::normalized::Type";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.apply
@@ -323,6 +340,7 @@ Module normalized.
                         "move_binary_format::normalized::Type::TypeParameter"
                         [
                           M.call_closure (|
+                            Ty.path "u16",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u16",
@@ -351,6 +369,13 @@ Module normalized.
                         "move_binary_format::normalized::Type::Reference"
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path "move_binary_format::normalized::Type";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.apply
@@ -385,6 +410,13 @@ Module normalized.
                         "move_binary_format::normalized::Type::MutableReference"
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path "move_binary_format::normalized::Type";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.apply
@@ -463,6 +495,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::Bool" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -485,6 +521,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U8" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -507,6 +547,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U64" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -529,6 +573,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U128" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -551,6 +599,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::Address" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -573,6 +625,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::Signer" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -621,6 +677,10 @@ Module normalized.
                     let __self_3 := M.alloc (| γ1_3 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_struct_field4_finish",
@@ -671,6 +731,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -702,6 +766,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -733,6 +801,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -764,6 +836,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -790,6 +866,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U16" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -812,6 +892,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U32" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -834,6 +918,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U256" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -874,9 +962,10 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -885,9 +974,10 @@ Module normalized.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -899,6 +989,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
                   [
                     M.borrow (|
@@ -984,6 +1075,7 @@ Module normalized.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     Ty.path "move_core_types::account_address::AccountAddress",
@@ -1013,6 +1105,7 @@ Module normalized.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "core::cmp::Ordering",
                                           M.get_trait_method (|
                                             "core::cmp::Ord",
                                             Ty.path "move_core_types::identifier::Identifier",
@@ -1045,6 +1138,7 @@ Module normalized.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "core::cmp::Ordering",
                                                   M.get_trait_method (|
                                                     "core::cmp::Ord",
                                                     Ty.path
@@ -1077,6 +1171,7 @@ Module normalized.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "core::cmp::Ordering",
                                                         M.get_trait_method (|
                                                           "core::cmp::Ord",
                                                           Ty.apply
@@ -1145,6 +1240,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.apply
@@ -1194,6 +1290,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "u16",
@@ -1237,6 +1334,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.apply
@@ -1286,6 +1384,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.apply
@@ -1347,9 +1446,10 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -1358,9 +1458,10 @@ Module normalized.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -1437,6 +1538,10 @@ Module normalized.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "move_core_types::account_address::AccountAddress",
@@ -1465,6 +1570,10 @@ Module normalized.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "move_core_types::identifier::Identifier",
@@ -1500,6 +1609,10 @@ Module normalized.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Ty.path "move_core_types::identifier::Identifier",
@@ -1537,6 +1650,10 @@ Module normalized.
                                               |) in
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ],
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialOrd",
                                                   Ty.apply
@@ -1614,6 +1731,10 @@ Module normalized.
                     let __arg1_0 := M.alloc (| γ2_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.apply
@@ -1665,6 +1786,10 @@ Module normalized.
                     let __arg1_0 := M.alloc (| γ2_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "u16",
@@ -1702,6 +1827,10 @@ Module normalized.
                     let __arg1_0 := M.alloc (| γ2_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.apply
@@ -1753,6 +1882,10 @@ Module normalized.
                     let __arg1_0 := M.alloc (| γ2_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.apply
@@ -1786,6 +1919,10 @@ Module normalized.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "isize",
@@ -1920,9 +2057,10 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -1931,9 +2069,10 @@ Module normalized.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -2017,6 +2156,7 @@ Module normalized.
                                 LogicalOp.and (|
                                   LogicalOp.and (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.apply
@@ -2047,6 +2187,7 @@ Module normalized.
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -2072,6 +2213,7 @@ Module normalized.
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.apply
@@ -2097,6 +2239,7 @@ Module normalized.
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -2159,6 +2302,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -2220,6 +2364,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
@@ -2257,6 +2402,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -2318,6 +2464,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -2401,6 +2548,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -2424,6 +2575,10 @@ Module normalized.
                             M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U8" |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -2450,6 +2605,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -2476,6 +2635,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -2502,6 +2665,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -2528,6 +2695,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -2575,11 +2746,15 @@ Module normalized.
                           let module := M.alloc (| γ0_1 |) in
                           let name := M.alloc (| γ0_2 |) in
                           let type_arguments := M.alloc (| γ0_3 |) in
-                          let~ __serde_state :=
+                          let~ __serde_state : Ty.associated :=
                             M.copy (|
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.associated; Ty.associated ],
                                     M.get_trait_method (|
                                       "serde::ser::Serializer",
                                       __S,
@@ -2644,10 +2819,14 @@ Module normalized.
                                 ]
                               |)
                             |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.associated ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeStructVariant",
                                     Ty.associated,
@@ -2705,10 +2884,14 @@ Module normalized.
                                     |)))
                               ]
                             |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.associated ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeStructVariant",
                                     Ty.associated,
@@ -2766,10 +2949,14 @@ Module normalized.
                                     |)))
                               ]
                             |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.associated ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeStructVariant",
                                     Ty.associated,
@@ -2824,10 +3011,14 @@ Module normalized.
                                     |)))
                               ]
                             |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.associated ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeStructVariant",
                                     Ty.associated,
@@ -2895,6 +3086,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::SerializeStructVariant",
                                 Ty.associated,
@@ -2918,6 +3113,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -2955,6 +3154,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -2984,6 +3187,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -3021,6 +3228,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -3056,6 +3267,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -3082,6 +3297,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -3108,6 +3327,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -3149,6 +3372,10 @@ Module normalized.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_binary_format::normalized::Type"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -3195,11 +3422,15 @@ Module normalized.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state :=
+                  let~ __serde_state : Ty.associated :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.associated; Ty.associated ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -3256,10 +3487,14 @@ Module normalized.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -3324,10 +3559,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -3394,6 +3633,7 @@ Module normalized.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
                         Ty.associated,
@@ -3428,6 +3668,10 @@ Module normalized.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_binary_format::normalized::Field"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -3474,11 +3718,15 @@ Module normalized.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state :=
+                  let~ __serde_state : Ty.associated :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.associated; Ty.associated ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -3535,10 +3783,14 @@ Module normalized.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -3603,10 +3855,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -3678,6 +3934,7 @@ Module normalized.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
                         Ty.associated,
@@ -3712,6 +3969,10 @@ Module normalized.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_binary_format::normalized::Constant"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -3758,11 +4019,15 @@ Module normalized.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state :=
+                  let~ __serde_state : Ty.associated :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.associated; Ty.associated ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -3822,10 +4087,14 @@ Module normalized.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -3890,10 +4159,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -3966,10 +4239,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -4044,6 +4321,7 @@ Module normalized.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
                         Ty.associated,
@@ -4078,6 +4356,10 @@ Module normalized.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_binary_format::normalized::Struct"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -4124,11 +4406,15 @@ Module normalized.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state :=
+                  let~ __serde_state : Ty.associated :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.associated; Ty.associated ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -4197,10 +4483,14 @@ Module normalized.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -4265,10 +4555,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -4333,10 +4627,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -4409,10 +4707,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -4485,10 +4787,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -4561,10 +4867,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -4639,6 +4949,7 @@ Module normalized.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
                         Ty.associated,
@@ -4673,6 +4984,10 @@ Module normalized.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_binary_format::normalized::Function"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -4719,11 +5034,15 @@ Module normalized.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state :=
+                  let~ __serde_state : Ty.associated :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.associated; Ty.associated ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -4780,10 +5099,14 @@ Module normalized.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -4848,10 +5171,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -4918,6 +5245,7 @@ Module normalized.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
                         Ty.associated,
@@ -4952,6 +5280,10 @@ Module normalized.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_binary_format::normalized::FieldRef"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -4998,11 +5330,15 @@ Module normalized.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state :=
+                  let~ __serde_state : Ty.associated :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.associated; Ty.associated ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -5059,10 +5395,14 @@ Module normalized.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -5127,10 +5467,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -5197,6 +5541,7 @@ Module normalized.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
                         Ty.associated,
@@ -5231,6 +5576,10 @@ Module normalized.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_binary_format::normalized::FunctionRef"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -5289,6 +5638,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5315,6 +5668,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5343,6 +5700,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5372,6 +5733,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5401,6 +5766,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5430,6 +5799,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5459,6 +5832,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5488,6 +5865,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5515,6 +5896,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5541,6 +5926,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5567,6 +5956,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5595,6 +5988,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5622,6 +6019,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5648,6 +6049,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5676,6 +6081,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5705,6 +6114,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5734,6 +6147,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5763,6 +6180,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5792,6 +6213,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5833,6 +6258,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5862,6 +6291,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5903,6 +6336,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5932,6 +6369,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5971,6 +6412,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5997,6 +6442,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6023,6 +6472,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6051,6 +6504,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6080,6 +6537,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6109,6 +6570,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6138,6 +6603,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6179,6 +6648,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6208,6 +6681,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6247,6 +6724,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6273,6 +6754,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6299,6 +6784,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6325,6 +6814,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6351,6 +6844,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6377,6 +6874,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6403,6 +6904,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6429,6 +6934,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6455,6 +6964,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6481,6 +6994,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6507,6 +7024,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6533,6 +7054,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6559,6 +7084,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6585,6 +7114,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6611,6 +7144,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6637,6 +7174,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6663,6 +7204,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6689,6 +7234,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6715,6 +7264,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6741,6 +7294,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6767,6 +7324,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6800,11 +7361,15 @@ Module normalized.
                             |) in
                           let __field0 := M.alloc (| γ0_0 |) in
                           let __field1 := M.alloc (| γ0_1 |) in
-                          let~ __serde_state :=
+                          let~ __serde_state : Ty.associated :=
                             M.copy (|
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.associated; Ty.associated ],
                                     M.get_trait_method (|
                                       "serde::ser::Serializer",
                                       __S,
@@ -6863,10 +7428,14 @@ Module normalized.
                                 ]
                               |)
                             |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.associated ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeTupleVariant",
                                     Ty.associated,
@@ -6923,10 +7492,14 @@ Module normalized.
                                     |)))
                               ]
                             |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.associated ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeTupleVariant",
                                     Ty.associated,
@@ -6985,6 +7558,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::SerializeTupleVariant",
                                 Ty.associated,
@@ -7008,6 +7585,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7037,6 +7618,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7066,6 +7651,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7095,6 +7684,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7124,6 +7717,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7158,11 +7755,15 @@ Module normalized.
                             |) in
                           let __field0 := M.alloc (| γ0_0 |) in
                           let __field1 := M.alloc (| γ0_1 |) in
-                          let~ __serde_state :=
+                          let~ __serde_state : Ty.associated :=
                             M.copy (|
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.associated; Ty.associated ],
                                     M.get_trait_method (|
                                       "serde::ser::Serializer",
                                       __S,
@@ -7221,10 +7822,14 @@ Module normalized.
                                 ]
                               |)
                             |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.associated ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeTupleVariant",
                                     Ty.associated,
@@ -7281,10 +7886,14 @@ Module normalized.
                                     |)))
                               ]
                             |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.tuple []; Ty.associated ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeTupleVariant",
                                     Ty.associated,
@@ -7343,6 +7952,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::SerializeTupleVariant",
                                 Ty.associated,
@@ -7366,6 +7979,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7395,6 +8012,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7424,6 +8045,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7453,6 +8078,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7480,6 +8109,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7506,6 +8139,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7532,6 +8169,10 @@ Module normalized.
                             |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7560,6 +8201,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7589,6 +8234,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7630,6 +8279,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7659,6 +8312,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7700,6 +8357,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7729,6 +8390,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7770,6 +8435,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7799,6 +8468,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7840,6 +8513,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7869,6 +8546,10 @@ Module normalized.
                           let __field0 := M.alloc (| γ0_0 |) in
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.associated; Ty.associated ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7923,6 +8604,10 @@ Module normalized.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_binary_format::normalized::Bytecode"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -7969,11 +8654,15 @@ Module normalized.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state :=
+                  let~ __serde_state : Ty.associated :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.associated; Ty.associated ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -8048,10 +8737,14 @@ Module normalized.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -8116,10 +8809,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -8184,10 +8881,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -8252,10 +8953,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -8328,10 +9033,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -8404,10 +9113,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -8481,10 +9194,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -8558,10 +9275,14 @@ Module normalized.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -8636,6 +9357,7 @@ Module normalized.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
                         Ty.associated,
@@ -8670,6 +9392,10 @@ Module normalized.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_binary_format::normalized::Module"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -8732,6 +9458,7 @@ Module normalized.
             [
               ("name",
                 M.call_closure (|
+                  Ty.path "move_core_types::identifier::Identifier",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
@@ -8759,6 +9486,7 @@ Module normalized.
                 |));
               ("type_",
                 M.call_closure (|
+                  Ty.path "move_binary_format::normalized::Type",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "move_binary_format::normalized::Type",
@@ -8807,6 +9535,10 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
@@ -8923,6 +9655,7 @@ Module normalized.
           let other := M.alloc (| other |) in
           LogicalOp.and (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_core_types::identifier::Identifier",
@@ -8953,6 +9686,7 @@ Module normalized.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_binary_format::normalized::Type",
@@ -9009,6 +9743,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (|
                     "core::cmp::Ord",
                     Ty.path "move_core_types::identifier::Identifier",
@@ -9054,6 +9789,7 @@ Module normalized.
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "core::cmp::Ordering",
                         M.get_trait_method (|
                           "core::cmp::Ord",
                           Ty.path "move_binary_format::normalized::Type",
@@ -9125,6 +9861,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_core_types::identifier::Identifier",
@@ -9176,6 +9913,10 @@ Module normalized.
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "move_binary_format::normalized::Type",
@@ -9263,6 +10004,7 @@ Module normalized.
             [
               ("type_",
                 M.call_closure (|
+                  Ty.path "move_binary_format::normalized::Type",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "move_binary_format::normalized::Type",
@@ -9290,6 +10032,10 @@ Module normalized.
                 |));
               ("data",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -9341,6 +10087,10 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
@@ -9457,6 +10207,7 @@ Module normalized.
           let other := M.alloc (| other |) in
           LogicalOp.and (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_binary_format::normalized::Type",
@@ -9487,6 +10238,7 @@ Module normalized.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.apply
@@ -9551,6 +10303,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (|
                     "core::cmp::Ord",
                     Ty.path "move_binary_format::normalized::Type",
@@ -9596,6 +10349,7 @@ Module normalized.
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "core::cmp::Ordering",
                         M.get_trait_method (|
                           "core::cmp::Ord",
                           Ty.apply
@@ -9670,6 +10424,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_binary_format::normalized::Type",
@@ -9721,6 +10476,10 @@ Module normalized.
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.apply
@@ -9824,6 +10583,7 @@ Module normalized.
             [
               ("abilities",
                 M.call_closure (|
+                  Ty.path "move_binary_format::file_format::AbilitySet",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "move_binary_format::file_format::AbilitySet",
@@ -9851,6 +10611,13 @@ Module normalized.
                 |));
               ("type_parameters",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format::StructTypeParameter";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -9884,6 +10651,13 @@ Module normalized.
                 |));
               ("fields",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_binary_format::normalized::Field";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -9938,6 +10712,10 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field3_finish",
@@ -10079,6 +10857,7 @@ Module normalized.
           LogicalOp.and (|
             LogicalOp.and (|
               M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_binary_format::file_format::AbilitySet",
@@ -10109,6 +10888,7 @@ Module normalized.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply
@@ -10154,6 +10934,7 @@ Module normalized.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.apply
@@ -10224,6 +11005,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (|
                     "core::cmp::Ord",
                     Ty.path "move_binary_format::file_format::AbilitySet",
@@ -10270,6 +11052,7 @@ Module normalized.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::cmp::Ordering",
                           M.get_trait_method (|
                             "core::cmp::Ord",
                             Ty.apply
@@ -10321,6 +11104,7 @@ Module normalized.
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.apply
@@ -10404,6 +11188,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_binary_format::file_format::AbilitySet",
@@ -10456,6 +11241,10 @@ Module normalized.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.apply
@@ -10521,6 +11310,10 @@ Module normalized.
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.apply
@@ -10648,6 +11441,7 @@ Module normalized.
             [
               ("visibility",
                 M.call_closure (|
+                  Ty.path "move_binary_format::file_format::Visibility",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "move_binary_format::file_format::Visibility",
@@ -10675,6 +11469,7 @@ Module normalized.
                 |));
               ("is_entry",
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "bool",
@@ -10702,6 +11497,13 @@ Module normalized.
                 |));
               ("type_parameters",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_binary_format::file_format::AbilitySet";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -10735,6 +11537,11 @@ Module normalized.
                 |));
               ("parameters",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "move_binary_format::normalized::Type"; Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -10768,6 +11575,11 @@ Module normalized.
                 |));
               ("return_",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "move_binary_format::normalized::Type"; Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -10801,6 +11613,13 @@ Module normalized.
                 |));
               ("code",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_binary_format::normalized::Bytecode";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -10855,7 +11674,16 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ names :=
+            let~ names :
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 6 ]
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                  ] :=
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -10892,7 +11720,16 @@ Module normalized.
                   |)
                 |)
               |) in
-            let~ values :=
+            let~ values :
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                  ] :=
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -10993,6 +11830,10 @@ Module normalized.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_fields_finish",
@@ -11036,6 +11877,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (|
                     "core::cmp::Ord",
                     Ty.path "move_binary_format::file_format::Visibility",
@@ -11082,6 +11924,7 @@ Module normalized.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::cmp::Ordering",
                           M.get_trait_method (|
                             "core::cmp::Ord",
                             Ty.path "bool",
@@ -11128,6 +11971,7 @@ Module normalized.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     Ty.apply
@@ -11181,6 +12025,7 @@ Module normalized.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "core::cmp::Ordering",
                                           M.get_trait_method (|
                                             "core::cmp::Ord",
                                             Ty.apply
@@ -11237,6 +12082,7 @@ Module normalized.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "core::cmp::Ordering",
                                                   M.get_trait_method (|
                                                     "core::cmp::Ord",
                                                     Ty.apply
@@ -11293,6 +12139,7 @@ Module normalized.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "core::cmp::Ordering",
                                                         M.get_trait_method (|
                                                           "core::cmp::Ord",
                                                           Ty.apply
@@ -11395,6 +12242,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_binary_format::file_format::Visibility",
@@ -11447,6 +12295,10 @@ Module normalized.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.get_trait_method (|
                             "core::cmp::PartialOrd",
                             Ty.path "bool",
@@ -11499,6 +12351,10 @@ Module normalized.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.apply
@@ -11566,6 +12422,10 @@ Module normalized.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
                                           M.get_trait_method (|
                                             "core::cmp::PartialOrd",
                                             Ty.apply
@@ -11636,6 +12496,10 @@ Module normalized.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::cmp::Ordering" ],
                                                   M.get_trait_method (|
                                                     "core::cmp::PartialOrd",
                                                     Ty.apply
@@ -11707,6 +12571,10 @@ Module normalized.
                                                       |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ],
                                                         M.get_trait_method (|
                                                           "core::cmp::PartialOrd",
                                                           Ty.apply
@@ -11901,6 +12769,7 @@ Module normalized.
                 LogicalOp.and (|
                   LogicalOp.and (|
                     M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.path "move_binary_format::file_format::Visibility",
@@ -11949,6 +12818,7 @@ Module normalized.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.apply
@@ -11994,6 +12864,7 @@ Module normalized.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.apply
@@ -12039,6 +12910,7 @@ Module normalized.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply
@@ -12084,6 +12956,7 @@ Module normalized.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.apply
@@ -12166,6 +13039,7 @@ Module normalized.
             [
               ("struct_name",
                 M.call_closure (|
+                  Ty.path "move_core_types::identifier::Identifier",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
@@ -12193,6 +13067,7 @@ Module normalized.
                 |));
               ("field_index",
                 M.call_closure (|
+                  Ty.path "u16",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "u16",
@@ -12241,6 +13116,10 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
@@ -12316,6 +13195,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (|
                     "core::cmp::Ord",
                     Ty.path "move_core_types::identifier::Identifier",
@@ -12361,6 +13241,7 @@ Module normalized.
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "core::cmp::Ordering",
                         M.get_trait_method (|
                           "core::cmp::Ord",
                           Ty.path "u16",
@@ -12432,6 +13313,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_core_types::identifier::Identifier",
@@ -12483,6 +13365,10 @@ Module normalized.
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "u16",
@@ -12601,6 +13487,7 @@ Module normalized.
           let other := M.alloc (| other |) in
           LogicalOp.and (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_core_types::identifier::Identifier",
@@ -12686,6 +13573,7 @@ Module normalized.
             [
               ("module_id",
                 M.call_closure (|
+                  Ty.path "move_core_types::language_storage::ModuleId",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "move_core_types::language_storage::ModuleId",
@@ -12713,6 +13601,7 @@ Module normalized.
                 |));
               ("function_ident",
                 M.call_closure (|
+                  Ty.path "move_core_types::identifier::Identifier",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
@@ -12761,6 +13650,10 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
@@ -12836,6 +13729,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (|
                     "core::cmp::Ord",
                     Ty.path "move_core_types::language_storage::ModuleId",
@@ -12881,6 +13775,7 @@ Module normalized.
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "core::cmp::Ordering",
                         M.get_trait_method (|
                           "core::cmp::Ord",
                           Ty.path "move_core_types::identifier::Identifier",
@@ -12952,6 +13847,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "move_core_types::language_storage::ModuleId",
@@ -13003,6 +13899,10 @@ Module normalized.
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "move_core_types::identifier::Identifier",
@@ -13121,6 +14021,7 @@ Module normalized.
           let other := M.alloc (| other |) in
           LogicalOp.and (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.path "move_core_types::language_storage::ModuleId",
@@ -13151,6 +14052,7 @@ Module normalized.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.path "move_core_types::identifier::Identifier",
@@ -13773,6 +14675,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::BrTrue"
                         [
                           M.call_closure (|
+                            Ty.path "u16",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u16",
@@ -13801,6 +14704,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::BrFalse"
                         [
                           M.call_closure (|
+                            Ty.path "u16",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u16",
@@ -13829,6 +14733,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::Branch"
                         [
                           M.call_closure (|
+                            Ty.path "u16",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u16",
@@ -13857,6 +14762,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::LdU8"
                         [
                           M.call_closure (|
+                            Ty.path "u8",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u8",
@@ -13885,6 +14791,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::LdU64"
                         [
                           M.call_closure (|
+                            Ty.path "u64",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u64",
@@ -13913,6 +14820,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::LdU128"
                         [
                           M.call_closure (|
+                            Ty.path "u128",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u128",
@@ -13974,6 +14882,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::LdConst"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Constant",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Constant",
@@ -14024,6 +14933,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::CopyLoc"
                         [
                           M.call_closure (|
+                            Ty.path "u8",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u8",
@@ -14052,6 +14962,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MoveLoc"
                         [
                           M.call_closure (|
+                            Ty.path "u8",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u8",
@@ -14080,6 +14991,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::StLoc"
                         [
                           M.call_closure (|
+                            Ty.path "u8",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u8",
@@ -14108,6 +15020,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::Call"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::FunctionRef",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::FunctionRef",
@@ -14136,6 +15049,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::CallGeneric"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_binary_format::normalized::FunctionRef";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.tuple
@@ -14174,6 +15098,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::Pack"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::identifier::Identifier",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
@@ -14202,6 +15127,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::PackGeneric"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.tuple
@@ -14240,6 +15176,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::Unpack"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::identifier::Identifier",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
@@ -14268,6 +15205,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::UnpackGeneric"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.tuple
@@ -14339,6 +15287,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MutBorrowLoc"
                         [
                           M.call_closure (|
+                            Ty.path "u8",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u8",
@@ -14367,6 +15316,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::ImmBorrowLoc"
                         [
                           M.call_closure (|
+                            Ty.path "u8",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u8",
@@ -14395,6 +15345,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MutBorrowField"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::FieldRef",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::FieldRef",
@@ -14423,6 +15374,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MutBorrowFieldGeneric"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_binary_format::normalized::FieldRef";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.tuple
@@ -14461,6 +15423,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::ImmBorrowField"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::FieldRef",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::FieldRef",
@@ -14489,6 +15452,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::ImmBorrowFieldGeneric"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_binary_format::normalized::FieldRef";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.tuple
@@ -14711,6 +15685,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecPack"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
@@ -14723,6 +15698,7 @@ Module normalized.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |);
                           M.call_closure (|
+                            Ty.path "u64",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u64",
@@ -14751,6 +15727,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecLen"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
@@ -14779,6 +15756,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecImmBorrow"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
@@ -14807,6 +15785,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecMutBorrow"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
@@ -14835,6 +15814,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecPushBack"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
@@ -14863,6 +15843,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecPopBack"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
@@ -14898,6 +15879,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecUnpack"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
@@ -14910,6 +15892,7 @@ Module normalized.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |) ]
                           |);
                           M.call_closure (|
+                            Ty.path "u64",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u64",
@@ -14938,6 +15921,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecSwap"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_binary_format::normalized::Type",
@@ -14966,6 +15950,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::LdU16"
                         [
                           M.call_closure (|
+                            Ty.path "u16",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u16",
@@ -14994,6 +15979,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::LdU32"
                         [
                           M.call_closure (|
+                            Ty.path "u32",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "u32",
@@ -15022,6 +16008,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::LdU256"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::u256::U256",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_core_types::u256::U256",
@@ -15083,6 +16070,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MutBorrowGlobalDeprecated"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::identifier::Identifier",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
@@ -15111,6 +16099,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MutBorrowGlobalGenericDeprecated"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.tuple
@@ -15149,6 +16148,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::ImmBorrowGlobalDeprecated"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::identifier::Identifier",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
@@ -15177,6 +16177,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::ImmBorrowGlobalGenericDeprecated"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.tuple
@@ -15215,6 +16226,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::ExistsDeprecated"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::identifier::Identifier",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
@@ -15243,6 +16255,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::ExistsGenericDeprecated"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.tuple
@@ -15281,6 +16304,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MoveFromDeprecated"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::identifier::Identifier",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
@@ -15309,6 +16333,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MoveFromGenericDeprecated"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.tuple
@@ -15347,6 +16382,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MoveToDeprecated"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::identifier::Identifier",
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.path "move_core_types::identifier::Identifier",
@@ -15375,6 +16411,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MoveToGenericDeprecated"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_trait_method (|
                               "core::clone::Clone",
                               Ty.tuple
@@ -15433,6 +16480,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Pop" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -15455,6 +16506,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Ret" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -15482,6 +16537,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -15513,6 +16572,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -15544,6 +16607,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -15575,6 +16642,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -15606,6 +16677,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -15637,6 +16712,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -15666,6 +16745,10 @@ Module normalized.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -15691,6 +16774,10 @@ Module normalized.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -15716,6 +16803,10 @@ Module normalized.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -15743,6 +16834,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -15772,6 +16867,10 @@ Module normalized.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -15797,6 +16896,10 @@ Module normalized.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -15824,6 +16927,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -15855,6 +16962,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -15886,6 +16997,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -15917,6 +17032,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -15948,6 +17067,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -15979,6 +17102,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -16010,6 +17137,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -16041,6 +17172,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -16072,6 +17207,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -16101,6 +17240,10 @@ Module normalized.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16126,6 +17269,10 @@ Module normalized.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16151,6 +17298,10 @@ Module normalized.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16178,6 +17329,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -16209,6 +17364,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -16240,6 +17399,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -16271,6 +17434,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -16302,6 +17469,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -16333,6 +17504,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -16359,6 +17534,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Add" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16381,6 +17560,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Sub" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16403,6 +17586,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Mul" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16425,6 +17612,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Mod" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16447,6 +17638,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Div" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16472,6 +17667,10 @@ Module normalized.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16497,6 +17696,10 @@ Module normalized.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16519,6 +17722,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Xor" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16541,6 +17748,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Or" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16563,6 +17774,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::And" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16585,6 +17800,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Not" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16607,6 +17826,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Eq" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16629,6 +17852,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Neq" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16651,6 +17878,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Lt" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16673,6 +17904,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Gt" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16695,6 +17930,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Le" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16717,6 +17956,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Ge" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16742,6 +17985,10 @@ Module normalized.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16764,6 +18011,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Nop" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16786,6 +18037,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Shl" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16808,6 +18063,10 @@ Module normalized.
                       M.is_struct_tuple (| γ, "move_binary_format::normalized::Bytecode::Shr" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -16842,6 +18101,10 @@ Module normalized.
                     let __self_1 := M.alloc (| γ1_1 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field2_finish",
@@ -16874,6 +18137,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -16905,6 +18172,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -16936,6 +18207,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -16967,6 +18242,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -16998,6 +18277,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -17036,6 +18319,10 @@ Module normalized.
                     let __self_1 := M.alloc (| γ1_1 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field2_finish",
@@ -17068,6 +18355,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -17099,6 +18390,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -17130,6 +18425,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -17161,6 +18460,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -17190,6 +18493,10 @@ Module normalized.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -17215,6 +18522,10 @@ Module normalized.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -17240,6 +18551,10 @@ Module normalized.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -17267,6 +18582,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -17298,6 +18617,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -17331,6 +18654,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -17362,6 +18689,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -17395,6 +18726,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -17426,6 +18761,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -17457,6 +18796,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -17488,6 +18831,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -17519,6 +18866,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -17550,6 +18901,10 @@ Module normalized.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -17594,9 +18949,10 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -17605,9 +18961,10 @@ Module normalized.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -17619,6 +18976,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
                   [
                     M.borrow (|
@@ -17661,6 +19019,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "u16",
@@ -17704,6 +19063,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "u16",
@@ -17747,6 +19107,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "u16",
@@ -17790,6 +19151,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "u8",
@@ -17833,6 +19195,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "u64",
@@ -17876,6 +19239,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "u128",
@@ -17919,6 +19283,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Constant",
@@ -17962,6 +19327,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "u8",
@@ -18005,6 +19371,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "u8",
@@ -18048,6 +19415,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "u8",
@@ -18091,6 +19459,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::FunctionRef",
@@ -18134,6 +19503,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.tuple
@@ -18187,6 +19557,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
@@ -18230,6 +19601,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.tuple
@@ -18283,6 +19655,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
@@ -18326,6 +19699,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.tuple
@@ -18379,6 +19753,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "u8",
@@ -18422,6 +19797,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "u8",
@@ -18465,6 +19841,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::FieldRef",
@@ -18508,6 +19885,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.tuple
@@ -18561,6 +19939,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::FieldRef",
@@ -18604,6 +19983,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.tuple
@@ -18672,6 +20052,7 @@ Module normalized.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     Ty.path "move_binary_format::normalized::Type",
@@ -18700,6 +20081,7 @@ Module normalized.
                                       M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "core::cmp::Ordering",
                                         M.get_trait_method (|
                                           "core::cmp::Ord",
                                           Ty.path "u64",
@@ -18749,6 +20131,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
@@ -18792,6 +20175,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
@@ -18835,6 +20219,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
@@ -18878,6 +20263,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
@@ -18921,6 +20307,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
@@ -18979,6 +20366,7 @@ Module normalized.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
                                     "core::cmp::Ord",
                                     Ty.path "move_binary_format::normalized::Type",
@@ -19007,6 +20395,7 @@ Module normalized.
                                       M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "core::cmp::Ordering",
                                         M.get_trait_method (|
                                           "core::cmp::Ord",
                                           Ty.path "u64",
@@ -19056,6 +20445,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_binary_format::normalized::Type",
@@ -19099,6 +20489,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "u16",
@@ -19142,6 +20533,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "u32",
@@ -19185,6 +20577,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::u256::U256",
@@ -19228,6 +20621,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
@@ -19271,6 +20665,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.tuple
@@ -19324,6 +20719,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
@@ -19367,6 +20763,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.tuple
@@ -19420,6 +20817,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
@@ -19463,6 +20861,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.tuple
@@ -19516,6 +20915,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
@@ -19559,6 +20959,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.tuple
@@ -19612,6 +21013,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "move_core_types::identifier::Identifier",
@@ -19655,6 +21057,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.tuple
@@ -19720,9 +21123,10 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -19731,9 +21135,10 @@ Module normalized.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -19745,6 +21150,7 @@ Module normalized.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.path "isize",
@@ -19801,6 +21207,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u16",
@@ -19844,6 +21254,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u16",
@@ -19887,6 +21301,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u16",
@@ -19930,6 +21348,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
@@ -19973,6 +21395,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u64",
@@ -20016,6 +21442,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u128",
@@ -20059,6 +21489,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Constant",
@@ -20102,6 +21536,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
@@ -20145,6 +21583,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
@@ -20188,6 +21630,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
@@ -20231,6 +21677,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::FunctionRef",
@@ -20274,6 +21724,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.tuple
@@ -20339,6 +21793,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
@@ -20382,6 +21840,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.tuple
@@ -20447,6 +21909,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
@@ -20490,6 +21956,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.tuple
@@ -20555,6 +22025,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
@@ -20598,6 +22072,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u8",
@@ -20641,6 +22119,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::FieldRef",
@@ -20684,6 +22166,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.tuple
@@ -20749,6 +22235,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::FieldRef",
@@ -20792,6 +22282,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.tuple
@@ -20872,6 +22366,10 @@ Module normalized.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "move_binary_format::normalized::Type",
@@ -20906,6 +22404,10 @@ Module normalized.
                                       M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ],
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           Ty.path "u64",
@@ -20955,6 +22457,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
@@ -20998,6 +22504,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
@@ -21041,6 +22551,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
@@ -21084,6 +22598,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
@@ -21127,6 +22645,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
@@ -21185,6 +22707,10 @@ Module normalized.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.get_trait_method (|
                                     "core::cmp::PartialOrd",
                                     Ty.path "move_binary_format::normalized::Type",
@@ -21219,6 +22745,10 @@ Module normalized.
                                       M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ],
                                         M.get_trait_method (|
                                           "core::cmp::PartialOrd",
                                           Ty.path "u64",
@@ -21268,6 +22798,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_binary_format::normalized::Type",
@@ -21311,6 +22845,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u16",
@@ -21354,6 +22892,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "u32",
@@ -21397,6 +22939,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::u256::U256",
@@ -21440,6 +22986,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
@@ -21483,6 +23033,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.tuple
@@ -21548,6 +23102,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
@@ -21591,6 +23149,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.tuple
@@ -21656,6 +23218,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
@@ -21699,6 +23265,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.tuple
@@ -21764,6 +23334,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
@@ -21807,6 +23381,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.tuple
@@ -21872,6 +23450,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::identifier::Identifier",
@@ -21915,6 +23497,10 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.tuple
@@ -22212,9 +23798,10 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -22223,9 +23810,10 @@ Module normalized.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -22264,6 +23852,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
@@ -22301,6 +23890,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
@@ -22338,6 +23928,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
@@ -22375,6 +23966,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
@@ -22412,6 +24004,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
@@ -22449,6 +24042,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u128" ],
@@ -22486,6 +24080,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -22531,6 +24126,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
@@ -22568,6 +24164,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
@@ -22605,6 +24202,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
@@ -22642,6 +24240,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -22687,6 +24286,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -22756,6 +24356,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -22801,6 +24402,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -22870,6 +24472,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -22915,6 +24518,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -22984,6 +24588,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
@@ -23021,6 +24626,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
@@ -23058,6 +24664,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -23103,6 +24710,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -23172,6 +24780,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -23217,6 +24826,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -23301,6 +24911,7 @@ Module normalized.
                             M.alloc (|
                               LogicalOp.and (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply
@@ -23325,6 +24936,7 @@ Module normalized.
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
@@ -23363,6 +24975,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -23408,6 +25021,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -23453,6 +25067,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -23498,6 +25113,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -23543,6 +25159,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -23603,6 +25220,7 @@ Module normalized.
                             M.alloc (|
                               LogicalOp.and (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply
@@ -23627,6 +25245,7 @@ Module normalized.
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
@@ -23665,6 +25284,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -23710,6 +25330,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
@@ -23747,6 +25368,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
@@ -23784,6 +25406,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -23829,6 +25452,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -23874,6 +25498,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -23943,6 +25568,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -23988,6 +25614,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -24057,6 +25684,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -24102,6 +25730,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -24171,6 +25800,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -24216,6 +25846,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -24285,6 +25916,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -24330,6 +25962,7 @@ Module normalized.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
@@ -24419,6 +26052,7 @@ Module normalized.
             [
               ("type_",
                 M.call_closure (|
+                  Ty.path "move_binary_format::normalized::Type",
                   M.get_associated_function (|
                     Ty.path "move_binary_format::normalized::Type",
                     "new",
@@ -24444,6 +26078,10 @@ Module normalized.
                 |));
               ("data",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -24542,6 +26180,7 @@ Module normalized.
             [
               ("file_format_version",
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "u32",
@@ -24569,6 +26208,7 @@ Module normalized.
                 |));
               ("address",
                 M.call_closure (|
+                  Ty.path "move_core_types::account_address::AccountAddress",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "move_core_types::account_address::AccountAddress",
@@ -24596,6 +26236,7 @@ Module normalized.
                 |));
               ("name",
                 M.call_closure (|
+                  Ty.path "move_core_types::identifier::Identifier",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "move_core_types::identifier::Identifier",
@@ -24623,6 +26264,13 @@ Module normalized.
                 |));
               ("dependencies",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_core_types::language_storage::ModuleId";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -24656,6 +26304,13 @@ Module normalized.
                 |));
               ("friends",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_core_types::language_storage::ModuleId";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -24689,6 +26344,14 @@ Module normalized.
                 |));
               ("structs",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "move_core_types::identifier::Identifier";
+                      Ty.path "move_binary_format::normalized::Struct";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -24723,6 +26386,14 @@ Module normalized.
                 |));
               ("functions",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "move_core_types::identifier::Identifier";
+                      Ty.path "move_binary_format::normalized::Function";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -24757,6 +26428,13 @@ Module normalized.
                 |));
               ("constants",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_binary_format::normalized::Constant";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -24811,7 +26489,16 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.read (|
-            let~ names :=
+            let~ names :
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 8 ]
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                  ] :=
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -24856,7 +26543,16 @@ Module normalized.
                   |)
                 |)
               |) in
-            let~ values :=
+            let~ values :
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ] ]
+                  ] :=
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -24983,6 +26679,10 @@ Module normalized.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_fields_finish",
@@ -25141,6 +26841,7 @@ Module normalized.
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::cmp::PartialEq",
                               Ty.path "move_core_types::account_address::AccountAddress",
@@ -25172,6 +26873,7 @@ Module normalized.
                       |),
                       ltac:(M.monadic
                         (M.call_closure (|
+                          Ty.path "bool",
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
                             Ty.path "move_core_types::identifier::Identifier",
@@ -25203,6 +26905,7 @@ Module normalized.
                     |),
                     ltac:(M.monadic
                       (M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
                           Ty.apply
@@ -25248,6 +26951,7 @@ Module normalized.
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
+                      Ty.path "bool",
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
                         Ty.apply
@@ -25293,6 +26997,7 @@ Module normalized.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
                       Ty.apply
@@ -25340,6 +27045,7 @@ Module normalized.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.apply
@@ -25387,6 +27093,7 @@ Module normalized.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.apply
@@ -25479,9 +27186,23 @@ Module normalized.
         ltac:(M.monadic
           (let m := M.alloc (| m |) in
           M.read (|
-            let~ friends :=
+            let~ friends :
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [
+                    Ty.path "move_core_types::language_storage::ModuleId";
+                    Ty.path "alloc::alloc::Global"
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_core_types::language_storage::ModuleId";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "immediate_friends",
@@ -25491,9 +27212,25 @@ Module normalized.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |) ]
                 |)
               |) in
-            let~ structs :=
+            let~ structs :
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [
+                    Ty.path "move_core_types::identifier::Identifier";
+                    Ty.path "move_binary_format::normalized::Struct";
+                    Ty.path "alloc::alloc::Global"
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "move_core_types::identifier::Identifier";
+                      Ty.path "move_binary_format::normalized::Struct";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
@@ -25537,6 +27274,30 @@ Module normalized.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::map::Map")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructDefinition" ];
+                          Ty.function
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                                ]
+                            ]
+                            (Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.path "move_binary_format::normalized::Struct"
+                              ])
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -25572,6 +27333,10 @@ Module normalized.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
@@ -25586,6 +27351,18 @@ Module normalized.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::file_format::StructDefinition"
+                                        ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "struct_defs",
@@ -25611,6 +27388,11 @@ Module normalized.
                                         ltac:(M.monadic
                                           (let d := M.copy (| γ |) in
                                           M.call_closure (|
+                                            Ty.tuple
+                                              [
+                                                Ty.path "move_core_types::identifier::Identifier";
+                                                Ty.path "move_binary_format::normalized::Struct"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::normalized::Struct",
                                               "new",
@@ -25637,9 +27419,23 @@ Module normalized.
                   ]
                 |)
               |) in
-            let~ dependencies :=
+            let~ dependencies :
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [
+                    Ty.path "move_core_types::language_storage::ModuleId";
+                    Ty.path "alloc::alloc::Global"
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_core_types::language_storage::ModuleId";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "immediate_dependencies",
@@ -25649,9 +27445,23 @@ Module normalized.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |) ]
                 |)
               |) in
-            let~ constants :=
+            let~ constants :
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [
+                    Ty.path "move_binary_format::normalized::Constant";
+                    Ty.path "alloc::alloc::Global"
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_binary_format::normalized::Constant";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
@@ -25690,6 +27500,26 @@ Module normalized.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::map::Map")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::Constant" ];
+                          Ty.function
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Constant" ]
+                                ]
+                            ]
+                            (Ty.path "move_binary_format::normalized::Constant")
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -25717,6 +27547,10 @@ Module normalized.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::Constant" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
@@ -25731,6 +27565,15 @@ Module normalized.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::Constant" ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "constant_pool",
@@ -25756,6 +27599,7 @@ Module normalized.
                                         ltac:(M.monadic
                                           (let constant := M.copy (| γ |) in
                                           M.call_closure (|
+                                            Ty.path "move_binary_format::normalized::Constant",
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::normalized::Constant",
                                               "new",
@@ -25782,9 +27626,25 @@ Module normalized.
                   ]
                 |)
               |) in
-            let~ functions :=
+            let~ functions :
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [
+                    Ty.path "move_core_types::identifier::Identifier";
+                    Ty.path "move_binary_format::normalized::Function";
+                    Ty.path "alloc::alloc::Global"
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "move_core_types::identifier::Identifier";
+                      Ty.path "move_binary_format::normalized::Function";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
                     Ty.apply
@@ -25828,6 +27688,31 @@ Module normalized.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::map::Map")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionDefinition" ];
+                          Ty.function
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ]
+                                ]
+                            ]
+                            (Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.path "move_binary_format::normalized::Function"
+                              ])
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply
@@ -25864,6 +27749,10 @@ Module normalized.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
@@ -25878,6 +27767,18 @@ Module normalized.
                               Pointer.Kind.Ref,
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::file_format::FunctionDefinition"
+                                        ]
+                                    ],
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "function_defs",
@@ -25903,6 +27804,11 @@ Module normalized.
                                         ltac:(M.monadic
                                           (let func_def := M.copy (| γ |) in
                                           M.call_closure (|
+                                            Ty.tuple
+                                              [
+                                                Ty.path "move_core_types::identifier::Identifier";
+                                                Ty.path "move_binary_format::normalized::Function"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.path "move_binary_format::normalized::Function",
                                               "new",
@@ -25935,6 +27841,7 @@ Module normalized.
                 [
                   ("file_format_version",
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "version",
@@ -25947,6 +27854,10 @@ Module normalized.
                     M.read (|
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::account_address::AccountAddress" ],
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "address",
@@ -25959,6 +27870,7 @@ Module normalized.
                     |));
                   ("name",
                     M.call_closure (|
+                      Ty.path "move_core_types::identifier::Identifier",
                       M.get_trait_method (|
                         "alloc::borrow::ToOwned",
                         Ty.path "move_core_types::identifier::IdentStr",
@@ -25973,6 +27885,10 @@ Module normalized.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_core_types::identifier::IdentStr" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "name",
@@ -26010,6 +27926,7 @@ Module normalized.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "move_core_types::language_storage::ModuleId",
             M.get_associated_function (|
               Ty.path "move_core_types::language_storage::ModuleId",
               "new",
@@ -26025,6 +27942,7 @@ Module normalized.
                 |)
               |);
               M.call_closure (|
+                Ty.path "move_core_types::identifier::Identifier",
                 M.get_trait_method (|
                   "core::clone::Clone",
                   Ty.path "move_core_types::identifier::Identifier",
@@ -26119,9 +28037,17 @@ Module normalized.
                         0
                       |) in
                     let shi := M.alloc (| γ1_0 |) in
-                    let~ s_handle :=
+                    let~ s_handle :
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_binary_format::file_format::StructHandle" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructHandle" ],
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "struct_handle_at",
@@ -26134,7 +28060,7 @@ Module normalized.
                           ]
                         |)
                       |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -26145,6 +28071,7 @@ Module normalized.
                                   (M.alloc (|
                                     UnOp.not (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -26179,9 +28106,11 @@ Module normalized.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (| "core::panicking::panic_fmt", [], [] |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "core::fmt::Arguments",
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_const",
@@ -26215,9 +28144,17 @@ Module normalized.
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
                       |) in
-                    let~ m_handle :=
+                    let~ m_handle :
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_binary_format::file_format::ModuleHandle" ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "module_handle_at",
@@ -26244,6 +28181,10 @@ Module normalized.
                             M.read (|
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::account_address::AccountAddress" ],
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "address_identifier_at",
@@ -26265,6 +28206,7 @@ Module normalized.
                             |));
                           ("module",
                             M.call_closure (|
+                              Ty.path "move_core_types::identifier::Identifier",
                               M.get_trait_method (|
                                 "alloc::borrow::ToOwned",
                                 Ty.path "move_core_types::identifier::IdentStr",
@@ -26279,6 +28221,10 @@ Module normalized.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "move_core_types::identifier::IdentStr" ],
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::CompiledModule",
                                         "identifier_at",
@@ -26305,6 +28251,7 @@ Module normalized.
                             |));
                           ("name",
                             M.call_closure (|
+                              Ty.path "move_core_types::identifier::Identifier",
                               M.get_trait_method (|
                                 "alloc::borrow::ToOwned",
                                 Ty.path "move_core_types::identifier::IdentStr",
@@ -26319,6 +28266,10 @@ Module normalized.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "move_core_types::identifier::IdentStr" ],
                                       M.get_associated_function (|
                                         Ty.path "move_binary_format::file_format::CompiledModule",
                                         "identifier_at",
@@ -26345,6 +28296,13 @@ Module normalized.
                             |));
                           ("type_arguments",
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.path "move_binary_format::normalized::Type";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
@@ -26386,9 +28344,17 @@ Module normalized.
                             let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let shi := M.alloc (| γ1_0 |) in
                             let type_actuals := M.alloc (| γ1_1 |) in
-                            let~ s_handle :=
+                            let~ s_handle :
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructHandle" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::StructHandle" ],
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "struct_handle_at",
@@ -26401,9 +28367,17 @@ Module normalized.
                                   ]
                                 |)
                               |) in
-                            let~ m_handle :=
+                            let~ m_handle :
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::ModuleHandle" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "module_handle_at",
@@ -26430,6 +28404,13 @@ Module normalized.
                                     M.read (|
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_core_types::account_address::AccountAddress"
+                                            ],
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -26455,6 +28436,7 @@ Module normalized.
                                     |));
                                   ("module",
                                     M.call_closure (|
+                                      Ty.path "move_core_types::identifier::Identifier",
                                       M.get_trait_method (|
                                         "alloc::borrow::ToOwned",
                                         Ty.path "move_core_types::identifier::IdentStr",
@@ -26469,6 +28451,10 @@ Module normalized.
                                           Pointer.Kind.Ref,
                                           M.deref (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "move_core_types::identifier::IdentStr" ],
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
@@ -26496,6 +28482,7 @@ Module normalized.
                                     |));
                                   ("name",
                                     M.call_closure (|
+                                      Ty.path "move_core_types::identifier::Identifier",
                                       M.get_trait_method (|
                                         "alloc::borrow::ToOwned",
                                         Ty.path "move_core_types::identifier::IdentStr",
@@ -26510,6 +28497,10 @@ Module normalized.
                                           Pointer.Kind.Ref,
                                           M.deref (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "move_core_types::identifier::IdentStr" ],
                                               M.get_associated_function (|
                                                 Ty.path
                                                   "move_binary_format::file_format::CompiledModule",
@@ -26537,6 +28528,13 @@ Module normalized.
                                     |));
                                   ("type_arguments",
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -26581,6 +28579,32 @@ Module normalized.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::iter::adapters::map::Map")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::slice::iter::Iter")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken"
+                                                ];
+                                              Ty.function
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ]
+                                                    ]
+                                                ]
+                                                (Ty.path "move_binary_format::normalized::Type")
+                                            ],
                                           M.get_trait_method (|
                                             "core::iter::traits::iterator::Iterator",
                                             Ty.apply
@@ -26614,6 +28638,13 @@ Module normalized.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::slice::iter::Iter")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "slice")
@@ -26631,6 +28662,18 @@ Module normalized.
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::SignatureToken"
+                                                            ]
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
                                                         Ty.apply
@@ -26671,6 +28714,8 @@ Module normalized.
                                                             ltac:(M.monadic
                                                               (let t := M.copy (| γ |) in
                                                               M.call_closure (|
+                                                                Ty.path
+                                                                  "move_binary_format::normalized::Type",
                                                                 M.get_associated_function (|
                                                                   Ty.path
                                                                     "move_binary_format::normalized::Type",
@@ -26813,6 +28858,13 @@ Module normalized.
                         "move_binary_format::normalized::Type::Vector"
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path "move_binary_format::normalized::Type";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
@@ -26827,6 +28879,7 @@ Module normalized.
                             |),
                             [
                               M.call_closure (|
+                                Ty.path "move_binary_format::normalized::Type",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "new",
@@ -26875,6 +28928,13 @@ Module normalized.
                         "move_binary_format::normalized::Type::Reference"
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path "move_binary_format::normalized::Type";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
@@ -26889,6 +28949,7 @@ Module normalized.
                             |),
                             [
                               M.call_closure (|
+                                Ty.path "move_binary_format::normalized::Type",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "new",
@@ -26922,6 +28983,13 @@ Module normalized.
                         "move_binary_format::normalized::Type::MutableReference"
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path "move_binary_format::normalized::Type";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
@@ -26936,6 +29004,7 @@ Module normalized.
                             |),
                             [
                               M.call_closure (|
+                                Ty.path "move_binary_format::normalized::Type",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "new",
@@ -27067,6 +29136,7 @@ Module normalized.
                     let type_arguments := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
@@ -27096,6 +29166,10 @@ Module normalized.
                             Pointer.Kind.MutRef,
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::normalized::Type" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -27110,6 +29184,15 @@ Module normalized.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [ Ty.path "move_binary_format::normalized::Type" ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -27151,6 +29234,7 @@ Module normalized.
                                           ltac:(M.monadic
                                             (let t := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "bool",
                                               M.get_associated_function (|
                                                 Ty.path "move_binary_format::normalized::Type",
                                                 "is_closed",
@@ -27217,6 +29301,7 @@ Module normalized.
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::normalized::Type",
                                     "is_closed",
@@ -27307,6 +29392,7 @@ Module normalized.
                               M.use
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::normalized::Type",
                                       "is_closed",
@@ -27486,6 +29572,14 @@ Module normalized.
                                         "move_core_types::language_storage::TypeTag::Vector"
                                         [
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "alloc::boxed::Box")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_core_types::language_storage::TypeTag";
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::boxed::Box")
@@ -27501,6 +29595,8 @@ Module normalized.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_core_types::language_storage::TypeTag",
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -27515,6 +29611,13 @@ Module normalized.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_core_types::language_storage::TypeTag"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::normalized::Type",
@@ -27574,6 +29677,14 @@ Module normalized.
                                         "move_core_types::language_storage::TypeTag::Struct"
                                         [
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "alloc::boxed::Box")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_core_types::language_storage::StructTag";
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::boxed::Box")
@@ -27596,6 +29707,14 @@ Module normalized.
                                                   ("name", M.read (| name |));
                                                   ("type_params",
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::language_storage::TypeTag";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::iter::traits::iterator::Iterator",
                                                         Ty.apply
@@ -27639,6 +29758,31 @@ Module normalized.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::iter::adapters::map::Map")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloc::vec::into_iter::IntoIter")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::normalized::Type";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ];
+                                                              Ty.function
+                                                                [
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::normalized::Type"
+                                                                    ]
+                                                                ]
+                                                                (Ty.path
+                                                                  "move_core_types::language_storage::TypeTag")
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::iter::traits::iterator::Iterator",
                                                             Ty.apply
@@ -27671,6 +29815,15 @@ Module normalized.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloc::vec::into_iter::IntoIter")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::normalized::Type";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::iter::traits::collect::IntoIterator",
                                                                 Ty.apply
@@ -27703,6 +29856,8 @@ Module normalized.
                                                                               (let t :=
                                                                                 M.copy (| γ |) in
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "move_core_types::language_storage::TypeTag",
                                                                                 M.get_associated_function (|
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -27718,6 +29873,14 @@ Module normalized.
                                                                                 |),
                                                                                 [
                                                                                   M.call_closure (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::option::Option")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_core_types::language_storage::TypeTag"
+                                                                                      ],
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "move_binary_format::normalized::Type",
@@ -27765,6 +29928,7 @@ Module normalized.
                                     M.alloc (|
                                       M.never_to_any (|
                                         M.call_closure (|
+                                          Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
                                             M.read (|
@@ -27818,6 +29982,16 @@ Module normalized.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::convert::Infallible" ];
+                            Ty.path "move_core_types::language_storage::TypeTag"
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -27832,6 +30006,10 @@ Module normalized.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_core_types::language_storage::TypeTag" ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::normalized::Type",
                               "into_type_tag",
@@ -27858,6 +30036,10 @@ Module normalized.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "move_core_types::language_storage::StructTag" ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -28055,6 +30237,7 @@ Module normalized.
                             ltac:(M.monadic
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "move_binary_format::normalized::Type",
                                   M.get_trait_method (|
                                     "core::clone::Clone",
                                     Ty.path "move_binary_format::normalized::Type",
@@ -28086,6 +30269,13 @@ Module normalized.
                         "move_binary_format::normalized::Type::Reference"
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path "move_binary_format::normalized::Type";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
@@ -28100,6 +30290,7 @@ Module normalized.
                             |),
                             [
                               M.call_closure (|
+                                Ty.path "move_binary_format::normalized::Type",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "subst",
@@ -28136,6 +30327,13 @@ Module normalized.
                         "move_binary_format::normalized::Type::MutableReference"
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path "move_binary_format::normalized::Type";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
@@ -28150,6 +30348,7 @@ Module normalized.
                             |),
                             [
                               M.call_closure (|
+                                Ty.path "move_binary_format::normalized::Type",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "subst",
@@ -28186,6 +30385,13 @@ Module normalized.
                         "move_binary_format::normalized::Type::Vector"
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path "move_binary_format::normalized::Type";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
@@ -28200,6 +30406,7 @@ Module normalized.
                             |),
                             [
                               M.call_closure (|
+                                Ty.path "move_binary_format::normalized::Type",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::normalized::Type",
                                   "subst",
@@ -28259,6 +30466,7 @@ Module normalized.
                           ("address", M.read (| M.deref (| M.read (| address |) |) |));
                           ("module",
                             M.call_closure (|
+                              Ty.path "move_core_types::identifier::Identifier",
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::identifier::Identifier",
@@ -28272,6 +30480,7 @@ Module normalized.
                             |));
                           ("name",
                             M.call_closure (|
+                              Ty.path "move_core_types::identifier::Identifier",
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::identifier::Identifier",
@@ -28285,6 +30494,13 @@ Module normalized.
                             |));
                           ("type_arguments",
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.path "move_binary_format::normalized::Type";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -28323,6 +30539,26 @@ Module normalized.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::iter::adapters::map::Map")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "move_binary_format::normalized::Type" ];
+                                      Ty.function
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "move_binary_format::normalized::Type" ]
+                                            ]
+                                        ]
+                                        (Ty.path "move_binary_format::normalized::Type")
+                                    ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply
@@ -28350,6 +30586,10 @@ Module normalized.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "move_binary_format::normalized::Type" ],
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "slice")
@@ -28364,6 +30604,16 @@ Module normalized.
                                           Pointer.Kind.Ref,
                                           M.deref (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "slice")
+                                                    []
+                                                    [ Ty.path "move_binary_format::normalized::Type"
+                                                    ]
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::deref::Deref",
                                                 Ty.apply
@@ -28403,6 +30653,8 @@ Module normalized.
                                                     ltac:(M.monadic
                                                       (let t := M.copy (| γ |) in
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::normalized::Type",
                                                         M.get_associated_function (|
                                                           Ty.path
                                                             "move_binary_format::normalized::Type",
@@ -28443,6 +30695,7 @@ Module normalized.
                     let i := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "move_binary_format::normalized::Type",
                         M.get_trait_method (|
                           "core::clone::Clone",
                           Ty.path "move_binary_format::normalized::Type",
@@ -28457,6 +30710,10 @@ Module normalized.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::normalized::Type" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
@@ -28473,6 +30730,15 @@ Module normalized.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "move_binary_format::normalized::Type" ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -28537,6 +30803,7 @@ Module normalized.
             [
               ("name",
                 M.call_closure (|
+                  Ty.path "move_core_types::identifier::Identifier",
                   M.get_trait_method (|
                     "alloc::borrow::ToOwned",
                     Ty.path "move_core_types::identifier::IdentStr",
@@ -28551,6 +30818,10 @@ Module normalized.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::identifier::IdentStr" ],
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "identifier_at",
@@ -28574,6 +30845,7 @@ Module normalized.
                 |));
               ("type_",
                 M.call_closure (|
+                  Ty.path "move_binary_format::normalized::Type",
                   M.get_associated_function (|
                     Ty.path "move_binary_format::normalized::Type",
                     "new",
@@ -28640,9 +30912,17 @@ Module normalized.
           (let m := M.alloc (| m |) in
           let def := M.alloc (| def |) in
           M.read (|
-            let~ handle :=
+            let~ handle :
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "move_binary_format::file_format::StructHandle" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::StructHandle" ],
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "struct_handle_at",
@@ -28661,7 +30941,12 @@ Module normalized.
                   ]
                 |)
               |) in
-            let~ fields :=
+            let~ fields :
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "move_binary_format::normalized::Field"; Ty.path "alloc::alloc::Global"
+                  ] :=
               M.copy (|
                 M.match_operator (|
                   M.alloc (|
@@ -28685,6 +30970,13 @@ Module normalized.
                           |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.path "move_binary_format::normalized::Field";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -28712,6 +31004,13 @@ Module normalized.
                         let fields := M.alloc (| γ1_0 |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.path "move_binary_format::normalized::Field";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -28753,6 +31052,30 @@ Module normalized.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::map::Map")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::FieldDefinition"
+                                      ];
+                                    Ty.function
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::FieldDefinition"
+                                              ]
+                                          ]
+                                      ]
+                                      (Ty.path "move_binary_format::normalized::Field")
+                                  ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -28783,6 +31106,11 @@ Module normalized.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::FieldDefinition"
+                                      ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -28798,6 +31126,18 @@ Module normalized.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FieldDefinition"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::deref::Deref",
                                               Ty.apply
@@ -28838,6 +31178,8 @@ Module normalized.
                                                   ltac:(M.monadic
                                                     (let f := M.copy (| γ |) in
                                                     M.call_closure (|
+                                                      Ty.path
+                                                        "move_binary_format::normalized::Field",
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_binary_format::normalized::Field",
@@ -28868,9 +31210,10 @@ Module normalized.
                   ]
                 |)
               |) in
-            let~ name :=
+            let~ name : Ty.path "move_core_types::identifier::Identifier" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "move_core_types::identifier::Identifier",
                   M.get_trait_method (|
                     "alloc::borrow::ToOwned",
                     Ty.path "move_core_types::identifier::IdentStr",
@@ -28885,6 +31228,10 @@ Module normalized.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::identifier::IdentStr" ],
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "identifier_at",
@@ -28907,7 +31254,7 @@ Module normalized.
                   ]
                 |)
               |) in
-            let~ s :=
+            let~ s : Ty.path "move_binary_format::normalized::Struct" :=
               M.alloc (|
                 Value.StructRecord
                   "move_binary_format::normalized::Struct"
@@ -28922,6 +31269,13 @@ Module normalized.
                       |));
                     ("type_parameters",
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::StructTypeParameter";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_trait_method (|
                           "core::clone::Clone",
                           Ty.apply
@@ -28971,6 +31325,11 @@ Module normalized.
           (let m := M.alloc (| m |) in
           let idx := M.alloc (| idx |) in
           M.call_closure (|
+            Ty.tuple
+              [
+                Ty.path "move_core_types::identifier::Identifier";
+                Ty.path "move_binary_format::normalized::Struct"
+              ],
             M.get_associated_function (|
               Ty.path "move_binary_format::normalized::Struct",
               "new",
@@ -28983,6 +31342,10 @@ Module normalized.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "struct_def_at",
@@ -29015,6 +31378,29 @@ Module normalized.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::iter::adapters::map::Map")
+              []
+              [
+                Ty.apply
+                  (Ty.path "core::slice::iter::Iter")
+                  []
+                  [ Ty.path "move_binary_format::file_format::StructTypeParameter" ];
+                Ty.function
+                  [
+                    Ty.tuple
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
+                      ]
+                  ]
+                  (Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::AbilitySet" ])
+              ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -29045,6 +31431,10 @@ Module normalized.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::slice::iter::Iter")
+                  []
+                  [ Ty.path "move_binary_format::file_format::StructTypeParameter" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "slice")
@@ -29059,6 +31449,15 @@ Module normalized.
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
+                          ],
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ty.apply
@@ -29169,9 +31568,17 @@ Module normalized.
           (let m := M.alloc (| m |) in
           let def := M.alloc (| def |) in
           M.read (|
-            let~ fhandle :=
+            let~ fhandle :
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "function_handle_at",
@@ -29190,9 +31597,10 @@ Module normalized.
                   ]
                 |)
               |) in
-            let~ name :=
+            let~ name : Ty.path "move_core_types::identifier::Identifier" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "move_core_types::identifier::Identifier",
                   M.get_trait_method (|
                     "alloc::borrow::ToOwned",
                     Ty.path "move_core_types::identifier::IdentStr",
@@ -29207,6 +31615,10 @@ Module normalized.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::identifier::IdentStr" ],
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "identifier_at",
@@ -29229,9 +31641,23 @@ Module normalized.
                   ]
                 |)
               |) in
-            let~ code :=
+            let~ code :
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [
+                    Ty.path "move_binary_format::normalized::Bytecode";
+                    Ty.path "alloc::alloc::Global"
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.path "move_binary_format::normalized::Bytecode";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
@@ -29251,6 +31677,18 @@ Module normalized.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.path "move_binary_format::normalized::Bytecode";
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -29292,6 +31730,15 @@ Module normalized.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::CodeUnit" ]
+                            ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -29325,6 +31772,13 @@ Module normalized.
                                         ltac:(M.monadic
                                           (let code := M.copy (| γ |) in
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "move_binary_format::normalized::Bytecode";
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
                                             M.get_trait_method (|
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
@@ -29371,6 +31825,33 @@ Module normalized.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::iter::adapters::map::Map")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::slice::iter::Iter")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::Bytecode"
+                                                      ];
+                                                    Ty.function
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::Bytecode"
+                                                              ]
+                                                          ]
+                                                      ]
+                                                      (Ty.path
+                                                        "move_binary_format::normalized::Bytecode")
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -29406,6 +31887,13 @@ Module normalized.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::slice::iter::Iter")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::Bytecode"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "slice")
@@ -29423,6 +31911,18 @@ Module normalized.
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::Bytecode"
+                                                                  ]
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::deref::Deref",
                                                               Ty.apply
@@ -29468,6 +31968,8 @@ Module normalized.
                                                                     (let bytecode :=
                                                                       M.copy (| γ |) in
                                                                     M.call_closure (|
+                                                                      Ty.path
+                                                                        "move_binary_format::normalized::Bytecode",
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::normalized::Bytecode",
@@ -29508,7 +32010,7 @@ Module normalized.
                   ]
                 |)
               |) in
-            let~ f :=
+            let~ f : Ty.path "move_binary_format::normalized::Function" :=
               M.alloc (|
                 Value.StructRecord
                   "move_binary_format::normalized::Function"
@@ -29531,6 +32033,13 @@ Module normalized.
                       |));
                     ("type_parameters",
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::AbilitySet";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_trait_method (|
                           "core::clone::Clone",
                           Ty.apply
@@ -29559,6 +32068,13 @@ Module normalized.
                       |));
                     ("parameters",
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path "move_binary_format::normalized::Type";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
@@ -29598,6 +32114,29 @@ Module normalized.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::map::Map")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ];
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]
+                                      ]
+                                  ]
+                                  (Ty.path "move_binary_format::normalized::Type")
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -29628,6 +32167,10 @@ Module normalized.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -29642,6 +32185,18 @@ Module normalized.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -29664,6 +32219,13 @@ Module normalized.
                                             M.SubPointer.get_struct_tuple_field (|
                                               M.deref (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::Signature"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "move_binary_format::file_format::CompiledModule",
@@ -29709,6 +32271,7 @@ Module normalized.
                                               ltac:(M.monadic
                                                 (let s := M.copy (| γ |) in
                                                 M.call_closure (|
+                                                  Ty.path "move_binary_format::normalized::Type",
                                                   M.get_associated_function (|
                                                     Ty.path "move_binary_format::normalized::Type",
                                                     "new",
@@ -29736,6 +32299,13 @@ Module normalized.
                       |));
                     ("return_",
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path "move_binary_format::normalized::Type";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
@@ -29775,6 +32345,29 @@ Module normalized.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::map::Map")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ];
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]
+                                      ]
+                                  ]
+                                  (Ty.path "move_binary_format::normalized::Type")
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -29805,6 +32398,10 @@ Module normalized.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -29819,6 +32416,18 @@ Module normalized.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -29841,6 +32450,13 @@ Module normalized.
                                             M.SubPointer.get_struct_tuple_field (|
                                               M.deref (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::Signature"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "move_binary_format::file_format::CompiledModule",
@@ -29886,6 +32502,7 @@ Module normalized.
                                               ltac:(M.monadic
                                                 (let s := M.copy (| γ |) in
                                                 M.call_closure (|
+                                                  Ty.path "move_binary_format::normalized::Type",
                                                   M.get_associated_function (|
                                                     Ty.path "move_binary_format::normalized::Type",
                                                     "new",
@@ -29941,11 +32558,15 @@ Module normalized.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -29984,10 +32605,22 @@ Module normalized.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionDefinition"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -30040,6 +32673,7 @@ Module normalized.
                                                     M.use
                                                       (M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "bool",
                                                           M.get_trait_method (|
                                                             "core::cmp::PartialEq",
                                                             Ty.apply
@@ -30068,6 +32702,13 @@ Module normalized.
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_core_types::identifier::IdentStr"
+                                                                    ],
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_binary_format::file_format::CompiledModule",
@@ -30084,6 +32725,13 @@ Module normalized.
                                                                       M.SubPointer.get_struct_record_field (|
                                                                         M.deref (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::FunctionHandle"
+                                                                              ],
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "move_binary_format::file_format::CompiledModule",
@@ -30143,6 +32791,13 @@ Module normalized.
                                                                 M.SubPointer.get_tuple_field (|
                                                                   M.alloc (|
                                                                     M.call_closure (|
+                                                                      Ty.tuple
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_core_types::identifier::Identifier";
+                                                                          Ty.path
+                                                                            "move_binary_format::normalized::Function"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::normalized::Function",
@@ -30329,6 +32984,13 @@ Module normalized.
                         "move_binary_format::normalized::Type::Vector"
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path "move_binary_format::normalized::Type";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "alloc::boxed::Box")
@@ -30343,6 +33005,7 @@ Module normalized.
                             |),
                             [
                               M.call_closure (|
+                                Ty.path "move_binary_format::normalized::Type",
                                 M.get_trait_method (|
                                   "core::convert::From",
                                   Ty.path "move_binary_format::normalized::Type",
@@ -30397,6 +33060,13 @@ Module normalized.
                             |));
                           ("type_arguments",
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.path "move_binary_format::normalized::Type";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -30433,6 +33103,24 @@ Module normalized.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::iter::adapters::map::Map")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::language_storage::TypeTag";
+                                          Ty.path "alloc::alloc::Global"
+                                        ];
+                                      Ty.function
+                                        [
+                                          Ty.tuple
+                                            [ Ty.path "move_core_types::language_storage::TypeTag" ]
+                                        ]
+                                        (Ty.path "move_binary_format::normalized::Type")
+                                    ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply
@@ -30458,6 +33146,13 @@ Module normalized.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::language_storage::TypeTag";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::collect::IntoIterator",
                                         Ty.apply
@@ -30496,6 +33191,8 @@ Module normalized.
                                                     ltac:(M.monadic
                                                       (let ty := M.copy (| γ |) in
                                                       M.call_closure (|
+                                                        Ty.path
+                                                          "move_binary_format::normalized::Type",
                                                         M.get_trait_method (|
                                                           "core::convert::Into",
                                                           Ty.path
@@ -30558,6 +33255,7 @@ Module normalized.
             [
               ("struct_name",
                 M.call_closure (|
+                  Ty.path "move_core_types::identifier::Identifier",
                   M.get_trait_method (|
                     "alloc::borrow::ToOwned",
                     Ty.path "move_core_types::identifier::IdentStr",
@@ -30572,6 +33270,10 @@ Module normalized.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::identifier::IdentStr" ],
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "struct_name",
@@ -30620,6 +33322,7 @@ Module normalized.
           (let m := M.alloc (| m |) in
           let field_handle_idx := M.alloc (| field_handle_idx |) in
           M.call_closure (|
+            Ty.path "move_binary_format::normalized::FieldRef",
             M.get_associated_function (|
               Ty.path "move_binary_format::normalized::FieldRef",
               "new",
@@ -30632,6 +33335,10 @@ Module normalized.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::FieldHandle" ],
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "field_handle_at",
@@ -30676,6 +33383,7 @@ Module normalized.
             [
               ("module_id",
                 M.call_closure (|
+                  Ty.path "move_core_types::language_storage::ModuleId",
                   M.get_associated_function (|
                     Ty.path "move_binary_format::file_format::CompiledModule",
                     "module_id_for_handle",
@@ -30688,6 +33396,10 @@ Module normalized.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "module_handle_at",
@@ -30711,6 +33423,7 @@ Module normalized.
                 |));
               ("function_ident",
                 M.call_closure (|
+                  Ty.path "move_core_types::identifier::Identifier",
                   M.get_trait_method (|
                     "alloc::borrow::ToOwned",
                     Ty.path "move_core_types::identifier::IdentStr",
@@ -30725,6 +33438,10 @@ Module normalized.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::identifier::IdentStr" ],
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "identifier_at",
@@ -30765,6 +33482,7 @@ Module normalized.
           (let m := M.alloc (| m |) in
           let function_handle_idx := M.alloc (| function_handle_idx |) in
           M.call_closure (|
+            Ty.path "move_binary_format::normalized::FunctionRef",
             M.get_associated_function (|
               Ty.path "move_binary_format::normalized::FunctionRef",
               "new",
@@ -30777,6 +33495,10 @@ Module normalized.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "function_handle_at",
@@ -31436,6 +34158,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::LdConst"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Constant",
                             M.get_associated_function (|
                               Ty.path "move_binary_format::normalized::Constant",
                               "new",
@@ -31448,6 +34171,10 @@ Module normalized.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::Constant" ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "constant_at",
@@ -31480,6 +34207,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::Call"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::FunctionRef",
                             M.get_associated_function (|
                               Ty.path "move_binary_format::normalized::FunctionRef",
                               "from_idx",
@@ -31506,6 +34234,10 @@ Module normalized.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionInstantiation" ],
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "function_instantiation_at",
@@ -31536,9 +34268,17 @@ Module normalized.
                               |) in
                             let handle := M.alloc (| γ1_0 |) in
                             let type_parameters := M.alloc (| γ1_1 |) in
-                            let~ type_params :=
+                            let~ type_params :
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Signature" ],
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::file_format::CompiledModule",
                                     "signature_at",
@@ -31558,6 +34298,7 @@ Module normalized.
                                   Value.Tuple
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::normalized::FunctionRef",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::normalized::FunctionRef",
                                           "from_idx",
@@ -31576,6 +34317,13 @@ Module normalized.
                                         ]
                                       |);
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.path "move_binary_format::normalized::Type";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -31620,6 +34368,32 @@ Module normalized.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::iter::adapters::map::Map")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::slice::iter::Iter")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ];
+                                                Ty.function
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::SignatureToken"
+                                                          ]
+                                                      ]
+                                                  ]
+                                                  (Ty.path "move_binary_format::normalized::Type")
+                                              ],
                                             M.get_trait_method (|
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
@@ -31653,6 +34427,13 @@ Module normalized.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::slice::iter::Iter")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "slice")
@@ -31670,6 +34451,18 @@ Module normalized.
                                                     Pointer.Kind.Ref,
                                                     M.deref (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "slice")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::SignatureToken"
+                                                              ]
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::deref::Deref",
                                                           Ty.apply
@@ -31716,6 +34509,8 @@ Module normalized.
                                                               ltac:(M.monadic
                                                                 (let tok := M.copy (| γ |) in
                                                                 M.call_closure (|
+                                                                  Ty.path
+                                                                    "move_binary_format::normalized::Type",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "move_binary_format::normalized::Type",
@@ -31762,6 +34557,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::Pack"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::identifier::Identifier",
                             M.get_trait_method (|
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
@@ -31776,6 +34572,10 @@ Module normalized.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::IdentStr" ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "struct_name",
@@ -31808,6 +34608,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::PackGeneric"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_function (|
                               "move_binary_format::normalized::struct_instantiation",
                               [],
@@ -31835,6 +34646,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::Unpack"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::identifier::Identifier",
                             M.get_trait_method (|
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
@@ -31849,6 +34661,10 @@ Module normalized.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::IdentStr" ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "struct_name",
@@ -31881,6 +34697,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::UnpackGeneric"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_function (|
                               "move_binary_format::normalized::struct_instantiation",
                               [],
@@ -31938,6 +34765,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MutBorrowField"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::FieldRef",
                             M.get_associated_function (|
                               Ty.path "move_binary_format::normalized::FieldRef",
                               "from_idx",
@@ -31966,6 +34794,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MutBorrowFieldGeneric"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_binary_format::normalized::FieldRef";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_function (|
                               "move_binary_format::normalized::field_instantiation",
                               [],
@@ -31993,6 +34832,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::ImmBorrowField"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::FieldRef",
                             M.get_associated_function (|
                               Ty.path "move_binary_format::normalized::FieldRef",
                               "from_idx",
@@ -32021,6 +34861,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::ImmBorrowFieldGeneric"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_binary_format::normalized::FieldRef";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_function (|
                               "move_binary_format::normalized::field_instantiation",
                               [],
@@ -32048,6 +34899,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MutBorrowGlobalDeprecated"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::identifier::Identifier",
                             M.get_trait_method (|
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
@@ -32062,6 +34914,10 @@ Module normalized.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::IdentStr" ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "struct_name",
@@ -32094,6 +34950,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MutBorrowGlobalGenericDeprecated"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_function (|
                               "move_binary_format::normalized::struct_instantiation",
                               [],
@@ -32121,6 +34988,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::ImmBorrowGlobalDeprecated"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::identifier::Identifier",
                             M.get_trait_method (|
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
@@ -32135,6 +35003,10 @@ Module normalized.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::IdentStr" ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "struct_name",
@@ -32167,6 +35039,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::ImmBorrowGlobalGenericDeprecated"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_function (|
                               "move_binary_format::normalized::struct_instantiation",
                               [],
@@ -32194,6 +35077,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::ExistsDeprecated"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::identifier::Identifier",
                             M.get_trait_method (|
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
@@ -32208,6 +35092,10 @@ Module normalized.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::IdentStr" ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "struct_name",
@@ -32240,6 +35128,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::ExistsGenericDeprecated"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_function (|
                               "move_binary_format::normalized::struct_instantiation",
                               [],
@@ -32267,6 +35166,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MoveFromDeprecated"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::identifier::Identifier",
                             M.get_trait_method (|
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
@@ -32281,6 +35181,10 @@ Module normalized.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::IdentStr" ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "struct_name",
@@ -32313,6 +35217,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MoveFromGenericDeprecated"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_function (|
                               "move_binary_format::normalized::struct_instantiation",
                               [],
@@ -32340,6 +35255,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MoveToDeprecated"
                         [
                           M.call_closure (|
+                            Ty.path "move_core_types::identifier::Identifier",
                             M.get_trait_method (|
                               "alloc::borrow::ToOwned",
                               Ty.path "move_core_types::identifier::IdentStr",
@@ -32354,6 +35270,10 @@ Module normalized.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::IdentStr" ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "struct_name",
@@ -32386,6 +35306,17 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::MoveToGenericDeprecated"
                         [
                           M.call_closure (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
                             M.get_function (|
                               "move_binary_format::normalized::struct_instantiation",
                               [],
@@ -32420,6 +35351,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecPack"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
                               [],
@@ -32448,6 +35380,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecLen"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
                               [],
@@ -32475,6 +35408,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecImmBorrow"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
                               [],
@@ -32502,6 +35436,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecMutBorrow"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
                               [],
@@ -32529,6 +35464,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecPushBack"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
                               [],
@@ -32556,6 +35492,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecPopBack"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
                               [],
@@ -32590,6 +35527,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecUnpack"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
                               [],
@@ -32618,6 +35556,7 @@ Module normalized.
                         "move_binary_format::normalized::Bytecode::VecSwap"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::normalized::Type",
                             M.get_function (|
                               "move_binary_format::normalized::signature_to_single_type",
                               [],
@@ -32728,10 +35667,23 @@ Module normalized.
                         let module := M.alloc (| γ1_1 |) in
                         let name := M.alloc (| γ1_2 |) in
                         let type_arguments := M.alloc (| γ1_3 |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::fmt::Error"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -32746,6 +35698,10 @@ Module normalized.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Formatter",
                                       "write_fmt",
@@ -32758,6 +35714,7 @@ Module normalized.
                                         M.deref (| M.read (| f |) |)
                                       |);
                                       M.call_closure (|
+                                        Ty.path "core::fmt::Arguments",
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
@@ -32790,6 +35747,7 @@ Module normalized.
                                                   Value.Array
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path "core::fmt::rt::Argument",
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
@@ -32804,6 +35762,7 @@ Module normalized.
                                                                 Pointer.Kind.Ref,
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "alloc::string::String",
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "move_core_types::account_address::AccountAddress",
@@ -32827,6 +35786,7 @@ Module normalized.
                                                         ]
                                                       |);
                                                       M.call_closure (|
+                                                        Ty.path "core::fmt::rt::Argument",
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
@@ -32854,6 +35814,7 @@ Module normalized.
                                                         ]
                                                       |);
                                                       M.call_closure (|
+                                                        Ty.path "core::fmt::rt::Argument",
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
@@ -32904,6 +35865,10 @@ Module normalized.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -32942,7 +35907,7 @@ Module normalized.
                                   val))
                             ]
                           |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
                             [
@@ -32951,6 +35916,15 @@ Module normalized.
                                   (let γ :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_binary_format::normalized::Type" ]
+                                          ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "slice")
@@ -32965,6 +35939,18 @@ Module normalized.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::normalized::Type"
+                                                      ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::deref::Deref",
                                                   Ty.apply
@@ -33000,10 +35986,23 @@ Module normalized.
                                       0
                                     |) in
                                   let first_ty := M.copy (| γ0_0 |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "core::fmt::Error"
+                                                ];
+                                              Ty.tuple []
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -33018,6 +36017,10 @@ Module normalized.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Formatter",
                                                 "write_fmt",
@@ -33030,6 +36033,7 @@ Module normalized.
                                                   M.deref (| M.read (| f |) |)
                                                 |);
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_const",
@@ -33071,6 +36075,10 @@ Module normalized.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -33110,10 +36118,23 @@ Module normalized.
                                             val))
                                       ]
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "core::fmt::Error"
+                                                ];
+                                              Ty.tuple []
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -33128,6 +36149,10 @@ Module normalized.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Formatter",
                                                 "write_fmt",
@@ -33140,6 +36165,7 @@ Module normalized.
                                                   M.deref (| M.read (| f |) |)
                                                 |);
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1",
@@ -33168,6 +36194,7 @@ Module normalized.
                                                             Value.Array
                                                               [
                                                                 M.call_closure (|
+                                                                  Ty.path "core::fmt::rt::Argument",
                                                                   M.get_associated_function (|
                                                                     Ty.path
                                                                       "core::fmt::rt::Argument",
@@ -33222,6 +36249,10 @@ Module normalized.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -33261,11 +36292,20 @@ Module normalized.
                                             val))
                                       ]
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.use
                                       (M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::iter::adapters::skip::Skip")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::slice::iter::Iter")
+                                                  []
+                                                  [ Ty.path "move_binary_format::normalized::Type" ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::iter::traits::collect::IntoIterator",
                                               Ty.apply
@@ -33286,6 +36326,18 @@ Module normalized.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::iter::adapters::skip::Skip")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::slice::iter::Iter")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::normalized::Type"
+                                                      ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -33301,6 +36353,13 @@ Module normalized.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::slice::iter::Iter")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::normalized::Type"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "slice")
@@ -33318,6 +36377,18 @@ Module normalized.
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::normalized::Type"
+                                                                  ]
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::deref::Deref",
                                                               Ty.apply
@@ -33359,10 +36430,22 @@ Module normalized.
                                               (let iter := M.copy (| γ |) in
                                               M.loop (|
                                                 ltac:(M.monadic
-                                                  (let~ _ :=
+                                                  (let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::normalized::Type"
+                                                                ]
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::iter::traits::iterator::Iterator",
                                                             Ty.apply
@@ -33420,10 +36503,27 @@ Module normalized.
                                                                 0
                                                               |) in
                                                             let ty := M.copy (| γ0_0 |) in
-                                                            let~ _ :=
+                                                            let~ _ : Ty.tuple [] :=
                                                               M.match_operator (|
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::ops::control_flow::ControlFlow")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::convert::Infallible";
+                                                                            Ty.path
+                                                                              "core::fmt::Error"
+                                                                          ];
+                                                                        Ty.tuple []
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::try_trait::Try",
                                                                       Ty.apply
@@ -33442,6 +36542,15 @@ Module normalized.
                                                                     |),
                                                                     [
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple [];
+                                                                            Ty.path
+                                                                              "core::fmt::Error"
+                                                                          ],
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "core::fmt::Formatter",
@@ -33457,6 +36566,8 @@ Module normalized.
                                                                             |)
                                                                           |);
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "core::fmt::Arguments",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "core::fmt::Arguments",
@@ -33491,6 +36602,8 @@ Module normalized.
                                                                                       Value.Array
                                                                                         [
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "core::fmt::rt::Argument",
                                                                                             M.get_associated_function (|
                                                                                               Ty.path
                                                                                                 "core::fmt::rt::Argument",
@@ -33547,6 +36660,15 @@ Module normalized.
                                                                           M.read (|
                                                                             M.return_ (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "core::fmt::Error"
+                                                                                  ],
                                                                                 M.get_trait_method (|
                                                                                   "core::ops::try_trait::FromResidual",
                                                                                   Ty.apply
@@ -33605,10 +36727,23 @@ Module normalized.
                                               |)))
                                         ]
                                       |)) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "core::fmt::Error"
+                                                ];
+                                              Ty.tuple []
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             Ty.apply
@@ -33623,6 +36758,10 @@ Module normalized.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Formatter",
                                                 "write_fmt",
@@ -33635,6 +36774,7 @@ Module normalized.
                                                   M.deref (| M.read (| f |) |)
                                                 |);
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_const",
@@ -33676,6 +36816,10 @@ Module normalized.
                                                 M.read (|
                                                   M.return_ (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
                                                         Ty.apply
@@ -33734,6 +36878,10 @@ Module normalized.
                         let ty := M.alloc (| γ1_0 |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
@@ -33743,6 +36891,7 @@ Module normalized.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
@@ -33774,6 +36923,7 @@ Module normalized.
                                           Value.Array
                                             [
                                               M.call_closure (|
+                                                Ty.path "core::fmt::rt::Argument",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
@@ -33820,6 +36970,10 @@ Module normalized.
                           M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U8" |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
@@ -33829,6 +36983,7 @@ Module normalized.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
@@ -33857,6 +37012,10 @@ Module normalized.
                           M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U16" |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
@@ -33866,6 +37025,7 @@ Module normalized.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
@@ -33896,6 +37056,10 @@ Module normalized.
                           M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U32" |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
@@ -33905,6 +37069,7 @@ Module normalized.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
@@ -33935,6 +37100,10 @@ Module normalized.
                           M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U64" |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
@@ -33944,6 +37113,7 @@ Module normalized.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
@@ -33974,6 +37144,10 @@ Module normalized.
                           M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U128" |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
@@ -33983,6 +37157,7 @@ Module normalized.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
@@ -34013,6 +37188,10 @@ Module normalized.
                           M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::U256" |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
@@ -34022,6 +37201,7 @@ Module normalized.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
@@ -34055,6 +37235,10 @@ Module normalized.
                           |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
@@ -34064,6 +37248,7 @@ Module normalized.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
@@ -34097,6 +37282,10 @@ Module normalized.
                           |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
@@ -34106,6 +37295,7 @@ Module normalized.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
@@ -34136,6 +37326,10 @@ Module normalized.
                           M.is_struct_tuple (| γ, "move_binary_format::normalized::Type::Bool" |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
@@ -34145,6 +37339,7 @@ Module normalized.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
@@ -34180,6 +37375,10 @@ Module normalized.
                         let r := M.alloc (| γ1_0 |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
@@ -34189,6 +37388,7 @@ Module normalized.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
@@ -34214,6 +37414,7 @@ Module normalized.
                                           Value.Array
                                             [
                                               M.call_closure (|
+                                                Ty.path "core::fmt::rt::Argument",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
@@ -34263,6 +37464,10 @@ Module normalized.
                         let r := M.alloc (| γ1_0 |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
@@ -34272,6 +37477,7 @@ Module normalized.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
@@ -34299,6 +37505,7 @@ Module normalized.
                                           Value.Array
                                             [
                                               M.call_closure (|
+                                                Ty.path "core::fmt::rt::Argument",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_display",
@@ -34348,6 +37555,10 @@ Module normalized.
                         let i := M.alloc (| γ1_0 |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_fmt",
@@ -34357,6 +37568,7 @@ Module normalized.
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
@@ -34382,6 +37594,7 @@ Module normalized.
                                           Value.Array
                                             [
                                               M.call_closure (|
+                                                Ty.path "core::fmt::rt::Argument",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_debug",
@@ -34449,6 +37662,10 @@ Module normalized.
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "move_binary_format::file_format::StructDefInstantiation" ],
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "struct_instantiation_at",
@@ -34482,6 +37699,11 @@ Module normalized.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple
+                          [
+                            Ty.path "move_core_types::identifier::Identifier";
+                            Ty.path "move_binary_format::normalized::Struct"
+                          ],
                         M.get_associated_function (|
                           Ty.path "move_binary_format::normalized::Struct",
                           "new",
@@ -34494,6 +37716,10 @@ Module normalized.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "struct_def_at",
@@ -34516,9 +37742,23 @@ Module normalized.
                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                           let name := M.copy (| γ0_0 |) in
-                          let~ types :=
+                          let~ types :
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.path "move_binary_format::normalized::Type";
+                                  Ty.path "alloc::alloc::Global"
+                                ] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::normalized::Type";
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -34561,6 +37801,32 @@ Module normalized.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::map::Map")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ];
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken"
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.path "move_binary_format::normalized::Type")
+                                      ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
@@ -34592,6 +37858,13 @@ Module normalized.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "slice")
@@ -34609,6 +37882,18 @@ Module normalized.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::SignatureToken"
+                                                      ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::deref::Deref",
                                                   Ty.apply
@@ -34631,6 +37916,13 @@ Module normalized.
                                                     M.SubPointer.get_struct_tuple_field (|
                                                       M.deref (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::Signature"
+                                                            ],
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "move_binary_format::file_format::CompiledModule",
@@ -34674,6 +37966,8 @@ Module normalized.
                                                       ltac:(M.monadic
                                                         (let tok := M.copy (| γ |) in
                                                         M.call_closure (|
+                                                          Ty.path
+                                                            "move_binary_format::normalized::Type",
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "move_binary_format::normalized::Type",
@@ -34740,6 +38034,10 @@ Module normalized.
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "move_binary_format::file_format::FieldInstantiation" ],
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "field_instantiation_at",
@@ -34770,9 +38068,10 @@ Module normalized.
                     |) in
                   let handle := M.alloc (| γ1_0 |) in
                   let type_parameters := M.alloc (| γ1_1 |) in
-                  let~ field_ref :=
+                  let~ field_ref : Ty.path "move_binary_format::normalized::FieldRef" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "move_binary_format::normalized::FieldRef",
                         M.get_associated_function (|
                           Ty.path "move_binary_format::normalized::FieldRef",
                           "new",
@@ -34785,6 +38084,10 @@ Module normalized.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FieldHandle" ],
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "field_handle_at",
@@ -34801,9 +38104,23 @@ Module normalized.
                         ]
                       |)
                     |) in
-                  let~ types :=
+                  let~ types :
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.path "move_binary_format::normalized::Type";
+                          Ty.path "alloc::alloc::Global"
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path "move_binary_format::normalized::Type";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply
@@ -34843,6 +38160,29 @@ Module normalized.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::map::Map")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ];
+                                Ty.function
+                                  [
+                                    Ty.tuple
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken"
+                                          ]
+                                      ]
+                                  ]
+                                  (Ty.path "move_binary_format::normalized::Type")
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply
@@ -34873,6 +38213,10 @@ Module normalized.
                             |),
                             [
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -34887,6 +38231,18 @@ Module normalized.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::deref::Deref",
                                           Ty.apply
@@ -34909,6 +38265,13 @@ Module normalized.
                                             M.SubPointer.get_struct_tuple_field (|
                                               M.deref (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::Signature"
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "move_binary_format::file_format::CompiledModule",
@@ -34950,6 +38313,7 @@ Module normalized.
                                               ltac:(M.monadic
                                                 (let tok := M.copy (| γ |) in
                                                 M.call_closure (|
+                                                  Ty.path "move_binary_format::normalized::Type",
                                                   M.get_associated_function (|
                                                     Ty.path "move_binary_format::normalized::Type",
                                                     "new",
@@ -34999,6 +38363,7 @@ Module normalized.
         (let m := M.alloc (| m |) in
         let sig_idx := M.alloc (| sig_idx |) in
         M.call_closure (|
+          Ty.path "move_binary_format::normalized::Type",
           M.get_associated_function (|
             Ty.path "move_binary_format::normalized::Type",
             "new",
@@ -35014,6 +38379,10 @@ Module normalized.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                       M.get_trait_method (|
                         "core::ops::index::Index",
                         Ty.apply
@@ -35035,6 +38404,10 @@ Module normalized.
                           M.SubPointer.get_struct_tuple_field (|
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ],
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::CompiledModule",
                                   "signature_at",

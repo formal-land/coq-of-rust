@@ -28,6 +28,7 @@ Module char.
               [
                 ("iter",
                   M.call_closure (|
+                    I,
                     M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                     [
                       M.borrow (|
@@ -47,6 +48,7 @@ Module char.
                   |));
                 ("buf",
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
@@ -98,6 +100,10 @@ Module char.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
@@ -176,6 +182,10 @@ Module char.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
@@ -234,6 +244,7 @@ Module char.
               [
                 ("code",
                   M.call_closure (|
+                    Ty.path "u16",
                     M.get_trait_method (|
                       "core::clone::Clone",
                       Ty.path "u16",
@@ -365,6 +376,7 @@ Module char.
             [
               ("iter",
                 M.call_closure (|
+                  Ty.associated,
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     I,
@@ -437,11 +449,12 @@ Module char.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ u :=
+                  let~ u : Ty.path "u16" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                               "take",
@@ -477,6 +490,16 @@ Module char.
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::convert::Infallible" ];
+                                        Ty.path "u16"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::Try",
                                       Ty.apply
@@ -491,6 +514,10 @@ Module char.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "u16" ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           I,
@@ -529,6 +556,19 @@ Module char.
                                           M.read (|
                                             M.return_ (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "char";
+                                                        Ty.path
+                                                          "core::char::decode::DecodeUtf16Error"
+                                                      ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::FromResidual",
                                                   Ty.apply
@@ -586,6 +626,7 @@ Module char.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.path "u16",
                                       "is_utf16_surrogate",
@@ -606,6 +647,7 @@ Module char.
                                   "core::result::Result::Ok"
                                   [
                                     M.call_closure (|
+                                      Ty.path "char",
                                       M.get_associated_function (|
                                         Ty.path "char",
                                         "from_u32_unchecked",
@@ -652,11 +694,15 @@ Module char.
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let~ u2 :=
+                                  (let~ u2 : Ty.path "u16" :=
                                     M.copy (|
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "u16" ],
                                             M.get_trait_method (|
                                               "core::iter::traits::iterator::Iterator",
                                               I,
@@ -718,7 +764,7 @@ Module char.
                                         ]
                                       |)
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.match_operator (|
                                       M.alloc (| Value.Tuple [] |),
                                       [
@@ -747,16 +793,18 @@ Module char.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
-                                                  let~ _ :=
-                                                    M.write (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.deref (| M.read (| self |) |),
-                                                        "core::char::decode::DecodeUtf16",
-                                                        "buf"
-                                                      |),
-                                                      Value.StructTuple
-                                                        "core::option::Option::Some"
-                                                        [ M.read (| u2 |) ]
+                                                  let~ _ : Ty.tuple [] :=
+                                                    M.alloc (|
+                                                      M.write (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "core::char::decode::DecodeUtf16",
+                                                          "buf"
+                                                        |),
+                                                        Value.StructTuple
+                                                          "core::option::Option::Some"
+                                                          [ M.read (| u2 |) ]
+                                                      |)
                                                     |) in
                                                   M.return_ (|
                                                     Value.StructTuple
@@ -777,7 +825,7 @@ Module char.
                                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                       ]
                                     |) in
-                                  let~ c :=
+                                  let~ c : Ty.path "u32" :=
                                     M.alloc (|
                                       BinOp.Wrap.add (|
                                         BinOp.bit_or
@@ -805,6 +853,7 @@ Module char.
                                           "core::result::Result::Ok"
                                           [
                                             M.call_closure (|
+                                              Ty.path "char",
                                               M.get_associated_function (|
                                                 Ty.path "char",
                                                 "from_u32_unchecked",
@@ -868,6 +917,11 @@ Module char.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple
+                      [
+                        Ty.path "usize";
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                      ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       I,
@@ -927,6 +981,7 @@ Module char.
                                   M.alloc (|
                                     UnOp.not (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_associated_function (|
                                           Ty.path "u16",
                                           "is_utf16_surrogate",
@@ -961,6 +1016,7 @@ Module char.
                                 let γ :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.apply
@@ -1028,10 +1084,11 @@ Module char.
                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                               let low_buf := M.copy (| γ0_0 |) in
                               let high_buf := M.copy (| γ0_1 |) in
-                              let~ low :=
+                              let~ low : Ty.path "usize" :=
                                 M.alloc (|
                                   BinOp.Wrap.add (|
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.path "usize",
                                         "div_ceil",
@@ -1043,9 +1100,17 @@ Module char.
                                     M.read (| low_buf |)
                                   |)
                                 |) in
-                              let~ high :=
+                              let~ high :
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "usize" ] :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -1078,6 +1143,10 @@ Module char.
                                                       ltac:(M.monadic
                                                         (let h := M.copy (| γ |) in
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [ Ty.path "usize" ],
                                                           M.get_associated_function (|
                                                             Ty.path "usize",
                                                             "checked_add",
@@ -1172,10 +1241,15 @@ Module char.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.call_closure (|
+                  Ty.path "core::fmt::Arguments",
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                   [
                     M.borrow (|
@@ -1198,6 +1272,7 @@ Module char.
                             Value.Array
                               [
                                 M.call_closure (|
+                                  Ty.path "core::fmt::rt::Argument",
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::rt::Argument",
                                     "new_lower_hex",

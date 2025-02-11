@@ -288,8 +288,8 @@ Module LowM.
   Inductive t (A : Set) : Set :=
   | Pure (value : A)
   | CallPrimitive (primitive : Primitive.t) (k : Value.t -> t A)
-  | CallClosure (closure : Value.t) (args : list Value.t) (k : A -> t A)
-  | Let (e : t A) (k : A -> t A)
+  | CallClosure (ty : Ty.t) (closure : Value.t) (args : list Value.t) (k : A -> t A)
+  | Let (ty : Ty.t) (e : t A) (k : A -> t A)
   | Loop (body : t A) (k : A -> t A)
   | Impossible (message : string).
   Arguments Pure {_}.
@@ -304,10 +304,10 @@ Module LowM.
     | Pure v => e2 v
     | CallPrimitive primitive k =>
       CallPrimitive primitive (fun v => let_ (k v) e2)
-    | CallClosure f args k =>
-      CallClosure f args (fun v => let_ (k v) e2)
-    | Let e k =>
-      Let e (fun v => let_ (k v) e2)
+    | CallClosure ty f args k =>
+      CallClosure ty f args (fun v => let_ (k v) e2)
+    | Let ty e k =>
+      Let ty e (fun v => let_ (k v) e2)
     | Loop body k =>
       Loop body (fun v => let_ (k v) e2)
     | Impossible message => Impossible message
@@ -337,6 +337,7 @@ Definition M : Set :=
 
 Definition pure (v : Value.t) : M :=
   LowM.Pure (inl v).
+Arguments pure /.
 
 Definition let_ (e1 : M) (e2 : Value.t -> M) : M :=
   LowM.let_ e1 (fun v1 =>
@@ -345,15 +346,16 @@ Definition let_ (e1 : M) (e2 : Value.t -> M) : M :=
   | inr error => LowM.Pure (inr error)
   end).
 
-Definition let_user (e1 : Value.t) (e2 : Value.t -> Value.t) : Value.t :=
+Definition let_user (ty : Ty.t) (e1 : Value.t) (e2 : Value.t -> Value.t) : Value.t :=
   e2 e1.
 
-Definition let_user_monadic (e1 : M) (e2 : Value.t -> M) : M :=
-  LowM.Let e1 (fun v1 =>
+Definition let_user_monadic (ty : Ty.t) (e1 : M) (e2 : Value.t -> M) : M :=
+  LowM.Let ty e1 (fun v1 =>
   match v1 with
   | inl v1 => e2 v1
   | inr error => LowM.Pure (inr error)
   end).
+Arguments let_user_monadic /.
 
 Module PolymorphicFunction.
   Definition t : Set :=
@@ -470,8 +472,8 @@ Module Notations.
     (let_ b (fun a => c))
     (at level 200, a pattern, b at level 100, c at level 200).
 
-  Notation "'let~' a := b 'in' c" :=
-    (let_user b (fun a => c))
+  Notation "'let~' a : ty := b 'in' c" :=
+    (let_user ty b (fun a => c))
       (at level 200, b at level 100, a name).
 
   Notation "'let*~' a := b 'in' c" :=
@@ -514,8 +516,8 @@ Ltac monadic e :=
   (* We uses the `let~` notation for lets that come from the source code, in order to keep this
      abstraction barrier. The code below is simply a copy and paste of the code for the
      normal `let`. *)
-  | context ctxt [let~ v := ?x in @?f v] =>
-    refine (let_user_monadic _ _);
+  | context ctxt [let~ v : ?ty := ?x in @?f v] =>
+    refine (let_user_monadic ty _ _);
       [ monadic x
       | let v' := fresh v in
         intro v';
@@ -569,8 +571,8 @@ Definition break_match : M :=
 Definition panic (panic : Panic.t) : M :=
   raise (Exception.Panic panic).
 
-Definition call_closure (f : Value.t) (args : list Value.t) : M :=
-  LowM.CallClosure f args LowM.Pure.
+Definition call_closure (ty : Ty.t) (f : Value.t) (args : list Value.t) : M :=
+  LowM.CallClosure ty f args LowM.Pure.
 
 Definition impossible (message : string) : M :=
   LowM.Impossible message.
@@ -679,7 +681,9 @@ Fixpoint match_operator
     (arms : list (Value.t -> M)) :
     M :=
   match arms with
-  | nil => impossible "no match branches left"
+  | nil =>
+    (* It should ideally be an [impossible] case, but that would make the links more complex *)
+    panic (Panic.Make "no match branches left")
   | arm :: arms =>
     catch
       (arm scrutinee)
@@ -833,8 +837,8 @@ Fixpoint run_constant (constant : M) : Value.t :=
       | _ => Value.Error "unhandled primitive"
       end in
     run_constant (k value)
-  | LowM.CallClosure _ _ _ => Value.Error "unexpected closure call"
-  | LowM.Let _ _ => Value.Error "unexpected let"
+  | LowM.CallClosure _ _ _ _ => Value.Error "unexpected closure call"
+  | LowM.Let _ _ _ => Value.Error "unexpected let"
   | LowM.Loop _ _ => Value.Error "unexpected loop"
   | LowM.Impossible _ => Value.Error "impossible"
   end.

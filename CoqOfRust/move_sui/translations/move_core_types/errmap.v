@@ -25,6 +25,10 @@ Module errmap.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
@@ -100,6 +104,7 @@ Module errmap.
             [
               ("code_name",
                 M.call_closure (|
+                  Ty.path "alloc::string::String",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
@@ -127,6 +132,7 @@ Module errmap.
                 |));
               ("code_description",
                 M.call_closure (|
+                  Ty.path "alloc::string::String",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "alloc::string::String",
@@ -178,11 +184,15 @@ Module errmap.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state :=
+                  let~ __serde_state : Ty.associated :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.associated; Ty.associated ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -239,10 +249,14 @@ Module errmap.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -307,10 +321,14 @@ Module errmap.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -377,6 +395,7 @@ Module errmap.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
                         Ty.associated,
@@ -411,6 +430,10 @@ Module errmap.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_core_types::errmap::ErrorDescription"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -455,11 +478,15 @@ Module errmap.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state :=
+                  let~ __serde_state : Ty.associated :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.associated; Ty.associated ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -516,10 +543,14 @@ Module errmap.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -593,10 +624,14 @@ Module errmap.
                             |)))
                       ]
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.associated ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
                             Ty.associated,
@@ -679,6 +714,7 @@ Module errmap.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
                         Ty.associated,
@@ -713,6 +749,10 @@ Module errmap.
           ltac:(M.monadic
             (let __deserializer := M.alloc (| __deserializer |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "move_core_types::errmap::ErrorMapping"; Ty.associated ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -793,6 +833,10 @@ Module errmap.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
@@ -871,6 +915,14 @@ Module errmap.
             [
               ("error_categories",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "u64";
+                      Ty.path "move_core_types::errmap::ErrorDescription";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -905,6 +957,21 @@ Module errmap.
                 |));
               ("module_error_maps",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "move_core_types::language_storage::ModuleId";
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::BTreeMap")
+                        []
+                        [
+                          Ty.path "u64";
+                          Ty.path "move_core_types::errmap::ErrorDescription";
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -971,6 +1038,14 @@ Module errmap.
             [
               ("error_categories",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "u64";
+                      Ty.path "move_core_types::errmap::ErrorDescription";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::default::Default",
                     Ty.apply
@@ -991,6 +1066,21 @@ Module errmap.
                 |));
               ("module_error_maps",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "move_core_types::language_storage::ModuleId";
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::BTreeMap")
+                        []
+                        [
+                          Ty.path "u64";
+                          Ty.path "move_core_types::errmap::ErrorDescription";
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::default::Default",
                     Ty.apply
@@ -1056,7 +1146,7 @@ Module errmap.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1065,6 +1155,10 @@ Module errmap.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "move_core_types::errmap::ErrorDescription" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1107,11 +1201,12 @@ Module errmap.
                                     "core::result::Result::Err"
                                     [
                                       M.read (|
-                                        let~ error :=
+                                        let~ error : Ty.path "anyhow::Error" :=
                                           M.copy (|
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "alloc::string::String",
                                                   M.get_function (|
                                                     "core::hint::must_use",
                                                     [],
@@ -1119,9 +1214,10 @@ Module errmap.
                                                   |),
                                                   [
                                                     M.read (|
-                                                      let~ res :=
+                                                      let~ res : Ty.path "alloc::string::String" :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "alloc::string::String",
                                                             M.get_function (|
                                                               "alloc::fmt::format",
                                                               [],
@@ -1129,6 +1225,7 @@ Module errmap.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::Arguments",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1_formatted",
@@ -1166,6 +1263,8 @@ Module errmap.
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -1186,6 +1285,8 @@ Module errmap.
                                                                                 ]
                                                                               |);
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -1222,6 +1323,8 @@ Module errmap.
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Placeholder",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Placeholder",
@@ -1250,6 +1353,8 @@ Module errmap.
                                                                                 ]
                                                                               |);
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Placeholder",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Placeholder",
@@ -1283,6 +1388,8 @@ Module errmap.
                                                                     |)
                                                                   |);
                                                                   M.call_closure (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::UnsafeArg",
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "core::fmt::rt::UnsafeArg",
@@ -1308,6 +1415,7 @@ Module errmap.
                                                     (let error := M.copy (| γ |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "anyhow::Error",
                                                         M.get_associated_function (|
                                                           Ty.path "anyhow::kind::Adhoc",
                                                           "new",
@@ -1316,6 +1424,7 @@ Module errmap.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "anyhow::kind::Adhoc",
                                                             M.get_trait_method (|
                                                               "anyhow::kind::AdhocKind",
                                                               Ty.apply
@@ -1395,9 +1504,35 @@ Module errmap.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ module_error_map :=
+                let~ module_error_map :
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [
+                            Ty.path "u64";
+                            Ty.path "move_core_types::errmap::ErrorDescription";
+                            Ty.path "alloc::alloc::Global"
+                          ]
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::map::BTreeMap")
+                            []
+                            [
+                              Ty.path "u64";
+                              Ty.path "move_core_types::errmap::ErrorDescription";
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::map::entry::Entry")
@@ -1420,6 +1555,21 @@ Module errmap.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::map::entry::Entry")
+                            []
+                            [
+                              Ty.path "move_core_types::language_storage::ModuleId";
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                []
+                                [
+                                  Ty.path "u64";
+                                  Ty.path "move_core_types::errmap::ErrorDescription";
+                                  Ty.path "alloc::alloc::Global"
+                                ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1450,6 +1600,7 @@ Module errmap.
                               |)
                             |);
                             M.call_closure (|
+                              Ty.path "move_core_types::language_storage::ModuleId",
                               M.get_trait_method (|
                                 "core::clone::Clone",
                                 Ty.path "move_core_types::language_storage::ModuleId",
@@ -1466,7 +1617,7 @@ Module errmap.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1475,6 +1626,10 @@ Module errmap.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "move_core_types::errmap::ErrorDescription" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -1513,11 +1668,12 @@ Module errmap.
                                     "core::result::Result::Err"
                                     [
                                       M.read (|
-                                        let~ error :=
+                                        let~ error : Ty.path "anyhow::Error" :=
                                           M.copy (|
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.path "alloc::string::String",
                                                   M.get_function (|
                                                     "core::hint::must_use",
                                                     [],
@@ -1525,9 +1681,10 @@ Module errmap.
                                                   |),
                                                   [
                                                     M.read (|
-                                                      let~ res :=
+                                                      let~ res : Ty.path "alloc::string::String" :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "alloc::string::String",
                                                             M.get_function (|
                                                               "alloc::fmt::format",
                                                               [],
@@ -1535,6 +1692,7 @@ Module errmap.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.path "core::fmt::Arguments",
                                                                 M.get_associated_function (|
                                                                   Ty.path "core::fmt::Arguments",
                                                                   "new_v1_formatted",
@@ -1576,6 +1734,8 @@ Module errmap.
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -1596,6 +1756,8 @@ Module errmap.
                                                                                 ]
                                                                               |);
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -1619,6 +1781,8 @@ Module errmap.
                                                                                 ]
                                                                               |);
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Argument",
@@ -1655,6 +1819,8 @@ Module errmap.
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Placeholder",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Placeholder",
@@ -1683,6 +1849,8 @@ Module errmap.
                                                                                 ]
                                                                               |);
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Placeholder",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Placeholder",
@@ -1711,6 +1879,8 @@ Module errmap.
                                                                                 ]
                                                                               |);
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Placeholder",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "core::fmt::rt::Placeholder",
@@ -1744,6 +1914,8 @@ Module errmap.
                                                                     |)
                                                                   |);
                                                                   M.call_closure (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::UnsafeArg",
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "core::fmt::rt::UnsafeArg",
@@ -1769,6 +1941,7 @@ Module errmap.
                                                     (let error := M.copy (| γ |) in
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.path "anyhow::Error",
                                                         M.get_associated_function (|
                                                           Ty.path "anyhow::kind::Adhoc",
                                                           "new",
@@ -1777,6 +1950,7 @@ Module errmap.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "anyhow::kind::Adhoc",
                                                             M.get_trait_method (|
                                                               "anyhow::kind::AdhocKind",
                                                               Ty.apply
@@ -1841,9 +2015,17 @@ Module errmap.
         ltac:(M.monadic
           (let path := M.alloc (| path |) in
           M.read (|
-            let~ bytes :=
+            let~ bytes :
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
@@ -1856,9 +2038,10 @@ Module errmap.
                   []
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::result::Result")
@@ -1870,6 +2053,10 @@ Module errmap.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "usize"; Ty.path "std::io::error::Error" ],
                       M.get_trait_method (|
                         "std::io::Read",
                         Ty.path "std::fs::File",
@@ -1884,6 +2071,7 @@ Module errmap.
                           Pointer.Kind.MutRef,
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "std::fs::File",
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -1895,6 +2083,10 @@ Module errmap.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                                   M.get_associated_function (|
                                     Ty.path "std::fs::File",
                                     "open",
@@ -1918,6 +2110,7 @@ Module errmap.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.path "move_core_types::errmap::ErrorMapping",
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -1930,6 +2123,11 @@ Module errmap.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "move_core_types::errmap::ErrorMapping"; Ty.path "bcs::error::Error"
+                      ],
                     M.get_function (|
                       "bcs::de::from_bytes",
                       [],
@@ -1940,6 +2138,10 @@ Module errmap.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                             M.get_trait_method (|
                               "core::ops::deref::Deref",
                               Ty.apply
@@ -1987,9 +2189,17 @@ Module errmap.
           (let self := M.alloc (| self |) in
           let path := M.alloc (| path |) in
           M.read (|
-            let~ bytes :=
+            let~ bytes :
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::result::Result")
@@ -2007,6 +2217,16 @@ Module errmap.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
+                          Ty.path "bcs::error::Error"
+                        ],
                       M.get_function (|
                         "bcs::ser::to_bytes",
                         [],
@@ -2017,9 +2237,10 @@ Module errmap.
                   ]
                 |)
               |) in
-            let~ file :=
+            let~ file : Ty.path "std::fs::File" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "std::fs::File",
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::result::Result")
@@ -2031,15 +2252,20 @@ Module errmap.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                       M.get_associated_function (| Ty.path "std::fs::File", "create", [], [ P ] |),
                       [ M.read (| path |) ]
                     |)
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::result::Result")
@@ -2051,6 +2277,10 @@ Module errmap.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                       M.get_trait_method (|
                         "std::io::Write",
                         Ty.path "std::fs::File",
@@ -2066,6 +2296,10 @@ Module errmap.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.apply
@@ -2115,6 +2349,10 @@ Module errmap.
           let module := M.alloc (| module |) in
           let output_code := M.alloc (| output_code |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "move_core_types::errmap::ErrorDescription" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -2165,6 +2403,24 @@ Module errmap.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [
+                            Ty.path "u64";
+                            Ty.path "move_core_types::errmap::ErrorDescription";
+                            Ty.path "alloc::alloc::Global"
+                          ]
+                      ]
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -2210,6 +2466,10 @@ Module errmap.
                               ltac:(M.monadic
                                 (let module_map := M.copy (| γ |) in
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "move_core_types::errmap::ErrorDescription" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -2226,6 +2486,15 @@ Module errmap.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "move_core_types::errmap::ErrorDescription" ]
+                                        ],
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::btree::map::BTreeMap")

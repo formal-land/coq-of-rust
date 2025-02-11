@@ -161,6 +161,10 @@ Module hardfork.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -519,9 +523,10 @@ Module hardfork.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "u8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -530,9 +535,10 @@ Module hardfork.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "u8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -591,9 +597,10 @@ Module hardfork.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "u8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -602,9 +609,10 @@ Module hardfork.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "u8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -615,6 +623,7 @@ Module hardfork.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.get_trait_method (|
                   "core::cmp::PartialOrd",
                   Ty.path "u8",
@@ -659,9 +668,10 @@ Module hardfork.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "u8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -670,9 +680,10 @@ Module hardfork.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "u8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -683,6 +694,7 @@ Module hardfork.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.path "core::cmp::Ordering",
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], [], "cmp", [], [] |),
                 [
                   M.borrow (|
@@ -719,9 +731,10 @@ Module hardfork.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "u8" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u8",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -732,6 +745,7 @@ Module hardfork.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_trait_method (|
                   "core::hash::Hash",
                   Ty.path "u8",
@@ -1063,6 +1077,10 @@ Module hardfork.
         ltac:(M.monadic
           (let spec_id := M.alloc (| spec_id |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "revm_specification::hardfork::SpecId" ],
             M.get_associated_function (|
               Ty.path "revm_specification::hardfork::SpecId",
               "n",
@@ -1672,10 +1690,15 @@ Module hardfork.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
               M.call_closure (|
+                Ty.path "core::fmt::Arguments",
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
                 [
                   M.borrow (|
@@ -1696,6 +1719,7 @@ Module hardfork.
                           Value.Array
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::rt::Argument",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::Argument",
                                   "new_display",
@@ -1710,6 +1734,7 @@ Module hardfork.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                             M.get_trait_method (|
                                               "core::convert::From",
                                               Ty.apply (Ty.path "&") [] [ Ty.path "str" ],

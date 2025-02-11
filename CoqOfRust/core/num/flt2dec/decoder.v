@@ -81,6 +81,10 @@ Module num.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::Formatter",
                   "debug_struct_field5_finish",
@@ -445,6 +449,10 @@ Module num.
                           |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
@@ -470,6 +478,10 @@ Module num.
                           |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
@@ -495,6 +507,10 @@ Module num.
                           |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "write_str",
@@ -522,6 +538,10 @@ Module num.
                         let __self_0 := M.alloc (| γ1_0 |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "debug_tuple_field1_finish",
@@ -577,9 +597,10 @@ Module num.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let~ __self_discr :=
+                let~ __self_discr : Ty.path "isize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "isize",
                       M.get_function (|
                         "core::intrinsics::discriminant_value",
                         [],
@@ -588,9 +609,10 @@ Module num.
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |) in
-                let~ __arg1_discr :=
+                let~ __arg1_discr : Ty.path "isize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "isize",
                       M.get_function (|
                         "core::intrinsics::discriminant_value",
                         [],
@@ -629,6 +651,7 @@ Module num.
                                 let __arg1_0 := M.alloc (| γ2_0 |) in
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -798,6 +821,7 @@ Module num.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ],
                     M.get_trait_method (|
                       "core::num::dec2flt::float::RawFloat",
                       T,
@@ -819,18 +843,19 @@ Module num.
                       let mant := M.copy (| γ0_0 |) in
                       let exp := M.copy (| γ0_1 |) in
                       let sign := M.copy (| γ0_2 |) in
-                      let~ even :=
+                      let~ even : Ty.path "bool" :=
                         M.alloc (|
                           BinOp.eq (|
                             BinOp.bit_and (M.read (| mant |)) (Value.Integer IntegerKind.U64 1),
                             Value.Integer IntegerKind.U64 0
                           |)
                         |) in
-                      let~ decoded :=
+                      let~ decoded : Ty.path "core::num::flt2dec::decoder::FullDecoded" :=
                         M.copy (|
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::num::FpCategory",
                                 M.get_trait_method (|
                                   "core::num::dec2flt::float::RawFloat",
                                   T,
@@ -894,9 +919,11 @@ Module num.
                                 ltac:(M.monadic
                                   (let _ :=
                                     M.is_struct_tuple (| γ, "core::num::FpCategory::Normal" |) in
-                                  let~ minnorm :=
+                                  let~ minnorm :
+                                      Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ],
                                         M.get_trait_method (|
                                           "core::num::dec2flt::float::RawFloat",
                                           T,
@@ -908,6 +935,7 @@ Module num.
                                         |),
                                         [
                                           M.call_closure (|
+                                            T,
                                             M.get_trait_method (|
                                               "core::num::flt2dec::decoder::DecodableFloat",
                                               T,

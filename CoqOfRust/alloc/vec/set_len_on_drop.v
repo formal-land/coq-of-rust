@@ -52,14 +52,16 @@ Module vec.
             (let self := M.alloc (| self |) in
             let increment := M.alloc (| increment |) in
             M.read (|
-              let~ _ :=
-                let β :=
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "alloc::vec::set_len_on_drop::SetLenOnDrop",
-                    "local_len"
-                  |) in
-                M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| increment |) |) |) in
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  let β :=
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::vec::set_len_on_drop::SetLenOnDrop",
+                      "local_len"
+                    |) in
+                  M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| increment |) |) |)
+                |) in
               M.alloc (| Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -107,22 +109,24 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.deref (|
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.deref (|
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::vec::set_len_on_drop::SetLenOnDrop",
+                          "len"
+                        |)
+                      |)
+                    |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| self |) |),
                         "alloc::vec::set_len_on_drop::SetLenOnDrop",
-                        "len"
+                        "local_len"
                       |)
-                    |)
-                  |),
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "alloc::vec::set_len_on_drop::SetLenOnDrop",
-                      "local_len"
                     |)
                   |)
                 |) in

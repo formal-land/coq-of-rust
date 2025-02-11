@@ -72,6 +72,7 @@ Module collections.
                             "alloc::collections::btree::merge_iter::Peeked::A"
                             [
                               M.call_closure (|
+                                Ty.associated,
                                 M.get_trait_method (|
                                   "core::clone::Clone",
                                   Ty.associated,
@@ -105,6 +106,7 @@ Module collections.
                             "alloc::collections::btree::merge_iter::Peeked::B"
                             [
                               M.call_closure (|
+                                Ty.associated,
                                 M.get_trait_method (|
                                   "core::clone::Clone",
                                   Ty.associated,
@@ -166,6 +168,10 @@ Module collections.
                         let __self_0 := M.alloc (| γ1_0 |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "debug_tuple_field1_finish",
@@ -197,6 +203,10 @@ Module collections.
                         let __self_0 := M.alloc (| γ1_0 |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                             M.get_associated_function (|
                               Ty.path "core::fmt::Formatter",
                               "debug_tuple_field1_finish",
@@ -251,6 +261,7 @@ Module collections.
                 [
                   ("a",
                     M.call_closure (|
+                      I,
                       M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
                         M.borrow (|
@@ -265,6 +276,7 @@ Module collections.
                     |));
                   ("b",
                     M.call_closure (|
+                      I,
                       M.get_trait_method (| "core::clone::Clone", I, [], [], "clone", [], [] |),
                       [
                         M.borrow (|
@@ -279,6 +291,15 @@ Module collections.
                     |));
                   ("peeked",
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::merge_iter::Peeked")
+                            []
+                            [ I ]
+                        ],
                       M.get_trait_method (|
                         "core::clone::Clone",
                         Ty.apply
@@ -337,6 +358,10 @@ Module collections.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
@@ -348,6 +373,7 @@ Module collections.
                     Pointer.Kind.MutRef,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "field",
@@ -359,6 +385,10 @@ Module collections.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "core::fmt::builders::DebugTuple" ],
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugTuple",
                                   "field",
@@ -370,6 +400,10 @@ Module collections.
                                     Pointer.Kind.MutRef,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.path "core::fmt::builders::DebugTuple" ],
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::builders::DebugTuple",
                                           "field",
@@ -381,6 +415,7 @@ Module collections.
                                             Pointer.Kind.MutRef,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "core::fmt::builders::DebugTuple",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Formatter",
                                                   "debug_tuple",
@@ -540,12 +575,21 @@ Module collections.
               (let self := M.alloc (| self |) in
               let cmp := M.alloc (| cmp |) in
               M.read (|
-                let~ a_next := M.copy (| Value.DeclaredButUndefined |) in
-                let~ b_next := M.copy (| Value.DeclaredButUndefined |) in
-                let~ _ :=
+                let a_next := M.copy (| Value.DeclaredButUndefined |) in
+                let b_next := M.copy (| Value.DeclaredButUndefined |) in
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::merge_iter::Peeked")
+                              []
+                              [ I ]
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -588,34 +632,39 @@ Module collections.
                               0
                             |) in
                           let next := M.copy (| γ1_0 |) in
-                          let~ _ :=
-                            M.write (|
-                              a_next,
-                              Value.StructTuple "core::option::Option::Some" [ M.read (| next |) ]
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                a_next,
+                                Value.StructTuple "core::option::Option::Some" [ M.read (| next |) ]
+                              |)
                             |) in
-                          let~ _ :=
-                            M.write (|
-                              b_next,
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::iter::traits::iterator::Iterator",
-                                  I,
-                                  [],
-                                  [],
-                                  "next",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::collections::btree::merge_iter::MergeIterInner",
-                                      "b"
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                b_next,
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                                  M.get_trait_method (|
+                                    "core::iter::traits::iterator::Iterator",
+                                    I,
+                                    [],
+                                    [],
+                                    "next",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::btree::merge_iter::MergeIterInner",
+                                        "b"
+                                      |)
                                     |)
-                                  |)
-                                ]
+                                  ]
+                                |)
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -634,94 +683,105 @@ Module collections.
                               0
                             |) in
                           let next := M.copy (| γ1_0 |) in
-                          let~ _ :=
-                            M.write (|
-                              b_next,
-                              Value.StructTuple "core::option::Option::Some" [ M.read (| next |) ]
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                b_next,
+                                Value.StructTuple "core::option::Option::Some" [ M.read (| next |) ]
+                              |)
                             |) in
-                          let~ _ :=
-                            M.write (|
-                              a_next,
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::iter::traits::iterator::Iterator",
-                                  I,
-                                  [],
-                                  [],
-                                  "next",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::collections::btree::merge_iter::MergeIterInner",
-                                      "a"
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                a_next,
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                                  M.get_trait_method (|
+                                    "core::iter::traits::iterator::Iterator",
+                                    I,
+                                    [],
+                                    [],
+                                    "next",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::btree::merge_iter::MergeIterInner",
+                                        "a"
+                                      |)
                                     |)
-                                  |)
-                                ]
+                                  ]
+                                |)
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                          let~ _ :=
-                            M.write (|
-                              a_next,
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::iter::traits::iterator::Iterator",
-                                  I,
-                                  [],
-                                  [],
-                                  "next",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::collections::btree::merge_iter::MergeIterInner",
-                                      "a"
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                a_next,
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                                  M.get_trait_method (|
+                                    "core::iter::traits::iterator::Iterator",
+                                    I,
+                                    [],
+                                    [],
+                                    "next",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::btree::merge_iter::MergeIterInner",
+                                        "a"
+                                      |)
                                     |)
-                                  |)
-                                ]
+                                  ]
+                                |)
                               |)
                             |) in
-                          let~ _ :=
-                            M.write (|
-                              b_next,
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::iter::traits::iterator::Iterator",
-                                  I,
-                                  [],
-                                  [],
-                                  "next",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::collections::btree::merge_iter::MergeIterInner",
-                                      "b"
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                b_next,
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                                  M.get_trait_method (|
+                                    "core::iter::traits::iterator::Iterator",
+                                    I,
+                                    [],
+                                    [],
+                                    "next",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::btree::merge_iter::MergeIterInner",
+                                        "b"
+                                      |)
                                     |)
-                                  |)
-                                ]
+                                  ]
+                                |)
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -756,6 +816,7 @@ Module collections.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::ops::function::Fn",
                                   Cmp,
@@ -789,102 +850,134 @@ Module collections.
                                 ltac:(M.monadic
                                   (let _ :=
                                     M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
-                                  M.write (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::collections::btree::merge_iter::MergeIterInner",
-                                      "peeked"
-                                    |),
-                                    M.call_closure (|
-                                      M.get_associated_function (|
+                                  M.alloc (|
+                                    M.write (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::btree::merge_iter::MergeIterInner",
+                                        "peeked"
+                                      |),
+                                      M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
                                           []
-                                          [ Ty.associated ],
-                                        "map",
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path
-                                              "alloc::collections::btree::merge_iter::Peeked")
-                                            []
-                                            [ I ];
-                                          Ty.function
-                                            [ Ty.associated ]
-                                            (Ty.apply
+                                          [
+                                            Ty.apply
                                               (Ty.path
                                                 "alloc::collections::btree::merge_iter::Peeked")
                                               []
-                                              [ I ])
-                                        ]
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
+                                              [ I ]
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.associated ],
+                                          "map",
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path
+                                                "alloc::collections::btree::merge_iter::Peeked")
+                                              []
+                                              [ I ];
+                                            Ty.function
+                                              [ Ty.associated ]
+                                              (Ty.apply
+                                                (Ty.path
+                                                  "alloc::collections::btree::merge_iter::Peeked")
+                                                []
+                                                [ I ])
+                                          ]
+                                        |),
+                                        [
+                                          M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.associated ],
-                                            "take",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.borrow (| Pointer.Kind.MutRef, b_next |) ]
-                                        |);
-                                        M.constructor_as_closure
-                                          "alloc::collections::btree::merge_iter::Peeked::B"
-                                      ]
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.associated ],
+                                              "take",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.borrow (| Pointer.Kind.MutRef, b_next |) ]
+                                          |);
+                                          M.constructor_as_closure
+                                            "alloc::collections::btree::merge_iter::Peeked::B"
+                                        ]
+                                      |)
                                     |)
                                   |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let _ :=
                                     M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
-                                  M.write (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::collections::btree::merge_iter::MergeIterInner",
-                                      "peeked"
-                                    |),
-                                    M.call_closure (|
-                                      M.get_associated_function (|
+                                  M.alloc (|
+                                    M.write (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::btree::merge_iter::MergeIterInner",
+                                        "peeked"
+                                      |),
+                                      M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
                                           []
-                                          [ Ty.associated ],
-                                        "map",
-                                        [],
-                                        [
-                                          Ty.apply
-                                            (Ty.path
-                                              "alloc::collections::btree::merge_iter::Peeked")
-                                            []
-                                            [ I ];
-                                          Ty.function
-                                            [ Ty.associated ]
-                                            (Ty.apply
+                                          [
+                                            Ty.apply
                                               (Ty.path
                                                 "alloc::collections::btree::merge_iter::Peeked")
                                               []
-                                              [ I ])
-                                        ]
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
+                                              [ I ]
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.associated ],
+                                          "map",
+                                          [],
+                                          [
+                                            Ty.apply
+                                              (Ty.path
+                                                "alloc::collections::btree::merge_iter::Peeked")
+                                              []
+                                              [ I ];
+                                            Ty.function
+                                              [ Ty.associated ]
+                                              (Ty.apply
+                                                (Ty.path
+                                                  "alloc::collections::btree::merge_iter::Peeked")
+                                                []
+                                                [ I ])
+                                          ]
+                                        |),
+                                        [
+                                          M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
                                               []
                                               [ Ty.associated ],
-                                            "take",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.borrow (| Pointer.Kind.MutRef, a_next |) ]
-                                        |);
-                                        M.constructor_as_closure
-                                          "alloc::collections::btree::merge_iter::Peeked::A"
-                                      ]
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.associated ],
+                                              "take",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.borrow (| Pointer.Kind.MutRef, a_next |) ]
+                                          |);
+                                          M.constructor_as_closure
+                                            "alloc::collections::btree::merge_iter::Peeked::A"
+                                        ]
+                                      |)
                                     |)
                                   |)));
                               fun γ =>
@@ -953,6 +1046,7 @@ Module collections.
                               BinOp.Wrap.add (|
                                 Value.Integer IntegerKind.Usize 1,
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_trait_method (|
                                     "core::iter::traits::exact_size::ExactSizeIterator",
                                     I,
@@ -975,6 +1069,7 @@ Module collections.
                                 |)
                               |);
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   I,
@@ -1015,6 +1110,7 @@ Module collections.
                           Value.Tuple
                             [
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   I,
@@ -1038,6 +1134,7 @@ Module collections.
                               BinOp.Wrap.add (|
                                 Value.Integer IntegerKind.Usize 1,
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_trait_method (|
                                     "core::iter::traits::exact_size::ExactSizeIterator",
                                     I,
@@ -1067,6 +1164,7 @@ Module collections.
                           Value.Tuple
                             [
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   I,
@@ -1088,6 +1186,7 @@ Module collections.
                                 ]
                               |);
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   I,

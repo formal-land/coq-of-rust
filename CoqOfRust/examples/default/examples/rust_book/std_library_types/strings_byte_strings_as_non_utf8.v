@@ -42,17 +42,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ bytestring :=
+        let~ bytestring :
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 21 ] [ Ty.path "u8" ]
+              ] :=
           M.alloc (|
             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| UnsupportedLiteral |) |) |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -85,6 +92,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -119,14 +127,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ escaped := M.copy (| UnsupportedLiteral |) in
-        let~ _ :=
-          let~ _ :=
+        let~ escaped :
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 13 ] [ Ty.path "u8" ]
+              ] :=
+          M.copy (| UnsupportedLiteral |) in
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -159,6 +175,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -193,14 +210,22 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ raw_bytestring := M.copy (| UnsupportedLiteral |) in
-        let~ _ :=
-          let~ _ :=
+        let~ raw_bytestring :
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 28 ] [ Ty.path "u8" ]
+              ] :=
+          M.copy (| UnsupportedLiteral |) in
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -230,6 +255,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -266,7 +292,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (| Value.Tuple [] |),
             [
@@ -275,6 +301,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   (let γ :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                            Ty.path "core::str::error::Utf8Error"
+                          ],
                         M.get_function (| "core::str::converts::from_utf8", [], [] |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| raw_bytestring |) |) |)
                         ]
@@ -283,13 +316,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   let my_str := M.copy (| γ0_0 |) in
-                  let~ _ :=
-                    let~ _ :=
+                  let~ _ : Ty.tuple [] :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_function (| "std::io::stdio::_print", [], [] |),
                           [
                             M.call_closure (|
+                              Ty.path "core::fmt::Arguments",
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
@@ -322,6 +357,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         Value.Array
                                           [
                                             M.call_closure (|
+                                              Ty.path "core::fmt::rt::Argument",
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::rt::Argument",
                                                 "new_display",
@@ -352,12 +388,31 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
             ]
           |) in
-        let~ _quotes := M.copy (| UnsupportedLiteral |) in
-        let~ shift_jis := M.copy (| UnsupportedLiteral |) in
-        let~ _ :=
+        let~ _quotes :
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 89 ] [ Ty.path "u8" ]
+              ] :=
+          M.copy (| UnsupportedLiteral |) in
+        let~ shift_jis :
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ]
+              ] :=
+          M.copy (| UnsupportedLiteral |) in
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                    Ty.path "core::str::error::Utf8Error"
+                  ],
                 M.get_function (| "core::str::converts::from_utf8", [], [] |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| shift_jis |) |) |) ]
               |)
@@ -368,12 +423,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   let my_str := M.copy (| γ0_0 |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -406,6 +463,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_display",
@@ -437,12 +495,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                   let e := M.copy (| γ0_0 |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
@@ -475,6 +535,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       Value.Array
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::rt::Argument",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::rt::Argument",
                                               "new_debug",

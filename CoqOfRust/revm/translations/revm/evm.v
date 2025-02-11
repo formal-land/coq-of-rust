@@ -98,9 +98,26 @@ Module evm.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ res :=
+            let~ res :
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "revm_context_interface::result::ResultAndState") [] [ HALT ];
+                    ERROR
+                  ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::ResultAndState")
+                        []
+                        [ HALT ];
+                      ERROR
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::evm::Evm")
@@ -122,6 +139,16 @@ Module evm.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::result::ExecutionResult")
+                      []
+                      [ HALT ];
+                    ERROR
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -171,9 +198,10 @@ Module evm.
                                   ltac:(M.monadic
                                     (let r := M.copy (| γ |) in
                                     M.read (|
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.tuple [],
                                             M.get_trait_method (|
                                               "revm_database_interface::DatabaseCommit",
                                               Ty.associated,
@@ -188,6 +216,7 @@ Module evm.
                                                 Pointer.Kind.MutRef,
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
                                                     M.get_trait_method (|
                                                       "revm_database_interface::DatabaseGetter",
                                                       CTX,
@@ -294,9 +323,10 @@ Module evm.
           (let self := M.alloc (| self |) in
           let block := M.alloc (| block |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "revm_context_interface::block::BlockSetter",
                     CTX,
@@ -342,9 +372,10 @@ Module evm.
           (let self := M.alloc (| self |) in
           let tx := M.alloc (| tx |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "revm_context_interface::transaction::TransactionSetter",
                     CTX,
@@ -389,6 +420,7 @@ Module evm.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; ERROR ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "revm::evm::Evm")
@@ -686,9 +718,10 @@ Module evm.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ output :=
+            let~ output : Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
                     "map",
@@ -697,6 +730,7 @@ Module evm.
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::evm::Evm")
@@ -730,9 +764,10 @@ Module evm.
                   ]
                 |)
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "revm::evm::Evm")
@@ -782,9 +817,10 @@ Module evm.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "revm_handler_interface::post_execution::PostExecutionHandler",
                     POSTEXEC,
@@ -799,6 +835,7 @@ Module evm.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "&mut") [] [ POSTEXEC ],
                           M.get_trait_method (|
                             "revm_handler_interface::handler::Handler",
                             Ty.apply
@@ -884,11 +921,21 @@ Module evm.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ initial_gas_spend :=
+                let~ initial_gas_spend : Ty.path "u64" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; ERROR ];
+                              Ty.path "u64"
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
@@ -900,6 +947,7 @@ Module evm.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -915,6 +963,10 @@ Module evm.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "u64"; ERROR ],
                                   M.get_trait_method (|
                                     "revm_handler_interface::validation::ValidationHandler",
                                     VAL,
@@ -929,6 +981,7 @@ Module evm.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply (Ty.path "&mut") [] [ VAL ],
                                           M.get_trait_method (|
                                             "revm_handler_interface::handler::Handler",
                                             Ty.apply
@@ -981,9 +1034,10 @@ Module evm.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (M.read (|
-                                                    let~ _ :=
+                                                    let~ _ : Ty.tuple [] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.tuple [],
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "revm::evm::Evm")
@@ -1042,6 +1096,10 @@ Module evm.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.associated; ERROR ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -1078,9 +1136,11 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ output :=
+                let~ output :
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; ERROR ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; ERROR ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::evm::Evm")
@@ -1103,9 +1163,11 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ output :=
+                let~ output :
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; ERROR ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; ERROR ],
                       M.get_trait_method (|
                         "revm_handler_interface::post_execution::PostExecutionHandler",
                         POSTEXEC,
@@ -1120,6 +1182,7 @@ Module evm.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "&mut") [] [ POSTEXEC ],
                               M.get_trait_method (|
                                 "revm_handler_interface::handler::Handler",
                                 Ty.apply
@@ -1162,9 +1225,10 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::evm::Evm")
@@ -1225,10 +1289,20 @@ Module evm.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; ERROR ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
@@ -1240,6 +1314,7 @@ Module evm.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                             M.get_trait_method (|
                               "revm_handler_interface::validation::ValidationHandler",
                               VAL,
@@ -1254,6 +1329,7 @@ Module evm.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "&mut") [] [ VAL ],
                                     M.get_trait_method (|
                                       "revm_handler_interface::handler::Handler",
                                       Ty.apply
@@ -1312,6 +1388,10 @@ Module evm.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u64"; ERROR ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1347,11 +1427,21 @@ Module evm.
                           val))
                     ]
                   |) in
-                let~ initial_gas_spend :=
+                let~ initial_gas_spend : Ty.path "u64" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; ERROR ];
+                              Ty.path "u64"
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
@@ -1363,6 +1453,7 @@ Module evm.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
                               M.get_trait_method (|
                                 "revm_handler_interface::validation::ValidationHandler",
                                 VAL,
@@ -1377,6 +1468,7 @@ Module evm.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply (Ty.path "&mut") [] [ VAL ],
                                       M.get_trait_method (|
                                         "revm_handler_interface::handler::Handler",
                                         Ty.apply
@@ -1435,6 +1527,10 @@ Module evm.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "u64"; ERROR ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -1471,10 +1567,20 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; ERROR ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
@@ -1486,6 +1592,7 @@ Module evm.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                             M.get_trait_method (|
                               "revm_handler_interface::validation::ValidationHandler",
                               VAL,
@@ -1500,6 +1607,7 @@ Module evm.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "&mut") [] [ VAL ],
                                     M.get_trait_method (|
                                       "revm_handler_interface::handler::Handler",
                                       Ty.apply
@@ -1558,6 +1666,10 @@ Module evm.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "u64"; ERROR ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1635,11 +1747,21 @@ Module evm.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ initial_gas_spend :=
+                let~ initial_gas_spend : Ty.path "u64" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; ERROR ];
+                              Ty.path "u64"
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
@@ -1651,6 +1773,7 @@ Module evm.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; ERROR ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -1666,6 +1789,10 @@ Module evm.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "u64"; ERROR ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "revm::evm::Evm")
@@ -1701,9 +1828,10 @@ Module evm.
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (M.read (|
-                                                    let~ _ :=
+                                                    let~ _ : Ty.tuple [] :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.tuple [],
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path "revm::evm::Evm")
@@ -1762,6 +1890,10 @@ Module evm.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.associated; ERROR ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -1798,9 +1930,11 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ output :=
+                let~ output :
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; ERROR ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; ERROR ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::evm::Evm")
@@ -1823,9 +1957,11 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ output :=
+                let~ output :
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; ERROR ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; ERROR ],
                       M.get_trait_method (|
                         "revm_handler_interface::post_execution::PostExecutionHandler",
                         POSTEXEC,
@@ -1840,6 +1976,7 @@ Module evm.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "&mut") [] [ POSTEXEC ],
                               M.get_trait_method (|
                                 "revm_handler_interface::handler::Handler",
                                 Ty.apply
@@ -1882,9 +2019,10 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "revm::evm::Evm")
@@ -1977,7 +2115,7 @@ Module evm.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ context :=
+                let~ context : Ty.apply (Ty.path "&mut") [] [ CTX ] :=
                   M.alloc (|
                     M.borrow (|
                       Pointer.Kind.MutRef,
@@ -1988,9 +2126,10 @@ Module evm.
                       |)
                     |)
                   |) in
-                let~ pre_exec :=
+                let~ pre_exec : Ty.apply (Ty.path "&mut") [] [ PREEXEC ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&mut") [] [ PREEXEC ],
                       M.get_trait_method (|
                         "revm_handler_interface::handler::Handler",
                         Ty.apply
@@ -2015,10 +2154,20 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; ERROR ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
@@ -2030,6 +2179,7 @@ Module evm.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                             M.get_trait_method (|
                               "revm_handler_interface::pre_execution::PreExecutionHandler",
                               PREEXEC,
@@ -2062,6 +2212,10 @@ Module evm.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.associated; ERROR ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -2097,10 +2251,20 @@ Module evm.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; ERROR ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
@@ -2112,6 +2276,7 @@ Module evm.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                             M.get_trait_method (|
                               "revm_handler_interface::pre_execution::PreExecutionHandler",
                               PREEXEC,
@@ -2144,6 +2309,10 @@ Module evm.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.associated; ERROR ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -2179,10 +2348,11 @@ Module evm.
                           val))
                     ]
                   |) in
-                let~ gas_limit :=
+                let~ gas_limit : Ty.path "u64" :=
                   M.alloc (|
                     BinOp.Wrap.sub (|
                       M.call_closure (|
+                        Ty.path "u64",
                         M.get_trait_method (|
                           "revm_context_interface::transaction::common::CommonTxFields",
                           Ty.dyn
@@ -2201,6 +2371,16 @@ Module evm.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.dyn
+                                      [
+                                        ("revm_context_interface::transaction::common::CommonTxFields::Trait",
+                                          [])
+                                      ]
+                                  ],
                                 M.get_trait_method (|
                                   "revm_context_interface::transaction::Transaction",
                                   Ty.associated,
@@ -2215,6 +2395,7 @@ Module evm.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply (Ty.path "&") [] [ Ty.associated ],
                                         M.get_trait_method (|
                                           "revm_context_interface::transaction::TransactionGetter",
                                           Ty.apply (Ty.path "&mut") [] [ CTX ],
@@ -2237,7 +2418,7 @@ Module evm.
                       M.read (| initial_gas_spend |)
                     |)
                   |) in
-                let~ eip7702_gas_refund :=
+                let~ eip7702_gas_refund : Ty.path "i64" :=
                   M.alloc (|
                     M.cast
                       (Ty.path "i64")
@@ -2245,6 +2426,16 @@ Module evm.
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "core::convert::Infallible"; ERROR ];
+                                  Ty.path "u64"
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -2259,6 +2450,10 @@ Module evm.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [ Ty.path "u64"; ERROR ],
                                   M.get_trait_method (|
                                     "revm_handler_interface::pre_execution::PreExecutionHandler",
                                     PREEXEC,
@@ -2297,6 +2492,10 @@ Module evm.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.associated; ERROR ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -2334,9 +2533,10 @@ Module evm.
                         |)
                       |))
                   |) in
-                let~ exec :=
+                let~ exec : Ty.apply (Ty.path "&mut") [] [ EXEC ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&mut") [] [ EXEC ],
                       M.get_trait_method (|
                         "revm_handler_interface::handler::Handler",
                         Ty.apply
@@ -2361,11 +2561,28 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ first_frame :=
+                let~ first_frame :
+                    Ty.apply
+                      (Ty.path "revm_handler_interface::util::FrameOrResultGen")
+                      []
+                      [ Ty.associated; Ty.path "revm_handler::frame_data::FrameResult" ] :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; ERROR ];
+                              Ty.apply
+                                (Ty.path "revm_handler_interface::util::FrameOrResultGen")
+                                []
+                                [ Ty.associated; Ty.path "revm_handler::frame_data::FrameResult" ]
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -2387,6 +2604,17 @@ Module evm.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "revm_handler_interface::util::FrameOrResultGen")
+                                    []
+                                    [ Ty.associated; Ty.path "revm_handler::frame_data::FrameResult"
+                                    ];
+                                  ERROR
+                                ],
                               M.get_trait_method (|
                                 "revm_handler_interface::execution::ExecutionHandler",
                                 EXEC,
@@ -2423,6 +2651,10 @@ Module evm.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.associated; ERROR ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -2459,7 +2691,7 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ frame_result :=
+                let~ frame_result : Ty.path "revm_handler::frame_data::FrameResult" :=
                   M.copy (|
                     M.match_operator (|
                       first_frame,
@@ -2476,6 +2708,16 @@ Module evm.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "core::convert::Infallible"; ERROR ];
+                                      Ty.path "revm_handler::frame_data::FrameResult"
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::Try",
                                     Ty.apply
@@ -2490,6 +2732,10 @@ Module evm.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.path "revm_handler::frame_data::FrameResult"; ERROR ],
                                       M.get_trait_method (|
                                         "revm_handler_interface::execution::ExecutionHandler",
                                         EXEC,
@@ -2529,6 +2775,10 @@ Module evm.
                                         M.read (|
                                           M.return_ (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [ Ty.associated; ERROR ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
@@ -2577,11 +2827,21 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ exec_result :=
+                let~ exec_result : Ty.path "revm_handler::frame_data::FrameResult" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; ERROR ];
+                              Ty.path "revm_handler::frame_data::FrameResult"
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -2596,6 +2856,10 @@ Module evm.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "revm_handler::frame_data::FrameResult"; ERROR ],
                               M.get_trait_method (|
                                 "revm_handler_interface::execution::ExecutionHandler",
                                 EXEC,
@@ -2632,6 +2896,10 @@ Module evm.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.associated; ERROR ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -2668,9 +2936,10 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ post_exec :=
+                let~ post_exec : Ty.apply (Ty.path "&mut") [] [ POSTEXEC ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "&mut") [] [ POSTEXEC ],
                       M.get_trait_method (|
                         "revm_handler_interface::handler::Handler",
                         Ty.apply
@@ -2695,9 +2964,10 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_trait_method (|
                         "revm_handler_interface::post_execution::PostExecutionHandler",
                         POSTEXEC,
@@ -2718,10 +2988,20 @@ Module evm.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; ERROR ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
@@ -2733,6 +3013,7 @@ Module evm.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                             M.get_trait_method (|
                               "revm_handler_interface::post_execution::PostExecutionHandler",
                               POSTEXEC,
@@ -2772,6 +3053,10 @@ Module evm.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.associated; ERROR ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -2807,10 +3092,20 @@ Module evm.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; ERROR ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
@@ -2822,6 +3117,7 @@ Module evm.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; ERROR ],
                             M.get_trait_method (|
                               "revm_handler_interface::post_execution::PostExecutionHandler",
                               POSTEXEC,
@@ -2861,6 +3157,10 @@ Module evm.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.associated; ERROR ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -2898,6 +3198,7 @@ Module evm.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; ERROR ],
                     M.get_trait_method (|
                       "revm_handler_interface::post_execution::PostExecutionHandler",
                       POSTEXEC,

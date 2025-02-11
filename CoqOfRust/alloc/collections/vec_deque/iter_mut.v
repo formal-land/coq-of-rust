@@ -61,6 +61,10 @@ Module collections.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugTuple",
                   "finish",
@@ -72,6 +76,7 @@ Module collections.
                     Pointer.Kind.MutRef,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugTuple" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugTuple",
                           "field",
@@ -83,6 +88,10 @@ Module collections.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "core::fmt::builders::DebugTuple" ],
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::builders::DebugTuple",
                                   "field",
@@ -94,6 +103,7 @@ Module collections.
                                     Pointer.Kind.MutRef,
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "core::fmt::builders::DebugTuple",
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Formatter",
                                           "debug_tuple",
@@ -120,6 +130,10 @@ Module collections.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::IterMut")
@@ -155,6 +169,10 @@ Module collections.
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                                       "as_slice",
@@ -213,6 +231,7 @@ Module collections.
                 [
                   ("i1",
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                       M.get_trait_method (|
                         "core::default::Default",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -226,6 +245,7 @@ Module collections.
                     |));
                   ("i2",
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
                       M.get_trait_method (|
                         "core::default::Default",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -283,6 +303,10 @@ Module collections.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -322,9 +346,10 @@ Module collections.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_function (|
                                 "core::mem::swap",
                                 [],
@@ -362,6 +387,10 @@ Module collections.
                           |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -416,6 +445,13 @@ Module collections.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -459,9 +495,10 @@ Module collections.
                             0
                           |) in
                         let remaining := M.copy (| γ0_0 |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_function (|
                                 "core::mem::swap",
                                 [],
@@ -499,6 +536,16 @@ Module collections.
                           |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.tuple [];
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ]
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -518,6 +565,7 @@ Module collections.
                                 |)
                               |);
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -551,9 +599,10 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ len :=
+                let~ len : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_trait_method (|
                         "core::iter::traits::exact_size::ExactSizeIterator",
                         Ty.apply
@@ -598,9 +647,10 @@ Module collections.
               let accum := M.alloc (| accum |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let~ accum :=
+                let~ accum : Acc :=
                   M.alloc (|
                     M.call_closure (|
+                      Acc,
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -625,6 +675,7 @@ Module collections.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Acc,
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -672,11 +723,15 @@ Module collections.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ acc :=
+                    let~ acc : B :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [ Ty.associated; B ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 R,
@@ -688,6 +743,7 @@ Module collections.
                               |),
                               [
                                 M.call_closure (|
+                                  R,
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -728,6 +784,7 @@ Module collections.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          R,
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             R,
@@ -758,6 +815,7 @@ Module collections.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        R,
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -798,6 +856,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                 M.get_trait_method (|
                   "core::iter::traits::double_ended::DoubleEndedIterator",
                   Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [] [ T ],
@@ -845,9 +904,10 @@ Module collections.
                     Pointer.Kind.MutRef,
                     M.deref (|
                       M.read (|
-                        let~ i1_len :=
+                        let~ i1_len : Ty.path "usize" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_trait_method (|
                                 "core::iter::traits::exact_size::ExactSizeIterator",
                                 Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -897,6 +957,7 @@ Module collections.
                                                 Pointer.Kind.MutRef,
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply (Ty.path "&mut") [] [ T ],
                                                     M.get_trait_method (|
                                                       "core::iter::traits::iterator::Iterator",
                                                       Ty.apply
@@ -933,6 +994,7 @@ Module collections.
                                             Pointer.Kind.MutRef,
                                             M.deref (|
                                               M.call_closure (|
+                                                Ty.apply (Ty.path "&mut") [] [ T ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -1026,6 +1088,10 @@ Module collections.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                       M.get_trait_method (|
                         "core::iter::traits::double_ended::DoubleEndedIterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -1065,9 +1131,10 @@ Module collections.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_function (|
                                 "core::mem::swap",
                                 [],
@@ -1105,6 +1172,10 @@ Module collections.
                           |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                             M.get_trait_method (|
                               "core::iter::traits::double_ended::DoubleEndedIterator",
                               Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -1159,6 +1230,13 @@ Module collections.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::double_ended::DoubleEndedIterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -1202,9 +1280,10 @@ Module collections.
                             0
                           |) in
                         let remaining := M.copy (| γ0_0 |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_function (|
                                 "core::mem::swap",
                                 [],
@@ -1242,6 +1321,16 @@ Module collections.
                           |) in
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.tuple [];
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ]
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::double_ended::DoubleEndedIterator",
                               Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -1261,6 +1350,7 @@ Module collections.
                                 |)
                               |);
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::num::nonzero::NonZero")
@@ -1299,9 +1389,10 @@ Module collections.
               let accum := M.alloc (| accum |) in
               let f := M.alloc (| f |) in
               M.read (|
-                let~ accum :=
+                let~ accum : Acc :=
                   M.alloc (|
                     M.call_closure (|
+                      Acc,
                       M.get_trait_method (|
                         "core::iter::traits::double_ended::DoubleEndedIterator",
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -1326,6 +1417,7 @@ Module collections.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Acc,
                     M.get_trait_method (|
                       "core::iter::traits::double_ended::DoubleEndedIterator",
                       Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -1373,11 +1465,15 @@ Module collections.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ acc :=
+                    let~ acc : B :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [ Ty.associated; B ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 R,
@@ -1389,6 +1485,7 @@ Module collections.
                               |),
                               [
                                 M.call_closure (|
+                                  R,
                                   M.get_trait_method (|
                                     "core::iter::traits::double_ended::DoubleEndedIterator",
                                     Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -1429,6 +1526,7 @@ Module collections.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          R,
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             R,
@@ -1459,6 +1557,7 @@ Module collections.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        R,
                         M.get_trait_method (|
                           "core::iter::traits::double_ended::DoubleEndedIterator",
                           Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -1519,6 +1618,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               BinOp.Wrap.add (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -1540,6 +1640,7 @@ Module collections.
                   ]
                 |),
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -1577,6 +1678,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               LogicalOp.and (|
                 M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -1599,6 +1701,7 @@ Module collections.
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
+                    Ty.path "bool",
                     M.get_trait_method (|
                       "core::iter::traits::exact_size::ExactSizeIterator",
                       Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],

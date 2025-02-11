@@ -27,7 +27,7 @@ Module collections.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -38,6 +38,7 @@ Module collections.
                                 (M.alloc (|
                                   BinOp.ne (|
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -55,6 +56,7 @@ Module collections.
                                       ]
                                     |),
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
                                         "len",
@@ -81,6 +83,11 @@ Module collections.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                          ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
@@ -100,6 +107,17 @@ Module collections.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ U ] ];
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ U ] ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
@@ -111,6 +129,10 @@ Module collections.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ U ] ],
                                         M.get_trait_method (|
                                           "core::ops::index::Index",
                                           Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
@@ -131,6 +153,7 @@ Module collections.
                                     |)
                                   |);
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
@@ -153,6 +176,7 @@ Module collections.
                                   M.alloc (|
                                     LogicalOp.and (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -177,6 +201,7 @@ Module collections.
                                       |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
                                             Ty.apply
@@ -244,7 +269,7 @@ Module collections.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -255,6 +280,7 @@ Module collections.
                                 (M.alloc (|
                                   BinOp.ne (|
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -272,6 +298,7 @@ Module collections.
                                       ]
                                     |),
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
@@ -300,6 +327,11 @@ Module collections.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                          ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
@@ -319,6 +351,17 @@ Module collections.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ U ] ];
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ U ] ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
@@ -330,6 +373,10 @@ Module collections.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ U ] ],
                                         M.get_trait_method (|
                                           "core::ops::index::Index",
                                           Ty.apply (Ty.path "slice") [] [ U ],
@@ -352,6 +399,7 @@ Module collections.
                                     |)
                                   |);
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
@@ -374,6 +422,7 @@ Module collections.
                                   M.alloc (|
                                     LogicalOp.and (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -398,6 +447,7 @@ Module collections.
                                       |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
                                             Ty.apply
@@ -465,7 +515,7 @@ Module collections.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -476,6 +526,7 @@ Module collections.
                                 (M.alloc (|
                                   BinOp.ne (|
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -493,6 +544,7 @@ Module collections.
                                       ]
                                     |),
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
@@ -521,6 +573,11 @@ Module collections.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                          ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
@@ -540,6 +597,17 @@ Module collections.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ U ] ];
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ U ] ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
@@ -551,6 +619,10 @@ Module collections.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ U ] ],
                                         M.get_trait_method (|
                                           "core::ops::index::Index",
                                           Ty.apply (Ty.path "slice") [] [ U ],
@@ -573,6 +645,7 @@ Module collections.
                                     |)
                                   |);
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
@@ -595,6 +668,7 @@ Module collections.
                                   M.alloc (|
                                     LogicalOp.and (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -619,6 +693,7 @@ Module collections.
                                       |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
                                             Ty.apply
@@ -692,7 +767,7 @@ Module collections.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -703,6 +778,7 @@ Module collections.
                                 (M.alloc (|
                                   BinOp.ne (|
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -720,6 +796,7 @@ Module collections.
                                       ]
                                     |),
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
@@ -746,6 +823,11 @@ Module collections.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                          ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
@@ -765,6 +847,17 @@ Module collections.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ U ] ];
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ U ] ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
@@ -776,6 +869,10 @@ Module collections.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ U ] ],
                                         M.get_trait_method (|
                                           "core::ops::index::Index",
                                           Ty.apply (Ty.path "array") [ N ] [ U ],
@@ -796,6 +893,7 @@ Module collections.
                                     |)
                                   |);
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
@@ -818,6 +916,7 @@ Module collections.
                                   M.alloc (|
                                     LogicalOp.and (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -842,6 +941,7 @@ Module collections.
                                       |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
                                             Ty.apply
@@ -914,7 +1014,7 @@ Module collections.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -925,6 +1025,7 @@ Module collections.
                                 (M.alloc (|
                                   BinOp.ne (|
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -942,6 +1043,7 @@ Module collections.
                                       ]
                                     |),
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
@@ -970,6 +1072,11 @@ Module collections.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                          ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
@@ -989,6 +1096,17 @@ Module collections.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ U ] ];
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ U ] ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
@@ -1000,6 +1118,10 @@ Module collections.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ U ] ],
                                         M.get_trait_method (|
                                           "core::ops::index::Index",
                                           Ty.apply (Ty.path "array") [ N ] [ U ],
@@ -1022,6 +1144,7 @@ Module collections.
                                     |)
                                   |);
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
@@ -1044,6 +1167,7 @@ Module collections.
                                   M.alloc (|
                                     LogicalOp.and (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -1068,6 +1192,7 @@ Module collections.
                                       |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
                                             Ty.apply
@@ -1141,7 +1266,7 @@ Module collections.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -1152,6 +1277,7 @@ Module collections.
                                 (M.alloc (|
                                   BinOp.ne (|
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -1169,6 +1295,7 @@ Module collections.
                                       ]
                                     |),
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
@@ -1197,6 +1324,11 @@ Module collections.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                          ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                           "as_slices",
@@ -1216,6 +1348,17 @@ Module collections.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ U ] ];
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ U ] ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ U ],
                                   "split_at",
@@ -1227,6 +1370,10 @@ Module collections.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ U ] ],
                                         M.get_trait_method (|
                                           "core::ops::index::Index",
                                           Ty.apply (Ty.path "array") [ N ] [ U ],
@@ -1249,6 +1396,7 @@ Module collections.
                                     |)
                                   |);
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
@@ -1271,6 +1419,7 @@ Module collections.
                                   M.alloc (|
                                     LogicalOp.and (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
                                           Ty.apply
@@ -1295,6 +1444,7 @@ Module collections.
                                       |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
                                             Ty.apply

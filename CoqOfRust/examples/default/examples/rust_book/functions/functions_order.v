@@ -31,9 +31,10 @@ Module Impl_functions_order_SomeType.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_associated_function (|
                   Ty.path "functions_order::SomeType",
                   "meth2",
@@ -78,9 +79,10 @@ Definition depends_on_trait_impl (ε : list Value.t) (τ : list Ty.t) (α : list
       (let u := M.alloc (| u |) in
       let b := M.alloc (| b |) in
       M.read (|
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "functions_order::SomeTrait",
                 Ty.path "functions_order::OtherType",
@@ -98,9 +100,10 @@ Definition depends_on_trait_impl (ε : list Value.t) (τ : list Ty.t) (α : list
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (|
                 "functions_order::SomeTrait",
                 Ty.path "functions_order::SomeType",
@@ -144,6 +147,7 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.tuple [],
           M.get_trait_method (|
             "functions_order::SomeTrait",
             Ty.path "functions_order::SomeType",
@@ -227,9 +231,10 @@ Module inner_mod.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "functions_order::inner_mod::tar", [], [] |),
                 []
               |)
@@ -263,9 +268,10 @@ Module inner_mod.
       | [], [], [] =>
         ltac:(M.monadic
           (M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_function (| "functions_order::inner_mod::nested_mod::tack", [], [] |),
                   []
                 |)
@@ -303,17 +309,26 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
-          M.alloc (|
-            M.call_closure (| M.get_function (| "functions_order::foo", [], [] |), [] |)
-          |) in
-        let~ _ :=
-          M.alloc (|
-            M.call_closure (| M.get_function (| "functions_order::inner_mod::bar", [], [] |), [] |)
-          |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
+              M.get_function (| "functions_order::foo", [], [] |),
+              []
+            |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.alloc (|
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_function (| "functions_order::inner_mod::bar", [], [] |),
+              []
+            |)
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.alloc (|
+            M.call_closure (|
+              Ty.tuple [],
               M.get_associated_function (| Ty.path "functions_order::SomeType", "meth1", [], [] |),
               [ Value.StructTuple "functions_order::SomeType" [ Value.Integer IntegerKind.U32 0 ] ]
             |)

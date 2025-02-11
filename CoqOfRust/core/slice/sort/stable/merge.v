@@ -74,9 +74,10 @@ Module slice.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ len :=
+                    let~ len : Ty.path "usize" :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "usize",
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "len",
@@ -86,7 +87,7 @@ Module slice.
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                         |)
                       |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -107,6 +108,7 @@ Module slice.
                                       ltac:(M.monadic
                                         (BinOp.lt (|
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "slice")
@@ -129,6 +131,7 @@ Module slice.
                                             ]
                                           |),
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_function (|
                                               "core::cmp::min",
                                               [],
@@ -156,9 +159,10 @@ Module slice.
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
                       |) in
-                    let~ buf :=
+                    let~ buf : Ty.apply (Ty.path "*mut") [] [ T ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                             "slice_as_mut_ptr",
@@ -168,9 +172,10 @@ Module slice.
                           [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| scratch |) |) |) ]
                         |)
                       |) in
-                    let~ v_base :=
+                    let~ v_base : Ty.apply (Ty.path "*mut") [] [ T ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "as_mut_ptr",
@@ -180,9 +185,10 @@ Module slice.
                           [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| v |) |) |) ]
                         |)
                       |) in
-                    let~ v_mid :=
+                    let~ v_mid : Ty.apply (Ty.path "*mut") [] [ T ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
                             "add",
@@ -192,9 +198,10 @@ Module slice.
                           [ M.read (| v_base |); M.read (| mid |) ]
                         |)
                       |) in
-                    let~ v_end :=
+                    let~ v_end : Ty.apply (Ty.path "*mut") [] [ T ] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*mut") [] [ T ],
                             "add",
@@ -204,12 +211,12 @@ Module slice.
                           [ M.read (| v_base |); M.read (| len |) ]
                         |)
                       |) in
-                    let~ left_len := M.copy (| mid |) in
-                    let~ right_len :=
+                    let~ left_len : Ty.path "usize" := M.copy (| mid |) in
+                    let~ right_len : Ty.path "usize" :=
                       M.alloc (| BinOp.Wrap.sub (| M.read (| len |), M.read (| mid |) |) |) in
-                    let~ left_is_shorter :=
+                    let~ left_is_shorter : Ty.path "bool" :=
                       M.alloc (| BinOp.le (| M.read (| left_len |), M.read (| right_len |) |) |) in
-                    let~ save_base :=
+                    let~ save_base : Ty.apply (Ty.path "*mut") [] [ T ] :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -227,7 +234,7 @@ Module slice.
                           ]
                         |)
                       |) in
-                    let~ save_len :=
+                    let~ save_len : Ty.path "usize" :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
@@ -245,9 +252,10 @@ Module slice.
                           ]
                         |)
                       |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.tuple [],
                           M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                           [
                             (* MutToConstPointer *) M.pointer_coercion (M.read (| save_base |));
@@ -256,7 +264,11 @@ Module slice.
                           ]
                         |)
                       |) in
-                    let~ merge_state :=
+                    let~ merge_state :
+                        Ty.apply
+                          (Ty.path "core::slice::sort::stable::merge::MergeState")
+                          []
+                          [ T ] :=
                       M.alloc (|
                         Value.StructRecord
                           "core::slice::sort::stable::merge::MergeState"
@@ -264,6 +276,7 @@ Module slice.
                             ("start", M.read (| buf |));
                             ("end_",
                               M.call_closure (|
+                                Ty.apply (Ty.path "*mut") [] [ T ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "*mut") [] [ T ],
                                   "add",
@@ -283,9 +296,10 @@ Module slice.
                             (let γ := M.use left_is_shorter in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
+                            let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.tuple [],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::slice::sort::stable::merge::MergeState")
@@ -309,9 +323,10 @@ Module slice.
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ _ :=
+                            (let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.tuple [],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::slice::sort::stable::merge::MergeState")
@@ -403,7 +418,7 @@ Module slice.
                 let right_end := M.alloc (| right_end |) in
                 let is_less := M.alloc (| is_less |) in
                 M.read (|
-                  let~ left :=
+                  let~ left : Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ] :=
                     M.alloc (|
                       M.borrow (|
                         Pointer.Kind.MutRef,
@@ -414,7 +429,7 @@ Module slice.
                         |)
                       |)
                     |) in
-                  let~ out :=
+                  let~ out : Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ] :=
                     M.alloc (|
                       M.borrow (|
                         Pointer.Kind.MutRef,
@@ -460,10 +475,11 @@ Module slice.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ consume_left :=
+                              let~ consume_left : Ty.path "bool" :=
                                 M.alloc (|
                                   UnOp.not (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "core::ops::function::FnMut",
                                         F,
@@ -511,7 +527,7 @@ Module slice.
                                     |)
                                   |)
                                 |) in
-                              let~ src :=
+                              let~ src : Ty.apply (Ty.path "*const") [] [ T ] :=
                                 M.copy (|
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -533,9 +549,10 @@ Module slice.
                                     ]
                                   |)
                                 |) in
-                              let~ _ :=
+                              let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.tuple [],
                                     M.get_function (|
                                       "core::intrinsics::copy_nonoverlapping",
                                       [],
@@ -548,54 +565,63 @@ Module slice.
                                     ]
                                   |)
                                 |) in
-                              let~ _ :=
-                                M.write (|
-                                  M.deref (| M.read (| left |) |),
-                                  M.call_closure (|
-                                    M.get_associated_function (|
+                              let~ _ : Ty.tuple [] :=
+                                M.alloc (|
+                                  M.write (|
+                                    M.deref (| M.read (| left |) |),
+                                    M.call_closure (|
                                       Ty.apply (Ty.path "*mut") [] [ T ],
-                                      "add",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (| M.deref (| M.read (| left |) |) |);
-                                      M.cast (Ty.path "usize") (M.read (| consume_left |))
-                                    ]
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "*mut") [] [ T ],
+                                        "add",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.read (| M.deref (| M.read (| left |) |) |);
+                                        M.cast (Ty.path "usize") (M.read (| consume_left |))
+                                      ]
+                                    |)
                                   |)
                                 |) in
-                              let~ _ :=
-                                M.write (|
-                                  right,
-                                  M.call_closure (|
-                                    M.get_associated_function (|
+                              let~ _ : Ty.tuple [] :=
+                                M.alloc (|
+                                  M.write (|
+                                    right,
+                                    M.call_closure (|
                                       Ty.apply (Ty.path "*const") [] [ T ],
-                                      "add",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (| right |);
-                                      M.cast
-                                        (Ty.path "usize")
-                                        (UnOp.not (| M.read (| consume_left |) |))
-                                    ]
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "*const") [] [ T ],
+                                        "add",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.read (| right |);
+                                        M.cast
+                                          (Ty.path "usize")
+                                          (UnOp.not (| M.read (| consume_left |) |))
+                                      ]
+                                    |)
                                   |)
                                 |) in
-                              let~ _ :=
-                                M.write (|
-                                  M.deref (| M.read (| out |) |),
-                                  M.call_closure (|
-                                    M.get_associated_function (|
+                              let~ _ : Ty.tuple [] :=
+                                M.alloc (|
+                                  M.write (|
+                                    M.deref (| M.read (| out |) |),
+                                    M.call_closure (|
                                       Ty.apply (Ty.path "*mut") [] [ T ],
-                                      "add",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.read (| M.deref (| M.read (| out |) |) |);
-                                      Value.Integer IntegerKind.Usize 1
-                                    ]
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "*mut") [] [ T ],
+                                        "add",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.read (| M.deref (| M.read (| out |) |) |);
+                                        Value.Integer IntegerKind.Usize 1
+                                      ]
+                                    |)
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -604,7 +630,7 @@ Module slice.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in
@@ -672,9 +698,10 @@ Module slice.
                 M.read (|
                   M.loop (|
                     ltac:(M.monadic
-                      (let~ left :=
+                      (let~ left : Ty.apply (Ty.path "*mut") [] [ T ] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "*mut") [] [ T ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
                               "sub",
@@ -693,9 +720,10 @@ Module slice.
                             ]
                           |)
                         |) in
-                      let~ right :=
+                      let~ right : Ty.apply (Ty.path "*mut") [] [ T ] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "*mut") [] [ T ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
                               "sub",
@@ -714,22 +742,26 @@ Module slice.
                             ]
                           |)
                         |) in
-                      let~ _ :=
-                        M.write (|
-                          out,
-                          M.call_closure (|
-                            M.get_associated_function (|
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          M.write (|
+                            out,
+                            M.call_closure (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
-                              "sub",
-                              [],
-                              []
-                            |),
-                            [ M.read (| out |); Value.Integer IntegerKind.Usize 1 ]
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                "sub",
+                                [],
+                                []
+                              |),
+                              [ M.read (| out |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
                           |)
                         |) in
-                      let~ consume_left :=
+                      let~ consume_left : Ty.path "bool" :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "bool",
                             M.get_trait_method (|
                               "core::ops::function::FnMut",
                               F,
@@ -772,7 +804,7 @@ Module slice.
                             ]
                           |)
                         |) in
-                      let~ src :=
+                      let~ src : Ty.apply (Ty.path "*mut") [] [ T ] :=
                         M.copy (|
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -790,9 +822,10 @@ Module slice.
                             ]
                           |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.tuple [],
                             M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                             [
                               (* MutToConstPointer *) M.pointer_coercion (M.read (| src |));
@@ -801,44 +834,50 @@ Module slice.
                             ]
                           |)
                         |) in
-                      let~ _ :=
-                        M.write (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::slice::sort::stable::merge::MergeState",
-                            "dst"
-                          |),
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [] [ T ],
-                              "add",
-                              [],
-                              []
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          M.write (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::slice::sort::stable::merge::MergeState",
+                              "dst"
                             |),
-                            [
-                              M.read (| left |);
-                              M.cast (Ty.path "usize") (UnOp.not (| M.read (| consume_left |) |))
-                            ]
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*mut") [] [ T ],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                "add",
+                                [],
+                                []
+                              |),
+                              [
+                                M.read (| left |);
+                                M.cast (Ty.path "usize") (UnOp.not (| M.read (| consume_left |) |))
+                              ]
+                            |)
                           |)
                         |) in
-                      let~ _ :=
-                        M.write (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::slice::sort::stable::merge::MergeState",
-                            "end"
-                          |),
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "*mut") [] [ T ],
-                              "add",
-                              [],
-                              []
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          M.write (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::slice::sort::stable::merge::MergeState",
+                              "end"
                             |),
-                            [
-                              M.read (| right |);
-                              M.cast (Ty.path "usize") (M.read (| consume_left |))
-                            ]
+                            M.call_closure (|
+                              Ty.apply (Ty.path "*mut") [] [ T ],
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                "add",
+                                [],
+                                []
+                              |),
+                              [
+                                M.read (| right |);
+                                M.cast (Ty.path "usize") (M.read (| consume_left |))
+                              ]
+                            |)
                           |)
                         |) in
                       M.match_operator (|
@@ -925,9 +964,10 @@ Module slice.
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
                 M.read (|
-                  let~ len :=
+                  let~ len : Ty.path "usize" :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "*mut") [] [ T ],
                           "sub_ptr",
@@ -954,9 +994,10 @@ Module slice.
                         ]
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
                         [
                           (* MutToConstPointer *)

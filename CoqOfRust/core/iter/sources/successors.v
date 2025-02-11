@@ -55,6 +55,7 @@ Module iter.
                 [
                   ("next",
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
                       M.get_trait_method (|
                         "core::clone::Clone",
                         Ty.apply (Ty.path "core::option::Option") [] [ T ],
@@ -82,6 +83,7 @@ Module iter.
                     |));
                   ("succ",
                     M.call_closure (|
+                      F,
                       M.get_trait_method (| "core::clone::Clone", F, [], [], "clone", [], [] |),
                       [
                         M.borrow (|
@@ -135,11 +137,21 @@ Module iter.
               M.catch_return (|
                 ltac:(M.monadic
                   (M.read (|
-                    let~ item :=
+                    let~ item : T :=
                       M.copy (|
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::convert::Infallible" ];
+                                  T
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
@@ -151,6 +163,7 @@ Module iter.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                     "take",
@@ -186,6 +199,7 @@ Module iter.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply (Ty.path "core::option::Option") [] [ T ],
@@ -219,40 +233,43 @@ Module iter.
                           ]
                         |)
                       |) in
-                    let~ _ :=
-                      M.write (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::iter::sources::successors::Successors",
-                          "next"
-                        |),
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::ops::function::FnMut",
-                            F,
-                            [],
-                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                            "call_mut",
-                            [],
-                            []
+                    let~ _ : Ty.tuple [] :=
+                      M.alloc (|
+                        M.write (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::iter::sources::successors::Successors",
+                            "next"
                           |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::iter::sources::successors::Successors",
-                                "succ"
-                              |)
-                            |);
-                            Value.Tuple
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.borrow (| Pointer.Kind.Ref, item |) |)
+                          M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                            M.get_trait_method (|
+                              "core::ops::function::FnMut",
+                              F,
+                              [],
+                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                              "call_mut",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::iter::sources::successors::Successors",
+                                  "succ"
                                 |)
-                              ]
-                          ]
+                              |);
+                              Value.Tuple
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.borrow (| Pointer.Kind.Ref, item |) |)
+                                  |)
+                                ]
+                            ]
+                          |)
                         |)
                       |) in
                     M.alloc (|
@@ -289,6 +306,7 @@ Module iter.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                   "is_some",
@@ -377,6 +395,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
@@ -388,6 +410,7 @@ Module iter.
                     Pointer.Kind.MutRef,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::builders::DebugStruct" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::builders::DebugStruct",
                           "field",
@@ -399,6 +422,7 @@ Module iter.
                             Pointer.Kind.MutRef,
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::fmt::builders::DebugStruct",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Formatter",
                                   "debug_struct",

@@ -17,6 +17,10 @@ Module cyclic_dependencies.
         (let module := M.alloc (| module |) in
         let imm_deps := M.alloc (| imm_deps |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
           M.get_associated_function (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -33,6 +37,10 @@ Module cyclic_dependencies.
           |),
           [
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
               M.get_function (|
                 "move_bytecode_verifier::cyclic_dependencies::verify_module_impl",
                 [],
@@ -56,6 +64,7 @@ Module cyclic_dependencies.
                             ltac:(M.monadic
                               (let e := M.copy (| γ |) in
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::VMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "finish",
@@ -68,6 +77,7 @@ Module cyclic_dependencies.
                                     "move_binary_format::errors::Location::Module"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_core_types::language_storage::ModuleId",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "self_id",
@@ -146,9 +156,10 @@ Module cyclic_dependencies.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ self_id :=
+              let~ self_id : Ty.path "move_core_types::language_storage::ModuleId" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "move_core_types::language_storage::ModuleId",
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "self_id",
@@ -158,9 +169,23 @@ Module cyclic_dependencies.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| module |) |) |) ]
                   |)
                 |) in
-              let~ visited :=
+              let~ visited :
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::set::BTreeSet")
+                    []
+                    [
+                      Ty.path "move_core_types::language_storage::ModuleId";
+                      Ty.path "alloc::alloc::Global"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::set::BTreeSet")
+                      []
+                      [
+                        Ty.path "move_core_types::language_storage::ModuleId";
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -176,11 +201,18 @@ Module cyclic_dependencies.
                     []
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::into_iter::IntoIter")
+                          []
+                          [
+                            Ty.path "move_core_types::language_storage::ModuleId";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -198,6 +230,13 @@ Module cyclic_dependencies.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.path "move_core_types::language_storage::ModuleId";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::CompiledModule",
                               "immediate_dependencies",
@@ -215,10 +254,14 @@ Module cyclic_dependencies.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "move_core_types::language_storage::ModuleId" ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -269,6 +312,22 @@ Module cyclic_dependencies.
                                                     (M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.path "bool"
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -287,6 +346,14 @@ Module cyclic_dependencies.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path "bool";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_function (|
                                                                 "move_bytecode_verifier::cyclic_dependencies::verify_module_impl.detect_cycles",
                                                                 [],
@@ -349,6 +416,15 @@ Module cyclic_dependencies.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -408,6 +484,8 @@ Module cyclic_dependencies.
                                                           "core::result::Result::Err"
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError",
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError",
@@ -484,7 +562,7 @@ Module cyclic_dependencies.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -494,6 +572,7 @@ Module cyclic_dependencies.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply
@@ -531,7 +610,7 @@ Module cyclic_dependencies.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -542,6 +621,7 @@ Module cyclic_dependencies.
                               (M.alloc (|
                                 UnOp.not (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -560,6 +640,7 @@ Module cyclic_dependencies.
                                         M.deref (| M.read (| visited |) |)
                                       |);
                                       M.call_closure (|
+                                        Ty.path "move_core_types::language_storage::ModuleId",
                                         M.get_trait_method (|
                                           "core::clone::Clone",
                                           Ty.path "move_core_types::language_storage::ModuleId",
@@ -586,6 +667,13 @@ Module cyclic_dependencies.
                             (M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                                    []
+                                    [
+                                      Ty.path "move_core_types::language_storage::ModuleId";
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
                                   M.get_trait_method (|
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
@@ -606,6 +694,27 @@ Module cyclic_dependencies.
                                       M.match_operator (|
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::ops::control_flow::ControlFlow")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ];
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::language_storage::ModuleId";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ]
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               Ty.apply
@@ -631,6 +740,21 @@ Module cyclic_dependencies.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_core_types::language_storage::ModuleId";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ];
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::function::Fn",
                                                   D,
@@ -683,6 +807,14 @@ Module cyclic_dependencies.
                                                   M.read (|
                                                     M.return_ (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "bool";
+                                                            Ty.path
+                                                              "move_binary_format::errors::PartialVMError"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
@@ -736,10 +868,17 @@ Module cyclic_dependencies.
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
                                       ltac:(M.monadic
-                                        (let~ _ :=
+                                        (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::language_storage::ModuleId"
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -796,6 +935,23 @@ Module cyclic_dependencies.
                                                               (M.match_operator (|
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::ops::control_flow::ControlFlow")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::convert::Infallible";
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError"
+                                                                          ];
+                                                                        Ty.path "bool"
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::try_trait::Try",
                                                                       Ty.apply
@@ -815,6 +971,15 @@ Module cyclic_dependencies.
                                                                     |),
                                                                     [
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.path "bool";
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError"
+                                                                          ],
                                                                         M.get_function (|
                                                                           "move_bytecode_verifier::cyclic_dependencies::verify_module_impl.detect_cycles",
                                                                           [],
@@ -869,6 +1034,15 @@ Module cyclic_dependencies.
                                                                           M.read (|
                                                                             M.return_ (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path "bool";
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                  ],
                                                                                 M.get_trait_method (|
                                                                                   "core::ops::try_trait::FromResidual",
                                                                                   Ty.apply

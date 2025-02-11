@@ -21,7 +21,7 @@ Definition is_divisible_by (ε : list Value.t) (τ : list Ty.t) (α : list Value
       M.catch_return (|
         ltac:(M.monadic
           (M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -81,18 +81,21 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                   M.use
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.path "bool",
                         M.get_function (| "functions::is_divisible_by", [], [] |),
                         [ M.read (| n |); Value.Integer IntegerKind.U32 15 ]
                       |)
                     |)) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                let~ _ :=
-                  let~ _ :=
+                let~ _ : Ty.tuple [] :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
                         [
                           M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
@@ -130,19 +133,22 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_function (| "functions::is_divisible_by", [], [] |),
                                 [ M.read (| n |); Value.Integer IntegerKind.U32 3 ]
                               |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
-                          let~ _ :=
+                        let~ _ : Ty.tuple [] :=
+                          let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.tuple [],
                                 M.get_function (| "std::io::stdio::_print", [], [] |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::Arguments",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
@@ -180,6 +186,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                   M.use
                                     (M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "bool",
                                         M.get_function (| "functions::is_divisible_by", [], [] |),
                                         [ M.read (| n |); Value.Integer IntegerKind.U32 5 ]
                                       |)
@@ -189,13 +196,15 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ :=
-                                  let~ _ :=
+                                let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_function (| "std::io::stdio::_print", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
@@ -225,13 +234,15 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (let~ _ :=
-                                  let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_function (| "std::io::stdio::_print", [], [] |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "core::fmt::Arguments",
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
@@ -264,6 +275,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path "core::fmt::rt::Argument",
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::rt::Argument",
                                                               "new_display",
@@ -321,6 +333,7 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
           (M.match_operator (|
             M.alloc (|
               M.call_closure (|
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
@@ -332,6 +345,7 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u32" ],
                       "new",
@@ -349,10 +363,11 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                   (let iter := M.copy (| γ |) in
                   M.loop (|
                     ltac:(M.monadic
-                      (let~ _ :=
+                      (let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -387,9 +402,10 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                                     0
                                   |) in
                                 let n := M.copy (| γ0_0 |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_function (| "functions::fizzbuzz", [], [] |),
                                       [ M.read (| n |) ]
                                     |)
@@ -419,9 +435,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "functions::fizzbuzz_to", [], [] |),
               [ Value.Integer IntegerKind.U32 100 ]
             |)

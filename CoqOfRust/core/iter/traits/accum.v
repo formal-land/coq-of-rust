@@ -28,6 +28,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i8",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -99,6 +100,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i8",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -170,6 +172,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i8",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -206,6 +209,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "i8",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "i8",
@@ -254,6 +258,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i8",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -290,6 +295,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "i8",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "i8",
@@ -338,6 +344,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i16",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -409,6 +416,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i16",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -480,6 +488,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i16",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -516,6 +525,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "i16",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "i16",
@@ -564,6 +574,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i16",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -600,6 +611,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "i16",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "i16",
@@ -648,6 +660,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i32",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -719,6 +732,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i32",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -790,6 +804,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i32",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -826,6 +841,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "i32",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "i32",
@@ -874,6 +890,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i32",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -910,6 +927,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "i32",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "i32",
@@ -958,6 +976,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i64",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -1029,6 +1048,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i64",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -1100,6 +1120,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i64",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -1136,6 +1157,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "i64",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "i64",
@@ -1184,6 +1206,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i64",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -1220,6 +1243,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "i64",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "i64",
@@ -1268,6 +1292,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i128",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -1339,6 +1364,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i128",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -1410,6 +1436,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i128",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -1446,6 +1473,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "i128",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "i128",
@@ -1494,6 +1522,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "i128",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -1530,6 +1559,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "i128",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "i128",
@@ -1578,6 +1608,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "isize",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -1649,6 +1680,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "isize",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -1720,6 +1752,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "isize",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -1757,6 +1790,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "isize",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "isize",
@@ -1805,6 +1839,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "isize",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -1842,6 +1877,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "isize",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "isize",
@@ -1890,6 +1926,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u8",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -1961,6 +1998,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u8",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -2032,6 +2070,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u8",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -2068,6 +2107,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "u8",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "u8",
@@ -2116,6 +2156,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u8",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -2152,6 +2193,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "u8",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "u8",
@@ -2200,6 +2242,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u16",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -2271,6 +2314,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u16",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -2342,6 +2386,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u16",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -2378,6 +2423,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "u16",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "u16",
@@ -2426,6 +2472,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u16",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -2462,6 +2509,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "u16",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "u16",
@@ -2510,6 +2558,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u32",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -2581,6 +2630,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u32",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -2652,6 +2702,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u32",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -2688,6 +2739,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "u32",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "u32",
@@ -2736,6 +2788,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u32",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -2772,6 +2825,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "u32",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "u32",
@@ -2820,6 +2874,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u64",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -2891,6 +2946,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u64",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -2962,6 +3018,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u64",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -2998,6 +3055,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "u64",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "u64",
@@ -3046,6 +3104,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u64",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -3082,6 +3141,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "u64",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "u64",
@@ -3130,6 +3190,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u128",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -3201,6 +3262,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u128",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -3272,6 +3334,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u128",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -3308,6 +3371,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "u128",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "u128",
@@ -3356,6 +3420,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "u128",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -3392,6 +3457,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "u128",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "u128",
@@ -3440,6 +3506,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "usize",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -3511,6 +3578,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "usize",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -3582,6 +3650,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "usize",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -3619,6 +3688,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "usize",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "usize",
@@ -3667,6 +3737,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "usize",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -3704,6 +3775,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "usize",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "usize",
@@ -3753,6 +3825,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -3797,6 +3870,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i8" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -3854,6 +3931,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -3898,6 +3976,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i8" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -3955,6 +4037,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -4007,6 +4090,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i8" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -4076,6 +4163,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -4128,6 +4216,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i8" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -4197,6 +4289,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -4241,6 +4334,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i16" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -4298,6 +4395,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -4342,6 +4440,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i16" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -4399,6 +4501,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -4451,6 +4554,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i16" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -4520,6 +4627,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -4572,6 +4680,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i16" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -4641,6 +4753,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -4685,6 +4798,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i32" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -4742,6 +4859,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -4786,6 +4904,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i32" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -4843,6 +4965,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -4895,6 +5018,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i32" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -4964,6 +5091,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -5016,6 +5144,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i32" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -5085,6 +5217,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -5129,6 +5262,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i64" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -5186,6 +5323,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -5230,6 +5368,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i64" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -5287,6 +5429,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -5339,6 +5482,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i64" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -5408,6 +5555,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -5460,6 +5608,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i64" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -5529,6 +5681,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -5576,6 +5729,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i128" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -5633,6 +5790,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -5680,6 +5838,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i128" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -5737,6 +5899,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -5792,6 +5955,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i128" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -5861,6 +6028,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -5916,6 +6084,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "i128" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -5985,6 +6157,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -6035,6 +6208,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "isize" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -6092,6 +6269,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -6142,6 +6320,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "isize" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -6199,6 +6381,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -6254,6 +6437,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "isize" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -6323,6 +6510,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -6378,6 +6566,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "isize" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -6447,6 +6639,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -6491,6 +6684,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u8" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -6548,6 +6745,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -6592,6 +6790,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u8" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -6649,6 +6851,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -6701,6 +6904,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u8" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -6770,6 +6977,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -6822,6 +7030,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u8" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -6891,6 +7103,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -6935,6 +7148,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u16" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -6992,6 +7209,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -7036,6 +7254,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u16" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -7093,6 +7315,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -7145,6 +7368,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u16" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -7214,6 +7441,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -7266,6 +7494,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u16" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -7335,6 +7567,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -7379,6 +7612,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u32" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -7436,6 +7673,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -7480,6 +7718,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u32" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -7537,6 +7779,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -7589,6 +7832,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u32" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -7658,6 +7905,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -7710,6 +7958,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u32" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -7779,6 +8031,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -7823,6 +8076,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u64" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -7880,6 +8137,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -7924,6 +8182,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u64" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -7981,6 +8243,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -8033,6 +8296,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u64" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -8102,6 +8369,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -8154,6 +8422,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u64" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -8223,6 +8495,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -8270,6 +8543,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u128" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -8327,6 +8604,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -8374,6 +8652,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u128" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -8431,6 +8713,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -8486,6 +8769,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u128" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -8555,6 +8842,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -8610,6 +8898,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "u128" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -8679,6 +8971,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -8729,6 +9022,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -8786,6 +9083,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -8836,6 +9134,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -8893,6 +9195,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -8948,6 +9251,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.apply
@@ -9017,6 +9324,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -9072,6 +9380,10 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::num::wrapping::Wrapping")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.apply
@@ -9140,6 +9452,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "f32",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -9211,6 +9524,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "f32",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -9282,6 +9596,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "f32",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -9318,6 +9633,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "f32",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "f32",
@@ -9366,6 +9682,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "f32",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -9402,6 +9719,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "f32",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "f32",
@@ -9450,6 +9768,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "f64",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -9521,6 +9840,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "f64",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -9592,6 +9912,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "f64",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -9628,6 +9949,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "f64",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Add",
                                                 Ty.path "f64",
@@ -9676,6 +9998,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.path "f64",
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
                   I,
@@ -9712,6 +10035,7 @@ Module iter.
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
                                             M.call_closure (|
+                                              Ty.path "f64",
                                               M.get_trait_method (|
                                                 "core::ops::arith::Mul",
                                                 Ty.path "f64",
@@ -9761,6 +10085,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                 M.get_function (|
                   "core::iter::adapters::try_process",
                   [],
@@ -9806,6 +10131,7 @@ Module iter.
                                   ltac:(M.monadic
                                     (let i := M.copy (| γ |) in
                                     M.call_closure (|
+                                      T,
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -9869,6 +10195,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                 M.get_function (|
                   "core::iter::adapters::try_process",
                   [],
@@ -9914,6 +10241,7 @@ Module iter.
                                   ltac:(M.monadic
                                     (let i := M.copy (| γ |) in
                                     M.call_closure (|
+                                      T,
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -9971,6 +10299,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 M.get_function (|
                   "core::iter::adapters::try_process",
                   [],
@@ -10016,6 +10345,7 @@ Module iter.
                                   ltac:(M.monadic
                                     (let i := M.copy (| γ |) in
                                     M.call_closure (|
+                                      T,
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -10073,6 +10403,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| iter |) in
               M.call_closure (|
+                Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 M.get_function (|
                   "core::iter::adapters::try_process",
                   [],
@@ -10118,6 +10449,7 @@ Module iter.
                                   ltac:(M.monadic
                                     (let i := M.copy (| γ |) in
                                     M.call_closure (|
+                                      T,
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply

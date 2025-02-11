@@ -23,12 +23,14 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let _a := M.copy (| γ0_0 |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
@@ -55,12 +57,14 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "std::io::stdio::_print", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
@@ -115,9 +119,10 @@ Module tests.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ file :=
+          let~ file : Ty.path "std::fs::File" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "std::fs::File",
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -129,6 +134,10 @@ Module tests.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                     M.get_associated_function (|
                       Ty.path "std::fs::OpenOptions",
                       "open",
@@ -140,6 +149,7 @@ Module tests.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.path "std::fs::OpenOptions" ],
                             M.get_associated_function (|
                               Ty.path "std::fs::OpenOptions",
                               "create",
@@ -151,6 +161,7 @@ Module tests.
                                 Pointer.Kind.MutRef,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "&mut") [] [ Ty.path "std::fs::OpenOptions" ],
                                     M.get_associated_function (|
                                       Ty.path "std::fs::OpenOptions",
                                       "append",
@@ -162,6 +173,7 @@ Module tests.
                                         Pointer.Kind.MutRef,
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "std::fs::OpenOptions",
                                             M.get_associated_function (|
                                               Ty.path "std::fs::OpenOptions",
                                               "new",
@@ -196,6 +208,7 @@ Module tests.
             (M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
@@ -221,10 +234,11 @@ Module tests.
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
@@ -256,9 +270,10 @@ Module tests.
                                       "core::option::Option::Some",
                                       0
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -270,6 +285,10 @@ Module tests.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                                             M.get_trait_method (|
                                               "std::io::Write",
                                               Ty.path "std::fs::File",
@@ -285,6 +304,15 @@ Module tests.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path "str",
                                                       "as_bytes",
@@ -351,9 +379,10 @@ Module tests.
     | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
-          let~ file :=
+          let~ file : Ty.path "std::fs::File" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "std::fs::File",
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -365,6 +394,10 @@ Module tests.
                 |),
                 [
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
                     M.get_associated_function (|
                       Ty.path "std::fs::OpenOptions",
                       "open",
@@ -376,6 +409,7 @@ Module tests.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.path "std::fs::OpenOptions" ],
                             M.get_associated_function (|
                               Ty.path "std::fs::OpenOptions",
                               "create",
@@ -387,6 +421,7 @@ Module tests.
                                 Pointer.Kind.MutRef,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply (Ty.path "&mut") [] [ Ty.path "std::fs::OpenOptions" ],
                                     M.get_associated_function (|
                                       Ty.path "std::fs::OpenOptions",
                                       "append",
@@ -398,6 +433,7 @@ Module tests.
                                         Pointer.Kind.MutRef,
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "std::fs::OpenOptions",
                                             M.get_associated_function (|
                                               Ty.path "std::fs::OpenOptions",
                                               "new",
@@ -432,6 +468,7 @@ Module tests.
             (M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
@@ -457,10 +494,11 @@ Module tests.
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
@@ -492,9 +530,10 @@ Module tests.
                                       "core::option::Option::Some",
                                       0
                                     |) in
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -506,6 +545,10 @@ Module tests.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                                             M.get_trait_method (|
                                               "std::io::Write",
                                               Ty.path "std::fs::File",
@@ -521,6 +564,15 @@ Module tests.
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path "str",
                                                       "as_bytes",

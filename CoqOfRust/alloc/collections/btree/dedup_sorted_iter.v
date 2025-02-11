@@ -36,6 +36,7 @@ Module collections.
                 [
                   ("iter",
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         I,
@@ -98,11 +99,15 @@ Module collections.
                     M.read (|
                       M.loop (|
                         ltac:(M.monadic
-                          (let~ next :=
+                          (let~ next : Ty.tuple [ K; V ] :=
                             M.copy (|
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.tuple [ K; V ] ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply
@@ -154,11 +159,15 @@ Module collections.
                                 ]
                               |)
                             |) in
-                          let~ peeked :=
+                          let~ peeked : Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] :=
                             M.copy (|
                               M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::peekable::Peekable")
@@ -218,6 +227,7 @@ Module collections.
                                     M.use
                                       (M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_trait_method (|
                                             "core::cmp::PartialEq",
                                             K,

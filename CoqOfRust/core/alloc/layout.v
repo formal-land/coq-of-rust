@@ -14,8 +14,16 @@ Module alloc.
         ltac:(M.monadic
           (Value.Tuple
             [
-              M.call_closure (| M.get_function (| "core::mem::size_of", [], [ T ] |), [] |);
-              M.call_closure (| M.get_function (| "core::mem::align_of", [], [ T ] |), [] |)
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_function (| "core::mem::size_of", [], [ T ] |),
+                []
+              |);
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_function (| "core::mem::align_of", [], [ T ] |),
+                []
+              |)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -87,6 +95,10 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field2_finish",
@@ -182,6 +194,7 @@ Module alloc.
               |),
               ltac:(M.monadic
                 (M.call_closure (|
+                  Ty.path "bool",
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
                     Ty.path "core::ptr::alignment::Alignment",
@@ -271,9 +284,10 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [],
                     M.get_trait_method (|
                       "core::hash::Hash",
                       Ty.path "usize",
@@ -303,6 +317,7 @@ Module alloc.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
                     Ty.path "core::ptr::alignment::Alignment",
@@ -371,6 +386,7 @@ Module alloc.
                         M.use
                           (M.alloc (|
                             M.call_closure (|
+                              Ty.path "bool",
                               M.get_associated_function (|
                                 Ty.path "core::alloc::layout::Layout",
                                 "is_size_align_valid",
@@ -391,6 +407,7 @@ Module alloc.
                                 ("size", M.read (| size |));
                                 ("align",
                                   M.call_closure (|
+                                    Ty.path "core::ptr::alignment::Alignment",
                                     M.get_function (|
                                       "core::intrinsics::transmute",
                                       [],
@@ -439,6 +456,10 @@ Module alloc.
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::ptr::alignment::Alignment" ],
                         M.get_associated_function (|
                           Ty.path "core::ptr::alignment::Alignment",
                           "new",
@@ -458,7 +479,7 @@ Module alloc.
                               0
                             |) in
                           let align := M.copy (| γ0_0 |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -470,6 +491,7 @@ Module alloc.
                                           BinOp.gt (|
                                             M.read (| size |),
                                             M.call_closure (|
+                                              Ty.path "usize",
                                               M.get_associated_function (|
                                                 Ty.path "core::alloc::layout::Layout",
                                                 "max_size_for_align",
@@ -533,6 +555,7 @@ Module alloc.
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
               [
                 BinOp.Wrap.add (|
@@ -540,6 +563,7 @@ Module alloc.
                   Value.Integer IntegerKind.Usize 1
                 |);
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.path "core::ptr::alignment::Alignment",
                     "as_usize",
@@ -576,7 +600,7 @@ Module alloc.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
                       [
@@ -588,6 +612,7 @@ Module alloc.
                                   BinOp.gt (|
                                     M.read (| size |),
                                     M.call_closure (|
+                                      Ty.path "usize",
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "max_size_for_align",
@@ -658,7 +683,7 @@ Module alloc.
             (let size := M.alloc (| size |) in
             let align := M.alloc (| align |) in
             M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -668,15 +693,17 @@ Module alloc.
                           M.use
                             (M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_function (| "core::intrinsics::ub_checks", [], [] |),
                                 []
                               |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
+                        let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.tuple [],
                               M.get_associated_function (|
                                 Self,
                                 "precondition_check.from_size_align_unchecked",
@@ -697,6 +724,7 @@ Module alloc.
                     ("size", M.read (| size |));
                     ("align",
                       M.call_closure (|
+                        Ty.path "core::ptr::alignment::Alignment",
                         M.get_function (|
                           "core::intrinsics::transmute",
                           [],
@@ -748,6 +776,7 @@ Module alloc.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (|
                 Ty.path "core::ptr::alignment::Alignment",
                 "as_usize",
@@ -787,6 +816,7 @@ Module alloc.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],
                     M.get_function (| "core::alloc::layout::size_align", [], [ T ] |),
                     []
                   |)
@@ -800,6 +830,7 @@ Module alloc.
                       let align := M.copy (| γ0_1 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::alloc::layout::Layout",
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_align_unchecked",
@@ -836,10 +867,12 @@ Module alloc.
                   Value.Tuple
                     [
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_function (| "core::mem::size_of_val", [], [ T ] |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |) ]
                       |);
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_function (| "core::mem::align_of_val", [], [ T ] |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |) ]
                       |)
@@ -854,6 +887,7 @@ Module alloc.
                       let align := M.copy (| γ0_1 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::alloc::layout::Layout",
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_align_unchecked",
@@ -891,10 +925,12 @@ Module alloc.
                   Value.Tuple
                     [
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_function (| "core::mem::size_of_val_raw", [], [ T ] |),
                         [ M.read (| t |) ]
                       |);
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_function (| "core::mem::align_of_val_raw", [], [ T ] |),
                         [ M.read (| t |) ]
                       |)
@@ -909,6 +945,7 @@ Module alloc.
                       let align := M.copy (| γ0_1 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "core::alloc::layout::Layout",
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_align_unchecked",
@@ -940,6 +977,7 @@ Module alloc.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
                 "new_unchecked",
@@ -948,9 +986,11 @@ Module alloc.
               |),
               [
                 M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                   M.get_function (| "core::ptr::without_provenance_mut", [], [ Ty.path "u8" ] |),
                   [
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "align",
@@ -993,6 +1033,10 @@ Module alloc.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::ptr::alignment::Alignment" ],
                             M.get_associated_function (|
                               Ty.path "core::ptr::alignment::Alignment",
                               "new",
@@ -1011,6 +1055,13 @@ Module alloc.
                       let align := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::alloc::layout::Layout";
+                              Ty.path "core::alloc::layout::LayoutError"
+                            ],
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_alignment",
@@ -1026,6 +1077,7 @@ Module alloc.
                               |)
                             |);
                             M.call_closure (|
+                              Ty.path "core::ptr::alignment::Alignment",
                               M.get_associated_function (|
                                 Ty.path "core::ptr::alignment::Alignment",
                                 "max",
@@ -1081,6 +1133,10 @@ Module alloc.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "core::ptr::alignment::Alignment" ],
                     M.get_associated_function (|
                       Ty.path "core::ptr::alignment::Alignment",
                       "new",
@@ -1100,9 +1156,10 @@ Module alloc.
                           0
                         |) in
                       let align := M.copy (| γ0_0 |) in
-                      let~ len_rounded_up :=
+                      let~ len_rounded_up : Ty.path "usize" :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "usize",
                             M.get_associated_function (|
                               Ty.path "core::alloc::layout::Layout",
                               "size_rounded_up_to_custom_align",
@@ -1117,6 +1174,7 @@ Module alloc.
                         |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "usize",
                           M.get_function (|
                             "core::intrinsics::unchecked_sub",
                             [],
@@ -1182,12 +1240,14 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
             M.read (|
-              let~ align_m1 :=
+              let~ align_m1 : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (| "core::intrinsics::unchecked_sub", [], [ Ty.path "usize" ] |),
                     [
                       M.call_closure (|
+                        Ty.path "usize",
                         M.get_associated_function (|
                           Ty.path "core::ptr::alignment::Alignment",
                           "as_usize",
@@ -1200,10 +1260,11 @@ Module alloc.
                     ]
                   |)
                 |) in
-              let~ size_rounded_up :=
+              let~ size_rounded_up : Ty.path "usize" :=
                 M.alloc (|
                   BinOp.bit_and
                     (M.call_closure (|
+                      Ty.path "usize",
                       M.get_function (|
                         "core::intrinsics::unchecked_add",
                         [],
@@ -1252,9 +1313,10 @@ Module alloc.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ new_size :=
+              let~ new_size : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "size_rounded_up_to_custom_align",
@@ -1275,6 +1337,7 @@ Module alloc.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::alloc::layout::Layout",
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "from_size_align_unchecked",
@@ -1284,6 +1347,7 @@ Module alloc.
                   [
                     M.read (| new_size |);
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "align",
@@ -1320,9 +1384,10 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ padded :=
+              let~ padded : Ty.path "core::alloc::layout::Layout" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::alloc::layout::Layout",
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "pad_to_align",
@@ -1340,6 +1405,13 @@ Module alloc.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::alloc::layout::Layout";
+                                Ty.path "core::alloc::layout::LayoutError"
+                              ],
                             M.get_associated_function (|
                               Ty.path "core::alloc::layout::Layout",
                               "repeat_packed",
@@ -1364,6 +1436,7 @@ Module alloc.
                               [
                                 M.read (| repeated |);
                                 M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_associated_function (|
                                     Ty.path "core::alloc::layout::Layout",
                                     "size",
@@ -1416,9 +1489,10 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let next := M.alloc (| next |) in
             M.read (|
-              let~ new_align :=
+              let~ new_align : Ty.path "core::ptr::alignment::Alignment" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "core::ptr::alignment::Alignment",
                     M.get_associated_function (|
                       Ty.path "core::ptr::alignment::Alignment",
                       "max",
@@ -1443,9 +1517,10 @@ Module alloc.
                     ]
                   |)
                 |) in
-              let~ offset :=
+              let~ offset : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (|
                       Ty.path "core::alloc::layout::Layout",
                       "size_rounded_up_to_custom_align",
@@ -1464,9 +1539,10 @@ Module alloc.
                     ]
                   |)
                 |) in
-              let~ new_size :=
+              let~ new_size : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "usize" ] |),
                     [
                       M.read (| offset |);
@@ -1488,6 +1564,13 @@ Module alloc.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::alloc::layout::Layout";
+                                Ty.path "core::alloc::layout::LayoutError"
+                              ],
                             M.get_associated_function (|
                               Ty.path "core::alloc::layout::Layout",
                               "from_size_alignment",
@@ -1550,6 +1633,7 @@ Module alloc.
                       (let γ :=
                         M.alloc (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                             M.get_associated_function (| Ty.path "usize", "checked_mul", [], [] |),
                             [
                               M.read (|
@@ -1572,6 +1656,13 @@ Module alloc.
                       let size := M.copy (| γ0_0 |) in
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.path "core::alloc::layout::Layout";
+                              Ty.path "core::alloc::layout::LayoutError"
+                            ],
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "from_size_alignment",
@@ -1623,9 +1714,10 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let next := M.alloc (| next |) in
             M.read (|
-              let~ new_size :=
+              let~ new_size : Ty.path "usize" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_function (| "core::intrinsics::unchecked_add", [], [ Ty.path "usize" ] |),
                     [
                       M.read (|
@@ -1647,6 +1739,13 @@ Module alloc.
                 |) in
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "core::alloc::layout::Layout";
+                      Ty.path "core::alloc::layout::LayoutError"
+                    ],
                   M.get_associated_function (|
                     Ty.path "core::alloc::layout::Layout",
                     "from_size_alignment",
@@ -1716,6 +1815,13 @@ Module alloc.
                   M.read (|
                     M.return_ (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "core::alloc::layout::Layout";
+                            Ty.path "core::alloc::layout::LayoutError"
+                          ],
                         M.get_associated_function (| Self, "inner.array", [], [] |),
                         [
                           M.read (| M.get_constant "core::mem::SizedTypeProperties::LAYOUT" |);
@@ -1835,6 +1941,10 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -1881,6 +1991,10 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);

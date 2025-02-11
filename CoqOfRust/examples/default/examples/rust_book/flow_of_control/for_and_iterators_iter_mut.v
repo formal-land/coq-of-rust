@@ -20,9 +20,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ names :=
+        let~ names :
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ] :=
           M.alloc (|
             M.call_closure (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
               M.get_associated_function (|
                 Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                 "into_vec",
@@ -32,6 +40,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 M.read (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                        Ty.path "alloc::alloc::Global"
+                      ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloc::boxed::Box")
@@ -68,11 +86,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.use
             (M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::slice::iter::IterMut")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     Ty.apply
@@ -87,6 +109,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |),
                   [
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::slice::iter::IterMut")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "slice")
@@ -101,6 +127,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Pointer.Kind.MutRef,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                ],
                               M.get_trait_method (|
                                 "core::ops::deref::DerefMut",
                                 Ty.apply
@@ -131,10 +166,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     (let iter := M.copy (| γ |) in
                     M.loop (|
                       ltac:(M.monadic
-                        (let~ _ :=
+                        (let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                  ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
@@ -170,39 +214,42 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       0
                                     |) in
                                   let name := M.copy (| γ0_0 |) in
-                                  M.write (|
-                                    M.deref (| M.read (| name |) |),
-                                    M.read (|
-                                      M.match_operator (|
-                                        name,
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let γ := M.read (| γ |) in
-                                              let _ :=
-                                                M.is_constant_or_break_match (|
-                                                  M.read (| γ |),
-                                                  Value.String "Ferris"
-                                                |) in
-                                              M.alloc (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.read (|
-                                                      Value.String "There is a rustacean among us!"
+                                  M.alloc (|
+                                    M.write (|
+                                      M.deref (| M.read (| name |) |),
+                                      M.read (|
+                                        M.match_operator (|
+                                          name,
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ := M.read (| γ |) in
+                                                let _ :=
+                                                  M.is_constant_or_break_match (|
+                                                    M.read (| γ |),
+                                                    Value.String "Ferris"
+                                                  |) in
+                                                M.alloc (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.read (|
+                                                        Value.String
+                                                          "There is a rustacean among us!"
+                                                      |)
                                                     |)
                                                   |)
-                                                |)
-                                              |)));
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.alloc (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| Value.String "Hello" |) |)
-                                                |)
-                                              |)))
-                                        ]
+                                                |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.alloc (|
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| Value.String "Hello" |) |)
+                                                  |)
+                                                |)))
+                                          ]
+                                        |)
                                       |)
                                     |)
                                   |)))
@@ -212,13 +259,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |)))
               ]
             |)) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -249,6 +298,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",

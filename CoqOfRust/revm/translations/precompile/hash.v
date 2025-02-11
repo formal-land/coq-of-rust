@@ -10,6 +10,7 @@ Module hash.
             "revm_precompile::PrecompileWithAddress"
             [
               M.call_closure (|
+                Ty.path "alloy_primitives::bits::address::Address",
                 M.get_function (| "revm_precompile::u64_to_address", [], [] |),
                 [ Value.Integer IntegerKind.U64 2 ]
               |);
@@ -29,6 +30,7 @@ Module hash.
             "revm_precompile::PrecompileWithAddress"
             [
               M.call_closure (|
+                Ty.path "alloy_primitives::bits::address::Address",
                 M.get_function (| "revm_precompile::u64_to_address", [], [] |),
                 [ Value.Integer IntegerKind.U64 3 ]
               |);
@@ -60,18 +62,21 @@ Module hash.
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
         M.read (|
-          let~ cost :=
+          let~ cost : Ty.path "u64" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "u64",
                 M.get_function (| "revm_precompile::calc_linear_cost_u32", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [], [] |),
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
                             M.get_trait_method (|
                               "core::ops::deref::Deref",
                               Ty.path "alloy_primitives::bytes_::Bytes",
@@ -106,6 +111,7 @@ Module hash.
                       "core::result::Result::Err"
                       [
                         M.call_closure (|
+                          Ty.path "revm_precompile::interface::PrecompileErrors",
                           M.get_trait_method (|
                             "core::convert::Into",
                             Ty.path "revm_precompile::interface::PrecompileError",
@@ -125,9 +131,95 @@ Module hash.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ output :=
+                  (let~ output :
+                      Ty.apply
+                        (Ty.path "generic_array::GenericArray")
+                        []
+                        [
+                          Ty.path "u8";
+                          Ty.apply
+                            (Ty.path "typenum::uint::UInt")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "typenum::uint::UInt")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "typenum::uint::UInt")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "typenum::uint::UInt")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "typenum::uint::UInt")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "typenum::uint::UInt")
+                                                []
+                                                [
+                                                  Ty.path "typenum::uint::UTerm";
+                                                  Ty.path "typenum::bit::B1"
+                                                ];
+                                              Ty.path "typenum::bit::B0"
+                                            ];
+                                          Ty.path "typenum::bit::B0"
+                                        ];
+                                      Ty.path "typenum::bit::B0"
+                                    ];
+                                  Ty.path "typenum::bit::B0"
+                                ];
+                              Ty.path "typenum::bit::B0"
+                            ]
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "generic_array::GenericArray")
+                          []
+                          [
+                            Ty.path "u8";
+                            Ty.apply
+                              (Ty.path "typenum::uint::UInt")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "typenum::uint::UInt")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "typenum::uint::UInt")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "typenum::uint::UInt")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "typenum::uint::UInt")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "typenum::uint::UInt")
+                                                  []
+                                                  [
+                                                    Ty.path "typenum::uint::UTerm";
+                                                    Ty.path "typenum::bit::B1"
+                                                  ];
+                                                Ty.path "typenum::bit::B0"
+                                              ];
+                                            Ty.path "typenum::bit::B0"
+                                          ];
+                                        Ty.path "typenum::bit::B0"
+                                      ];
+                                    Ty.path "typenum::bit::B0"
+                                  ];
+                                Ty.path "typenum::bit::B0"
+                              ]
+                          ],
                         M.get_trait_method (|
                           "digest::digest::Digest",
                           Ty.apply
@@ -194,6 +286,7 @@ Module hash.
                       "core::result::Result::Ok"
                       [
                         M.call_closure (|
+                          Ty.path "revm_precompile::interface::PrecompileOutput",
                           M.get_associated_function (|
                             Ty.path "revm_precompile::interface::PrecompileOutput",
                             "new",
@@ -203,6 +296,7 @@ Module hash.
                           [
                             M.read (| cost |);
                             M.call_closure (|
+                              Ty.path "alloy_primitives::bytes_::Bytes",
                               M.get_trait_method (|
                                 "core::convert::Into",
                                 Ty.apply
@@ -217,6 +311,10 @@ Module hash.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "to_vec",
@@ -228,6 +326,10 @@ Module hash.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                           M.get_trait_method (|
                                             "core::ops::deref::Deref",
                                             Ty.apply
@@ -324,18 +426,21 @@ Module hash.
         (let input := M.alloc (| input |) in
         let gas_limit := M.alloc (| gas_limit |) in
         M.read (|
-          let~ gas_used :=
+          let~ gas_used : Ty.path "u64" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "u64",
                 M.get_function (| "revm_precompile::calc_linear_cost_u32", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "usize",
                     M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [], [] |),
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
                             M.get_trait_method (|
                               "core::ops::deref::Deref",
                               Ty.path "alloy_primitives::bytes_::Bytes",
@@ -372,6 +477,7 @@ Module hash.
                       "core::result::Result::Err"
                       [
                         M.call_closure (|
+                          Ty.path "revm_precompile::interface::PrecompileErrors",
                           M.get_trait_method (|
                             "core::convert::Into",
                             Ty.path "revm_precompile::interface::PrecompileError",
@@ -391,9 +497,17 @@ Module hash.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let~ hasher :=
+                  (let~ hasher :
+                      Ty.apply
+                        (Ty.path "digest::core_api::wrapper::CoreWrapper")
+                        []
+                        [ Ty.path "ripemd::Ripemd160Core" ] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "digest::core_api::wrapper::CoreWrapper")
+                          []
+                          [ Ty.path "ripemd::Ripemd160Core" ],
                         M.get_trait_method (|
                           "digest::digest::Digest",
                           Ty.apply
@@ -409,9 +523,10 @@ Module hash.
                         []
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "digest::digest::Digest",
                           Ty.apply
@@ -428,16 +543,21 @@ Module hash.
                         [ M.borrow (| Pointer.Kind.MutRef, hasher |); M.read (| input |) ]
                       |)
                     |) in
-                  let~ output :=
+                  let~ output :
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ] :=
                     M.alloc (|
                       repeat (|
                         Value.Integer IntegerKind.U8 0,
                         Value.Integer IntegerKind.Usize 32
                       |)
                     |) in
-                  let~ _ :=
+                  let~ _ : Ty.tuple [] :=
                     M.alloc (|
                       M.call_closure (|
+                        Ty.tuple [],
                         M.get_trait_method (|
                           "digest::digest::Digest",
                           Ty.apply
@@ -453,6 +573,48 @@ Module hash.
                         [
                           M.read (| hasher |);
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "generic_array::GenericArray")
+                                  []
+                                  [
+                                    Ty.path "u8";
+                                    Ty.apply
+                                      (Ty.path "typenum::uint::UInt")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "typenum::uint::UInt")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "typenum::uint::UInt")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "typenum::uint::UInt")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "typenum::uint::UInt")
+                                                      []
+                                                      [
+                                                        Ty.path "typenum::uint::UTerm";
+                                                        Ty.path "typenum::bit::B1"
+                                                      ];
+                                                    Ty.path "typenum::bit::B0"
+                                                  ];
+                                                Ty.path "typenum::bit::B1"
+                                              ];
+                                            Ty.path "typenum::bit::B0"
+                                          ];
+                                        Ty.path "typenum::bit::B0"
+                                      ]
+                                  ]
+                              ],
                             M.get_trait_method (|
                               "core::convert::Into",
                               Ty.apply
@@ -516,6 +678,10 @@ Module hash.
                                     Pointer.Kind.MutRef,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                         M.get_trait_method (|
                                           "core::ops::index::IndexMut",
                                           Ty.apply
@@ -554,6 +720,7 @@ Module hash.
                       "core::result::Result::Ok"
                       [
                         M.call_closure (|
+                          Ty.path "revm_precompile::interface::PrecompileOutput",
                           M.get_associated_function (|
                             Ty.path "revm_precompile::interface::PrecompileOutput",
                             "new",
@@ -563,6 +730,7 @@ Module hash.
                           [
                             M.read (| gas_used |);
                             M.call_closure (|
+                              Ty.path "alloy_primitives::bytes_::Bytes",
                               M.get_trait_method (|
                                 "core::convert::Into",
                                 Ty.apply
@@ -577,6 +745,10 @@ Module hash.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                     "to_vec",

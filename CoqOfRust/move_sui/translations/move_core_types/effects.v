@@ -55,6 +55,10 @@ Module effects.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -86,6 +90,10 @@ Module effects.
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_tuple_field1_finish",
@@ -111,6 +119,10 @@ Module effects.
                     let _ := M.is_struct_tuple (| γ, "move_core_types::effects::Op::Delete" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "write_str",
@@ -170,6 +182,7 @@ Module effects.
                         "move_core_types::effects::Op::New"
                         [
                           M.call_closure (|
+                            T,
                             M.get_trait_method (|
                               "core::clone::Clone",
                               T,
@@ -198,6 +211,7 @@ Module effects.
                         "move_core_types::effects::Op::Modify"
                         [
                           M.call_closure (|
+                            T,
                             M.get_trait_method (|
                               "core::clone::Clone",
                               T,
@@ -289,9 +303,10 @@ Module effects.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -300,9 +315,10 @@ Module effects.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -341,6 +357,7 @@ Module effects.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ T ],
@@ -378,6 +395,7 @@ Module effects.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "bool",
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply (Ty.path "&") [] [ T ],
@@ -424,9 +442,10 @@ Module effects.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -435,9 +454,10 @@ Module effects.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -449,6 +469,7 @@ Module effects.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
                   [
                     M.borrow (|
@@ -491,6 +512,7 @@ Module effects.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
                                 [
                                   M.borrow (|
@@ -526,6 +548,7 @@ Module effects.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
                                 [
                                   M.borrow (|
@@ -575,9 +598,10 @@ Module effects.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_discr :=
+            let~ __self_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -586,9 +610,10 @@ Module effects.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ __arg1_discr :=
+            let~ __arg1_discr : Ty.path "isize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "isize",
                   M.get_function (|
                     "core::intrinsics::discriminant_value",
                     [],
@@ -622,6 +647,10 @@ Module effects.
                     let __arg1_0 := M.alloc (| γ2_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           T,
@@ -659,6 +688,10 @@ Module effects.
                     let __arg1_0 := M.alloc (| γ2_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           T,
@@ -678,6 +711,10 @@ Module effects.
                   ltac:(M.monadic
                     (M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.path "isize",
@@ -823,6 +860,7 @@ Module effects.
                         "move_core_types::effects::Op::New"
                         [
                           M.call_closure (|
+                            U,
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
@@ -850,6 +888,7 @@ Module effects.
                         "move_core_types::effects::Op::Modify"
                         [
                           M.call_closure (|
+                            U,
                             M.get_trait_method (|
                               "core::ops::function::FnOnce",
                               F,
@@ -1002,6 +1041,10 @@ Module effects.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field2_finish",
@@ -1074,6 +1117,22 @@ Module effects.
             [
               ("modules",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "move_core_types::identifier::Identifier";
+                      Ty.apply
+                        (Ty.path "move_core_types::effects::Op")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                        ];
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -1116,6 +1175,22 @@ Module effects.
                 |));
               ("resources",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "move_core_types::language_storage::StructTag";
+                      Ty.apply
+                        (Ty.path "move_core_types::effects::Op")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                        ];
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -1229,6 +1304,7 @@ Module effects.
           let other := M.alloc (| other |) in
           LogicalOp.and (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (|
                 "core::cmp::PartialEq",
                 Ty.apply
@@ -1291,6 +1367,7 @@ Module effects.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_trait_method (|
                   "core::cmp::PartialEq",
                   Ty.apply
@@ -1377,6 +1454,7 @@ Module effects.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::cmp::Ordering",
                   M.get_trait_method (|
                     "core::cmp::Ord",
                     Ty.apply
@@ -1437,6 +1515,7 @@ Module effects.
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "core::cmp::Ordering",
                         M.get_trait_method (|
                           "core::cmp::Ord",
                           Ty.apply
@@ -1523,6 +1602,7 @@ Module effects.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
                     "core::cmp::PartialOrd",
                     Ty.apply
@@ -1606,6 +1686,10 @@ Module effects.
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.get_trait_method (|
                           "core::cmp::PartialOrd",
                           Ty.apply
@@ -1738,11 +1822,19 @@ Module effects.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.use
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::IntoIter")
+                          []
+                          [
+                            K;
+                            Ty.apply (Ty.path "move_core_types::effects::Op") [] [ V ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           Ty.apply
@@ -1761,6 +1853,14 @@ Module effects.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::IntoIter")
+                              []
+                              [
+                                K;
+                                Ty.apply (Ty.path "move_core_types::effects::Op") [] [ V ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
                               Ty.apply
@@ -1788,10 +1888,23 @@ Module effects.
                           (let iter := M.copy (| γ |) in
                           M.loop (|
                             ltac:(M.monadic
-                              (let~ _ :=
+                              (let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.tuple
+                                            [
+                                              K;
+                                              Ty.apply
+                                                (Ty.path "move_core_types::effects::Op")
+                                                []
+                                                [ V ]
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -1842,6 +1955,18 @@ Module effects.
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path
+                                                  "alloc::collections::btree::map::entry::Entry")
+                                                []
+                                                [
+                                                  K;
+                                                  Ty.apply
+                                                    (Ty.path "move_core_types::effects::Op")
+                                                    []
+                                                    [ V ];
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path
@@ -1878,9 +2003,27 @@ Module effects.
                                                     0
                                                   |) in
                                                 let entry := M.copy (| γ0_0 |) in
-                                                let~ r :=
+                                                let~ r :
+                                                    Ty.apply
+                                                      (Ty.path "&mut")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "move_core_types::effects::Op")
+                                                          []
+                                                          [ V ]
+                                                      ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&mut")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "move_core_types::effects::Op")
+                                                            []
+                                                            [ V ]
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path
@@ -1907,6 +2050,10 @@ Module effects.
                                                     Value.Tuple
                                                       [
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "move_core_types::effects::Op")
+                                                            []
+                                                            [ Ty.apply (Ty.path "&") [] [ V ] ],
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path
@@ -2047,9 +2194,13 @@ Module effects.
                                                                             "core::result::Result::Err"
                                                                             [
                                                                               M.read (|
-                                                                                let~ error :=
+                                                                                let~ error :
+                                                                                    Ty.path
+                                                                                      "anyhow::Error" :=
                                                                                   M.alloc (|
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "anyhow::Error",
                                                                                       M.get_function (|
                                                                                         "anyhow::__private::format_err",
                                                                                         [],
@@ -2057,6 +2208,8 @@ Module effects.
                                                                                       |),
                                                                                       [
                                                                                         M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::Arguments",
                                                                                           M.get_associated_function (|
                                                                                             Ty.path
                                                                                               "core::fmt::Arguments",
@@ -2118,11 +2271,13 @@ Module effects.
                                                             0
                                                           |) in
                                                         let data := M.copy (| γ1_0 |) in
-                                                        M.write (|
-                                                          M.deref (| M.read (| r |) |),
-                                                          Value.StructTuple
-                                                            "move_core_types::effects::Op::Modify"
-                                                            [ M.read (| data |) ]
+                                                        M.alloc (|
+                                                          M.write (|
+                                                            M.deref (| M.read (| r |) |),
+                                                            Value.StructTuple
+                                                              "move_core_types::effects::Op::Modify"
+                                                              [ M.read (| data |) ]
+                                                          |)
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -2143,11 +2298,13 @@ Module effects.
                                                             0
                                                           |) in
                                                         let data := M.copy (| γ1_0 |) in
-                                                        M.write (|
-                                                          M.deref (| M.read (| r |) |),
-                                                          Value.StructTuple
-                                                            "move_core_types::effects::Op::New"
-                                                            [ M.read (| data |) ]
+                                                        M.alloc (|
+                                                          M.write (|
+                                                            M.deref (| M.read (| r |) |),
+                                                            Value.StructTuple
+                                                              "move_core_types::effects::Op::New"
+                                                              [ M.read (| data |) ]
+                                                          |)
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -2166,11 +2323,13 @@ Module effects.
                                                             γ0_1,
                                                             "move_core_types::effects::Op::Delete"
                                                           |) in
-                                                        M.write (|
-                                                          M.deref (| M.read (| r |) |),
-                                                          Value.StructTuple
-                                                            "move_core_types::effects::Op::Delete"
-                                                            []
+                                                        M.alloc (|
+                                                          M.write (|
+                                                            M.deref (| M.read (| r |) |),
+                                                            Value.StructTuple
+                                                              "move_core_types::effects::Op::Delete"
+                                                              []
+                                                          |)
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -2190,11 +2349,13 @@ Module effects.
                                                             0
                                                           |) in
                                                         let data := M.copy (| γ1_0 |) in
-                                                        M.write (|
-                                                          M.deref (| M.read (| r |) |),
-                                                          Value.StructTuple
-                                                            "move_core_types::effects::Op::Modify"
-                                                            [ M.read (| data |) ]
+                                                        M.alloc (|
+                                                          M.write (|
+                                                            M.deref (| M.read (| r |) |),
+                                                            Value.StructTuple
+                                                              "move_core_types::effects::Op::Modify"
+                                                              [ M.read (| data |) ]
+                                                          |)
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -2213,9 +2374,19 @@ Module effects.
                                                             γ0_1,
                                                             "move_core_types::effects::Op::Delete"
                                                           |) in
-                                                        let~ _ :=
+                                                        let~ _ :
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "move_core_types::effects::Op")
+                                                              []
+                                                              [ V ] :=
                                                           M.alloc (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "move_core_types::effects::Op")
+                                                                []
+                                                                [ V ],
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -2249,9 +2420,27 @@ Module effects.
                                                     0
                                                   |) in
                                                 let entry := M.copy (| γ0_0 |) in
-                                                let~ _ :=
+                                                let~ _ :
+                                                    Ty.apply
+                                                      (Ty.path "&mut")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "move_core_types::effects::Op")
+                                                          []
+                                                          [ V ]
+                                                      ] :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "&mut")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "move_core_types::effects::Op")
+                                                            []
+                                                            [ V ]
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path
@@ -2335,6 +2524,22 @@ Module effects.
             [
               ("modules",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "move_core_types::identifier::Identifier";
+                      Ty.apply
+                        (Ty.path "move_core_types::effects::Op")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                        ];
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -2360,6 +2565,22 @@ Module effects.
                 |));
               ("resources",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "move_core_types::language_storage::StructTag";
+                      Ty.apply
+                        (Ty.path "move_core_types::effects::Op")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                        ];
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -2414,10 +2635,26 @@ Module effects.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::entry::Entry")
+                          []
+                          [
+                            Ty.path "move_core_types::identifier::Identifier";
+                            Ty.apply
+                              (Ty.path "move_core_types::effects::Op")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                              ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -2470,6 +2707,7 @@ Module effects.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "anyhow::Error",
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
@@ -2478,6 +2716,7 @@ Module effects.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "alloc::string::String",
                                             M.get_function (|
                                               "core::hint::must_use",
                                               [],
@@ -2485,9 +2724,10 @@ Module effects.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res :=
+                                                let~ res : Ty.path "alloc::string::String" :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_function (|
                                                         "alloc::fmt::format",
                                                         [],
@@ -2495,6 +2735,7 @@ Module effects.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::Arguments",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
@@ -2531,6 +2772,8 @@ Module effects.
                                                                     Value.Array
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
@@ -2554,6 +2797,14 @@ Module effects.
                                                                                   Pointer.Kind.Ref,
                                                                                   M.alloc (|
                                                                                     M.call_closure (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "move_core_types::identifier::Identifier"
+                                                                                        ],
                                                                                       M.get_associated_function (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -2628,9 +2879,37 @@ Module effects.
                               0
                             |) in
                           let entry := M.copy (| γ0_0 |) in
-                          let~ _ :=
+                          let~ _ :
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "move_core_types::effects::Op")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                    ]
+                                ] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "move_core_types::effects::Op")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                      ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::map::entry::VacantEntry")
@@ -2692,10 +2971,26 @@ Module effects.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::entry::Entry")
+                          []
+                          [
+                            Ty.path "move_core_types::language_storage::StructTag";
+                            Ty.apply
+                              (Ty.path "move_core_types::effects::Op")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                              ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -2748,6 +3043,7 @@ Module effects.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "anyhow::Error",
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
@@ -2756,6 +3052,7 @@ Module effects.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "alloc::string::String",
                                             M.get_function (|
                                               "core::hint::must_use",
                                               [],
@@ -2763,9 +3060,10 @@ Module effects.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res :=
+                                                let~ res : Ty.path "alloc::string::String" :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_function (|
                                                         "alloc::fmt::format",
                                                         [],
@@ -2773,6 +3071,7 @@ Module effects.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::Arguments",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
@@ -2809,6 +3108,8 @@ Module effects.
                                                                     Value.Array
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
@@ -2832,6 +3133,14 @@ Module effects.
                                                                                   Pointer.Kind.Ref,
                                                                                   M.alloc (|
                                                                                     M.call_closure (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "move_core_types::language_storage::StructTag"
+                                                                                        ],
                                                                                       M.get_associated_function (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -2906,9 +3215,37 @@ Module effects.
                               0
                             |) in
                           let entry := M.copy (| γ0_0 |) in
-                          let~ _ :=
+                          let~ _ :
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "move_core_types::effects::Op")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                    ]
+                                ] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "move_core_types::effects::Op")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                      ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::map::entry::VacantEntry")
@@ -3101,6 +3438,7 @@ Module effects.
           (let self := M.alloc (| self |) in
           LogicalOp.and (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3135,6 +3473,7 @@ Module effects.
             |),
             ltac:(M.monadic
               (M.call_closure (|
+                Ty.path "bool",
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3189,10 +3528,20 @@ Module effects.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; Ty.path "anyhow::Error" ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -3207,6 +3556,10 @@ Module effects.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "anyhow::Error" ],
                             M.get_function (|
                               "move_core_types::effects::squash",
                               [],
@@ -3259,6 +3612,10 @@ Module effects.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "anyhow::Error" ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -3299,6 +3656,10 @@ Module effects.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "anyhow::Error" ],
                     M.get_function (|
                       "move_core_types::effects::squash",
                       [],
@@ -3373,6 +3734,10 @@ Module effects.
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_associated_function (|
               Ty.path "core::fmt::Formatter",
               "debug_struct_field1_finish",
@@ -3428,6 +3793,14 @@ Module effects.
             [
               ("accounts",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "move_core_types::account_address::AccountAddress";
+                      Ty.path "move_core_types::effects::AccountChangeSet";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.apply
@@ -3525,6 +3898,7 @@ Module effects.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
               Ty.apply
@@ -3591,6 +3965,7 @@ Module effects.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "core::cmp::Ordering",
             M.get_trait_method (|
               "core::cmp::Ord",
               Ty.apply
@@ -3658,6 +4033,7 @@ Module effects.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (|
               "core::cmp::PartialOrd",
               Ty.apply
@@ -3736,6 +4112,7 @@ Module effects.
       | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
+            Ty.path "move_core_types::effects::ChangeSet",
             M.get_associated_function (|
               Ty.path "move_core_types::effects::ChangeSet",
               "new",
@@ -3774,6 +4151,14 @@ Module effects.
             [
               ("accounts",
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                    []
+                    [
+                      Ty.path "move_core_types::account_address::AccountAddress";
+                      Ty.path "move_core_types::effects::AccountChangeSet";
+                      Ty.path "alloc::alloc::Global"
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3825,10 +4210,18 @@ Module effects.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::entry::Entry")
+                          []
+                          [
+                            Ty.path "move_core_types::account_address::AccountAddress";
+                            Ty.path "move_core_types::effects::AccountChangeSet";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3872,6 +4265,7 @@ Module effects.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "anyhow::Error",
                                         M.get_associated_function (|
                                           Ty.path "anyhow::Error",
                                           "msg",
@@ -3880,6 +4274,7 @@ Module effects.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.path "alloc::string::String",
                                             M.get_function (|
                                               "core::hint::must_use",
                                               [],
@@ -3887,9 +4282,10 @@ Module effects.
                                             |),
                                             [
                                               M.read (|
-                                                let~ res :=
+                                                let~ res : Ty.path "alloc::string::String" :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.path "alloc::string::String",
                                                       M.get_function (|
                                                         "alloc::fmt::format",
                                                         [],
@@ -3897,6 +4293,7 @@ Module effects.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::Arguments",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
@@ -3934,6 +4331,8 @@ Module effects.
                                                                     Value.Array
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
@@ -3986,9 +4385,17 @@ Module effects.
                               0
                             |) in
                           let entry := M.copy (| γ0_0 |) in
-                          let~ _ :=
+                          let~ _ :
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.path "move_core_types::effects::AccountChangeSet" ] :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "move_core_types::effects::AccountChangeSet" ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::map::entry::VacantEntry")
@@ -4098,6 +4505,14 @@ Module effects.
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::map::entry::Entry")
+                            []
+                            [
+                              Ty.path "move_core_types::account_address::AccountAddress";
+                              Ty.path "move_core_types::effects::AccountChangeSet";
+                              Ty.path "alloc::alloc::Global"
+                            ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -4139,6 +4554,10 @@ Module effects.
                                 Pointer.Kind.MutRef,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.path "move_core_types::effects::AccountChangeSet" ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path
@@ -4173,6 +4592,10 @@ Module effects.
                                 Pointer.Kind.MutRef,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.path "move_core_types::effects::AccountChangeSet" ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path
@@ -4191,6 +4614,7 @@ Module effects.
                                     [
                                       M.read (| entry |);
                                       M.call_closure (|
+                                        Ty.path "move_core_types::effects::AccountChangeSet",
                                         M.get_associated_function (|
                                           Ty.path "move_core_types::effects::AccountChangeSet",
                                           "new",
@@ -4232,9 +4656,17 @@ Module effects.
           let module_id := M.alloc (| module_id |) in
           let op := M.alloc (| op |) in
           M.read (|
-            let~ account :=
+            let~ account :
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.path "move_core_types::effects::AccountChangeSet" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.path "move_core_types::effects::AccountChangeSet" ],
                   M.get_associated_function (|
                     Ty.path "move_core_types::effects::ChangeSet",
                     "get_or_insert_account_changeset",
@@ -4246,6 +4678,10 @@ Module effects.
                     M.read (|
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::account_address::AccountAddress" ],
                           M.get_associated_function (|
                             Ty.path "move_core_types::language_storage::ModuleId",
                             "address",
@@ -4261,6 +4697,10 @@ Module effects.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ],
                 M.get_associated_function (|
                   Ty.path "move_core_types::effects::AccountChangeSet",
                   "add_module_op",
@@ -4270,6 +4710,7 @@ Module effects.
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| account |) |) |);
                   M.call_closure (|
+                    Ty.path "move_core_types::identifier::Identifier",
                     M.get_trait_method (|
                       "alloc::borrow::ToOwned",
                       Ty.path "move_core_types::identifier::IdentStr",
@@ -4284,6 +4725,10 @@ Module effects.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::identifier::IdentStr" ],
                             M.get_associated_function (|
                               Ty.path "move_core_types::language_storage::ModuleId",
                               "name",
@@ -4328,9 +4773,17 @@ Module effects.
           let struct_tag := M.alloc (| struct_tag |) in
           let op := M.alloc (| op |) in
           M.read (|
-            let~ account :=
+            let~ account :
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.path "move_core_types::effects::AccountChangeSet" ] :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.path "move_core_types::effects::AccountChangeSet" ],
                   M.get_associated_function (|
                     Ty.path "move_core_types::effects::ChangeSet",
                     "get_or_insert_account_changeset",
@@ -4345,6 +4798,10 @@ Module effects.
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ],
                 M.get_associated_function (|
                   Ty.path "move_core_types::effects::AccountChangeSet",
                   "add_resource_op",
@@ -4390,11 +4847,19 @@ Module effects.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::btree::map::IntoIter")
+                            []
+                            [
+                              Ty.path "move_core_types::account_address::AccountAddress";
+                              Ty.path "move_core_types::effects::AccountChangeSet";
+                              Ty.path "alloc::alloc::Global"
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -4428,10 +4893,21 @@ Module effects.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path
+                                                  "move_core_types::account_address::AccountAddress";
+                                                Ty.path "move_core_types::effects::AccountChangeSet"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -4483,6 +4959,17 @@ Module effects.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::map::entry::Entry")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::account_address::AccountAddress";
+                                                    Ty.path
+                                                      "move_core_types::effects::AccountChangeSet";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path
@@ -4522,10 +5009,25 @@ Module effects.
                                                       0
                                                     |) in
                                                   let entry := M.copy (| γ0_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path "anyhow::Error"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -4541,6 +5043,13 @@ Module effects.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path "anyhow::Error"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_core_types::effects::AccountChangeSet",
@@ -4553,6 +5062,13 @@ Module effects.
                                                                   Pointer.Kind.MutRef,
                                                                   M.deref (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&mut")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_core_types::effects::AccountChangeSet"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path
@@ -4600,6 +5116,14 @@ Module effects.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path "anyhow::Error"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -4655,9 +5179,23 @@ Module effects.
                                                       0
                                                     |) in
                                                   let entry := M.copy (| γ0_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ :
+                                                      Ty.apply
+                                                        (Ty.path "&mut")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::effects::AccountChangeSet"
+                                                        ] :=
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&mut")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::effects::AccountChangeSet"
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path
@@ -4714,6 +5252,136 @@ Module effects.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::iter::adapters::flatten::FlatMap")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::IntoIter")
+                  []
+                  [
+                    Ty.path "move_core_types::account_address::AccountAddress";
+                    Ty.path "move_core_types::effects::AccountChangeSet";
+                    Ty.path "alloc::alloc::Global"
+                  ];
+                Ty.apply
+                  (Ty.path "core::iter::adapters::map::Map")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::map::IntoIter")
+                      []
+                      [
+                        Ty.path "move_core_types::identifier::Identifier";
+                        Ty.apply
+                          (Ty.path "move_core_types::effects::Op")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                          ];
+                        Ty.path "alloc::alloc::Global"
+                      ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "move_core_types::effects::Op")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                  ]
+                              ]
+                          ]
+                      ]
+                      (Ty.tuple
+                        [
+                          Ty.path "move_core_types::language_storage::ModuleId";
+                          Ty.apply
+                            (Ty.path "move_core_types::effects::Op")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                            ]
+                        ])
+                  ];
+                Ty.function
+                  [
+                    Ty.tuple
+                      [
+                        Ty.tuple
+                          [
+                            Ty.path "move_core_types::account_address::AccountAddress";
+                            Ty.path "move_core_types::effects::AccountChangeSet"
+                          ]
+                      ]
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::iter::adapters::map::Map")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::IntoIter")
+                        []
+                        [
+                          Ty.path "move_core_types::identifier::Identifier";
+                          Ty.apply
+                            (Ty.path "move_core_types::effects::Op")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                            ];
+                          Ty.path "alloc::alloc::Global"
+                        ];
+                      Ty.function
+                        [
+                          Ty.tuple
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.path "move_core_types::identifier::Identifier";
+                                  Ty.apply
+                                    (Ty.path "move_core_types::effects::Op")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                        (Ty.tuple
+                          [
+                            Ty.path "move_core_types::language_storage::ModuleId";
+                            Ty.apply
+                              (Ty.path "move_core_types::effects::Op")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                              ]
+                          ])
+                    ])
+              ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -4850,6 +5518,14 @@ Module effects.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::IntoIter")
+                  []
+                  [
+                    Ty.path "move_core_types::account_address::AccountAddress";
+                    Ty.path "move_core_types::effects::AccountChangeSet";
+                    Ty.path "alloc::alloc::Global"
+                  ],
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   Ty.apply
@@ -4892,6 +5568,62 @@ Module effects.
                                 let addr := M.copy (| γ0_0 |) in
                                 let account := M.copy (| γ0_1 |) in
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::iter::adapters::map::Map")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::map::IntoIter")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::identifier::Identifier";
+                                          Ty.apply
+                                            (Ty.path "move_core_types::effects::Op")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                            ];
+                                          Ty.path "alloc::alloc::Global"
+                                        ];
+                                      Ty.function
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.path "move_core_types::identifier::Identifier";
+                                                  Ty.apply
+                                                    (Ty.path "move_core_types::effects::Op")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
+                                                        [
+                                                          Ty.path "u8";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                        (Ty.tuple
+                                          [
+                                            Ty.path "move_core_types::language_storage::ModuleId";
+                                            Ty.apply
+                                              (Ty.path "move_core_types::effects::Op")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                              ]
+                                          ])
+                                    ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     Ty.apply
@@ -4967,6 +5699,22 @@ Module effects.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::map::IntoIter")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::identifier::Identifier";
+                                          Ty.apply
+                                            (Ty.path "move_core_types::effects::Op")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                            ];
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::collect::IntoIterator",
                                         Ty.apply
@@ -5021,6 +5769,8 @@ Module effects.
                                                       Value.Tuple
                                                         [
                                                           M.call_closure (|
+                                                            Ty.path
+                                                              "move_core_types::language_storage::ModuleId",
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_core_types::language_storage::ModuleId",
@@ -5070,6 +5820,163 @@ Module effects.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::iter::adapters::flatten::FlatMap")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::Iter")
+                  []
+                  [
+                    Ty.path "move_core_types::account_address::AccountAddress";
+                    Ty.path "move_core_types::effects::AccountChangeSet"
+                  ];
+                Ty.apply
+                  (Ty.path "core::iter::adapters::map::Map")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::map::Iter")
+                      []
+                      [
+                        Ty.path "move_core_types::identifier::Identifier";
+                        Ty.apply
+                          (Ty.path "move_core_types::effects::Op")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                          ]
+                      ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_core_types::identifier::Identifier" ];
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "move_core_types::effects::Op")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                      ]
+                                  ]
+                              ]
+                          ]
+                      ]
+                      (Ty.tuple
+                        [
+                          Ty.path "move_core_types::account_address::AccountAddress";
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::identifier::Identifier" ];
+                          Ty.apply
+                            (Ty.path "move_core_types::effects::Op")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                            ]
+                        ])
+                  ];
+                Ty.function
+                  [
+                    Ty.tuple
+                      [
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::account_address::AccountAddress" ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::effects::AccountChangeSet" ]
+                          ]
+                      ]
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::iter::adapters::map::Map")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::Iter")
+                        []
+                        [
+                          Ty.path "move_core_types::identifier::Identifier";
+                          Ty.apply
+                            (Ty.path "move_core_types::effects::Op")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                            ]
+                        ];
+                      Ty.function
+                        [
+                          Ty.tuple
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::identifier::Identifier" ];
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "move_core_types::effects::Op")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                        (Ty.tuple
+                          [
+                            Ty.path "move_core_types::account_address::AccountAddress";
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::identifier::Identifier" ];
+                            Ty.apply
+                              (Ty.path "move_core_types::effects::Op")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                              ]
+                          ])
+                    ])
+              ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -5233,6 +6140,13 @@ Module effects.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::Iter")
+                  []
+                  [
+                    Ty.path "move_core_types::account_address::AccountAddress";
+                    Ty.path "move_core_types::effects::AccountChangeSet"
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -5273,9 +6187,90 @@ Module effects.
                                 let addr := M.copy (| γ0_0 |) in
                                 let account := M.copy (| γ0_1 |) in
                                 M.read (|
-                                  let~ addr := M.copy (| M.deref (| M.read (| addr |) |) |) in
+                                  let~ addr :
+                                      Ty.path "move_core_types::account_address::AccountAddress" :=
+                                    M.copy (| M.deref (| M.read (| addr |) |) |) in
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::map::Map")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::map::Iter")
+                                            []
+                                            [
+                                              Ty.path "move_core_types::identifier::Identifier";
+                                              Ty.apply
+                                                (Ty.path "move_core_types::effects::Op")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                                ]
+                                            ];
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::identifier::Identifier"
+                                                        ];
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "move_core_types::effects::Op")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "alloc::vec::Vec")
+                                                                []
+                                                                [
+                                                                  Ty.path "u8";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ]
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                            (Ty.tuple
+                                              [
+                                                Ty.path
+                                                  "move_core_types::account_address::AccountAddress";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::identifier::Identifier"
+                                                  ];
+                                                Ty.apply
+                                                  (Ty.path "move_core_types::effects::Op")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ]
+                                                  ]
+                                              ])
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -5381,6 +6376,21 @@ Module effects.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::map::Iter")
+                                            []
+                                            [
+                                              Ty.path "move_core_types::identifier::Identifier";
+                                              Ty.apply
+                                                (Ty.path "move_core_types::effects::Op")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                                ]
+                                            ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -5442,6 +6452,21 @@ Module effects.
                                                               M.read (| addr |);
                                                               M.read (| module_name |);
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "move_core_types::effects::Op")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
+                                                                      ]
+                                                                  ],
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -5508,6 +6533,26 @@ Module effects.
                                                                 |),
                                                                 [
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "move_core_types::effects::Op")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::vec::Vec")
+                                                                              []
+                                                                              [
+                                                                                Ty.path "u8";
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ]
+                                                                          ]
+                                                                      ],
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path
@@ -5553,6 +6598,20 @@ Module effects.
                                                                                         γ
                                                                                       |) in
                                                                                     M.call_closure (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "slice")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "u8"
+                                                                                            ]
+                                                                                        ],
                                                                                       M.get_trait_method (|
                                                                                         "core::convert::AsRef",
                                                                                         Ty.apply
@@ -5637,6 +6696,163 @@ Module effects.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::iter::adapters::flatten::FlatMap")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::Iter")
+                  []
+                  [
+                    Ty.path "move_core_types::account_address::AccountAddress";
+                    Ty.path "move_core_types::effects::AccountChangeSet"
+                  ];
+                Ty.apply
+                  (Ty.path "core::iter::adapters::map::Map")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::map::Iter")
+                      []
+                      [
+                        Ty.path "move_core_types::language_storage::StructTag";
+                        Ty.apply
+                          (Ty.path "move_core_types::effects::Op")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                          ]
+                      ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_core_types::language_storage::StructTag" ];
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "move_core_types::effects::Op")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                      ]
+                                  ]
+                              ]
+                          ]
+                      ]
+                      (Ty.tuple
+                        [
+                          Ty.path "move_core_types::account_address::AccountAddress";
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::language_storage::StructTag" ];
+                          Ty.apply
+                            (Ty.path "move_core_types::effects::Op")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                            ]
+                        ])
+                  ];
+                Ty.function
+                  [
+                    Ty.tuple
+                      [
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::account_address::AccountAddress" ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::effects::AccountChangeSet" ]
+                          ]
+                      ]
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::iter::adapters::map::Map")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::Iter")
+                        []
+                        [
+                          Ty.path "move_core_types::language_storage::StructTag";
+                          Ty.apply
+                            (Ty.path "move_core_types::effects::Op")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                            ]
+                        ];
+                      Ty.function
+                        [
+                          Ty.tuple
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::language_storage::StructTag" ];
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "move_core_types::effects::Op")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                        (Ty.tuple
+                          [
+                            Ty.path "move_core_types::account_address::AccountAddress";
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::language_storage::StructTag" ];
+                            Ty.apply
+                              (Ty.path "move_core_types::effects::Op")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                              ]
+                          ])
+                    ])
+              ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply
@@ -5800,6 +7016,13 @@ Module effects.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::Iter")
+                  []
+                  [
+                    Ty.path "move_core_types::account_address::AccountAddress";
+                    Ty.path "move_core_types::effects::AccountChangeSet"
+                  ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -5840,9 +7063,91 @@ Module effects.
                                 let addr := M.copy (| γ0_0 |) in
                                 let account := M.copy (| γ0_1 |) in
                                 M.read (|
-                                  let~ addr := M.copy (| M.deref (| M.read (| addr |) |) |) in
+                                  let~ addr :
+                                      Ty.path "move_core_types::account_address::AccountAddress" :=
+                                    M.copy (| M.deref (| M.read (| addr |) |) |) in
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::map::Map")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::map::Iter")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_core_types::language_storage::StructTag";
+                                              Ty.apply
+                                                (Ty.path "move_core_types::effects::Op")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                                ]
+                                            ];
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::language_storage::StructTag"
+                                                        ];
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "move_core_types::effects::Op")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "alloc::vec::Vec")
+                                                                []
+                                                                [
+                                                                  Ty.path "u8";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ]
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                            (Ty.tuple
+                                              [
+                                                Ty.path
+                                                  "move_core_types::account_address::AccountAddress";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::language_storage::StructTag"
+                                                  ];
+                                                Ty.apply
+                                                  (Ty.path "move_core_types::effects::Op")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ]
+                                                  ]
+                                              ])
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -5950,6 +7255,22 @@ Module effects.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "alloc::collections::btree::map::Iter")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_core_types::language_storage::StructTag";
+                                              Ty.apply
+                                                (Ty.path "move_core_types::effects::Op")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                                ]
+                                            ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -6012,6 +7333,21 @@ Module effects.
                                                               M.read (| addr |);
                                                               M.read (| struct_tag |);
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "move_core_types::effects::Op")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
+                                                                      ]
+                                                                  ],
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -6078,6 +7414,26 @@ Module effects.
                                                                 |),
                                                                 [
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "move_core_types::effects::Op")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::vec::Vec")
+                                                                              []
+                                                                              [
+                                                                                Ty.path "u8";
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ]
+                                                                          ]
+                                                                      ],
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path
@@ -6123,6 +7479,20 @@ Module effects.
                                                                                         γ
                                                                                       |) in
                                                                                     M.call_closure (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "slice")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "u8"
+                                                                                            ]
+                                                                                        ],
                                                                                       M.get_trait_method (|
                                                                                         "core::convert::AsRef",
                                                                                         Ty.apply

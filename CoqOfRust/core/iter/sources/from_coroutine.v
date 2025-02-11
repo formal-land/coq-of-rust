@@ -47,6 +47,7 @@ Module iter.
                 "core::iter::sources::from_coroutine::FromCoroutine"
                 [
                   M.call_closure (|
+                    G,
                     M.get_trait_method (| "core::clone::Clone", G, [], [], "clone", [], [] |),
                     [
                       M.borrow (|
@@ -102,6 +103,10 @@ Module iter.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::ops::coroutine::CoroutineState")
+                        []
+                        [ Ty.associated; Ty.tuple [] ],
                       M.get_trait_method (|
                         "core::ops::coroutine::Coroutine",
                         G,
@@ -113,6 +118,10 @@ Module iter.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::pin::Pin")
+                            []
+                            [ Ty.apply (Ty.path "&mut") [] [ G ] ],
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "core::pin::Pin")
@@ -192,6 +201,10 @@ Module iter.
               (let self := M.alloc (| self |) in
               let f := M.alloc (| f |) in
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.get_associated_function (|
                   Ty.path "core::fmt::builders::DebugStruct",
                   "finish",
@@ -203,6 +216,7 @@ Module iter.
                     Pointer.Kind.MutRef,
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "core::fmt::builders::DebugStruct",
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
                           "debug_struct",

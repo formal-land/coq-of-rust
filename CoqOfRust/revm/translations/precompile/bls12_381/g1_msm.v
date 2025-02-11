@@ -11,6 +11,7 @@ Module bls12_381.
               "revm_precompile::PrecompileWithAddress"
               [
                 M.call_closure (|
+                  Ty.path "alloy_primitives::bits::address::Address",
                   M.get_function (| "revm_precompile::u64_to_address", [], [] |),
                   [ M.read (| M.get_constant "revm_precompile::bls12_381::g1_msm::ADDRESS" |) ]
                 |);
@@ -105,15 +106,17 @@ Module bls12_381.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ input_len :=
+                let~ input_len : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [], [] |),
                       [
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.path "alloy_primitives::bytes_::Bytes",
@@ -130,7 +133,7 @@ Module bls12_381.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -167,6 +170,7 @@ Module bls12_381.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "revm_precompile::interface::PrecompileErrors",
                                         M.get_trait_method (|
                                           "core::convert::Into",
                                           Ty.path "revm_precompile::interface::PrecompileError",
@@ -182,6 +186,7 @@ Module bls12_381.
                                             "revm_precompile::interface::PrecompileError::Other"
                                             [
                                               M.call_closure (|
+                                                Ty.path "alloc::string::String",
                                                 M.get_function (|
                                                   "core::hint::must_use",
                                                   [],
@@ -189,9 +194,10 @@ Module bls12_381.
                                                 |),
                                                 [
                                                   M.read (|
-                                                    let~ res :=
+                                                    let~ res : Ty.path "alloc::string::String" :=
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.path "alloc::string::String",
                                                           M.get_function (|
                                                             "alloc::fmt::format",
                                                             [],
@@ -199,6 +205,7 @@ Module bls12_381.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.path "core::fmt::Arguments",
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_v1",
@@ -235,6 +242,8 @@ Module bls12_381.
                                                                         Value.Array
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
@@ -256,6 +265,8 @@ Module bls12_381.
                                                                               ]
                                                                             |);
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "core::fmt::rt::Argument",
@@ -300,16 +311,17 @@ Module bls12_381.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ k :=
+                let~ k : Ty.path "usize" :=
                   M.alloc (|
                     BinOp.Wrap.div (|
                       M.read (| input_len |),
                       M.read (| M.get_constant "revm_precompile::bls12_381::g1_mul::INPUT_LENGTH" |)
                     |)
                   |) in
-                let~ required_gas :=
+                let~ required_gas : Ty.path "u64" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "u64",
                       M.get_function (|
                         "revm_precompile::bls12_381::msm::msm_required_gas",
                         [],
@@ -323,7 +335,7 @@ Module bls12_381.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -344,6 +356,7 @@ Module bls12_381.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "revm_precompile::interface::PrecompileErrors",
                                         M.get_trait_method (|
                                           "core::convert::Into",
                                           Ty.path "revm_precompile::interface::PrecompileError",
@@ -368,9 +381,17 @@ Module bls12_381.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ g1_points :=
+                let~ g1_points :
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "blst::blst_p1"; Ty.path "alloc::alloc::Global" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "blst::blst_p1"; Ty.path "alloc::alloc::Global" ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -383,9 +404,17 @@ Module bls12_381.
                       [ M.read (| k |) ]
                     |)
                   |) in
-                let~ scalars :=
+                let~ scalars :
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -405,11 +434,12 @@ Module bls12_381.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
@@ -435,10 +465,14 @@ Module bls12_381.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -479,12 +513,26 @@ Module bls12_381.
                                               0
                                             |) in
                                           let i := M.copy (| γ0_0 |) in
-                                          let~ slice :=
+                                          let~ slice :
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                ] :=
                                             M.alloc (|
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::index::Index",
                                                       Ty.apply
@@ -507,6 +555,15 @@ Module bls12_381.
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::deref::Deref",
                                                               Ty.path "bytes::bytes::Bytes",
@@ -521,6 +578,13 @@ Module bls12_381.
                                                                 Pointer.Kind.Ref,
                                                                 M.deref (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "bytes::bytes::Bytes"
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::deref::Deref",
                                                                       Ty.path
@@ -577,7 +641,7 @@ Module bls12_381.
                                                 |)
                                               |)
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [] |),
                                               [
@@ -587,6 +651,7 @@ Module bls12_381.
                                                       M.use
                                                         (M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.path "bool",
                                                             M.get_trait_method (|
                                                               "core::iter::traits::iterator::Iterator",
                                                               Ty.apply
@@ -616,6 +681,11 @@ Module bls12_381.
                                                                 Pointer.Kind.MutRef,
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::slice::iter::Iter")
+                                                                      []
+                                                                      [ Ty.path "u8" ],
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "slice")
@@ -682,13 +752,32 @@ Module bls12_381.
                                                   ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                               ]
                                             |) in
-                                          let~ p0_aff :=
+                                          let~ p0_aff :
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "blst::blst_p1_affine" ] :=
                                             M.alloc (|
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::ops::control_flow::ControlFlow")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path
+                                                                "revm_precompile::interface::PrecompileError"
+                                                            ];
+                                                          Ty.path "blst::blst_p1_affine"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::Try",
                                                         Ty.apply
@@ -707,6 +796,14 @@ Module bls12_381.
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "blst::blst_p1_affine";
+                                                              Ty.path
+                                                                "revm_precompile::interface::PrecompileError"
+                                                            ],
                                                           M.get_function (|
                                                             "revm_precompile::bls12_381::g1::extract_g1_input",
                                                             [],
@@ -738,6 +835,15 @@ Module bls12_381.
                                                             M.read (|
                                                               M.return_ (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileOutput";
+                                                                      Ty.path
+                                                                        "revm_precompile::interface::PrecompileErrors"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::try_trait::FromResidual",
                                                                     Ty.apply
@@ -787,9 +893,10 @@ Module bls12_381.
                                                 |)
                                               |)
                                             |) in
-                                          let~ p0 :=
+                                          let~ p0 : Ty.path "blst::blst_p1" :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "blst::blst_p1",
                                                 M.get_trait_method (|
                                                   "core::default::Default",
                                                   Ty.path "blst::blst_p1",
@@ -802,9 +909,10 @@ Module bls12_381.
                                                 []
                                               |)
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.tuple [],
                                                 M.get_function (|
                                                   "blst::blst_p1_from_affine",
                                                   [],
@@ -824,9 +932,10 @@ Module bls12_381.
                                                 ]
                                               |)
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.tuple [],
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
@@ -845,9 +954,10 @@ Module bls12_381.
                                                 ]
                                               |)
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.tuple [],
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
@@ -869,6 +979,23 @@ Module bls12_381.
                                                           M.match_operator (|
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "core::ops::control_flow::ControlFlow")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "core::convert::Infallible";
+                                                                        Ty.path
+                                                                          "revm_precompile::interface::PrecompileError"
+                                                                      ];
+                                                                    Ty.path "blst::blst_scalar"
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::ops::try_trait::Try",
                                                                   Ty.apply
@@ -887,6 +1014,15 @@ Module bls12_381.
                                                                 |),
                                                                 [
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.path "blst::blst_scalar";
+                                                                        Ty.path
+                                                                          "revm_precompile::interface::PrecompileError"
+                                                                      ],
                                                                     M.get_function (|
                                                                       "revm_precompile::bls12_381::utils::extract_scalar_input",
                                                                       [],
@@ -900,6 +1036,17 @@ Module bls12_381.
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "slice")
+                                                                                      []
+                                                                                      [ Ty.path "u8"
+                                                                                      ]
+                                                                                  ],
                                                                                 M.get_trait_method (|
                                                                                   "core::ops::index::Index",
                                                                                   Ty.apply
@@ -928,6 +1075,20 @@ Module bls12_381.
                                                                                     Pointer.Kind.Ref,
                                                                                     M.deref (|
                                                                                       M.call_closure (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "slice")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "u8"
+                                                                                              ]
+                                                                                          ],
                                                                                         M.get_trait_method (|
                                                                                           "core::ops::deref::Deref",
                                                                                           Ty.path
@@ -943,6 +1104,14 @@ Module bls12_381.
                                                                                             Pointer.Kind.Ref,
                                                                                             M.deref (|
                                                                                               M.call_closure (|
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "&")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "bytes::bytes::Bytes"
+                                                                                                  ],
                                                                                                 M.get_trait_method (|
                                                                                                   "core::ops::deref::Deref",
                                                                                                   Ty.path
@@ -1039,6 +1208,16 @@ Module bls12_381.
                                                                       M.read (|
                                                                         M.return_ (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "revm_precompile::interface::PrecompileOutput";
+                                                                                Ty.path
+                                                                                  "revm_precompile::interface::PrecompileErrors"
+                                                                              ],
                                                                             M.get_trait_method (|
                                                                               "core::ops::try_trait::FromResidual",
                                                                               Ty.apply
@@ -1103,7 +1282,7 @@ Module bls12_381.
                             |)))
                       ]
                     |)) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -1113,6 +1292,7 @@ Module bls12_381.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
@@ -1135,6 +1315,7 @@ Module bls12_381.
                                     "core::result::Result::Ok"
                                     [
                                       M.call_closure (|
+                                        Ty.path "revm_precompile::interface::PrecompileOutput",
                                         M.get_associated_function (|
                                           Ty.path "revm_precompile::interface::PrecompileOutput",
                                           "new",
@@ -1144,6 +1325,7 @@ Module bls12_381.
                                         [
                                           M.read (| required_gas |);
                                           M.call_closure (|
+                                            Ty.path "alloy_primitives::bytes_::Bytes",
                                             M.get_trait_method (|
                                               "core::convert::Into",
                                               Ty.apply
@@ -1173,15 +1355,20 @@ Module bls12_381.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ points :=
+                let~ points : Ty.path "blst::p1_affines" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "blst::p1_affines",
                       M.get_associated_function (| Ty.path "blst::p1_affines", "from", [], [] |),
                       [
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "blst::blst_p1" ] ],
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.apply
@@ -1206,9 +1393,10 @@ Module bls12_381.
                       ]
                     |)
                   |) in
-                let~ multiexp :=
+                let~ multiexp : Ty.path "blst::blst_p1" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "blst::blst_p1",
                       M.get_associated_function (| Ty.path "blst::p1_affines", "mult", [], [] |),
                       [
                         M.borrow (| Pointer.Kind.Ref, points |);
@@ -1216,6 +1404,10 @@ Module bls12_381.
                           Pointer.Kind.Ref,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                               M.get_trait_method (|
                                 "core::ops::deref::Deref",
                                 Ty.apply
@@ -1241,9 +1433,10 @@ Module bls12_381.
                       ]
                     |)
                   |) in
-                let~ multiexp_aff :=
+                let~ multiexp_aff : Ty.path "blst::blst_p1_affine" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "blst::blst_p1_affine",
                       M.get_trait_method (|
                         "core::default::Default",
                         Ty.path "blst::blst_p1_affine",
@@ -1256,9 +1449,10 @@ Module bls12_381.
                       []
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.tuple [],
                       M.get_function (| "blst::blst_p1_to_affine", [], [] |),
                       [
                         M.borrow (|
@@ -1272,9 +1466,10 @@ Module bls12_381.
                       ]
                     |)
                   |) in
-                let~ out :=
+                let~ out : Ty.path "alloy_primitives::bytes_::Bytes" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "alloy_primitives::bytes_::Bytes",
                       M.get_function (|
                         "revm_precompile::bls12_381::g1::encode_g1_point",
                         [],
@@ -1293,6 +1488,7 @@ Module bls12_381.
                     "core::result::Result::Ok"
                     [
                       M.call_closure (|
+                        Ty.path "revm_precompile::interface::PrecompileOutput",
                         M.get_associated_function (|
                           Ty.path "revm_precompile::interface::PrecompileOutput",
                           "new",

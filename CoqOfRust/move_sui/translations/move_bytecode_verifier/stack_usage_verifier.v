@@ -61,7 +61,8 @@ Module stack_usage_verifier.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ verifier :=
+                let~ verifier :
+                    Ty.path "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier" :=
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier"
@@ -69,6 +70,11 @@ Module stack_usage_verifier.
                         ("module", M.read (| module |));
                         ("current_function",
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex"
+                              ],
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::absint::FunctionContext",
                               "index",
@@ -87,6 +93,10 @@ Module stack_usage_verifier.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::CodeUnit" ],
                                 M.get_associated_function (|
                                   Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                   "code",
@@ -107,6 +117,10 @@ Module stack_usage_verifier.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ],
                                 M.get_associated_function (|
                                   Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                   "return_",
@@ -124,11 +138,15 @@ Module stack_usage_verifier.
                           |))
                       ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "alloc::vec::into_iter::IntoIter")
+                            []
+                            [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -143,6 +161,10 @@ Module stack_usage_verifier.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
                               M.get_trait_method (|
                                 "move_binary_format::control_flow_graph::ControlFlowGraph",
                                 Ty.path
@@ -158,6 +180,13 @@ Module stack_usage_verifier.
                                   Pointer.Kind.Ref,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::control_flow_graph::VMControlFlowGraph"
+                                        ],
                                       M.get_associated_function (|
                                         Ty.path "move_bytecode_verifier::absint::FunctionContext",
                                         "cfg",
@@ -184,10 +213,14 @@ Module stack_usage_verifier.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "u16" ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -231,6 +264,20 @@ Module stack_usage_verifier.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -249,6 +296,14 @@ Module stack_usage_verifier.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
@@ -267,6 +322,13 @@ Module stack_usage_verifier.
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::control_flow_graph::VMControlFlowGraph"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_bytecode_verifier::absint::FunctionContext",
@@ -305,6 +367,14 @@ Module stack_usage_verifier.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -441,7 +511,19 @@ Module stack_usage_verifier.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ code :=
+                let~ code :
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.path "move_binary_format::file_format::Bytecode";
+                            Ty.path "alloc::alloc::Global"
+                          ]
+                      ] :=
                   M.alloc (|
                     M.borrow (|
                       Pointer.Kind.Ref,
@@ -460,10 +542,12 @@ Module stack_usage_verifier.
                       |)
                     |)
                   |) in
-                let~ stack_size_increment := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
-                let~ block_start :=
+                let~ stack_size_increment : Ty.path "u64" :=
+                  M.alloc (| Value.Integer IntegerKind.U64 0 |) in
+                let~ block_start : Ty.path "u16" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "u16",
                       M.get_trait_method (|
                         "move_binary_format::control_flow_graph::ControlFlowGraph",
                         Ty.dyn
@@ -481,12 +565,17 @@ Module stack_usage_verifier.
                       ]
                     |)
                   |) in
-                let~ overall_push := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
-                let~ _ :=
+                let~ overall_push : Ty.path "u64" :=
+                  M.alloc (| Value.Integer IntegerKind.U64 0 |) in
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::range::RangeInclusive")
+                            []
+                            [ Ty.path "u16" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -501,6 +590,10 @@ Module stack_usage_verifier.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::range::RangeInclusive")
+                                []
+                                [ Ty.path "u16" ],
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "core::ops::range::RangeInclusive")
@@ -513,6 +606,7 @@ Module stack_usage_verifier.
                               [
                                 M.read (| block_start |);
                                 M.call_closure (|
+                                  Ty.path "u16",
                                   M.get_trait_method (|
                                     "move_binary_format::control_flow_graph::ControlFlowGraph",
                                     Ty.dyn
@@ -542,10 +636,14 @@ Module stack_usage_verifier.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "u16" ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -590,6 +688,20 @@ Module stack_usage_verifier.
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ];
+                                                      Ty.tuple [ Ty.path "u64"; Ty.path "u64" ]
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
@@ -608,6 +720,14 @@ Module stack_usage_verifier.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.tuple [ Ty.path "u64"; Ty.path "u64" ];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
                                                       M.get_associated_function (|
                                                         Ty.path
                                                           "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
@@ -627,6 +747,13 @@ Module stack_usage_verifier.
                                                               Pointer.Kind.Ref,
                                                               M.deref (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::Bytecode"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::index::Index",
                                                                     Ty.apply
@@ -680,6 +807,14 @@ Module stack_usage_verifier.
                                                         M.read (|
                                                           M.return_ (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
@@ -733,7 +868,7 @@ Module stack_usage_verifier.
                                                     M.SubPointer.get_tuple_field (| γ, 1 |) in
                                                   let num_pops := M.copy (| γ0_0 |) in
                                                   let num_pushes := M.copy (| γ0_1 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
@@ -742,6 +877,10 @@ Module stack_usage_verifier.
                                                             (let γ :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "u64" ],
                                                                   M.get_associated_function (|
                                                                     Ty.path "u64",
                                                                     "checked_add",
@@ -761,16 +900,18 @@ Module stack_usage_verifier.
                                                                 0
                                                               |) in
                                                             let new_pushes := M.copy (| γ0_0 |) in
-                                                            M.write (|
-                                                              overall_push,
-                                                              M.read (| new_pushes |)
+                                                            M.alloc (|
+                                                              M.write (|
+                                                                overall_push,
+                                                                M.read (| new_pushes |)
+                                                              |)
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.alloc (| Value.Tuple [] |)))
                                                       ]
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
@@ -822,6 +963,8 @@ Module stack_usage_verifier.
                                                                               "core::result::Result::Err"
                                                                               [
                                                                                 M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError",
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "move_binary_format::errors::PartialVMError",
@@ -831,6 +974,8 @@ Module stack_usage_verifier.
                                                                                   |),
                                                                                   [
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "move_binary_format::errors::PartialVMError",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "move_binary_format::errors::PartialVMError",
@@ -845,6 +990,8 @@ Module stack_usage_verifier.
                                                                                       ]
                                                                                     |);
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "move_binary_format::file_format::FunctionDefinitionIndex",
                                                                                       M.get_associated_function (|
                                                                                         Ty.path
                                                                                           "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
@@ -883,7 +1030,7 @@ Module stack_usage_verifier.
                                                             (M.alloc (| Value.Tuple [] |)))
                                                       ]
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
@@ -912,6 +1059,8 @@ Module stack_usage_verifier.
                                                                       "core::result::Result::Err"
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
@@ -921,6 +1070,8 @@ Module stack_usage_verifier.
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
@@ -935,6 +1086,8 @@ Module stack_usage_verifier.
                                                                               ]
                                                                             |);
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::FunctionDefinitionIndex",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
@@ -966,7 +1119,7 @@ Module stack_usage_verifier.
                                                             (M.alloc (| Value.Tuple [] |)))
                                                       ]
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
@@ -975,6 +1128,10 @@ Module stack_usage_verifier.
                                                             (let γ :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "u64" ],
                                                                   M.get_associated_function (|
                                                                     Ty.path "u64",
                                                                     "checked_sub",
@@ -996,9 +1153,11 @@ Module stack_usage_verifier.
                                                                 0
                                                               |) in
                                                             let new_incr := M.copy (| γ0_0 |) in
-                                                            M.write (|
-                                                              stack_size_increment,
-                                                              M.read (| new_incr |)
+                                                            M.alloc (|
+                                                              M.write (|
+                                                                stack_size_increment,
+                                                                M.read (| new_incr |)
+                                                              |)
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
@@ -1010,6 +1169,8 @@ Module stack_usage_verifier.
                                                                       "core::result::Result::Err"
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
@@ -1019,6 +1180,8 @@ Module stack_usage_verifier.
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
@@ -1033,6 +1196,8 @@ Module stack_usage_verifier.
                                                                               ]
                                                                             |);
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::FunctionDefinitionIndex",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
@@ -1061,7 +1226,7 @@ Module stack_usage_verifier.
                                                             |)))
                                                       ]
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (| Value.Tuple [] |),
                                                       [
@@ -1070,6 +1235,10 @@ Module stack_usage_verifier.
                                                             (let γ :=
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [ Ty.path "u64" ],
                                                                   M.get_associated_function (|
                                                                     Ty.path "u64",
                                                                     "checked_add",
@@ -1091,9 +1260,11 @@ Module stack_usage_verifier.
                                                                 0
                                                               |) in
                                                             let new_incr := M.copy (| γ0_0 |) in
-                                                            M.write (|
-                                                              stack_size_increment,
-                                                              M.read (| new_incr |)
+                                                            M.alloc (|
+                                                              M.write (|
+                                                                stack_size_increment,
+                                                                M.read (| new_incr |)
+                                                              |)
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
@@ -1105,6 +1276,8 @@ Module stack_usage_verifier.
                                                                       "core::result::Result::Err"
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
@@ -1114,6 +1287,8 @@ Module stack_usage_verifier.
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
@@ -1128,6 +1303,8 @@ Module stack_usage_verifier.
                                                                               ]
                                                                             |);
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::FunctionDefinitionIndex",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
@@ -1192,6 +1369,8 @@ Module stack_usage_verifier.
                                                                     "core::result::Result::Err"
                                                                     [
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError",
@@ -1201,6 +1380,8 @@ Module stack_usage_verifier.
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "move_binary_format::errors::PartialVMError",
@@ -1215,6 +1396,8 @@ Module stack_usage_verifier.
                                                                             ]
                                                                           |);
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::FunctionDefinitionIndex",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
@@ -1277,6 +1460,7 @@ Module stack_usage_verifier.
                             "core::result::Result::Err"
                             [
                               M.call_closure (|
+                                Ty.path "move_binary_format::errors::PartialVMError",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::errors::PartialVMError",
                                   "at_code_offset",
@@ -1285,6 +1469,7 @@ Module stack_usage_verifier.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::errors::PartialVMError",
                                       "new",
@@ -1298,6 +1483,8 @@ Module stack_usage_verifier.
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path
+                                      "move_binary_format::file_format::FunctionDefinitionIndex",
                                     M.get_associated_function (|
                                       Ty.path
                                         "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier",
@@ -2345,9 +2532,10 @@ Module stack_usage_verifier.
                             γ,
                             "move_binary_format::file_format::Bytecode::Ret"
                           |) in
-                        let~ return_count :=
+                        let~ return_count : Ty.path "usize" :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.path "usize",
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::Signature",
                                 "len",
@@ -2387,9 +2575,17 @@ Module stack_usage_verifier.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ function_handle :=
+                        let~ function_handle :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_handle_at",
@@ -2413,11 +2609,12 @@ Module stack_usage_verifier.
                               ]
                             |)
                           |) in
-                        let~ arg_count :=
+                        let~ arg_count : Ty.path "u64" :=
                           M.alloc (|
                             M.cast
                               (Ty.path "u64")
                               (M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::Signature",
                                   "len",
@@ -2429,6 +2626,10 @@ Module stack_usage_verifier.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::Signature" ],
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "signature_at",
@@ -2462,11 +2663,12 @@ Module stack_usage_verifier.
                                 ]
                               |))
                           |) in
-                        let~ return_count :=
+                        let~ return_count : Ty.path "u64" :=
                           M.alloc (|
                             M.cast
                               (Ty.path "u64")
                               (M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::Signature",
                                   "len",
@@ -2478,6 +2680,10 @@ Module stack_usage_verifier.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::Signature" ],
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "signature_at",
@@ -2524,9 +2730,19 @@ Module stack_usage_verifier.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ func_inst :=
+                        let~ func_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionInstantiation"
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionInstantiation"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_instantiation_at",
@@ -2550,9 +2766,17 @@ Module stack_usage_verifier.
                               ]
                             |)
                           |) in
-                        let~ function_handle :=
+                        let~ function_handle :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_handle_at",
@@ -2582,11 +2806,12 @@ Module stack_usage_verifier.
                               ]
                             |)
                           |) in
-                        let~ arg_count :=
+                        let~ arg_count : Ty.path "u64" :=
                           M.alloc (|
                             M.cast
                               (Ty.path "u64")
                               (M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::Signature",
                                   "len",
@@ -2598,6 +2823,10 @@ Module stack_usage_verifier.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::Signature" ],
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "signature_at",
@@ -2631,11 +2860,12 @@ Module stack_usage_verifier.
                                 ]
                               |))
                           |) in
-                        let~ return_count :=
+                        let~ return_count : Ty.path "u64" :=
                           M.alloc (|
                             M.cast
                               (Ty.path "u64")
                               (M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.path "move_binary_format::file_format::Signature",
                                   "len",
@@ -2647,6 +2877,10 @@ Module stack_usage_verifier.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::Signature" ],
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "signature_at",
@@ -2693,9 +2927,17 @@ Module stack_usage_verifier.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_definition :=
+                        let~ struct_definition :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
@@ -2719,7 +2961,7 @@ Module stack_usage_verifier.
                               ]
                             |)
                           |) in
-                        let~ field_count :=
+                        let~ field_count : Ty.path "usize" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
@@ -2754,6 +2996,7 @@ Module stack_usage_verifier.
                                     let fields := M.alloc (| γ1_0 |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -2795,9 +3038,19 @@ Module stack_usage_verifier.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_inst :=
+                        let~ struct_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
@@ -2821,9 +3074,17 @@ Module stack_usage_verifier.
                               ]
                             |)
                           |) in
-                        let~ struct_definition :=
+                        let~ struct_definition :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
@@ -2853,7 +3114,7 @@ Module stack_usage_verifier.
                               ]
                             |)
                           |) in
-                        let~ field_count :=
+                        let~ field_count : Ty.path "usize" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
@@ -2888,6 +3149,7 @@ Module stack_usage_verifier.
                                     let fields := M.alloc (| γ1_0 |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -2929,9 +3191,17 @@ Module stack_usage_verifier.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_definition :=
+                        let~ struct_definition :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
@@ -2955,7 +3225,7 @@ Module stack_usage_verifier.
                               ]
                             |)
                           |) in
-                        let~ field_count :=
+                        let~ field_count : Ty.path "usize" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
@@ -2990,6 +3260,7 @@ Module stack_usage_verifier.
                                     let fields := M.alloc (| γ1_0 |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -3031,9 +3302,19 @@ Module stack_usage_verifier.
                             0
                           |) in
                         let idx := M.alloc (| γ1_0 |) in
-                        let~ struct_inst :=
+                        let~ struct_inst :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                              ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefInstantiation"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiation_at",
@@ -3057,9 +3338,17 @@ Module stack_usage_verifier.
                               ]
                             |)
                           |) in
-                        let~ struct_definition :=
+                        let~ struct_definition :
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::file_format::StructDefinition" ] :=
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_def_at",
@@ -3089,7 +3378,7 @@ Module stack_usage_verifier.
                               ]
                             |)
                           |) in
-                        let~ field_count :=
+                        let~ field_count : Ty.path "usize" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
@@ -3124,6 +3413,7 @@ Module stack_usage_verifier.
                                     let fields := M.alloc (| γ1_0 |) in
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -3177,6 +3467,7 @@ Module stack_usage_verifier.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")

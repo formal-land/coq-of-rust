@@ -19,10 +19,6 @@ Module Impl_u64.
     {{ num.Impl_u64.saturating_add [] [] [ φ self; φ rhs ] 🔽 Self }}.
   Proof.
     run_symbolic.
-    eapply Run.CallClosure. {
-      apply (intrinsics.run_saturating_add IntegerKind.U64).
-    }
-    intros []; run_symbolic.
   Defined.
   Smpl Add apply run_saturating_add : run_closure.
 
@@ -31,4 +27,11 @@ Module Impl_u64.
   Proof.
   Admitted.
   Smpl Add apply run_saturating_mul : run_closure.
+
+  (* pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) *)
+  Lemma run_overflowing_sub (self rhs: Self) :
+    {{ num.Impl_u64.overflowing_sub [] [] [ φ self; φ rhs ] 🔽 (Self * bool) }}.
+  Proof.
+  Admitted.
+  Smpl Add apply run_overflowing_sub : run_closure.
 End Impl_u64.

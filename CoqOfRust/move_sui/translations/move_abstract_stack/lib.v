@@ -32,6 +32,10 @@ Module Impl_core_default_Default_where_core_default_Default_T_for_move_abstract_
           [
             ("values",
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.tuple [ Ty.path "u64"; T ]; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.apply
@@ -48,6 +52,7 @@ Module Impl_core_default_Default_where_core_default_Default_T_for_move_abstract_
               |));
             ("len",
               M.call_closure (|
+                Ty.path "u64",
                 M.get_trait_method (|
                   "core::default::Default",
                   Ty.path "u64",
@@ -85,6 +90,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_move_abstract_stack_Abstra
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_struct_field2_finish",
@@ -166,6 +172,10 @@ Module Impl_move_abstract_stack_AbstractStack_T.
           [
             ("values",
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.tuple [ Ty.path "u64"; T ]; Ty.path "alloc::alloc::Global" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
@@ -201,7 +211,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -209,7 +219,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                   ltac:(M.monadic
                     (let γ := M.use (M.alloc (| Value.Bool true |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -222,6 +232,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                       LogicalOp.or (|
                                         UnOp.not (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -268,6 +279,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
@@ -285,7 +297,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
               ]
             |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -293,7 +305,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                   ltac:(M.monadic
                     (let γ := M.use (M.alloc (| Value.Bool true |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -305,6 +317,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     UnOp.not (|
                                       LogicalOp.or (|
                                         M.call_closure (|
+                                          Ty.path "bool",
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
@@ -334,6 +347,10 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                               M.SubPointer.get_tuple_field (|
                                                 M.deref (|
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [ Ty.tuple [ Ty.path "u64"; T ] ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
@@ -350,6 +367,15 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                     |),
                                                     [
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.tuple [ Ty.path "u64"; T ] ]
+                                                          ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "slice")
@@ -364,6 +390,18 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                             Pointer.Kind.Ref,
                                                             M.deref (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "slice")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [ Ty.path "u64"; T ]
+                                                                      ]
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::ops::deref::Deref",
                                                                   Ty.apply
@@ -421,6 +459,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
@@ -440,6 +479,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "alloc::vec::Vec")
@@ -488,7 +528,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (|
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -496,7 +536,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                   ltac:(M.monadic
                     (let γ := M.use (M.alloc (| Value.Bool true |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -519,6 +559,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                         |),
                                         ltac:(M.monadic
                                           (M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -553,6 +594,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
@@ -570,7 +612,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
               ]
             |) in
-          let~ _ :=
+          let~ _ : Ty.tuple [] :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -578,7 +620,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                   ltac:(M.monadic
                     (let γ := M.use (M.alloc (| Value.Bool true |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -603,6 +645,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                           (LogicalOp.and (|
                                             UnOp.not (|
                                               M.call_closure (|
+                                                Ty.path "bool",
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
@@ -633,6 +676,10 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                   M.SubPointer.get_tuple_field (|
                                                     M.deref (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [ Ty.tuple [ Ty.path "u64"; T ] ],
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
@@ -649,6 +696,15 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.tuple [ Ty.path "u64"; T ] ]
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "slice")
@@ -663,6 +719,18 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                                 Pointer.Kind.Ref,
                                                                 M.deref (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple
+                                                                              [ Ty.path "u64"; T ]
+                                                                          ]
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::deref::Deref",
                                                                       Ty.apply
@@ -723,6 +791,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
                                       M.read (|
@@ -766,6 +835,10 @@ Module Impl_move_abstract_stack_AbstractStack_T.
         (let self := M.alloc (| self |) in
         let item := M.alloc (| item |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.tuple []; Ty.path "move_abstract_stack::AbsStackError" ],
           M.get_associated_function (|
             Ty.apply (Ty.path "move_abstract_stack::AbstractStack") [] [ T ],
             "push_n",
@@ -817,7 +890,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -845,6 +918,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
                     [
                       M.read (|
@@ -868,19 +942,25 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                           0
                         |) in
                       let new_len := M.copy (| γ0_0 |) in
-                      let~ _ :=
-                        M.write (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_abstract_stack::AbstractStack",
-                            "len"
-                          |),
-                          M.read (| new_len |)
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          M.write (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_abstract_stack::AbstractStack",
+                              "len"
+                            |),
+                            M.read (| new_len |)
+                          |)
                         |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ Ty.path "u64"; T ] ] ],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "u64"; T ] ],
                                 "last_mut",
@@ -892,6 +972,15 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                   Pointer.Kind.MutRef,
                                   M.deref (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [ Ty.tuple [ Ty.path "u64"; T ] ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::deref::DerefMut",
                                         Ty.apply
@@ -940,6 +1029,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                 let γ :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "bool",
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
                                         Ty.apply (Ty.path "&") [] [ T ],
@@ -963,7 +1053,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
                                     [
@@ -975,7 +1065,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [] |),
                                               [
@@ -1001,6 +1091,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                     M.alloc (|
                                                       M.never_to_any (|
                                                         M.call_closure (|
+                                                          Ty.path "never",
                                                           M.get_function (|
                                                             "core::panicking::panic",
                                                             [],
@@ -1023,15 +1114,18 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                     ]
                                   |) in
-                                let β := M.deref (| M.read (| count |) |) in
-                                M.write (|
-                                  β,
-                                  BinOp.Wrap.add (| M.read (| β |), M.read (| n |) |)
+                                M.alloc (|
+                                  let β := M.deref (| M.read (| count |) |) in
+                                  M.write (|
+                                    β,
+                                    BinOp.Wrap.add (| M.read (| β |), M.read (| n |) |)
+                                  |)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
                                   M.call_closure (|
+                                    Ty.tuple [],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -1086,6 +1180,10 @@ Module Impl_move_abstract_stack_AbstractStack_T.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.call_closure (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ T; Ty.path "move_abstract_stack::AbsStackError" ],
           M.get_associated_function (|
             Ty.apply (Ty.path "move_abstract_stack::AbstractStack") [] [ T ],
             "pop_eq_n",
@@ -1095,6 +1193,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
             M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -1106,6 +1205,10 @@ Module Impl_move_abstract_stack_AbstractStack_T.
               |),
               [
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new",
@@ -1157,9 +1260,10 @@ Module Impl_move_abstract_stack_AbstractStack_T.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ n :=
+              let~ n : Ty.path "u64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       "get",
@@ -1169,7 +1273,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                     [ M.read (| n |) ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1180,6 +1284,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                             (M.alloc (|
                               LogicalOp.or (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -1228,6 +1333,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ Ty.path "u64"; T ] ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::option::Option")
@@ -1239,6 +1345,10 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                     |),
                     [
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ Ty.path "u64"; T ] ] ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "u64"; T ] ],
                           "last_mut",
@@ -1250,6 +1360,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "u64"; T ] ]
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::deref::DerefMut",
                                   Ty.apply
@@ -1289,7 +1404,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                       let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let count := M.alloc (| γ1_0 |) in
                       let last := M.alloc (| γ1_1 |) in
-                      let~ _ :=
+                      let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
@@ -1301,7 +1416,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                let~ _ :=
+                                let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
                                     [
@@ -1325,6 +1440,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                           M.alloc (|
                                             M.never_to_any (|
                                               M.call_closure (|
+                                                Ty.path "never",
                                                 M.get_function (|
                                                   "core::panicking::panic",
                                                   [],
@@ -1345,11 +1461,12 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
                         |) in
-                      let~ ret :=
+                      let~ ret : T :=
                         M.copy (|
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
                                   "core::cmp::Ord",
                                   Ty.path "u64",
@@ -1395,6 +1512,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.tuple [ Ty.path "u64"; T ],
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -1406,6 +1524,10 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                         |),
                                         [
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.tuple [ Ty.path "u64"; T ] ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -1445,14 +1567,17 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                 ltac:(M.monadic
                                   (let _ :=
                                     M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
-                                  let~ _ :=
-                                    let β := M.deref (| M.read (| count |) |) in
-                                    M.write (|
-                                      β,
-                                      BinOp.Wrap.sub (| M.read (| β |), M.read (| n |) |)
+                                  let~ _ : Ty.tuple [] :=
+                                    M.alloc (|
+                                      let β := M.deref (| M.read (| count |) |) in
+                                      M.write (|
+                                        β,
+                                        BinOp.Wrap.sub (| M.read (| β |), M.read (| n |) |)
+                                      |)
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
+                                      T,
                                       M.get_trait_method (|
                                         "core::clone::Clone",
                                         T,
@@ -1473,14 +1598,16 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                             ]
                           |)
                         |) in
-                      let~ _ :=
-                        let β :=
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_abstract_stack::AbstractStack",
-                            "len"
-                          |) in
-                        M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| n |) |) |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          let β :=
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_abstract_stack::AbstractStack",
+                              "len"
+                            |) in
+                          M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| n |) |) |)
+                        |) in
                       M.alloc (|
                         Value.StructTuple "core::result::Result::Ok" [ M.read (| ret |) ]
                       |)))
@@ -1531,9 +1658,10 @@ Module Impl_move_abstract_stack_AbstractStack_T.
         M.catch_return (|
           ltac:(M.monadic
             (M.read (|
-              let~ n :=
+              let~ n : Ty.path "u64" :=
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "u64",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       "get",
@@ -1543,7 +1671,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                     [ M.read (| n |) ]
                   |)
                 |) in
-              let~ _ :=
+              let~ _ : Ty.tuple [] :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
                   [
@@ -1554,6 +1682,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                             (M.alloc (|
                               LogicalOp.or (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "move_abstract_stack::AbstractStack")
@@ -1599,8 +1728,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
-              let~ rem := M.copy (| n |) in
-              let~ _ :=
+              let~ rem : Ty.path "u64" := M.copy (| n |) in
+              let~ _ : Ty.tuple [] :=
                 M.loop (|
                   ltac:(M.monadic
                     (M.match_operator (|
@@ -1618,6 +1747,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                             M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ Ty.path "u64"; T ] ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -1634,6 +1764,15 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&mut")
+                                            []
+                                            [ Ty.tuple [ Ty.path "u64"; T ] ]
+                                        ],
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "slice")
@@ -1648,6 +1787,15 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                           Pointer.Kind.MutRef,
                                           M.deref (|
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "slice")
+                                                    []
+                                                    [ Ty.tuple [ Ty.path "u64"; T ] ]
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::deref::DerefMut",
                                                 Ty.apply
@@ -1689,7 +1837,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                     let count := M.alloc (| γ1_0 |) in
                                     let _last := M.alloc (| γ1_1 |) in
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
                                         [
@@ -1701,7 +1849,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let~ _ :=
+                                              let~ _ : Ty.tuple [] :=
                                                 M.match_operator (|
                                                   M.alloc (| Value.Tuple [] |),
                                                   [
@@ -1727,6 +1875,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                         M.alloc (|
                                                           M.never_to_any (|
                                                             M.call_closure (|
+                                                              Ty.path "never",
                                                               M.get_function (|
                                                                 "core::panicking::panic",
                                                                 [],
@@ -1753,6 +1902,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     M.match_operator (|
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "core::cmp::Ordering",
                                           M.get_trait_method (|
                                             "core::cmp::Ord",
                                             Ty.path "u64",
@@ -1802,20 +1952,23 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                   match γ with
                                                   | [] =>
                                                     ltac:(M.monadic
-                                                      (let~ _ :=
-                                                        let β := rem in
-                                                        M.write (|
-                                                          β,
-                                                          BinOp.Wrap.sub (|
-                                                            M.read (| β |),
-                                                            M.read (|
-                                                              M.deref (| M.read (| count |) |)
+                                                      (let~ _ : Ty.tuple [] :=
+                                                        M.alloc (|
+                                                          let β := rem in
+                                                          M.write (|
+                                                            β,
+                                                            BinOp.Wrap.sub (|
+                                                              M.read (| β |),
+                                                              M.read (|
+                                                                M.deref (| M.read (| count |) |)
+                                                              |)
                                                             |)
                                                           |)
                                                         |) in
-                                                      let~ _ :=
+                                                      let~ _ : Ty.tuple [ Ty.path "u64"; T ] :=
                                                         M.alloc (|
                                                           M.call_closure (|
+                                                            Ty.tuple [ Ty.path "u64"; T ],
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "core::option::Option")
@@ -1827,6 +1980,10 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                             |),
                                                             [
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.tuple [ Ty.path "u64"; T ] ],
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "alloc::vec::Vec")
@@ -1869,13 +2026,15 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                             M.alloc (|
                                               M.never_to_any (|
                                                 M.read (|
-                                                  let~ _ :=
-                                                    let β := M.deref (| M.read (| count |) |) in
-                                                    M.write (|
-                                                      β,
-                                                      BinOp.Wrap.sub (|
-                                                        M.read (| β |),
-                                                        M.read (| rem |)
+                                                  let~ _ : Ty.tuple [] :=
+                                                    M.alloc (|
+                                                      let β := M.deref (| M.read (| count |) |) in
+                                                      M.write (|
+                                                        β,
+                                                        BinOp.Wrap.sub (|
+                                                          M.read (| β |),
+                                                          M.read (| rem |)
+                                                        |)
                                                       |)
                                                     |) in
                                                   M.break (||)
@@ -1891,7 +2050,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                             (M.alloc (|
                               M.never_to_any (|
                                 M.read (|
-                                  let~ _ :=
+                                  let~ _ : Ty.tuple [] :=
                                     M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                                   M.alloc (| Value.Tuple [] |)
                                 |)
@@ -1900,14 +2059,16 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                       ]
                     |)))
                 |) in
-              let~ _ :=
-                let β :=
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "move_abstract_stack::AbstractStack",
-                    "len"
-                  |) in
-                M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| n |) |) |) in
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  let β :=
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_abstract_stack::AbstractStack",
+                      "len"
+                    |) in
+                  M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| n |) |) |)
+                |) in
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
@@ -1994,9 +2155,10 @@ Module Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -2005,9 +2167,10 @@ Module Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -2040,9 +2203,10 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -2051,9 +2215,10 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -2064,6 +2229,7 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (|
                 "core::cmp::PartialOrd",
                 Ty.path "isize",
@@ -2108,9 +2274,10 @@ Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_discr :=
+          let~ __self_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -2119,9 +2286,10 @@ Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |) in
-          let~ __arg1_discr :=
+          let~ __arg1_discr : Ty.path "isize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "isize",
                 M.get_function (|
                   "core::intrinsics::discriminant_value",
                   [],
@@ -2132,6 +2300,7 @@ Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
             |) in
           M.alloc (|
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
               [
                 M.borrow (|
@@ -2196,6 +2365,7 @@ Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
@@ -2296,6 +2466,10 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                     |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_fmt",
@@ -2305,6 +2479,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
@@ -2341,6 +2516,10 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                     M.is_struct_tuple (| γ, "move_abstract_stack::AbsStackError::Underflow" |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_fmt",
@@ -2350,6 +2529,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",
@@ -2385,6 +2565,10 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                     M.is_struct_tuple (| γ, "move_abstract_stack::AbsStackError::Overflow" |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_fmt",
@@ -2394,6 +2578,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_const",

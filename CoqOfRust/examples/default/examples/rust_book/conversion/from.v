@@ -44,9 +44,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _ :=
+        let~ _ : Ty.path "from::Number" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "from::Number",
               M.get_trait_method (|
                 "core::convert::From",
                 Ty.path "from::Number",

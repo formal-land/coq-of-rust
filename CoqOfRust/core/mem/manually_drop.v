@@ -40,6 +40,7 @@ Module mem.
               [
                 ("value",
                   M.call_closure (|
+                    T,
                     M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
                     [
                       M.borrow (|
@@ -83,6 +84,10 @@ Module mem.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_struct_field1_finish",
@@ -143,6 +148,7 @@ Module mem.
               [
                 ("value",
                   M.call_closure (|
+                    T,
                     M.get_trait_method (| "core::default::Default", T, [], [], "default", [], [] |),
                     []
                   |))
@@ -185,6 +191,7 @@ Module mem.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
               [
                 M.borrow (|
@@ -265,6 +272,7 @@ Module mem.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
               [
                 M.borrow (|
@@ -320,6 +328,7 @@ Module mem.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.call_closure (|
+              Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
               [
                 M.borrow (|
@@ -375,6 +384,7 @@ Module mem.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
               [
                 M.borrow (|
@@ -471,6 +481,7 @@ Module mem.
           ltac:(M.monadic
             (let slot := M.alloc (| slot |) in
             M.call_closure (|
+              T,
               M.get_function (| "core::ptr::read", [], [ T ] |),
               [
                 M.borrow (|
@@ -510,6 +521,7 @@ Module mem.
           ltac:(M.monadic
             (let slot := M.alloc (| slot |) in
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
               [
                 M.borrow (|

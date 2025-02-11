@@ -21,16 +21,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ counter := M.alloc (| Value.Integer IntegerKind.I32 0 |) in
-        let~ result :=
+        let~ counter : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 0 |) in
+        let~ result : Ty.path "i32" :=
           M.copy (|
             M.loop (|
               ltac:(M.monadic
-                (let~ _ :=
-                  let β := counter in
-                  M.write (|
-                    β,
-                    BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |)
+                (let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β := counter in
+                    M.write (|
+                      β,
+                      BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |)
+                    |)
                   |) in
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -50,7 +52,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 |)))
             |)
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.match_operator (|
             M.alloc (|
               Value.Tuple
@@ -86,12 +88,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ kind :=
+                                let~ kind : Ty.path "core::panicking::AssertKind" :=
                                   M.alloc (|
                                     Value.StructTuple "core::panicking::AssertKind::Eq" []
                                   |) in
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "never",
                                     M.get_function (|
                                       "core::panicking::assert_failed",
                                       [],

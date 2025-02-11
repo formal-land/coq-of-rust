@@ -38,8 +38,8 @@ fn path_of_bin_op(bin_op: &BinOp) -> (&'static str, CallKind) {
 pub(crate) fn allocate_bindings(bindings: &[String], body: Rc<Expr>) -> Rc<Expr> {
     bindings.iter().rfold(body, |body, binding| {
         Rc::new(Expr::Let {
-            is_user: false,
             name: Some(binding.clone()),
+            ty: None,
             init: Expr::local_var(binding).alloc(),
             body,
         })
@@ -60,8 +60,8 @@ fn build_inner_match(
                 is_with_ref,
                 pattern,
             } => Rc::new(Expr::Let {
-                is_user: false,
                 name: Some(name.clone()),
+                ty: None,
                 init: if *is_with_ref {
                     Expr::local_var(&scrutinee).alloc()
                 } else {
@@ -92,8 +92,8 @@ fn build_inner_match(
                     .enumerate()
                     .rfold(body, |body, (index, (field_name, _))| {
                         Rc::new(Expr::Let {
-                            is_user: false,
                             name: Some(format!("γ{depth}_{index}")),
+                            ty: None,
                             init: Rc::new(Expr::Call {
                                 func: Expr::local_var("M.SubPointer.get_struct_record_field"),
                                 args: vec![
@@ -120,8 +120,8 @@ fn build_inner_match(
 
                 let body = patterns.iter().enumerate().rfold(body, |body, (index, _)| {
                     Rc::new(Expr::Let {
-                        is_user: false,
                         name: Some(format!("γ{depth}_{index}")),
+                        ty: None,
                         init: Rc::new(Expr::Call {
                             func: Expr::local_var("M.SubPointer.get_struct_tuple_field"),
                             args: vec![
@@ -139,8 +139,8 @@ fn build_inner_match(
                 // but we still need to check that we have the right one.
                 if patterns.is_empty() {
                     return Rc::new(Expr::Let {
-                        is_user: false,
                         name: None,
+                        ty: None,
                         init: Rc::new(Expr::Call {
                             func: Expr::local_var("M.is_struct_tuple"),
                             args: vec![
@@ -156,8 +156,8 @@ fn build_inner_match(
                 body
             }
             Pattern::Deref(pattern) => Rc::new(Expr::Let {
-                is_user: false,
                 name: Some(scrutinee.clone()),
+                ty: None,
                 init: Expr::local_var(&scrutinee).read(),
                 body: build_inner_match(
                     vec![(scrutinee.clone(), pattern.clone())],
@@ -225,8 +225,8 @@ fn build_inner_match(
 
                 patterns.iter().enumerate().rfold(body, |body, (index, _)| {
                     Rc::new(Expr::Let {
-                        is_user: false,
                         name: Some(format!("γ{depth}_{index}")),
+                        ty: None,
                         init: Rc::new(Expr::Call {
                             func: Expr::local_var("M.SubPointer.get_tuple_field"),
                             args: vec![
@@ -240,8 +240,8 @@ fn build_inner_match(
                 })
             }
             Pattern::Literal(literal) => Rc::new(Expr::Let {
-                is_user: false,
                 name: None,
+                ty: None,
                 init: Rc::new(Expr::Call {
                     func: Expr::local_var("M.is_constant_or_break_match"),
                     args: vec![
@@ -290,8 +290,8 @@ fn build_inner_match(
                         .rev()
                         .rfold(body, |body, (index, _)| {
                             Rc::new(Expr::Let {
-                                is_user: false,
                                 name: Some(format!("γ{depth}_rev{index}")),
+                                ty: None,
                                 init: Rc::new(Expr::Call {
                                     func: Expr::local_var("M.SubPointer.get_slice_rev_index"),
                                     args: vec![
@@ -307,8 +307,8 @@ fn build_inner_match(
                 let body = match slice_pattern {
                     None => body,
                     Some(_) => Rc::new(Expr::Let {
-                        is_user: false,
                         name: Some(format!("γ{depth}_rest")),
+                        ty: None,
                         init: Rc::new(Expr::Call {
                             func: Expr::local_var("M.SubPointer.get_slice_rest"),
                             args: vec![
@@ -327,8 +327,8 @@ fn build_inner_match(
                     .enumerate()
                     .rfold(body, |body, (index, _)| {
                         Rc::new(Expr::Let {
-                            is_user: false,
                             name: Some(format!("γ{depth}_{index}")),
+                            ty: None,
                             init: Rc::new(Expr::Call {
                                 func: Expr::local_var("M.SubPointer.get_slice_index"),
                                 args: vec![
@@ -359,8 +359,8 @@ pub(crate) fn build_match(scrutinee: Rc<Expr>, arms: Vec<MatchArm>) -> Rc<Expr> 
                         .into_iter()
                         .rfold(body, |body, (pattern, guard)| {
                             Rc::new(Expr::Let {
-                                is_user: false,
                                 name: Some("γ".to_string()),
+                                ty: None,
                                 init: guard,
                                 body: build_inner_match(vec![("γ".to_string(), pattern)], body, 0),
                             })
@@ -459,27 +459,28 @@ pub(crate) fn compile_expr<'a>(
                 &thir.exprs.get(*value).unwrap().ty,
             );
             let value = compile_expr(env, generics, thir, value);
+            let ty = Rc::new(CoqType::Application {
+                func: Rc::new(CoqType::Path {
+                    path: Path::new(&["alloc", "boxed", "Box"]),
+                }),
+                consts: vec![],
+                tys: vec![
+                    value_ty,
+                    Rc::new(CoqType::Path {
+                        path: Path::new(&["alloc", "alloc", "Global"]),
+                    }),
+                ],
+            });
 
             Rc::new(Expr::Call {
                 func: Rc::new(Expr::GetAssociatedFunction {
-                    ty: Rc::new(CoqType::Application {
-                        func: Rc::new(CoqType::Path {
-                            path: Path::new(&["alloc", "boxed", "Box"]),
-                        }),
-                        consts: vec![],
-                        tys: vec![
-                            value_ty,
-                            Rc::new(CoqType::Path {
-                                path: Path::new(&["alloc", "alloc", "Global"]),
-                            }),
-                        ],
-                    }),
+                    ty: ty.clone(),
                     func: "new".to_string(),
                     generic_consts: vec![],
                     generic_tys: vec![],
                 }),
                 args: vec![value],
-                kind: CallKind::Closure,
+                kind: CallKind::Closure(ty),
             })
         }
         thir::ExprKind::If {
@@ -518,11 +519,12 @@ pub(crate) fn compile_expr<'a>(
                 .collect();
             let func = compile_expr(env, generics, thir, fun);
             let func = func.read();
+            let ty = compile_type(env, &expr.span, generics, &expr.ty);
 
             Rc::new(Expr::Call {
                 func,
                 args,
-                kind: CallKind::Closure,
+                kind: CallKind::Closure(ty),
             })
             .alloc()
         }
@@ -670,6 +672,7 @@ pub(crate) fn compile_expr<'a>(
                 args,
                 kind: CallKind::Effectful,
             })
+            .alloc()
         }
         thir::ExprKind::AssignOp { op, lhs, rhs } => {
             let (path, kind) = path_of_bin_op(op);
@@ -677,8 +680,8 @@ pub(crate) fn compile_expr<'a>(
             let rhs = compile_expr(env, generics, thir, rhs);
 
             Rc::new(Expr::Let {
-                is_user: false,
                 name: Some("β".to_string()),
+                ty: None,
                 init: lhs,
                 body: Rc::new(Expr::Call {
                     func: Expr::local_var("M.write"),
@@ -693,6 +696,7 @@ pub(crate) fn compile_expr<'a>(
                     kind: CallKind::Effectful,
                 }),
             })
+            .alloc()
         }
         thir::ExprKind::Field {
             lhs,
@@ -1229,23 +1233,27 @@ fn compile_stmts<'a>(
                         Some(initializer) => compile_expr(env, generics, thir, initializer),
                         None => Expr::local_var("Value.DeclaredButUndefined"),
                     };
-                    let pattern = crate::thir_pattern::compile_pattern(env, pattern);
+                    let compiled_pattern = crate::thir_pattern::compile_pattern(env, pattern);
+                    let init_ty =
+                        initializer.map(|initializer| thir.exprs.get(initializer).unwrap().ty);
 
-                    match pattern.as_ref() {
+                    match compiled_pattern.as_ref() {
                         Pattern::Binding {
                             name,
                             pattern: None,
                             is_with_ref: false,
                         } => Rc::new(Expr::Let {
-                            is_user: true,
                             name: Some(name.clone()),
+                            ty: init_ty
+                                .as_ref()
+                                .map(|init_ty| compile_type(env, &pattern.span, generics, init_ty)),
                             init: init.copy(),
                             body,
                         }),
                         _ => build_match(
                             init,
                             vec![MatchArm {
-                                pattern,
+                                pattern: compiled_pattern,
                                 if_let_guard: vec![],
                                 body,
                             }],
@@ -1253,6 +1261,7 @@ fn compile_stmts<'a>(
                     }
                 }
                 thir::StmtKind::Expr { expr: expr_id, .. } => {
+                    let expr = thir.exprs.get(*expr_id).unwrap();
                     let init = compile_expr(env, generics, thir, expr_id);
                     let init_ty = &thir.exprs.get(*expr_id).unwrap().ty;
                     // Special case with the [never] type
@@ -1261,8 +1270,8 @@ fn compile_stmts<'a>(
                     }
 
                     Rc::new(Expr::Let {
-                        is_user: true,
                         name: None,
+                        ty: Some(compile_type(env, &expr.span, generics, init_ty)),
                         init,
                         body,
                     })

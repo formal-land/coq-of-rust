@@ -61,6 +61,10 @@ Module future.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::builders::DebugStruct",
                 "finish",
@@ -72,6 +76,7 @@ Module future.
                   Pointer.Kind.MutRef,
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "core::fmt::builders::DebugStruct",
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "debug_struct",
@@ -123,6 +128,7 @@ Module future.
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
             M.call_closure (|
+              Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
               M.get_trait_method (|
                 "core::ops::function::FnMut",
                 F,
@@ -142,6 +148,10 @@ Module future.
                       M.SubPointer.get_struct_record_field (|
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.apply (Ty.path "core::future::poll_fn::PollFn") [] [ F ] ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::pin::Pin")

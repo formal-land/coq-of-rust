@@ -25,6 +25,7 @@ Module interpreter.
               "revm_interpreter::interpreter::return_data::ReturnDataImpl"
               [
                 M.call_closure (|
+                  Ty.path "alloy_primitives::bytes_::Bytes",
                   M.get_trait_method (|
                     "core::clone::Clone",
                     Ty.path "alloy_primitives::bytes_::Bytes",
@@ -74,6 +75,10 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.get_associated_function (|
                 Ty.path "core::fmt::Formatter",
                 "debug_tuple_field1_finish",
@@ -130,6 +135,7 @@ Module interpreter.
               "revm_interpreter::interpreter::return_data::ReturnDataImpl"
               [
                 M.call_closure (|
+                  Ty.path "alloy_primitives::bytes_::Bytes",
                   M.get_trait_method (|
                     "core::default::Default",
                     Ty.path "alloy_primitives::bytes_::Bytes",
@@ -171,6 +177,7 @@ Module interpreter.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                   M.get_trait_method (|
                     "core::convert::AsRef",
                     Ty.path "alloy_primitives::bytes_::Bytes",

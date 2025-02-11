@@ -65,7 +65,7 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ bounds_check :=
+                let~ bounds_check : Ty.path "move_binary_format::check_bounds::BoundsChecker" :=
                   M.alloc (|
                     Value.StructRecord
                       "move_binary_format::check_bounds::BoundsChecker"
@@ -77,7 +77,7 @@ Module check_bounds.
                             [])
                       ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -87,6 +87,7 @@ Module check_bounds.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -101,6 +102,18 @@ Module check_bounds.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::ModuleHandle"
+                                                ]
+                                            ],
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -133,9 +146,11 @@ Module check_bounds.
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
-                                let~ status :=
+                                let~ status :
+                                    Ty.path "move_binary_format::errors::PartialVMError" :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.path "move_binary_format::errors::PartialVMError",
                                       M.get_function (|
                                         "move_binary_format::errors::verification_error",
                                         [],
@@ -165,6 +180,10 @@ Module check_bounds.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.get_associated_function (|
                       Ty.path "move_binary_format::check_bounds::BoundsChecker",
                       "verify_impl",
@@ -208,10 +227,23 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -226,6 +258,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::check_bounds::BoundsChecker",
                               "check_signatures",
@@ -252,6 +288,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -293,10 +336,23 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -311,6 +367,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::check_bounds::BoundsChecker",
                               "check_constants",
@@ -337,6 +397,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -378,10 +445,23 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -396,6 +476,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::check_bounds::BoundsChecker",
                               "check_module_handles",
@@ -422,6 +506,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -463,10 +554,23 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -481,6 +585,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::check_bounds::BoundsChecker",
                               "check_self_module_handle",
@@ -507,6 +615,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -548,10 +663,23 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -566,6 +694,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::check_bounds::BoundsChecker",
                               "check_struct_handles",
@@ -592,6 +724,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -633,10 +772,23 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -651,6 +803,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::check_bounds::BoundsChecker",
                               "check_function_handles",
@@ -677,6 +833,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -718,10 +881,23 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -736,6 +912,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::check_bounds::BoundsChecker",
                               "check_field_handles",
@@ -762,6 +942,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -803,10 +990,23 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -821,6 +1021,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::check_bounds::BoundsChecker",
                               "check_friend_decls",
@@ -847,6 +1051,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -888,10 +1099,23 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -906,6 +1130,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::check_bounds::BoundsChecker",
                               "check_struct_instantiations",
@@ -932,6 +1160,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -973,10 +1208,23 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -991,6 +1239,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::check_bounds::BoundsChecker",
                               "check_function_instantiations",
@@ -1017,6 +1269,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1058,10 +1317,23 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -1076,6 +1348,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::check_bounds::BoundsChecker",
                               "check_field_instantiations",
@@ -1102,6 +1378,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1143,10 +1426,23 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -1161,6 +1457,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::check_bounds::BoundsChecker",
                               "check_struct_defs",
@@ -1187,6 +1487,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -1230,6 +1537,10 @@ Module check_bounds.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.get_associated_function (|
                       Ty.path "move_binary_format::check_bounds::BoundsChecker",
                       "check_function_defs",
@@ -1263,11 +1574,15 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::Signature" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -1287,6 +1602,15 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Signature" ]
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "signatures",
@@ -1317,10 +1641,20 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Signature"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -1365,6 +1699,20 @@ Module check_bounds.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -1383,6 +1731,14 @@ Module check_bounds.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::check_bounds::BoundsChecker",
@@ -1419,6 +1775,14 @@ Module check_bounds.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -1495,11 +1859,15 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::Constant" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -1519,6 +1887,15 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Constant" ]
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "constant_pool",
@@ -1549,10 +1926,20 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Constant"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -1596,6 +1983,20 @@ Module check_bounds.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -1614,6 +2015,14 @@ Module check_bounds.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::check_bounds::BoundsChecker",
@@ -1650,6 +2059,14 @@ Module check_bounds.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -1726,11 +2143,15 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -1750,6 +2171,15 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "module_handles",
@@ -1780,10 +2210,22 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::ModuleHandle"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -1830,6 +2272,20 @@ Module check_bounds.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -1848,6 +2304,14 @@ Module check_bounds.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::check_bounds::BoundsChecker",
@@ -1884,6 +2348,14 @@ Module check_bounds.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -1960,11 +2432,15 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructHandle" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -1984,6 +2460,15 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::StructHandle" ]
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_handles",
@@ -2014,10 +2499,22 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::StructHandle"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -2064,6 +2561,20 @@ Module check_bounds.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -2082,6 +2593,14 @@ Module check_bounds.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::check_bounds::BoundsChecker",
@@ -2118,6 +2637,14 @@ Module check_bounds.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -2194,11 +2721,15 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -2218,6 +2749,15 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_handles",
@@ -2248,10 +2788,22 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionHandle"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -2298,6 +2850,20 @@ Module check_bounds.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -2316,6 +2882,14 @@ Module check_bounds.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::check_bounds::BoundsChecker",
@@ -2352,6 +2926,14 @@ Module check_bounds.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -2428,11 +3010,15 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FieldHandle" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -2452,6 +3038,15 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FieldHandle" ]
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "field_handles",
@@ -2482,10 +3077,22 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::FieldHandle"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -2530,6 +3137,20 @@ Module check_bounds.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -2548,6 +3169,14 @@ Module check_bounds.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::check_bounds::BoundsChecker",
@@ -2584,6 +3213,14 @@ Module check_bounds.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -2660,11 +3297,15 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -2684,6 +3325,15 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "friend_decls",
@@ -2714,10 +3364,22 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::ModuleHandle"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -2764,6 +3426,20 @@ Module check_bounds.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -2782,6 +3458,14 @@ Module check_bounds.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::check_bounds::BoundsChecker",
@@ -2818,6 +3502,14 @@ Module check_bounds.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -2898,11 +3590,15 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructDefInstantiation" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -2925,6 +3621,18 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.path
+                                        "move_binary_format::file_format::StructDefInstantiation"
+                                    ]
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_instantiations",
@@ -2955,10 +3663,22 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::StructDefInstantiation"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -3005,6 +3725,20 @@ Module check_bounds.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -3023,6 +3757,14 @@ Module check_bounds.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::check_bounds::BoundsChecker",
@@ -3061,6 +3803,14 @@ Module check_bounds.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -3141,11 +3891,15 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionInstantiation" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -3166,6 +3920,18 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.path
+                                        "move_binary_format::file_format::FunctionInstantiation"
+                                    ]
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "function_instantiations",
@@ -3196,10 +3962,22 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionInstantiation"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -3246,6 +4024,20 @@ Module check_bounds.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -3264,6 +4056,14 @@ Module check_bounds.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::check_bounds::BoundsChecker",
@@ -3302,6 +4102,14 @@ Module check_bounds.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -3382,11 +4190,15 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FieldInstantiation" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -3406,6 +4218,16 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FieldInstantiation"
+                                    ]
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "field_instantiations",
@@ -3436,10 +4258,22 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::FieldInstantiation"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -3486,6 +4320,20 @@ Module check_bounds.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -3504,6 +4352,14 @@ Module check_bounds.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::check_bounds::BoundsChecker",
@@ -3542,6 +4398,14 @@ Module check_bounds.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -3618,11 +4482,15 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -3642,6 +4510,15 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "struct_defs",
@@ -3672,10 +4549,22 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::StructDefinition"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -3722,6 +4611,20 @@ Module check_bounds.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -3740,6 +4643,14 @@ Module check_bounds.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::check_bounds::BoundsChecker",
@@ -3776,6 +4687,14 @@ Module check_bounds.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -3852,11 +4771,20 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -3876,6 +4804,16 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -3890,6 +4828,11 @@ Module check_bounds.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -3907,6 +4850,18 @@ Module check_bounds.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinition"
+                                                ]
+                                            ],
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -3944,10 +4899,26 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionDefinition"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -4002,6 +4973,20 @@ Module check_bounds.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -4020,6 +5005,14 @@ Module check_bounds.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::check_bounds::BoundsChecker",
@@ -4057,6 +5050,14 @@ Module check_bounds.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -4132,10 +5133,23 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -4150,6 +5164,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
                               [],
@@ -4163,6 +5181,18 @@ Module check_bounds.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_core_types::account_address::AccountAddress"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "address_identifiers",
@@ -4213,6 +5243,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -4256,6 +5293,10 @@ Module check_bounds.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.get_function (|
                       "move_binary_format::check_bounds::check_bounds_impl",
                       [],
@@ -4269,6 +5310,15 @@ Module check_bounds.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "move_core_types::identifier::Identifier" ]
+                              ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::CompiledModule",
                               "identifiers",
@@ -4322,6 +5372,10 @@ Module check_bounds.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
             M.get_function (|
               "move_binary_format::check_bounds::check_bounds_impl",
               [],
@@ -4335,6 +5389,15 @@ Module check_bounds.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
+                      ],
                     M.get_associated_function (|
                       Ty.path "move_binary_format::file_format::CompiledModule",
                       "module_handles",
@@ -4359,6 +5422,7 @@ Module check_bounds.
                 |)
               |);
               M.call_closure (|
+                Ty.path "move_binary_format::file_format::ModuleHandleIndex",
                 M.get_associated_function (|
                   Ty.path "move_binary_format::file_format::CompiledModule",
                   "self_handle_idx",
@@ -4404,10 +5468,23 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -4422,6 +5499,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
                               [],
@@ -4435,6 +5516,16 @@ Module check_bounds.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::ModuleHandle"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "module_handles",
@@ -4485,6 +5576,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -4528,6 +5626,10 @@ Module check_bounds.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.get_function (|
                       "move_binary_format::check_bounds::check_bounds_impl",
                       [],
@@ -4541,6 +5643,15 @@ Module check_bounds.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "move_core_types::identifier::Identifier" ]
+                              ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::CompiledModule",
                               "identifiers",
@@ -4621,10 +5732,23 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -4639,6 +5763,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
                               [],
@@ -4652,6 +5780,16 @@ Module check_bounds.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::ModuleHandle"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "module_handles",
@@ -4702,6 +5840,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -4743,10 +5888,23 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -4761,6 +5919,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
                               [],
@@ -4774,6 +5936,15 @@ Module check_bounds.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_core_types::identifier::Identifier" ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "identifiers",
@@ -4824,6 +5995,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -4865,10 +6043,23 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -4883,6 +6074,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
                               [],
@@ -4896,6 +6091,15 @@ Module check_bounds.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::Signature" ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "signatures",
@@ -4946,6 +6150,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -4987,10 +6198,23 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -5005,6 +6229,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
                               [],
@@ -5018,6 +6246,15 @@ Module check_bounds.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::Signature" ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "signatures",
@@ -5068,6 +6305,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -5109,9 +6353,10 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ type_param_count :=
+                let~ type_param_count : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -5136,7 +6381,7 @@ Module check_bounds.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -5145,6 +6390,15 @@ Module check_bounds.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::Signature" ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -5159,6 +6413,16 @@ Module check_bounds.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Signature"
+                                              ]
+                                          ],
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "signatures",
@@ -5183,6 +6447,7 @@ Module check_bounds.
                                     |)
                                   |);
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_trait_method (|
                                       "move_binary_format::internals::ModuleIndex",
                                       Ty.path "move_binary_format::file_format::SignatureIndex",
@@ -5216,6 +6481,10 @@ Module check_bounds.
                             (M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   M.get_trait_method (|
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
@@ -5255,10 +6524,22 @@ Module check_bounds.
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
                                       ltac:(M.monadic
-                                        (let~ _ :=
+                                        (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::SignatureToken"
+                                                      ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -5307,6 +6588,21 @@ Module check_bounds.
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ];
+                                                            Ty.tuple []
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
@@ -5325,6 +6621,14 @@ Module check_bounds.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_binary_format::check_bounds::BoundsChecker",
@@ -5362,6 +6666,15 @@ Module check_bounds.
                                                               M.read (|
                                                                 M.return_ (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::try_trait::FromResidual",
                                                                       Ty.apply
@@ -5417,7 +6730,7 @@ Module check_bounds.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -5426,6 +6739,15 @@ Module check_bounds.
                           (let γ :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::Signature" ]
+                                  ],
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -5440,6 +6762,16 @@ Module check_bounds.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Signature"
+                                              ]
+                                          ],
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "signatures",
@@ -5464,6 +6796,7 @@ Module check_bounds.
                                     |)
                                   |);
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_trait_method (|
                                       "move_binary_format::internals::ModuleIndex",
                                       Ty.path "move_binary_format::file_format::SignatureIndex",
@@ -5497,6 +6830,10 @@ Module check_bounds.
                             (M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                                   M.get_trait_method (|
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
@@ -5536,10 +6873,22 @@ Module check_bounds.
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
                                       ltac:(M.monadic
-                                        (let~ _ :=
+                                        (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::SignatureToken"
+                                                      ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -5588,6 +6937,21 @@ Module check_bounds.
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ];
+                                                            Ty.tuple []
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
@@ -5606,6 +6970,14 @@ Module check_bounds.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_binary_format::check_bounds::BoundsChecker",
@@ -5643,6 +7015,15 @@ Module check_bounds.
                                                               M.read (|
                                                                 M.return_ (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::try_trait::FromResidual",
                                                                       Ty.apply
@@ -5742,10 +7123,23 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -5760,6 +7154,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
                               [],
@@ -5773,6 +7171,18 @@ Module check_bounds.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::StructDefinition"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "struct_defs",
@@ -5823,6 +7233,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -5864,7 +7281,7 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -5876,6 +7293,18 @@ Module check_bounds.
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::StructDefinition"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -5893,6 +7322,18 @@ Module check_bounds.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::StructDefinition"
+                                                  ]
+                                              ],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
@@ -5918,6 +7359,7 @@ Module check_bounds.
                                         |)
                                       |);
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_trait_method (|
                                           "move_binary_format::internals::ModuleIndex",
                                           Ty.path
@@ -5951,7 +7393,7 @@ Module check_bounds.
                               0
                             |) in
                           let struct_def := M.alloc (| γ1_0 |) in
-                          let~ fields_count :=
+                          let~ fields_count : Ty.path "usize" :=
                             M.copy (|
                               M.match_operator (|
                                 M.alloc (|
@@ -5988,6 +7430,7 @@ Module check_bounds.
                                       let fields := M.alloc (| γ1_0 |) in
                                       M.alloc (|
                                         M.call_closure (|
+                                          Ty.path "usize",
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::vec::Vec")
@@ -6046,6 +7489,8 @@ Module check_bounds.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_function (|
                                                   "move_binary_format::errors::bounds_error",
                                                   [],
@@ -6114,10 +7559,23 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -6132,6 +7590,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
                               [],
@@ -6145,6 +7607,18 @@ Module check_bounds.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::StructDefinition"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "struct_defs",
@@ -6195,6 +7669,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -6238,6 +7719,10 @@ Module check_bounds.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.get_function (|
                       "move_binary_format::check_bounds::check_bounds_impl",
                       [],
@@ -6251,6 +7736,15 @@ Module check_bounds.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ]
+                              ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::CompiledModule",
                               "signatures",
@@ -6321,10 +7815,23 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -6339,6 +7846,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
                               [],
@@ -6352,6 +7863,18 @@ Module check_bounds.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionHandle"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "function_handles",
@@ -6402,6 +7925,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -6445,6 +7975,10 @@ Module check_bounds.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.get_function (|
                       "move_binary_format::check_bounds::check_bounds_impl",
                       [],
@@ -6458,6 +7992,15 @@ Module check_bounds.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ]
+                              ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::CompiledModule",
                               "signatures",
@@ -6525,10 +8068,23 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -6543,6 +8099,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
                               [],
@@ -6556,6 +8116,15 @@ Module check_bounds.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::FieldHandle" ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "field_handles",
@@ -6606,6 +8175,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -6649,6 +8225,10 @@ Module check_bounds.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.get_function (|
                       "move_binary_format::check_bounds::check_bounds_impl",
                       [],
@@ -6662,6 +8242,15 @@ Module check_bounds.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ]
+                              ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::CompiledModule",
                               "signatures",
@@ -6721,11 +8310,15 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -6764,10 +8357,22 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -6814,6 +8419,20 @@ Module check_bounds.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -6832,6 +8451,14 @@ Module check_bounds.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::check_bounds::BoundsChecker",
@@ -6868,6 +8495,14 @@ Module check_bounds.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -6940,6 +8575,10 @@ Module check_bounds.
           (let self := M.alloc (| self |) in
           let constant := M.alloc (| constant |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
             M.get_associated_function (|
               Ty.path "move_binary_format::check_bounds::BoundsChecker",
               "check_type",
@@ -6999,10 +8638,23 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -7017,6 +8669,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
                               [],
@@ -7030,6 +8686,16 @@ Module check_bounds.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::StructHandle"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "struct_handles",
@@ -7080,6 +8746,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -7121,7 +8794,7 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -7146,9 +8819,10 @@ Module check_bounds.
                               0
                             |) in
                           let fields := M.alloc (| γ1_0 |) in
-                          let~ type_param_count :=
+                          let~ type_param_count : Ty.path "usize" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
@@ -7181,6 +8855,16 @@ Module check_bounds.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::StructHandle"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -7195,6 +8879,18 @@ Module check_bounds.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::StructHandle"
+                                                  ]
+                                              ],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
@@ -7220,6 +8916,7 @@ Module check_bounds.
                                         |)
                                       |);
                                       M.call_closure (|
+                                        Ty.path "usize",
                                         M.get_trait_method (|
                                           "move_binary_format::internals::ModuleIndex",
                                           Ty.path
@@ -7256,6 +8953,7 @@ Module check_bounds.
                                                   ltac:(M.monadic
                                                     (let sh := M.copy (| γ |) in
                                                     M.call_closure (|
+                                                      Ty.path "usize",
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "alloc::vec::Vec")
@@ -7291,6 +8989,10 @@ Module check_bounds.
                             (M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FieldDefinition" ],
                                   M.get_trait_method (|
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
@@ -7321,10 +9023,22 @@ Module check_bounds.
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
                                       ltac:(M.monadic
-                                        (let~ _ :=
+                                        (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::FieldDefinition"
+                                                      ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -7370,10 +9084,26 @@ Module check_bounds.
                                                       0
                                                     |) in
                                                   let field := M.copy (| γ0_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -7392,6 +9122,14 @@ Module check_bounds.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_function (|
                                                                 "move_binary_format::check_bounds::check_bounds_impl",
                                                                 [],
@@ -7407,6 +9145,18 @@ Module check_bounds.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_core_types::identifier::Identifier"
+                                                                            ]
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
@@ -7462,6 +9212,15 @@ Module check_bounds.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -7508,10 +9267,26 @@ Module check_bounds.
                                                             val))
                                                       ]
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -7530,6 +9305,14 @@ Module check_bounds.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_binary_format::check_bounds::BoundsChecker",
@@ -7581,6 +9364,15 @@ Module check_bounds.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -7627,10 +9419,26 @@ Module check_bounds.
                                                             val))
                                                       ]
                                                     |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -7649,6 +9457,14 @@ Module check_bounds.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_binary_format::check_bounds::BoundsChecker",
@@ -7701,6 +9517,15 @@ Module check_bounds.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -7821,25 +9646,40 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "move_binary_format::check_bounds::BoundsChecker",
-                      "context"
-                    |),
-                    Value.StructTuple
-                      "move_binary_format::check_bounds::BoundsCheckingContext::ModuleFunction"
-                      [
-                        Value.StructTuple
-                          "move_binary_format::file_format::FunctionDefinitionIndex"
-                          [ M.cast (Ty.path "u16") (M.read (| function_def_idx |)) ]
-                      ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "move_binary_format::check_bounds::BoundsChecker",
+                        "context"
+                      |),
+                      Value.StructTuple
+                        "move_binary_format::check_bounds::BoundsCheckingContext::ModuleFunction"
+                        [
+                          Value.StructTuple
+                            "move_binary_format::file_format::FunctionDefinitionIndex"
+                            [ M.cast (Ty.path "u16") (M.read (| function_def_idx |)) ]
+                        ]
+                    |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -7854,6 +9694,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
                               [],
@@ -7867,6 +9711,18 @@ Module check_bounds.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionHandle"
+                                          ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "function_handles",
@@ -7917,6 +9773,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -7958,11 +9821,15 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -8002,10 +9869,22 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::StructDefinitionIndex"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -8049,10 +9928,24 @@ Module check_bounds.
                                               0
                                             |) in
                                           let ty := M.copy (| γ0_0 |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ];
+                                                      Ty.tuple []
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::Try",
                                                     Ty.apply
@@ -8071,6 +9964,14 @@ Module check_bounds.
                                                   |),
                                                   [
                                                     M.call_closure (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.path
+                                                            "move_binary_format::errors::PartialVMError"
+                                                        ],
                                                       M.get_function (|
                                                         "move_binary_format::check_bounds::check_bounds_impl",
                                                         [],
@@ -8086,6 +9987,18 @@ Module check_bounds.
                                                           Pointer.Kind.Ref,
                                                           M.deref (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "slice")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::StructDefinition"
+                                                                    ]
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_binary_format::file_format::CompiledModule",
@@ -8133,6 +10046,14 @@ Module check_bounds.
                                                         M.read (|
                                                           M.return_ (|
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
@@ -8184,7 +10105,11 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                let~ code_unit :=
+                let~ code_unit :
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::CodeUnit" ] :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
@@ -8225,7 +10150,7 @@ Module check_bounds.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -8236,6 +10161,7 @@ Module check_bounds.
                               (M.alloc (|
                                 BinOp.ge (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_trait_method (|
                                       "move_binary_format::internals::ModuleIndex",
                                       Ty.path
@@ -8257,6 +10183,7 @@ Module check_bounds.
                                     ]
                                   |),
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -8272,6 +10199,18 @@ Module check_bounds.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionHandle"
+                                                  ]
+                                              ],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
@@ -8310,6 +10249,7 @@ Module check_bounds.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
                                           [],
@@ -8333,13 +10273,26 @@ Module check_bounds.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ function_handle :=
+                let~ function_handle :
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::FunctionHandle" ] :=
                   M.alloc (|
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.SubPointer.get_array_field (|
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                              ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::CompiledModule",
                               "function_handles",
@@ -8364,6 +10317,7 @@ Module check_bounds.
                         |),
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "usize",
                             M.get_trait_method (|
                               "move_binary_format::internals::ModuleIndex",
                               Ty.path "move_binary_format::file_format::FunctionHandleIndex",
@@ -8387,7 +10341,7 @@ Module check_bounds.
                       |)
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -8398,6 +10352,7 @@ Module check_bounds.
                               (M.alloc (|
                                 BinOp.ge (|
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_trait_method (|
                                       "move_binary_format::internals::ModuleIndex",
                                       Ty.path "move_binary_format::file_format::SignatureIndex",
@@ -8418,6 +10373,7 @@ Module check_bounds.
                                     ]
                                   |),
                                   M.call_closure (|
+                                    Ty.path "usize",
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "slice")
@@ -8432,6 +10388,18 @@ Module check_bounds.
                                         Pointer.Kind.Ref,
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "slice")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::Signature"
+                                                  ]
+                                              ],
                                             M.get_associated_function (|
                                               Ty.path
                                                 "move_binary_format::file_format::CompiledModule",
@@ -8470,6 +10438,7 @@ Module check_bounds.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
                                           [],
@@ -8493,13 +10462,26 @@ Module check_bounds.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ parameters :=
+                let~ parameters :
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "move_binary_format::file_format::Signature" ] :=
                   M.alloc (|
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.SubPointer.get_array_field (|
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Signature" ]
+                              ],
                             M.get_associated_function (|
                               Ty.path "move_binary_format::file_format::CompiledModule",
                               "signatures",
@@ -8524,6 +10506,7 @@ Module check_bounds.
                         |),
                         M.alloc (|
                           M.call_closure (|
+                            Ty.path "usize",
                             M.get_trait_method (|
                               "move_binary_format::internals::ModuleIndex",
                               Ty.path "move_binary_format::file_format::SignatureIndex",
@@ -8549,6 +10532,10 @@ Module check_bounds.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.get_associated_function (|
                       Ty.path "move_binary_format::check_bounds::BoundsChecker",
                       "check_code",
@@ -8562,6 +10549,15 @@ Module check_bounds.
                         Pointer.Kind.Ref,
                         M.deref (|
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::AbilitySet" ]
+                              ],
                             M.get_trait_method (|
                               "core::ops::deref::Deref",
                               Ty.apply
@@ -8811,10 +10807,23 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -8829,6 +10838,10 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_function (|
                               "move_binary_format::check_bounds::check_bounds_impl",
                               [],
@@ -8842,6 +10855,15 @@ Module check_bounds.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::Signature" ]
+                                      ],
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::CompiledModule",
                                       "signatures",
@@ -8892,6 +10914,13 @@ Module check_bounds.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -8933,11 +10962,41 @@ Module check_bounds.
                           val))
                     ]
                   |) in
-                let~ locals :=
+                let~ locals :
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                      ] :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                                ]
+                            ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
@@ -8963,6 +11022,22 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "slice")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ]
+                                    ];
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::check_bounds::BoundsChecker",
                                 "get_locals",
@@ -8995,6 +11070,13 @@ Module check_bounds.
                                 M.read (|
                                   M.return_ (|
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.tuple [];
+                                          Ty.path "move_binary_format::errors::PartialVMError"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
@@ -9037,12 +11119,14 @@ Module check_bounds.
                       ]
                     |)
                   |) in
-                let~ locals_count :=
+                let~ locals_count : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (| Ty.path "usize", "saturating_add", [], [] |),
                       [
                         M.call_closure (|
+                          Ty.path "usize",
                           M.get_associated_function (|
                             Ty.apply
                               (Ty.path "slice")
@@ -9055,6 +11139,7 @@ Module check_bounds.
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| locals |) |) |) ]
                         |);
                         M.call_closure (|
+                          Ty.path "usize",
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::Signature",
                             "len",
@@ -9066,7 +11151,7 @@ Module check_bounds.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -9092,6 +11177,7 @@ Module check_bounds.
                                     "core::result::Result::Err"
                                     [
                                       M.call_closure (|
+                                        Ty.path "move_binary_format::errors::PartialVMError",
                                         M.get_function (|
                                           "move_binary_format::errors::verification_error",
                                           [],
@@ -9115,9 +11201,10 @@ Module check_bounds.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ type_param_count :=
+                let~ type_param_count : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "slice")
@@ -9131,11 +11218,15 @@ Module check_bounds.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -9162,10 +11253,22 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -9212,6 +11315,20 @@ Module check_bounds.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -9230,6 +11347,14 @@ Module check_bounds.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_binary_format::check_bounds::BoundsChecker",
@@ -9267,6 +11392,14 @@ Module check_bounds.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -9317,9 +11450,10 @@ Module check_bounds.
                             |)))
                       ]
                     |)) in
-                let~ code_len :=
+                let~ code_len : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -9344,11 +11478,20 @@ Module check_bounds.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -9368,6 +11511,15 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -9382,6 +11534,10 @@ Module check_bounds.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Bytecode" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -9396,6 +11552,18 @@ Module check_bounds.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::Bytecode"
+                                                ]
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::deref::Deref",
                                             Ty.apply
@@ -9437,10 +11605,26 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::Bytecode"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -9508,6 +11692,21 @@ Module check_bounds.
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ];
+                                                            Ty.tuple []
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
@@ -9526,6 +11725,14 @@ Module check_bounds.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_binary_format::check_bounds::BoundsChecker",
@@ -9547,6 +11754,18 @@ Module check_bounds.
                                                                 Pointer.Kind.Ref,
                                                                 M.deref (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::Constant"
+                                                                          ]
+                                                                      ],
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "move_binary_format::file_format::CompiledModule",
@@ -9597,6 +11816,15 @@ Module check_bounds.
                                                               M.read (|
                                                                 M.return_ (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::try_trait::FromResidual",
                                                                       Ty.apply
@@ -9679,6 +11907,23 @@ Module check_bounds.
                                                             (M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::ops::control_flow::ControlFlow")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible";
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ];
+                                                                      Ty.tuple []
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::try_trait::Try",
                                                                     Ty.apply
@@ -9698,6 +11943,15 @@ Module check_bounds.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::check_bounds::BoundsChecker",
@@ -9721,6 +11975,19 @@ Module check_bounds.
                                                                           Pointer.Kind.Ref,
                                                                           M.deref (|
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "move_binary_format::file_format::FieldHandle"
+                                                                                    ]
+                                                                                ],
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_binary_format::file_format::CompiledModule",
@@ -9776,6 +12043,15 @@ Module check_bounds.
                                                                         M.read (|
                                                                           M.return_ (|
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ],
                                                                               M.get_trait_method (|
                                                                                 "core::ops::try_trait::FromResidual",
                                                                                 Ty.apply
@@ -9863,10 +12139,27 @@ Module check_bounds.
                                                         match γ with
                                                         | [ idx ] =>
                                                           ltac:(M.monadic
-                                                            (let~ _ :=
+                                                            (let~ _ : Ty.tuple [] :=
                                                               M.match_operator (|
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::ops::control_flow::ControlFlow")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::convert::Infallible";
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError"
+                                                                          ];
+                                                                        Ty.tuple []
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::try_trait::Try",
                                                                       Ty.apply
@@ -9886,6 +12179,15 @@ Module check_bounds.
                                                                     |),
                                                                     [
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple [];
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError"
+                                                                          ],
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::check_bounds::BoundsChecker",
@@ -9909,6 +12211,19 @@ Module check_bounds.
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "slice")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_binary_format::file_format::FieldInstantiation"
+                                                                                      ]
+                                                                                  ],
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "move_binary_format::file_format::CompiledModule",
@@ -9966,6 +12281,15 @@ Module check_bounds.
                                                                           M.read (|
                                                                             M.return_ (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                  ],
                                                                                 M.get_trait_method (|
                                                                                   "core::ops::try_trait::FromResidual",
                                                                                   Ty.apply
@@ -10025,6 +12349,19 @@ Module check_bounds.
                                                                     (let γ :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::FieldInstantiation"
+                                                                                ]
+                                                                            ],
                                                                           M.get_associated_function (|
                                                                             Ty.apply
                                                                               (Ty.path "slice")
@@ -10042,6 +12379,19 @@ Module check_bounds.
                                                                               Pointer.Kind.Ref,
                                                                               M.deref (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "slice")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "move_binary_format::file_format::FieldInstantiation"
+                                                                                        ]
+                                                                                    ],
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "move_binary_format::file_format::CompiledModule",
@@ -10071,6 +12421,7 @@ Module check_bounds.
                                                                               |)
                                                                             |);
                                                                             M.call_closure (|
+                                                                              Ty.path "usize",
                                                                               M.get_trait_method (|
                                                                                 "move_binary_format::internals::ModuleIndex",
                                                                                 Ty.path
@@ -10108,6 +12459,20 @@ Module check_bounds.
                                                                             (let γ :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "move_binary_format::file_format::Signature"
+                                                                                        ]
+                                                                                    ],
                                                                                   M.get_associated_function (|
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -10129,6 +12494,20 @@ Module check_bounds.
                                                                                       Pointer.Kind.Ref,
                                                                                       M.deref (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "&")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "slice")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "move_binary_format::file_format::Signature"
+                                                                                                ]
+                                                                                            ],
                                                                                           M.get_associated_function (|
                                                                                             Ty.path
                                                                                               "move_binary_format::file_format::CompiledModule",
@@ -10158,6 +12537,8 @@ Module check_bounds.
                                                                                       |)
                                                                                     |);
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "usize",
                                                                                       M.get_trait_method (|
                                                                                         "move_binary_format::internals::ModuleIndex",
                                                                                         Ty.path
@@ -10197,6 +12578,14 @@ Module check_bounds.
                                                                               (M.match_operator (|
                                                                                 M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::slice::iter::Iter")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_binary_format::file_format::SignatureToken"
+                                                                                      ],
                                                                                     M.get_trait_method (|
                                                                                       "core::iter::traits::collect::IntoIterator",
                                                                                       Ty.apply
@@ -10246,10 +12635,26 @@ Module check_bounds.
                                                                                         |) in
                                                                                       M.loop (|
                                                                                         ltac:(M.monadic
-                                                                                          (let~ _ :=
+                                                                                          (let~ _ :
+                                                                                              Ty.tuple
+                                                                                                [] :=
                                                                                             M.match_operator (|
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "core::option::Option")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "&")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "move_binary_format::file_format::SignatureToken"
+                                                                                                        ]
+                                                                                                    ],
                                                                                                   M.get_trait_method (|
                                                                                                     "core::iter::traits::iterator::Iterator",
                                                                                                     Ty.apply
@@ -10314,6 +12719,24 @@ Module check_bounds.
                                                                                                     M.match_operator (|
                                                                                                       M.alloc (|
                                                                                                         M.call_closure (|
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "core::ops::control_flow::ControlFlow")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "core::result::Result")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "core::convert::Infallible";
+                                                                                                                  Ty.path
+                                                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                                                ];
+                                                                                                              Ty.tuple
+                                                                                                                []
+                                                                                                            ],
                                                                                                           M.get_trait_method (|
                                                                                                             "core::ops::try_trait::Try",
                                                                                                             Ty.apply
@@ -10334,6 +12757,16 @@ Module check_bounds.
                                                                                                           |),
                                                                                                           [
                                                                                                             M.call_closure (|
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "core::result::Result")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.tuple
+                                                                                                                    [];
+                                                                                                                  Ty.path
+                                                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                                                ],
                                                                                                               M.get_associated_function (|
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::check_bounds::BoundsChecker",
@@ -10387,6 +12820,16 @@ Module check_bounds.
                                                                                                                 M.read (|
                                                                                                                   M.return_ (|
                                                                                                                     M.call_closure (|
+                                                                                                                      Ty.apply
+                                                                                                                        (Ty.path
+                                                                                                                          "core::result::Result")
+                                                                                                                        []
+                                                                                                                        [
+                                                                                                                          Ty.tuple
+                                                                                                                            [];
+                                                                                                                          Ty.path
+                                                                                                                            "move_binary_format::errors::PartialVMError"
+                                                                                                                        ],
                                                                                                                       M.get_trait_method (|
                                                                                                                         "core::ops::try_trait::FromResidual",
                                                                                                                         Ty.apply
@@ -10482,6 +12925,21 @@ Module check_bounds.
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ];
+                                                            Ty.tuple []
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::Try",
                                                           Ty.apply
@@ -10500,6 +12958,14 @@ Module check_bounds.
                                                         |),
                                                         [
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_binary_format::check_bounds::BoundsChecker",
@@ -10521,6 +12987,18 @@ Module check_bounds.
                                                                 Pointer.Kind.Ref,
                                                                 M.deref (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_binary_format::file_format::FunctionHandle"
+                                                                          ]
+                                                                      ],
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "move_binary_format::file_format::CompiledModule",
@@ -10571,6 +13049,15 @@ Module check_bounds.
                                                               M.read (|
                                                                 M.return_ (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError"
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::try_trait::FromResidual",
                                                                       Ty.apply
@@ -10627,10 +13114,26 @@ Module check_bounds.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -10649,6 +13152,14 @@ Module check_bounds.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_associated_function (|
                                                                 Ty.path
                                                                   "move_binary_format::check_bounds::BoundsChecker",
@@ -10670,6 +13181,18 @@ Module check_bounds.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::FunctionInstantiation"
+                                                                            ]
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
@@ -10720,6 +13243,15 @@ Module check_bounds.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -10774,6 +13306,18 @@ Module check_bounds.
                                                           (let γ :=
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::FunctionInstantiation"
+                                                                      ]
+                                                                  ],
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "slice")
@@ -10791,6 +13335,18 @@ Module check_bounds.
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "slice")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::FunctionInstantiation"
+                                                                              ]
+                                                                          ],
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::file_format::CompiledModule",
@@ -10820,6 +13376,7 @@ Module check_bounds.
                                                                     |)
                                                                   |);
                                                                   M.call_closure (|
+                                                                    Ty.path "usize",
                                                                     M.get_trait_method (|
                                                                       "move_binary_format::internals::ModuleIndex",
                                                                       Ty.path
@@ -10856,6 +13413,19 @@ Module check_bounds.
                                                                   (let γ :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::Signature"
+                                                                              ]
+                                                                          ],
                                                                         M.get_associated_function (|
                                                                           Ty.apply
                                                                             (Ty.path "slice")
@@ -10873,6 +13443,19 @@ Module check_bounds.
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "slice")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_binary_format::file_format::Signature"
+                                                                                      ]
+                                                                                  ],
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "move_binary_format::file_format::CompiledModule",
@@ -10902,6 +13485,7 @@ Module check_bounds.
                                                                             |)
                                                                           |);
                                                                           M.call_closure (|
+                                                                            Ty.path "usize",
                                                                             M.get_trait_method (|
                                                                               "move_binary_format::internals::ModuleIndex",
                                                                               Ty.path
@@ -10940,6 +13524,14 @@ Module check_bounds.
                                                                     (M.match_operator (|
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::slice::iter::Iter")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureToken"
+                                                                            ],
                                                                           M.get_trait_method (|
                                                                             "core::iter::traits::collect::IntoIterator",
                                                                             Ty.apply
@@ -10984,10 +13576,25 @@ Module check_bounds.
                                                                               M.copy (| γ |) in
                                                                             M.loop (|
                                                                               ltac:(M.monadic
-                                                                                (let~ _ :=
+                                                                                (let~ _ :
+                                                                                    Ty.tuple [] :=
                                                                                   M.match_operator (|
                                                                                     M.alloc (|
                                                                                       M.call_closure (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::option::Option")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "&")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "move_binary_format::file_format::SignatureToken"
+                                                                                              ]
+                                                                                          ],
                                                                                         M.get_trait_method (|
                                                                                           "core::iter::traits::iterator::Iterator",
                                                                                           Ty.apply
@@ -11048,6 +13655,24 @@ Module check_bounds.
                                                                                           M.match_operator (|
                                                                                             M.alloc (|
                                                                                               M.call_closure (|
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "core::ops::control_flow::ControlFlow")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "core::result::Result")
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.path
+                                                                                                          "core::convert::Infallible";
+                                                                                                        Ty.path
+                                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                                      ];
+                                                                                                    Ty.tuple
+                                                                                                      []
+                                                                                                  ],
                                                                                                 M.get_trait_method (|
                                                                                                   "core::ops::try_trait::Try",
                                                                                                   Ty.apply
@@ -11068,6 +13693,16 @@ Module check_bounds.
                                                                                                 |),
                                                                                                 [
                                                                                                   M.call_closure (|
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "core::result::Result")
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.tuple
+                                                                                                          [];
+                                                                                                        Ty.path
+                                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                                      ],
                                                                                                     M.get_associated_function (|
                                                                                                       Ty.path
                                                                                                         "move_binary_format::check_bounds::BoundsChecker",
@@ -11121,6 +13756,16 @@ Module check_bounds.
                                                                                                       M.read (|
                                                                                                         M.return_ (|
                                                                                                           M.call_closure (|
+                                                                                                            Ty.apply
+                                                                                                              (Ty.path
+                                                                                                                "core::result::Result")
+                                                                                                              []
+                                                                                                              [
+                                                                                                                Ty.tuple
+                                                                                                                  [];
+                                                                                                                Ty.path
+                                                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                                                              ],
                                                                                                             M.get_trait_method (|
                                                                                                               "core::ops::try_trait::FromResidual",
                                                                                                               Ty.apply
@@ -11287,6 +13932,23 @@ Module check_bounds.
                                                             (M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::ops::control_flow::ControlFlow")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible";
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ];
+                                                                      Ty.tuple []
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::try_trait::Try",
                                                                     Ty.apply
@@ -11306,6 +13968,15 @@ Module check_bounds.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::check_bounds::BoundsChecker",
@@ -11329,6 +14000,19 @@ Module check_bounds.
                                                                           Pointer.Kind.Ref,
                                                                           M.deref (|
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "move_binary_format::file_format::StructDefinition"
+                                                                                    ]
+                                                                                ],
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_binary_format::file_format::CompiledModule",
@@ -11384,6 +14068,15 @@ Module check_bounds.
                                                                         M.read (|
                                                                           M.return_ (|
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ],
                                                                               M.get_trait_method (|
                                                                                 "core::ops::try_trait::FromResidual",
                                                                                 Ty.apply
@@ -11526,10 +14219,27 @@ Module check_bounds.
                                                         match γ with
                                                         | [ idx ] =>
                                                           ltac:(M.monadic
-                                                            (let~ _ :=
+                                                            (let~ _ : Ty.tuple [] :=
                                                               M.match_operator (|
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::ops::control_flow::ControlFlow")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::convert::Infallible";
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError"
+                                                                          ];
+                                                                        Ty.tuple []
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::try_trait::Try",
                                                                       Ty.apply
@@ -11549,6 +14259,15 @@ Module check_bounds.
                                                                     |),
                                                                     [
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple [];
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError"
+                                                                          ],
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::check_bounds::BoundsChecker",
@@ -11572,6 +14291,19 @@ Module check_bounds.
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "slice")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_binary_format::file_format::StructDefInstantiation"
+                                                                                      ]
+                                                                                  ],
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "move_binary_format::file_format::CompiledModule",
@@ -11629,6 +14361,15 @@ Module check_bounds.
                                                                           M.read (|
                                                                             M.return_ (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                  ],
                                                                                 M.get_trait_method (|
                                                                                   "core::ops::try_trait::FromResidual",
                                                                                   Ty.apply
@@ -11688,6 +14429,19 @@ Module check_bounds.
                                                                     (let γ :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::StructDefInstantiation"
+                                                                                ]
+                                                                            ],
                                                                           M.get_associated_function (|
                                                                             Ty.apply
                                                                               (Ty.path "slice")
@@ -11705,6 +14459,19 @@ Module check_bounds.
                                                                               Pointer.Kind.Ref,
                                                                               M.deref (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "slice")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "move_binary_format::file_format::StructDefInstantiation"
+                                                                                        ]
+                                                                                    ],
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "move_binary_format::file_format::CompiledModule",
@@ -11734,6 +14501,7 @@ Module check_bounds.
                                                                               |)
                                                                             |);
                                                                             M.call_closure (|
+                                                                              Ty.path "usize",
                                                                               M.get_trait_method (|
                                                                                 "move_binary_format::internals::ModuleIndex",
                                                                                 Ty.path
@@ -11771,6 +14539,20 @@ Module check_bounds.
                                                                             (let γ :=
                                                                               M.alloc (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "move_binary_format::file_format::Signature"
+                                                                                        ]
+                                                                                    ],
                                                                                   M.get_associated_function (|
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -11792,6 +14574,20 @@ Module check_bounds.
                                                                                       Pointer.Kind.Ref,
                                                                                       M.deref (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "&")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "slice")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "move_binary_format::file_format::Signature"
+                                                                                                ]
+                                                                                            ],
                                                                                           M.get_associated_function (|
                                                                                             Ty.path
                                                                                               "move_binary_format::file_format::CompiledModule",
@@ -11821,6 +14617,8 @@ Module check_bounds.
                                                                                       |)
                                                                                     |);
                                                                                     M.call_closure (|
+                                                                                      Ty.path
+                                                                                        "usize",
                                                                                       M.get_trait_method (|
                                                                                         "move_binary_format::internals::ModuleIndex",
                                                                                         Ty.path
@@ -11860,6 +14658,14 @@ Module check_bounds.
                                                                               (M.match_operator (|
                                                                                 M.alloc (|
                                                                                   M.call_closure (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::slice::iter::Iter")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_binary_format::file_format::SignatureToken"
+                                                                                      ],
                                                                                     M.get_trait_method (|
                                                                                       "core::iter::traits::collect::IntoIterator",
                                                                                       Ty.apply
@@ -11909,10 +14715,26 @@ Module check_bounds.
                                                                                         |) in
                                                                                       M.loop (|
                                                                                         ltac:(M.monadic
-                                                                                          (let~ _ :=
+                                                                                          (let~ _ :
+                                                                                              Ty.tuple
+                                                                                                [] :=
                                                                                             M.match_operator (|
                                                                                               M.alloc (|
                                                                                                 M.call_closure (|
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "core::option::Option")
+                                                                                                    []
+                                                                                                    [
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "&")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "move_binary_format::file_format::SignatureToken"
+                                                                                                        ]
+                                                                                                    ],
                                                                                                   M.get_trait_method (|
                                                                                                     "core::iter::traits::iterator::Iterator",
                                                                                                     Ty.apply
@@ -11977,6 +14799,24 @@ Module check_bounds.
                                                                                                     M.match_operator (|
                                                                                                       M.alloc (|
                                                                                                         M.call_closure (|
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "core::ops::control_flow::ControlFlow")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "core::result::Result")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "core::convert::Infallible";
+                                                                                                                  Ty.path
+                                                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                                                ];
+                                                                                                              Ty.tuple
+                                                                                                                []
+                                                                                                            ],
                                                                                                           M.get_trait_method (|
                                                                                                             "core::ops::try_trait::Try",
                                                                                                             Ty.apply
@@ -11997,6 +14837,16 @@ Module check_bounds.
                                                                                                           |),
                                                                                                           [
                                                                                                             M.call_closure (|
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "core::result::Result")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.tuple
+                                                                                                                    [];
+                                                                                                                  Ty.path
+                                                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                                                ],
                                                                                                               M.get_associated_function (|
                                                                                                                 Ty.path
                                                                                                                   "move_binary_format::check_bounds::BoundsChecker",
@@ -12050,6 +14900,16 @@ Module check_bounds.
                                                                                                                 M.read (|
                                                                                                                   M.return_ (|
                                                                                                                     M.call_closure (|
+                                                                                                                      Ty.apply
+                                                                                                                        (Ty.path
+                                                                                                                          "core::result::Result")
+                                                                                                                        []
+                                                                                                                        [
+                                                                                                                          Ty.tuple
+                                                                                                                            [];
+                                                                                                                          Ty.path
+                                                                                                                            "move_binary_format::errors::PartialVMError"
+                                                                                                                        ],
                                                                                                                       M.get_trait_method (|
                                                                                                                         "core::ops::try_trait::FromResidual",
                                                                                                                         Ty.apply
@@ -12176,7 +15036,7 @@ Module check_bounds.
                                                         match γ with
                                                         | [ offset ] =>
                                                           ltac:(M.monadic
-                                                            (let~ offset :=
+                                                            (let~ offset : Ty.path "usize" :=
                                                               M.alloc (|
                                                                 M.cast
                                                                   (Ty.path "usize")
@@ -12212,6 +15072,8 @@ Module check_bounds.
                                                                               "core::result::Result::Err"
                                                                               [
                                                                                 M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError",
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "move_binary_format::check_bounds::BoundsChecker",
@@ -12328,7 +15190,7 @@ Module check_bounds.
                                                         match γ with
                                                         | [ idx ] =>
                                                           ltac:(M.monadic
-                                                            (let~ idx :=
+                                                            (let~ idx : Ty.path "usize" :=
                                                               M.alloc (|
                                                                 M.cast
                                                                   (Ty.path "usize")
@@ -12364,6 +15226,8 @@ Module check_bounds.
                                                                               "core::result::Result::Err"
                                                                               [
                                                                                 M.call_closure (|
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError",
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "move_binary_format::check_bounds::BoundsChecker",
@@ -12525,10 +15389,27 @@ Module check_bounds.
                                                         match γ with
                                                         | [ idx ] =>
                                                           ltac:(M.monadic
-                                                            (let~ _ :=
+                                                            (let~ _ : Ty.tuple [] :=
                                                               M.match_operator (|
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::ops::control_flow::ControlFlow")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::convert::Infallible";
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError"
+                                                                          ];
+                                                                        Ty.tuple []
+                                                                      ],
                                                                     M.get_trait_method (|
                                                                       "core::ops::try_trait::Try",
                                                                       Ty.apply
@@ -12548,6 +15429,15 @@ Module check_bounds.
                                                                     |),
                                                                     [
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple [];
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError"
+                                                                          ],
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::check_bounds::BoundsChecker",
@@ -12571,6 +15461,19 @@ Module check_bounds.
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "slice")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_binary_format::file_format::Signature"
+                                                                                      ]
+                                                                                  ],
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "move_binary_format::file_format::CompiledModule",
@@ -12628,6 +15531,15 @@ Module check_bounds.
                                                                           M.read (|
                                                                             M.return_ (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                  ],
                                                                                 M.get_trait_method (|
                                                                                   "core::ops::try_trait::FromResidual",
                                                                                   Ty.apply
@@ -12687,6 +15599,19 @@ Module check_bounds.
                                                                     (let γ :=
                                                                       M.alloc (|
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_binary_format::file_format::Signature"
+                                                                                ]
+                                                                            ],
                                                                           M.get_associated_function (|
                                                                             Ty.apply
                                                                               (Ty.path "slice")
@@ -12704,6 +15629,19 @@ Module check_bounds.
                                                                               Pointer.Kind.Ref,
                                                                               M.deref (|
                                                                                 M.call_closure (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "slice")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "move_binary_format::file_format::Signature"
+                                                                                        ]
+                                                                                    ],
                                                                                   M.get_associated_function (|
                                                                                     Ty.path
                                                                                       "move_binary_format::file_format::CompiledModule",
@@ -12733,6 +15671,7 @@ Module check_bounds.
                                                                               |)
                                                                             |);
                                                                             M.call_closure (|
+                                                                              Ty.path "usize",
                                                                               M.get_trait_method (|
                                                                                 "move_binary_format::internals::ModuleIndex",
                                                                                 Ty.path
@@ -12765,6 +15704,14 @@ Module check_bounds.
                                                                       (M.match_operator (|
                                                                         M.alloc (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::slice::iter::Iter")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureToken"
+                                                                              ],
                                                                             M.get_trait_method (|
                                                                               "core::iter::traits::collect::IntoIterator",
                                                                               Ty.apply
@@ -12809,10 +15756,25 @@ Module check_bounds.
                                                                                 M.copy (| γ |) in
                                                                               M.loop (|
                                                                                 ltac:(M.monadic
-                                                                                  (let~ _ :=
+                                                                                  (let~ _ :
+                                                                                      Ty.tuple [] :=
                                                                                     M.match_operator (|
                                                                                       M.alloc (|
                                                                                         M.call_closure (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::option::Option")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "&")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "move_binary_format::file_format::SignatureToken"
+                                                                                                ]
+                                                                                            ],
                                                                                           M.get_trait_method (|
                                                                                             "core::iter::traits::iterator::Iterator",
                                                                                             Ty.apply
@@ -12872,11 +15834,30 @@ Module check_bounds.
                                                                                               M.copy (|
                                                                                                 γ0_0
                                                                                               |) in
-                                                                                            let~
-                                                                                                  _ :=
+                                                                                            let~ _ :
+                                                                                                Ty.tuple
+                                                                                                  [] :=
                                                                                               M.match_operator (|
                                                                                                 M.alloc (|
                                                                                                   M.call_closure (|
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "core::ops::control_flow::ControlFlow")
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.apply
+                                                                                                          (Ty.path
+                                                                                                            "core::result::Result")
+                                                                                                          []
+                                                                                                          [
+                                                                                                            Ty.path
+                                                                                                              "core::convert::Infallible";
+                                                                                                            Ty.path
+                                                                                                              "move_binary_format::errors::PartialVMError"
+                                                                                                          ];
+                                                                                                        Ty.tuple
+                                                                                                          []
+                                                                                                      ],
                                                                                                     M.get_trait_method (|
                                                                                                       "core::ops::try_trait::Try",
                                                                                                       Ty.apply
@@ -12897,6 +15878,16 @@ Module check_bounds.
                                                                                                     |),
                                                                                                     [
                                                                                                       M.call_closure (|
+                                                                                                        Ty.apply
+                                                                                                          (Ty.path
+                                                                                                            "core::result::Result")
+                                                                                                          []
+                                                                                                          [
+                                                                                                            Ty.tuple
+                                                                                                              [];
+                                                                                                            Ty.path
+                                                                                                              "move_binary_format::errors::PartialVMError"
+                                                                                                          ],
                                                                                                         M.get_associated_function (|
                                                                                                           Ty.path
                                                                                                             "move_binary_format::check_bounds::BoundsChecker",
@@ -12950,6 +15941,16 @@ Module check_bounds.
                                                                                                           M.read (|
                                                                                                             M.return_ (|
                                                                                                               M.call_closure (|
+                                                                                                                Ty.apply
+                                                                                                                  (Ty.path
+                                                                                                                    "core::result::Result")
+                                                                                                                  []
+                                                                                                                  [
+                                                                                                                    Ty.tuple
+                                                                                                                      [];
+                                                                                                                    Ty.path
+                                                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                                                  ],
                                                                                                                 M.get_trait_method (|
                                                                                                                   "core::ops::try_trait::FromResidual",
                                                                                                                   Ty.apply
@@ -13479,11 +16480,13 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path
+                            "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.path
@@ -13496,6 +16499,8 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.path
+                                "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::SignatureToken",
                                 "preorder_traversal",
@@ -13513,10 +16518,22 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.path
@@ -13705,10 +16722,26 @@ Module check_bounds.
                                                       0
                                                     |) in
                                                   let idx := M.alloc (| γ1_0 |) in
-                                                  let~ _ :=
+                                                  let~ _ : Ty.tuple [] :=
                                                     M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::Try",
                                                             Ty.apply
@@ -13727,6 +16760,14 @@ Module check_bounds.
                                                           |),
                                                           [
                                                             M.call_closure (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               M.get_function (|
                                                                 "move_binary_format::check_bounds::check_bounds_impl",
                                                                 [],
@@ -13742,6 +16783,18 @@ Module check_bounds.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::StructHandle"
+                                                                            ]
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.path
                                                                           "move_binary_format::file_format::CompiledModule",
@@ -13791,6 +16844,15 @@ Module check_bounds.
                                                                 M.read (|
                                                                   M.return_ (|
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
@@ -13845,6 +16907,18 @@ Module check_bounds.
                                                           (let γ :=
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::StructHandle"
+                                                                      ]
+                                                                  ],
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path "slice")
@@ -13862,6 +16936,18 @@ Module check_bounds.
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "slice")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::StructHandle"
+                                                                              ]
+                                                                          ],
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::file_format::CompiledModule",
@@ -13891,6 +16977,7 @@ Module check_bounds.
                                                                     |)
                                                                   |);
                                                                   M.call_closure (|
+                                                                    Ty.path "usize",
                                                                     M.get_trait_method (|
                                                                       "move_binary_format::internals::ModuleIndex",
                                                                       Ty.path
@@ -13929,6 +17016,7 @@ Module check_bounds.
                                                                       (M.alloc (|
                                                                         UnOp.not (|
                                                                           M.call_closure (|
+                                                                            Ty.path "bool",
                                                                             M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -13972,6 +17060,8 @@ Module check_bounds.
                                                                             "core::result::Result::Err"
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
@@ -13981,6 +17071,8 @@ Module check_bounds.
                                                                                 |),
                                                                                 [
                                                                                   M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError",
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "move_binary_format::errors::PartialVMError",
@@ -13995,6 +17087,8 @@ Module check_bounds.
                                                                                     ]
                                                                                   |);
                                                                                   M.call_closure (|
+                                                                                    Ty.path
+                                                                                      "alloc::string::String",
                                                                                     M.get_function (|
                                                                                       "core::hint::must_use",
                                                                                       [],
@@ -14005,9 +17099,13 @@ Module check_bounds.
                                                                                     |),
                                                                                     [
                                                                                       M.read (|
-                                                                                        let~ res :=
+                                                                                        let~ res :
+                                                                                            Ty.path
+                                                                                              "alloc::string::String" :=
                                                                                           M.alloc (|
                                                                                             M.call_closure (|
+                                                                                              Ty.path
+                                                                                                "alloc::string::String",
                                                                                               M.get_function (|
                                                                                                 "alloc::fmt::format",
                                                                                                 [],
@@ -14015,6 +17113,8 @@ Module check_bounds.
                                                                                               |),
                                                                                               [
                                                                                                 M.call_closure (|
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::Arguments",
                                                                                                   M.get_associated_function (|
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
@@ -14053,6 +17153,8 @@ Module check_bounds.
                                                                                                             Value.Array
                                                                                                               [
                                                                                                                 M.call_closure (|
+                                                                                                                  Ty.path
+                                                                                                                    "core::fmt::rt::Argument",
                                                                                                                   M.get_associated_function (|
                                                                                                                     Ty.path
                                                                                                                       "core::fmt::rt::Argument",
@@ -14071,6 +17173,8 @@ Module check_bounds.
                                                                                                                           Pointer.Kind.Ref,
                                                                                                                           M.alloc (|
                                                                                                                             M.call_closure (|
+                                                                                                                              Ty.path
+                                                                                                                                "usize",
                                                                                                                               M.get_associated_function (|
                                                                                                                                 Ty.apply
                                                                                                                                   (Ty.path
@@ -14175,10 +17279,27 @@ Module check_bounds.
                                                             |) in
                                                           let idx := M.alloc (| γ1_0 |) in
                                                           let type_params := M.alloc (| γ1_1 |) in
-                                                          let~ _ :=
+                                                          let~ _ : Ty.tuple [] :=
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::ops::control_flow::ControlFlow")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible";
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ];
+                                                                      Ty.tuple []
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::try_trait::Try",
                                                                     Ty.apply
@@ -14198,6 +17319,15 @@ Module check_bounds.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_function (|
                                                                         "move_binary_format::check_bounds::check_bounds_impl",
                                                                         [],
@@ -14213,6 +17343,19 @@ Module check_bounds.
                                                                           Pointer.Kind.Ref,
                                                                           M.deref (|
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "move_binary_format::file_format::StructHandle"
+                                                                                    ]
+                                                                                ],
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_binary_format::file_format::CompiledModule",
@@ -14267,6 +17410,15 @@ Module check_bounds.
                                                                         M.read (|
                                                                           M.return_ (|
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ],
                                                                               M.get_trait_method (|
                                                                                 "core::ops::try_trait::FromResidual",
                                                                                 Ty.apply
@@ -14325,6 +17477,19 @@ Module check_bounds.
                                                                   (let γ :=
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::StructHandle"
+                                                                              ]
+                                                                          ],
                                                                         M.get_associated_function (|
                                                                           Ty.apply
                                                                             (Ty.path "slice")
@@ -14342,6 +17507,19 @@ Module check_bounds.
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "slice")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_binary_format::file_format::StructHandle"
+                                                                                      ]
+                                                                                  ],
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "move_binary_format::file_format::CompiledModule",
@@ -14371,6 +17549,7 @@ Module check_bounds.
                                                                             |)
                                                                           |);
                                                                           M.call_closure (|
+                                                                            Ty.path "usize",
                                                                             M.get_trait_method (|
                                                                               "move_binary_format::internals::ModuleIndex",
                                                                               Ty.path
@@ -14409,6 +17588,7 @@ Module check_bounds.
                                                                               (M.alloc (|
                                                                                 BinOp.ne (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "usize",
                                                                                     M.get_associated_function (|
                                                                                       Ty.apply
                                                                                         (Ty.path
@@ -14440,6 +17620,7 @@ Module check_bounds.
                                                                                     ]
                                                                                   |),
                                                                                   M.call_closure (|
+                                                                                    Ty.path "usize",
                                                                                     M.get_associated_function (|
                                                                                       Ty.apply
                                                                                         (Ty.path
@@ -14481,6 +17662,8 @@ Module check_bounds.
                                                                                     "core::result::Result::Err"
                                                                                     [
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError",
                                                                                         M.get_associated_function (|
                                                                                           Ty.path
                                                                                             "move_binary_format::errors::PartialVMError",
@@ -14490,6 +17673,8 @@ Module check_bounds.
                                                                                         |),
                                                                                         [
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "move_binary_format::errors::PartialVMError",
                                                                                             M.get_associated_function (|
                                                                                               Ty.path
                                                                                                 "move_binary_format::errors::PartialVMError",
@@ -14504,6 +17689,8 @@ Module check_bounds.
                                                                                             ]
                                                                                           |);
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "alloc::string::String",
                                                                                             M.get_function (|
                                                                                               "core::hint::must_use",
                                                                                               [],
@@ -14515,9 +17702,13 @@ Module check_bounds.
                                                                                             [
                                                                                               M.read (|
                                                                                                 let~
-                                                                                                      res :=
+                                                                                                      res :
+                                                                                                    Ty.path
+                                                                                                      "alloc::string::String" :=
                                                                                                   M.alloc (|
                                                                                                     M.call_closure (|
+                                                                                                      Ty.path
+                                                                                                        "alloc::string::String",
                                                                                                       M.get_function (|
                                                                                                         "alloc::fmt::format",
                                                                                                         [],
@@ -14525,6 +17716,8 @@ Module check_bounds.
                                                                                                       |),
                                                                                                       [
                                                                                                         M.call_closure (|
+                                                                                                          Ty.path
+                                                                                                            "core::fmt::Arguments",
                                                                                                           M.get_associated_function (|
                                                                                                             Ty.path
                                                                                                               "core::fmt::Arguments",
@@ -14563,6 +17756,8 @@ Module check_bounds.
                                                                                                                     Value.Array
                                                                                                                       [
                                                                                                                         M.call_closure (|
+                                                                                                                          Ty.path
+                                                                                                                            "core::fmt::rt::Argument",
                                                                                                                           M.get_associated_function (|
                                                                                                                             Ty.path
                                                                                                                               "core::fmt::rt::Argument",
@@ -14581,6 +17776,8 @@ Module check_bounds.
                                                                                                                                   Pointer.Kind.Ref,
                                                                                                                                   M.alloc (|
                                                                                                                                     M.call_closure (|
+                                                                                                                                      Ty.path
+                                                                                                                                        "usize",
                                                                                                                                       M.get_associated_function (|
                                                                                                                                         Ty.apply
                                                                                                                                           (Ty.path
@@ -14618,6 +17815,8 @@ Module check_bounds.
                                                                                                                           ]
                                                                                                                         |);
                                                                                                                         M.call_closure (|
+                                                                                                                          Ty.path
+                                                                                                                            "core::fmt::rt::Argument",
                                                                                                                           M.get_associated_function (|
                                                                                                                             Ty.path
                                                                                                                               "core::fmt::rt::Argument",
@@ -14636,6 +17835,8 @@ Module check_bounds.
                                                                                                                                   Pointer.Kind.Ref,
                                                                                                                                   M.alloc (|
                                                                                                                                     M.call_closure (|
+                                                                                                                                      Ty.path
+                                                                                                                                        "usize",
                                                                                                                                       M.get_associated_function (|
                                                                                                                                         Ty.apply
                                                                                                                                           (Ty.path
@@ -14770,11 +17971,13 @@ Module check_bounds.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path
+                            "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.path
@@ -14787,6 +17990,8 @@ Module check_bounds.
                           |),
                           [
                             M.call_closure (|
+                              Ty.path
+                                "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::SignatureToken",
                                 "preorder_traversal",
@@ -14804,10 +18009,22 @@ Module check_bounds.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.path
@@ -14889,6 +18106,8 @@ Module check_bounds.
                                                                     "core::result::Result::Err"
                                                                     [
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
                                                                         M.get_function (|
                                                                           "move_binary_format::errors::bounds_error",
                                                                           [],
@@ -15124,9 +18343,10 @@ Module check_bounds.
           let idx := M.alloc (| idx |) in
           let bytecode_offset := M.alloc (| bytecode_offset |) in
           M.read (|
-            let~ idx :=
+            let~ idx : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_trait_method (|
                     "move_binary_format::internals::ModuleIndex",
                     I,
@@ -15139,9 +18359,10 @@ Module check_bounds.
                   [ M.read (| idx |) ]
                 |)
               |) in
-            let~ len :=
+            let~ len : Ty.path "usize" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "usize",
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ T ],
                     "len",
@@ -15164,6 +18385,7 @@ Module check_bounds.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::errors::PartialVMError",
                             M.get_associated_function (|
                               Ty.path "move_binary_format::check_bounds::BoundsChecker",
                               "offset_out_of_bounds",
@@ -15221,6 +18443,15 @@ Module check_bounds.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::Signature" ]
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "slice")
@@ -15235,6 +18466,15 @@ Module check_bounds.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Signature" ]
+                            ],
                           M.get_associated_function (|
                             Ty.path "move_binary_format::file_format::CompiledModule",
                             "signatures",
@@ -15259,6 +18499,7 @@ Module check_bounds.
                       |)
                     |);
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_trait_method (|
                         "move_binary_format::internals::ModuleIndex",
                         Ty.path "move_binary_format::file_format::SignatureIndex",
@@ -15299,6 +18540,15 @@ Module check_bounds.
                             Pointer.Kind.Ref,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "slice")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::deref::Deref",
                                   Ty.apply
@@ -15342,6 +18592,7 @@ Module check_bounds.
                         "core::result::Result::Err"
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::errors::PartialVMError",
                             M.get_function (| "move_binary_format::errors::bounds_error", [], [] |),
                             [
                               Value.StructTuple
@@ -15351,6 +18602,7 @@ Module check_bounds.
                               M.cast
                                 (Ty.path "u16")
                                 (M.call_closure (|
+                                  Ty.path "usize",
                                   M.get_trait_method (|
                                     "move_binary_format::internals::ModuleIndex",
                                     Ty.path "move_binary_format::file_format::SignatureIndex",
@@ -15371,6 +18623,7 @@ Module check_bounds.
                                   ]
                                 |));
                               M.call_closure (|
+                                Ty.path "usize",
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "slice")
@@ -15385,6 +18638,16 @@ Module check_bounds.
                                     Pointer.Kind.Ref,
                                     M.deref (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "slice")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Signature"
+                                              ]
+                                          ],
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::CompiledModule",
                                           "signatures",
@@ -15475,9 +18738,10 @@ Module check_bounds.
                         γ,
                         "move_binary_format::check_bounds::BoundsCheckingContext::Module"
                       |) in
-                    let~ msg :=
+                    let~ msg : Ty.path "alloc::string::String" :=
                       M.alloc (|
                         M.call_closure (|
+                          Ty.path "alloc::string::String",
                           M.get_function (|
                             "core::hint::must_use",
                             [],
@@ -15485,12 +18749,14 @@ Module check_bounds.
                           |),
                           [
                             M.read (|
-                              let~ res :=
+                              let~ res : Ty.path "alloc::string::String" :=
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path "alloc::string::String",
                                     M.get_function (| "alloc::fmt::format", [], [] |),
                                     [
                                       M.call_closure (|
+                                        Ty.path "core::fmt::Arguments",
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
@@ -15527,6 +18793,7 @@ Module check_bounds.
                                                   Value.Array
                                                     [
                                                       M.call_closure (|
+                                                        Ty.path "core::fmt::rt::Argument",
                                                         M.get_associated_function (|
                                                           Ty.path "core::fmt::rt::Argument",
                                                           "new_display",
@@ -15562,6 +18829,7 @@ Module check_bounds.
                       |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "move_binary_format::errors::PartialVMError",
                         M.get_associated_function (|
                           Ty.path "move_binary_format::errors::PartialVMError",
                           "with_message",
@@ -15570,6 +18838,7 @@ Module check_bounds.
                         |),
                         [
                           M.call_closure (|
+                            Ty.path "move_binary_format::errors::PartialVMError",
                             M.get_associated_function (|
                               Ty.path "move_binary_format::errors::PartialVMError",
                               "new",
@@ -15597,6 +18866,7 @@ Module check_bounds.
                     let current_function_index := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
+                        Ty.path "move_binary_format::errors::PartialVMError",
                         M.get_function (|
                           "move_binary_format::errors::offset_out_of_bounds",
                           [],
@@ -15649,9 +18919,10 @@ Module check_bounds.
         (let pool := M.alloc (| pool |) in
         let idx := M.alloc (| idx |) in
         M.read (|
-          let~ idx :=
+          let~ idx : Ty.path "usize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "usize",
                 M.get_trait_method (|
                   "move_binary_format::internals::ModuleIndex",
                   I,
@@ -15664,9 +18935,10 @@ Module check_bounds.
                 [ M.read (| idx |) ]
               |)
             |) in
-          let~ len :=
+          let~ len : Ty.path "usize" :=
             M.alloc (|
               M.call_closure (|
+                Ty.path "usize",
                 M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [], [] |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| pool |) |) |) ]
               |)
@@ -15684,6 +18956,7 @@ Module check_bounds.
                       "core::result::Result::Err"
                       [
                         M.call_closure (|
+                          Ty.path "move_binary_format::errors::PartialVMError",
                           M.get_function (| "move_binary_format::errors::bounds_error", [], [] |),
                           [
                             Value.StructTuple

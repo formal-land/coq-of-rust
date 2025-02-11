@@ -22,6 +22,7 @@ Definition cos (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let z := M.alloc (| z |) in
       M.call_closure (|
+        Ty.path "foreign_function_interface::Complex",
         M.get_function (| "foreign_function_interface::ccosf", [], [] |),
         [ M.read (| z |) ]
       |)))
@@ -50,26 +51,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ z :=
+        let~ z : Ty.path "foreign_function_interface::Complex" :=
           M.alloc (|
             Value.StructRecord
               "foreign_function_interface::Complex"
               [ ("re", M.read (| UnsupportedLiteral |)); ("im", M.read (| UnsupportedLiteral |)) ]
           |) in
-        let~ z_sqrt :=
+        let~ z_sqrt : Ty.path "foreign_function_interface::Complex" :=
           M.alloc (|
             M.call_closure (|
+              Ty.path "foreign_function_interface::Complex",
               M.get_function (| "foreign_function_interface::csqrtf", [], [] |),
               [ M.read (| z |) ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -103,6 +107,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -117,6 +122,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -141,13 +147,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -181,6 +189,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -195,6 +204,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |);
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -209,6 +219,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "foreign_function_interface::Complex",
                                                 M.get_function (|
                                                   "foreign_function_interface::cos",
                                                   [],
@@ -323,6 +334,10 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_fmt",
@@ -332,6 +347,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -364,6 +380,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
@@ -387,6 +404,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                           ]
                                         |);
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
@@ -429,6 +447,10 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                 ltac:(M.monadic
                   (M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.get_associated_function (|
                         Ty.path "core::fmt::Formatter",
                         "write_fmt",
@@ -438,6 +460,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                         M.call_closure (|
+                          Ty.path "core::fmt::Arguments",
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
@@ -470,6 +493,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                     Value.Array
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",
@@ -493,6 +517,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                           ]
                                         |);
                                         M.call_closure (|
+                                          Ty.path "core::fmt::rt::Argument",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::rt::Argument",
                                             "new_display",

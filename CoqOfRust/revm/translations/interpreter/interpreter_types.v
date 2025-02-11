@@ -24,6 +24,7 @@ Module interpreter_types.
           let offset := M.alloc (| offset |) in
           let len := M.alloc (| len |) in
           M.call_closure (|
+            Ty.associated,
             M.get_trait_method (|
               "revm_interpreter::interpreter_types::MemoryTrait",
               Self,
@@ -62,6 +63,7 @@ Module interpreter_types.
           (let self := M.alloc (| self |) in
           BinOp.eq (|
             M.call_closure (|
+              Ty.path "usize",
               M.get_trait_method (|
                 "revm_interpreter::interpreter_types::SubRoutineStack",
                 Self,
@@ -91,6 +93,7 @@ Module interpreter_types.
           (let self := M.alloc (| self |) in
           BinOp.eq (|
             M.call_closure (|
+              Ty.path "usize",
               M.get_trait_method (|
                 "revm_interpreter::interpreter_types::StackTrait",
                 Self,
@@ -116,6 +119,7 @@ Module interpreter_types.
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
           M.call_closure (|
+            Ty.path "bool",
             M.get_trait_method (|
               "revm_interpreter::interpreter_types::StackTrait",
               Self,
@@ -128,6 +132,10 @@ Module interpreter_types.
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
                 M.get_trait_method (|
                   "core::convert::Into",
                   Ty.apply
@@ -160,6 +168,20 @@ Module interpreter_types.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      []
+                  ]
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -247,6 +269,38 @@ Module interpreter_types.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.tuple
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 0 ]
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          ];
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          ]
+                      ]
+                  ],
                 M.get_trait_method (|
                   "revm_interpreter::interpreter_types::StackTrait",
                   Self,
@@ -290,6 +344,15 @@ Module interpreter_types.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  []
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -338,6 +401,20 @@ Module interpreter_types.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 1 ]
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          []
+                      ]
+                  ],
                 M.get_trait_method (|
                   "revm_interpreter::interpreter_types::StackTrait",
                   Self,
@@ -385,6 +462,10 @@ Module interpreter_types.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "alloy_primitives::bits::address::Address" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -414,6 +495,15 @@ Module interpreter_types.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      []
+                  ],
                 M.get_trait_method (|
                   "revm_interpreter::interpreter_types::StackTrait",
                   Self,
@@ -438,6 +528,7 @@ Module interpreter_types.
                               ltac:(M.monadic
                                 (let value := M.copy (| γ |) in
                                 M.call_closure (|
+                                  Ty.path "alloy_primitives::bits::address::Address",
                                   M.get_trait_method (|
                                     "core::convert::From",
                                     Ty.path "alloy_primitives::bits::address::Address",
@@ -454,6 +545,10 @@ Module interpreter_types.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 20 ]
+                                        [ Ty.path "u8" ],
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "ruint::Uint")

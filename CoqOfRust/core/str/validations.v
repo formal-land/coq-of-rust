@@ -117,13 +117,23 @@ Module str.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ x :=
+                let~ x : Ty.path "u8" :=
                   M.copy (|
                     M.deref (|
                       M.read (|
                         M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::convert::Infallible" ];
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 Ty.apply
@@ -138,6 +148,10 @@ Module str.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     I,
@@ -172,6 +186,10 @@ Module str.
                                     M.read (|
                                       M.return_ (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "u32" ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
@@ -210,7 +228,7 @@ Module str.
                       |)
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -237,17 +255,19 @@ Module str.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ init :=
+                let~ init : Ty.path "u32" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_function (| "core::str::validations::utf8_first_byte", [], [] |),
                       [ M.read (| x |); Value.Integer IntegerKind.U32 2 ]
                     |)
                   |) in
-                let~ y :=
+                let~ y : Ty.path "u8" :=
                   M.copy (|
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -259,6 +279,10 @@ Module str.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               I,
@@ -274,14 +298,15 @@ Module str.
                       |)
                     |)
                   |) in
-                let~ ch :=
+                let~ ch : Ty.path "u32" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_function (| "core::str::validations::utf8_acc_cont_byte", [], [] |),
                       [ M.read (| init |); M.read (| y |) ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -294,10 +319,11 @@ Module str.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ z :=
+                          let~ z : Ty.path "u8" :=
                             M.copy (|
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -309,6 +335,10 @@ Module str.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         I,
@@ -329,9 +359,10 @@ Module str.
                                 |)
                               |)
                             |) in
-                          let~ y_z :=
+                          let~ y_z : Ty.path "u32" :=
                             M.alloc (|
                               M.call_closure (|
+                                Ty.path "u32",
                                 M.get_function (|
                                   "core::str::validations::utf8_acc_cont_byte",
                                   [],
@@ -349,15 +380,17 @@ Module str.
                                 ]
                               |)
                             |) in
-                          let~ _ :=
-                            M.write (|
-                              ch,
-                              BinOp.bit_or
-                                (BinOp.Wrap.shl (|
-                                  M.read (| init |),
-                                  Value.Integer IntegerKind.I32 12
-                                |))
-                                (M.read (| y_z |))
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                ch,
+                                BinOp.bit_or
+                                  (BinOp.Wrap.shl (|
+                                    M.read (| init |),
+                                    Value.Integer IntegerKind.I32 12
+                                  |))
+                                  (M.read (| y_z |))
+                              |)
                             |) in
                           M.match_operator (|
                             M.alloc (| Value.Tuple [] |),
@@ -377,10 +410,11 @@ Module str.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  let~ w :=
+                                  let~ w : Ty.path "u8" :=
                                     M.copy (|
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -392,6 +426,10 @@ Module str.
                                           |),
                                           [
                                             M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
                                                 I,
@@ -412,24 +450,27 @@ Module str.
                                         |)
                                       |)
                                     |) in
-                                  let~ _ :=
-                                    M.write (|
-                                      ch,
-                                      BinOp.bit_or
-                                        (BinOp.Wrap.shl (|
-                                          BinOp.bit_and
-                                            (M.read (| init |))
-                                            (Value.Integer IntegerKind.U32 7),
-                                          Value.Integer IntegerKind.I32 18
-                                        |))
-                                        (M.call_closure (|
-                                          M.get_function (|
-                                            "core::str::validations::utf8_acc_cont_byte",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| y_z |); M.read (| w |) ]
-                                        |))
+                                  let~ _ : Ty.tuple [] :=
+                                    M.alloc (|
+                                      M.write (|
+                                        ch,
+                                        BinOp.bit_or
+                                          (BinOp.Wrap.shl (|
+                                            BinOp.bit_and
+                                              (M.read (| init |))
+                                              (Value.Integer IntegerKind.U32 7),
+                                            Value.Integer IntegerKind.I32 18
+                                          |))
+                                          (M.call_closure (|
+                                            Ty.path "u32",
+                                            M.get_function (|
+                                              "core::str::validations::utf8_acc_cont_byte",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| y_z |); M.read (| w |) ]
+                                          |))
+                                      |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -493,7 +534,7 @@ Module str.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ w :=
+                let~ w : Ty.path "u8" :=
                   M.copy (|
                     M.match_operator (|
                       M.deref (|
@@ -501,6 +542,16 @@ Module str.
                           M.match_operator (|
                             M.alloc (|
                               M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "core::convert::Infallible" ];
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
+                                  ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
@@ -515,6 +566,10 @@ Module str.
                                 |),
                                 [
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                     M.get_trait_method (|
                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                       I,
@@ -549,6 +604,10 @@ Module str.
                                       M.read (|
                                         M.return_ (|
                                           M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "u32" ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
@@ -617,11 +676,12 @@ Module str.
                       ]
                     |)
                   |) in
-                let~ ch := M.copy (| Value.DeclaredButUndefined |) in
-                let~ z :=
+                let ch := M.copy (| Value.DeclaredButUndefined |) in
+                let~ z : Ty.path "u8" :=
                   M.copy (|
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -633,6 +693,10 @@ Module str.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                             M.get_trait_method (|
                               "core::iter::traits::double_ended::DoubleEndedIterator",
                               I,
@@ -648,15 +712,18 @@ Module str.
                       |)
                     |)
                   |) in
-                let~ _ :=
-                  M.write (|
-                    ch,
-                    M.call_closure (|
-                      M.get_function (| "core::str::validations::utf8_first_byte", [], [] |),
-                      [ M.read (| z |); Value.Integer IntegerKind.U32 2 ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      ch,
+                      M.call_closure (|
+                        Ty.path "u32",
+                        M.get_function (| "core::str::validations::utf8_first_byte", [], [] |),
+                        [ M.read (| z |); Value.Integer IntegerKind.U32 2 ]
+                      |)
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -666,6 +733,7 @@ Module str.
                             M.use
                               (M.alloc (|
                                 M.call_closure (|
+                                  Ty.path "bool",
                                   M.get_function (|
                                     "core::str::validations::utf8_is_cont_byte",
                                     [],
@@ -676,10 +744,11 @@ Module str.
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ y :=
+                          let~ y : Ty.path "u8" :=
                             M.copy (|
                               M.deref (|
                                 M.call_closure (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -691,6 +760,10 @@ Module str.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                       M.get_trait_method (|
                                         "core::iter::traits::double_ended::DoubleEndedIterator",
                                         I,
@@ -711,19 +784,22 @@ Module str.
                                 |)
                               |)
                             |) in
-                          let~ _ :=
-                            M.write (|
-                              ch,
-                              M.call_closure (|
-                                M.get_function (|
-                                  "core::str::validations::utf8_first_byte",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| y |); Value.Integer IntegerKind.U32 3 ]
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                ch,
+                                M.call_closure (|
+                                  Ty.path "u32",
+                                  M.get_function (|
+                                    "core::str::validations::utf8_first_byte",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| y |); Value.Integer IntegerKind.U32 3 ]
+                                |)
                               |)
                             |) in
-                          let~ _ :=
+                          let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               M.alloc (| Value.Tuple [] |),
                               [
@@ -733,6 +809,7 @@ Module str.
                                       M.use
                                         (M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "bool",
                                             M.get_function (|
                                               "core::str::validations::utf8_is_cont_byte",
                                               [],
@@ -746,10 +823,11 @@ Module str.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    let~ x :=
+                                    let~ x : Ty.path "u8" :=
                                       M.copy (|
                                         M.deref (|
                                           M.call_closure (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -761,6 +839,10 @@ Module str.
                                             |),
                                             [
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::double_ended::DoubleEndedIterator",
                                                   I,
@@ -781,56 +863,68 @@ Module str.
                                           |)
                                         |)
                                       |) in
-                                    let~ _ :=
-                                      M.write (|
-                                        ch,
-                                        M.call_closure (|
-                                          M.get_function (|
-                                            "core::str::validations::utf8_first_byte",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| x |); Value.Integer IntegerKind.U32 4 ]
+                                    let~ _ : Ty.tuple [] :=
+                                      M.alloc (|
+                                        M.write (|
+                                          ch,
+                                          M.call_closure (|
+                                            Ty.path "u32",
+                                            M.get_function (|
+                                              "core::str::validations::utf8_first_byte",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| x |); Value.Integer IntegerKind.U32 4 ]
+                                          |)
                                         |)
                                       |) in
-                                    let~ _ :=
-                                      M.write (|
-                                        ch,
-                                        M.call_closure (|
-                                          M.get_function (|
-                                            "core::str::validations::utf8_acc_cont_byte",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| ch |); M.read (| y |) ]
+                                    let~ _ : Ty.tuple [] :=
+                                      M.alloc (|
+                                        M.write (|
+                                          ch,
+                                          M.call_closure (|
+                                            Ty.path "u32",
+                                            M.get_function (|
+                                              "core::str::validations::utf8_acc_cont_byte",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| ch |); M.read (| y |) ]
+                                          |)
                                         |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
                                 fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                               ]
                             |) in
-                          let~ _ :=
-                            M.write (|
-                              ch,
-                              M.call_closure (|
-                                M.get_function (|
-                                  "core::str::validations::utf8_acc_cont_byte",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| ch |); M.read (| z |) ]
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                ch,
+                                M.call_closure (|
+                                  Ty.path "u32",
+                                  M.get_function (|
+                                    "core::str::validations::utf8_acc_cont_byte",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| ch |); M.read (| z |) ]
+                                |)
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
-                  M.write (|
-                    ch,
-                    M.call_closure (|
-                      M.get_function (| "core::str::validations::utf8_acc_cont_byte", [], [] |),
-                      [ M.read (| ch |); M.read (| w |) ]
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    M.write (|
+                      ch,
+                      M.call_closure (|
+                        Ty.path "u32",
+                        M.get_function (| "core::str::validations::utf8_acc_cont_byte", [], [] |),
+                        [ M.read (| ch |); M.read (| w |) ]
+                      |)
                     |)
                   |) in
                 M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ch |) ] |)
@@ -848,6 +942,7 @@ Module str.
         ltac:(M.monadic
           (M.alloc (|
             M.call_closure (|
+              Ty.path "usize",
               M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
               [ Value.Integer IntegerKind.U8 128 ]
             |)
@@ -1006,10 +1101,11 @@ Module str.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ index := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-                let~ len :=
+                let~ index : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+                let~ len : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
@@ -1019,18 +1115,19 @@ Module str.
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
                     |)
                   |) in
-                let~ usize_bytes :=
+                let~ usize_bytes : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
                       []
                     |)
                   |) in
-                let~ ascii_block_size :=
+                let~ ascii_block_size : Ty.path "usize" :=
                   M.alloc (|
                     BinOp.Wrap.mul (| Value.Integer IntegerKind.Usize 2, M.read (| usize_bytes |) |)
                   |) in
-                let~ blocks_end :=
+                let~ blocks_end : Ty.path "usize" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -1057,9 +1154,10 @@ Module str.
                       ]
                     |)
                   |) in
-                let~ align :=
+                let~ align : Ty.path "usize" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "usize",
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                         "align_offset",
@@ -1068,6 +1166,7 @@ Module str.
                       |),
                       [
                         M.call_closure (|
+                          Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "as_ptr",
@@ -1080,7 +1179,7 @@ Module str.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.loop (|
                     ltac:(M.monadic
                       (M.match_operator (|
@@ -1098,8 +1197,8 @@ Module str.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ old_offset := M.copy (| index |) in
-                              let~ first :=
+                              let~ old_offset : Ty.path "usize" := M.copy (| index |) in
+                              let~ first : Ty.path "u8" :=
                                 M.copy (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| v |) |),
@@ -1124,9 +1223,10 @@ Module str.
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let~ w :=
+                                      let~ w : Ty.path "usize" :=
                                         M.alloc (|
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_function (|
                                               "core::str::validations::utf8_char_width",
                                               [],
@@ -1135,7 +1235,7 @@ Module str.
                                             [ M.read (| first |) ]
                                           |)
                                         |) in
-                                      let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
                                         M.match_operator (|
                                           w,
                                           [
@@ -1158,18 +1258,20 @@ Module str.
                                                                 M.cast
                                                                   (Ty.path "i8")
                                                                   (M.read (|
-                                                                    let~ _ :=
-                                                                      let β := index in
-                                                                      M.write (|
-                                                                        β,
-                                                                        BinOp.Wrap.add (|
-                                                                          M.read (| β |),
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            1
+                                                                    let~ _ : Ty.tuple [] :=
+                                                                      M.alloc (|
+                                                                        let β := index in
+                                                                        M.write (|
+                                                                          β,
+                                                                          BinOp.Wrap.add (|
+                                                                            M.read (| β |),
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1
+                                                                          |)
                                                                         |)
                                                                       |) in
-                                                                    let~ _ :=
+                                                                    let~ _ : Ty.tuple [] :=
                                                                       M.match_operator (|
                                                                         M.alloc (|
                                                                           Value.Tuple []
@@ -1276,23 +1378,27 @@ Module str.
                                                     M.read (| γ |),
                                                     Value.Integer IntegerKind.Usize 3
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       Value.Tuple
                                                         [
                                                           M.read (| first |);
                                                           M.read (|
-                                                            let~ _ :=
-                                                              let β := index in
-                                                              M.write (|
-                                                                β,
-                                                                BinOp.Wrap.add (|
-                                                                  M.read (| β |),
-                                                                  Value.Integer IntegerKind.Usize 1
+                                                            let~ _ : Ty.tuple [] :=
+                                                              M.alloc (|
+                                                                let β := index in
+                                                                M.write (|
+                                                                  β,
+                                                                  BinOp.Wrap.add (|
+                                                                    M.read (| β |),
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      1
+                                                                  |)
                                                                 |)
                                                               |) in
-                                                            let~ _ :=
+                                                            let~ _ : Ty.tuple [] :=
                                                               M.match_operator (|
                                                                 M.alloc (| Value.Tuple [] |),
                                                                 [
@@ -1477,18 +1583,20 @@ Module str.
                                                                 M.cast
                                                                   (Ty.path "i8")
                                                                   (M.read (|
-                                                                    let~ _ :=
-                                                                      let β := index in
-                                                                      M.write (|
-                                                                        β,
-                                                                        BinOp.Wrap.add (|
-                                                                          M.read (| β |),
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            1
+                                                                    let~ _ : Ty.tuple [] :=
+                                                                      M.alloc (|
+                                                                        let β := index in
+                                                                        M.write (|
+                                                                          β,
+                                                                          BinOp.Wrap.add (|
+                                                                            M.read (| β |),
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1
+                                                                          |)
                                                                         |)
                                                                       |) in
-                                                                    let~ _ :=
+                                                                    let~ _ : Ty.tuple [] :=
                                                                       M.match_operator (|
                                                                         M.alloc (|
                                                                           Value.Tuple []
@@ -1595,23 +1703,27 @@ Module str.
                                                     M.read (| γ |),
                                                     Value.Integer IntegerKind.Usize 4
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       Value.Tuple
                                                         [
                                                           M.read (| first |);
                                                           M.read (|
-                                                            let~ _ :=
-                                                              let β := index in
-                                                              M.write (|
-                                                                β,
-                                                                BinOp.Wrap.add (|
-                                                                  M.read (| β |),
-                                                                  Value.Integer IntegerKind.Usize 1
+                                                            let~ _ : Ty.tuple [] :=
+                                                              M.alloc (|
+                                                                let β := index in
+                                                                M.write (|
+                                                                  β,
+                                                                  BinOp.Wrap.add (|
+                                                                    M.read (| β |),
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      1
+                                                                  |)
                                                                 |)
                                                               |) in
-                                                            let~ _ :=
+                                                            let~ _ : Ty.tuple [] :=
                                                               M.match_operator (|
                                                                 M.alloc (| Value.Tuple [] |),
                                                                 [
@@ -1771,7 +1883,7 @@ Module str.
                                                           |)))
                                                     ]
                                                   |) in
-                                                let~ _ :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.match_operator (|
                                                     M.alloc (| Value.Tuple [] |),
                                                     [
@@ -1784,18 +1896,20 @@ Module str.
                                                                   M.cast
                                                                     (Ty.path "i8")
                                                                     (M.read (|
-                                                                      let~ _ :=
-                                                                        let β := index in
-                                                                        M.write (|
-                                                                          β,
-                                                                          BinOp.Wrap.add (|
-                                                                            M.read (| β |),
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              1
+                                                                      let~ _ : Ty.tuple [] :=
+                                                                        M.alloc (|
+                                                                          let β := index in
+                                                                          M.write (|
+                                                                            β,
+                                                                            BinOp.Wrap.add (|
+                                                                              M.read (| β |),
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            |)
                                                                           |)
                                                                         |) in
-                                                                      let~ _ :=
+                                                                      let~ _ : Ty.tuple [] :=
                                                                         M.match_operator (|
                                                                           M.alloc (|
                                                                             Value.Tuple []
@@ -1911,18 +2025,20 @@ Module str.
                                                                 M.cast
                                                                   (Ty.path "i8")
                                                                   (M.read (|
-                                                                    let~ _ :=
-                                                                      let β := index in
-                                                                      M.write (|
-                                                                        β,
-                                                                        BinOp.Wrap.add (|
-                                                                          M.read (| β |),
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            1
+                                                                    let~ _ : Ty.tuple [] :=
+                                                                      M.alloc (|
+                                                                        let β := index in
+                                                                        M.write (|
+                                                                          β,
+                                                                          BinOp.Wrap.add (|
+                                                                            M.read (| β |),
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1
+                                                                          |)
                                                                         |)
                                                                       |) in
-                                                                    let~ _ :=
+                                                                    let~ _ : Ty.tuple [] :=
                                                                       M.match_operator (|
                                                                         M.alloc (|
                                                                           Value.Tuple []
@@ -2049,13 +2165,15 @@ Module str.
                                                 |)))
                                           ]
                                         |) in
-                                      let~ _ :=
-                                        let β := index in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.add (|
-                                            M.read (| β |),
-                                            Value.Integer IntegerKind.Usize 1
+                                      let~ _ : Ty.tuple [] :=
+                                        M.alloc (|
+                                          let β := index in
+                                          M.write (|
+                                            β,
+                                            BinOp.Wrap.add (|
+                                              M.read (| β |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)));
@@ -2078,6 +2196,7 @@ Module str.
                                                         (BinOp.eq (|
                                                           BinOp.Wrap.rem (|
                                                             M.call_closure (|
+                                                              Ty.path "usize",
                                                               M.get_associated_function (|
                                                                 Ty.path "usize",
                                                                 "wrapping_sub",
@@ -2100,9 +2219,11 @@ Module str.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let~ ptr :=
+                                              let~ ptr :
+                                                  Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                                                 M.alloc (|
                                                   M.call_closure (|
+                                                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "slice")
@@ -2120,7 +2241,7 @@ Module str.
                                                     ]
                                                   |)
                                                 |) in
-                                              let~ _ :=
+                                              let~ _ : Ty.tuple [] :=
                                                 M.loop (|
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
@@ -2141,8 +2262,12 @@ Module str.
                                                                 M.read (| γ |),
                                                                 Value.Bool true
                                                               |) in
-                                                            let~ _ :=
-                                                              let~ block :=
+                                                            let~ _ : Ty.tuple [] :=
+                                                              let~ block :
+                                                                  Ty.apply
+                                                                    (Ty.path "*const")
+                                                                    []
+                                                                    [ Ty.path "usize" ] :=
                                                                 M.alloc (|
                                                                   M.cast
                                                                     (Ty.apply
@@ -2150,6 +2275,10 @@ Module str.
                                                                       []
                                                                       [ Ty.path "usize" ])
                                                                     (M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path "*const")
+                                                                        []
+                                                                        [ Ty.path "u8" ],
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path "*const")
@@ -2165,9 +2294,10 @@ Module str.
                                                                       ]
                                                                     |))
                                                                 |) in
-                                                              let~ zu :=
+                                                              let~ zu : Ty.path "bool" :=
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_function (|
                                                                       "core::str::validations::contains_nonascii",
                                                                       [],
@@ -2182,9 +2312,10 @@ Module str.
                                                                     ]
                                                                   |)
                                                                 |) in
-                                                              let~ zv :=
+                                                              let~ zv : Ty.path "bool" :=
                                                                 M.alloc (|
                                                                   M.call_closure (|
+                                                                    Ty.path "bool",
                                                                     M.get_function (|
                                                                       "core::str::validations::contains_nonascii",
                                                                       [],
@@ -2194,6 +2325,10 @@ Module str.
                                                                       M.read (|
                                                                         M.deref (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "*const")
+                                                                              []
+                                                                              [ Ty.path "usize" ],
                                                                             M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path "*const")
@@ -2246,13 +2381,15 @@ Module str.
                                                                       |)))
                                                                 ]
                                                               |) in
-                                                            let~ _ :=
-                                                              let β := index in
-                                                              M.write (|
-                                                                β,
-                                                                BinOp.Wrap.add (|
-                                                                  M.read (| β |),
-                                                                  M.read (| ascii_block_size |)
+                                                            let~ _ : Ty.tuple [] :=
+                                                              M.alloc (|
+                                                                let β := index in
+                                                                M.write (|
+                                                                  β,
+                                                                  BinOp.Wrap.add (|
+                                                                    M.read (| β |),
+                                                                    M.read (| ascii_block_size |)
+                                                                  |)
                                                                 |)
                                                               |) in
                                                             M.alloc (| Value.Tuple [] |)));
@@ -2261,7 +2398,7 @@ Module str.
                                                             (M.alloc (|
                                                               M.never_to_any (|
                                                                 M.read (|
-                                                                  let~ _ :=
+                                                                  let~ _ : Ty.tuple [] :=
                                                                     M.alloc (|
                                                                       M.never_to_any (|
                                                                         M.read (| M.break (||) |)
@@ -2310,13 +2447,15 @@ Module str.
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
-                                                          let~ _ :=
-                                                            let β := index in
-                                                            M.write (|
-                                                              β,
-                                                              BinOp.Wrap.add (|
-                                                                M.read (| β |),
-                                                                Value.Integer IntegerKind.Usize 1
+                                                          let~ _ : Ty.tuple [] :=
+                                                            M.alloc (|
+                                                              let β := index in
+                                                              M.write (|
+                                                                β,
+                                                                BinOp.Wrap.add (|
+                                                                  M.read (| β |),
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                |)
                                                               |)
                                                             |) in
                                                           M.alloc (| Value.Tuple [] |)));
@@ -2325,7 +2464,7 @@ Module str.
                                                           (M.alloc (|
                                                             M.never_to_any (|
                                                               M.read (|
-                                                                let~ _ :=
+                                                                let~ _ : Ty.tuple [] :=
                                                                   M.alloc (|
                                                                     M.never_to_any (|
                                                                       M.read (| M.break (||) |)
@@ -2340,13 +2479,15 @@ Module str.
                                               |)));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let~ _ :=
-                                                let β := index in
-                                                M.write (|
-                                                  β,
-                                                  BinOp.Wrap.add (|
-                                                    M.read (| β |),
-                                                    Value.Integer IntegerKind.Usize 1
+                                              (let~ _ : Ty.tuple [] :=
+                                                M.alloc (|
+                                                  let β := index in
+                                                  M.write (|
+                                                    β,
+                                                    BinOp.Wrap.add (|
+                                                      M.read (| β |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
                                                   |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)))
@@ -2359,7 +2500,7 @@ Module str.
                               (M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
-                                    let~ _ :=
+                                    let~ _ : Ty.tuple [] :=
                                       M.alloc (|
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |) in

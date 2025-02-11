@@ -30,6 +30,10 @@ Module limits.
           (let config := M.alloc (| config |) in
           let module := M.alloc (| module |) in
           M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -46,6 +50,10 @@ Module limits.
             |),
             [
               M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 M.get_associated_function (|
                   Ty.path "move_bytecode_verifier::limits::LimitsVerifier",
                   "verify_module_impl",
@@ -70,6 +78,7 @@ Module limits.
                               ltac:(M.monadic
                                 (let e := M.copy (| γ |) in
                                 M.call_closure (|
+                                  Ty.path "move_binary_format::errors::VMError",
                                   M.get_associated_function (|
                                     Ty.path "move_binary_format::errors::PartialVMError",
                                     "finish",
@@ -82,6 +91,7 @@ Module limits.
                                       "move_binary_format::errors::Location::Module"
                                       [
                                         M.call_closure (|
+                                          Ty.path "move_core_types::language_storage::ModuleId",
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -135,16 +145,29 @@ Module limits.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ limit_check :=
+                let~ limit_check : Ty.path "move_bytecode_verifier::limits::LimitsVerifier" :=
                   M.alloc (|
                     Value.StructRecord
                       "move_bytecode_verifier::limits::LimitsVerifier"
                       [ ("module", M.read (| module |)) ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -159,6 +182,10 @@ Module limits.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::limits::LimitsVerifier",
                               "verify_constants",
@@ -188,6 +215,13 @@ Module limits.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -229,10 +263,23 @@ Module limits.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -247,6 +294,10 @@ Module limits.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::limits::LimitsVerifier",
                               "verify_function_handles",
@@ -276,6 +327,13 @@ Module limits.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -317,10 +375,23 @@ Module limits.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -335,6 +406,10 @@ Module limits.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::limits::LimitsVerifier",
                               "verify_struct_handles",
@@ -364,6 +439,13 @@ Module limits.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -405,10 +487,23 @@ Module limits.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -423,6 +518,10 @@ Module limits.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::limits::LimitsVerifier",
                               "verify_type_nodes",
@@ -452,6 +551,13 @@ Module limits.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -493,10 +599,23 @@ Module limits.
                           val))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.path "move_binary_format::errors::PartialVMError"
+                              ];
+                            Ty.tuple []
+                          ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
@@ -511,6 +630,10 @@ Module limits.
                         |),
                         [
                           M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                             M.get_associated_function (|
                               Ty.path "move_bytecode_verifier::limits::LimitsVerifier",
                               "verify_identifiers",
@@ -540,6 +663,13 @@ Module limits.
                               M.read (|
                                 M.return_ (|
                                   M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.tuple [];
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
@@ -583,6 +713,10 @@ Module limits.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.get_associated_function (|
                       Ty.path "move_bytecode_verifier::limits::LimitsVerifier",
                       "verify_definitions",
@@ -626,7 +760,7 @@ Module limits.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -649,6 +783,15 @@ Module limits.
                             (M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::StructHandle" ]
+                                    ],
                                   M.get_trait_method (|
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
@@ -669,6 +812,18 @@ Module limits.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::StructHandle"
+                                            ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -684,6 +839,13 @@ Module limits.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::StructHandle"
+                                            ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "slice")
@@ -701,6 +863,18 @@ Module limits.
                                               Pointer.Kind.Ref,
                                               M.deref (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructHandle"
+                                                        ]
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "move_binary_format::file_format::CompiledModule",
@@ -738,10 +912,26 @@ Module limits.
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
                                       ltac:(M.monadic
-                                        (let~ _ :=
+                                        (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.path "usize";
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::file_format::StructHandle"
+                                                          ]
+                                                      ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -808,6 +998,7 @@ Module limits.
                                                               (M.alloc (|
                                                                 BinOp.gt (|
                                                                   M.call_closure (|
+                                                                    Ty.path "usize",
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "alloc::vec::Vec")
@@ -853,6 +1044,8 @@ Module limits.
                                                                     "core::result::Result::Err"
                                                                     [
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::errors::PartialVMError",
@@ -862,6 +1055,8 @@ Module limits.
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "move_binary_format::errors::PartialVMError",
@@ -940,11 +1135,20 @@ Module limits.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -964,6 +1168,15 @@ Module limits.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -978,6 +1191,10 @@ Module limits.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -992,6 +1209,18 @@ Module limits.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionHandle"
+                                                ]
+                                            ],
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -1029,10 +1258,26 @@ Module limits.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionHandle"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -1084,7 +1329,7 @@ Module limits.
                                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                           let idx := M.copy (| γ1_0 |) in
                                           let function_handle := M.copy (| γ1_1 |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [] |),
                                               [
@@ -1113,6 +1358,7 @@ Module limits.
                                                                 (M.alloc (|
                                                                   BinOp.gt (|
                                                                     M.call_closure (|
+                                                                      Ty.path "usize",
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path
@@ -1159,6 +1405,8 @@ Module limits.
                                                                       "core::result::Result::Err"
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
@@ -1168,6 +1416,8 @@ Module limits.
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
@@ -1203,7 +1453,7 @@ Module limits.
                                                   ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                               ]
                                             |) in
-                                          let~ _ :=
+                                          let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (| Value.Tuple [] |),
                                               [
@@ -1232,6 +1482,7 @@ Module limits.
                                                                 (M.alloc (|
                                                                   BinOp.gt (|
                                                                     M.call_closure (|
+                                                                      Ty.path "usize",
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path
@@ -1253,6 +1504,13 @@ Module limits.
                                                                           M.SubPointer.get_struct_tuple_field (|
                                                                             M.deref (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::Signature"
+                                                                                  ],
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "move_binary_format::file_format::CompiledModule",
@@ -1313,6 +1571,8 @@ Module limits.
                                                                       "core::result::Result::Err"
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "move_binary_format::errors::PartialVMError",
@@ -1322,6 +1582,8 @@ Module limits.
                                                                           |),
                                                                           [
                                                                             M.call_closure (|
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError",
                                                                               M.get_associated_function (|
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
@@ -1406,11 +1668,15 @@ Module limits.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::Signature" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -1430,6 +1696,15 @@ Module limits.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Signature" ]
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "signatures",
@@ -1460,10 +1735,20 @@ Module limits.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Signature"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -1509,6 +1794,13 @@ Module limits.
                                             (M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::slice::iter::Iter")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::iter::traits::collect::IntoIterator",
                                                     Ty.apply
@@ -1548,10 +1840,22 @@ Module limits.
                                                     (let iter := M.copy (| γ |) in
                                                     M.loop (|
                                                       ltac:(M.monadic
-                                                        (let~ _ :=
+                                                        (let~ _ : Ty.tuple [] :=
                                                           M.match_operator (|
                                                             M.alloc (|
                                                               M.call_closure (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::SignatureToken"
+                                                                      ]
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::iter::traits::iterator::Iterator",
                                                                   Ty.apply
@@ -1606,6 +1910,23 @@ Module limits.
                                                                   M.match_operator (|
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::ops::control_flow::ControlFlow")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible";
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ];
+                                                                            Ty.tuple []
+                                                                          ],
                                                                         M.get_trait_method (|
                                                                           "core::ops::try_trait::Try",
                                                                           Ty.apply
@@ -1625,6 +1946,15 @@ Module limits.
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple [];
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ],
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "move_bytecode_verifier::limits::LimitsVerifier",
@@ -1674,6 +2004,15 @@ Module limits.
                                                                               M.read (|
                                                                                 M.return_ (|
                                                                                   M.call_closure (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.tuple [];
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                      ],
                                                                                     M.get_trait_method (|
                                                                                       "core::ops::try_trait::FromResidual",
                                                                                       Ty.apply
@@ -1738,11 +2077,15 @@ Module limits.
                             |)))
                       ]
                     |)) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::Constant" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -1762,6 +2105,15 @@ Module limits.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Constant" ]
+                                ],
                               M.get_associated_function (|
                                 Ty.path "move_binary_format::file_format::CompiledModule",
                                 "constant_pool",
@@ -1792,10 +2144,20 @@ Module limits.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Constant"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -1839,6 +2201,20 @@ Module limits.
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::ops::try_trait::Try",
                                                   Ty.apply
@@ -1857,6 +2233,14 @@ Module limits.
                                                 |),
                                                 [
                                                   M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
                                                     M.get_associated_function (|
                                                       Ty.path
                                                         "move_bytecode_verifier::limits::LimitsVerifier",
@@ -1906,6 +2290,14 @@ Module limits.
                                                       M.read (|
                                                         M.return_ (|
                                                           M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
@@ -1956,9 +2348,27 @@ Module limits.
                             |)))
                       ]
                     |)) in
-                let~ sdefs :=
+                let~ sdefs :
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                        ],
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "struct_defs",
@@ -1981,11 +2391,15 @@ Module limits.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -2012,10 +2426,22 @@ Module limits.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::StructDefinition"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -2087,6 +2513,13 @@ Module limits.
                                                     (M.match_operator (|
                                                       M.alloc (|
                                                         M.call_closure (|
+                                                          Ty.apply
+                                                            (Ty.path "core::slice::iter::Iter")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::FieldDefinition"
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::iter::traits::collect::IntoIterator",
                                                             Ty.apply
@@ -2117,10 +2550,23 @@ Module limits.
                                                             (let iter := M.copy (| γ |) in
                                                             M.loop (|
                                                               ltac:(M.monadic
-                                                                (let~ _ :=
+                                                                (let~ _ : Ty.tuple [] :=
                                                                   M.match_operator (|
                                                                     M.alloc (|
                                                                       M.call_closure (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::FieldDefinition"
+                                                                              ]
+                                                                          ],
                                                                         M.get_trait_method (|
                                                                           "core::iter::traits::iterator::Iterator",
                                                                           Ty.apply
@@ -2178,6 +2624,23 @@ Module limits.
                                                                           M.match_operator (|
                                                                             M.alloc (|
                                                                               M.call_closure (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::ops::control_flow::ControlFlow")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "core::convert::Infallible";
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                      ];
+                                                                                    Ty.tuple []
+                                                                                  ],
                                                                                 M.get_trait_method (|
                                                                                   "core::ops::try_trait::Try",
                                                                                   Ty.apply
@@ -2197,6 +2660,15 @@ Module limits.
                                                                                 |),
                                                                                 [
                                                                                   M.call_closure (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.tuple [];
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                      ],
                                                                                     M.get_associated_function (|
                                                                                       Ty.path
                                                                                         "move_bytecode_verifier::limits::LimitsVerifier",
@@ -2265,6 +2737,16 @@ Module limits.
                                                                                       M.read (|
                                                                                         M.return_ (|
                                                                                           M.call_closure (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "core::result::Result")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.tuple
+                                                                                                  [];
+                                                                                                Ty.path
+                                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                                              ],
                                                                                             M.get_trait_method (|
                                                                                               "core::ops::try_trait::FromResidual",
                                                                                               Ty.apply
@@ -2385,7 +2867,7 @@ Module limits.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2410,12 +2892,15 @@ Module limits.
                               0
                             |) in
                           let max := M.alloc (| γ1_0 |) in
-                          let~ size := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-                          let~ _ :=
+                          let~ size : Ty.path "usize" :=
+                            M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+                          let~ _ : Ty.tuple [] :=
                             M.use
                               (M.match_operator (|
                                 M.alloc (|
                                   M.call_closure (|
+                                    Ty.path
+                                      "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
                                     M.get_trait_method (|
                                       "core::iter::traits::collect::IntoIterator",
                                       Ty.path
@@ -2428,6 +2913,8 @@ Module limits.
                                     |),
                                     [
                                       M.call_closure (|
+                                        Ty.path
+                                          "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
                                         M.get_associated_function (|
                                           Ty.path "move_binary_format::file_format::SignatureToken",
                                           "preorder_traversal",
@@ -2450,10 +2937,22 @@ Module limits.
                                       (let iter := M.copy (| γ |) in
                                       M.loop (|
                                         ltac:(M.monadic
-                                          (let~ _ :=
+                                          (let~ _ : Ty.tuple [] :=
                                             M.match_operator (|
                                               M.alloc (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ]
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::iter::traits::iterator::Iterator",
                                                     Ty.path
@@ -2526,14 +3025,16 @@ Module limits.
                                                                   match γ with
                                                                   | [] =>
                                                                     ltac:(M.monadic
-                                                                      (let β := size in
-                                                                      M.write (|
-                                                                        β,
-                                                                        BinOp.Wrap.add (|
-                                                                          M.read (| β |),
-                                                                          M.read (|
-                                                                            M.get_constant
-                                                                              "move_bytecode_verifier::limits::verify_type_node::STRUCT_SIZE_WEIGHT"
+                                                                      (M.alloc (|
+                                                                        let β := size in
+                                                                        M.write (|
+                                                                          β,
+                                                                          BinOp.Wrap.add (|
+                                                                            M.read (| β |),
+                                                                            M.read (|
+                                                                              M.get_constant
+                                                                                "move_bytecode_verifier::limits::verify_type_node::STRUCT_SIZE_WEIGHT"
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)))
@@ -2550,25 +3051,29 @@ Module limits.
                                                                 γ,
                                                                 "move_binary_format::file_format::SignatureToken::TypeParameter"
                                                               |) in
-                                                            let β := size in
-                                                            M.write (|
-                                                              β,
-                                                              BinOp.Wrap.add (|
-                                                                M.read (| β |),
-                                                                M.read (|
-                                                                  M.get_constant
-                                                                    "move_bytecode_verifier::limits::verify_type_node::PARAM_SIZE_WEIGHT"
+                                                            M.alloc (|
+                                                              let β := size in
+                                                              M.write (|
+                                                                β,
+                                                                BinOp.Wrap.add (|
+                                                                  M.read (| β |),
+                                                                  M.read (|
+                                                                    M.get_constant
+                                                                      "move_bytecode_verifier::limits::verify_type_node::PARAM_SIZE_WEIGHT"
+                                                                  |)
                                                                 |)
                                                               |)
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let β := size in
-                                                            M.write (|
-                                                              β,
-                                                              BinOp.Wrap.add (|
-                                                                M.read (| β |),
-                                                                Value.Integer IntegerKind.Usize 1
+                                                            (M.alloc (|
+                                                              let β := size in
+                                                              M.write (|
+                                                                β,
+                                                                BinOp.Wrap.add (|
+                                                                  M.read (| β |),
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                |)
                                                               |)
                                                             |)))
                                                       ]
@@ -2605,6 +3110,8 @@ Module limits.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
@@ -2684,9 +3191,27 @@ Module limits.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ defs :=
+                let~ defs :
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                        ],
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "function_defs",
@@ -2709,7 +3234,7 @@ Module limits.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2738,6 +3263,7 @@ Module limits.
                                       (M.alloc (|
                                         BinOp.gt (|
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "slice")
@@ -2773,6 +3299,8 @@ Module limits.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
@@ -2797,9 +3325,27 @@ Module limits.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ defs :=
+                let~ defs :
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                        ],
                       M.get_associated_function (|
                         Ty.path "move_binary_format::file_format::CompiledModule",
                         "struct_defs",
@@ -2822,7 +3368,7 @@ Module limits.
                       ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2851,6 +3397,7 @@ Module limits.
                                       (M.alloc (|
                                         BinOp.gt (|
                                           M.call_closure (|
+                                            Ty.path "usize",
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "slice")
@@ -2886,6 +3433,8 @@ Module limits.
                                             "core::result::Result::Err"
                                             [
                                               M.call_closure (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
                                                 M.get_associated_function (|
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
@@ -2910,7 +3459,7 @@ Module limits.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -2933,6 +3482,10 @@ Module limits.
                             (M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::StructDefinition" ],
                                   M.get_trait_method (|
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
@@ -2962,10 +3515,22 @@ Module limits.
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
                                       ltac:(M.monadic
-                                        (let~ _ :=
+                                        (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::StructDefinition"
+                                                      ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -3052,6 +3617,7 @@ Module limits.
                                                                       (M.alloc (|
                                                                         BinOp.gt (|
                                                                           M.call_closure (|
+                                                                            Ty.path "usize",
                                                                             M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path
@@ -3096,6 +3662,8 @@ Module limits.
                                                                             "core::result::Result::Err"
                                                                             [
                                                                               M.call_closure (|
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError",
                                                                                 M.get_associated_function (|
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
@@ -3180,11 +3748,20 @@ Module limits.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::Constant" ]
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
@@ -3204,6 +3781,15 @@ Module limits.
                           |),
                           [
                             M.call_closure (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Constant" ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
                                 Ty.apply
@@ -3218,6 +3804,10 @@ Module limits.
                               |),
                               [
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Constant" ],
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -3232,6 +3822,18 @@ Module limits.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "slice")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::Constant"
+                                                ]
+                                            ],
                                           M.get_associated_function (|
                                             Ty.path
                                               "move_binary_format::file_format::CompiledModule",
@@ -3269,10 +3871,26 @@ Module limits.
                             (let iter := M.copy (| γ |) in
                             M.loop (|
                               ltac:(M.monadic
-                                (let~ _ :=
+                                (let~ _ : Ty.tuple [] :=
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::Constant"
+                                                  ]
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
@@ -3350,6 +3968,24 @@ Module limits.
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::ops::control_flow::ControlFlow")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible";
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ];
+                                                                      Ty.path
+                                                                        "move_core_types::runtime_value::MoveValue"
+                                                                    ],
                                                                   M.get_trait_method (|
                                                                     "core::ops::try_trait::Try",
                                                                     Ty.apply
@@ -3370,6 +4006,16 @@ Module limits.
                                                                   |),
                                                                   [
                                                                     M.call_closure (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_core_types::runtime_value::MoveValue";
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
                                                                       M.get_associated_function (|
                                                                         Ty.apply
                                                                           (Ty.path
@@ -3392,6 +4038,14 @@ Module limits.
                                                                       |),
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_core_types::runtime_value::MoveValue"
+                                                                            ],
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "move_binary_format::file_format::Constant",
@@ -3424,6 +4078,8 @@ Module limits.
                                                                                       fun γ =>
                                                                                         ltac:(M.monadic
                                                                                           (M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "move_binary_format::errors::PartialVMError",
                                                                                             M.get_function (|
                                                                                               "move_binary_format::errors::verification_error",
                                                                                               [],
@@ -3471,6 +4127,15 @@ Module limits.
                                                                         M.read (|
                                                                           M.return_ (|
                                                                             M.call_closure (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ],
                                                                               M.get_trait_method (|
                                                                                 "core::ops::try_trait::FromResidual",
                                                                                 Ty.apply
@@ -3558,6 +4223,7 @@ Module limits.
                                                                               (M.alloc (|
                                                                                 BinOp.gt (|
                                                                                   M.call_closure (|
+                                                                                    Ty.path "usize",
                                                                                     M.get_associated_function (|
                                                                                       Ty.apply
                                                                                         (Ty.path
@@ -3601,6 +4267,8 @@ Module limits.
                                                                                     "core::result::Result::Err"
                                                                                     [
                                                                                       M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError",
                                                                                         M.get_associated_function (|
                                                                                           Ty.path
                                                                                             "move_binary_format::errors::PartialVMError",
@@ -3610,6 +4278,8 @@ Module limits.
                                                                                         |),
                                                                                         [
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "move_binary_format::errors::PartialVMError",
                                                                                             M.get_associated_function (|
                                                                                               Ty.path
                                                                                                 "move_binary_format::errors::PartialVMError",
@@ -3624,6 +4294,8 @@ Module limits.
                                                                                             ]
                                                                                           |);
                                                                                           M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "alloc::string::String",
                                                                                             M.get_function (|
                                                                                               "core::hint::must_use",
                                                                                               [],
@@ -3635,9 +4307,13 @@ Module limits.
                                                                                             [
                                                                                               M.read (|
                                                                                                 let~
-                                                                                                      res :=
+                                                                                                      res :
+                                                                                                    Ty.path
+                                                                                                      "alloc::string::String" :=
                                                                                                   M.alloc (|
                                                                                                     M.call_closure (|
+                                                                                                      Ty.path
+                                                                                                        "alloc::string::String",
                                                                                                       M.get_function (|
                                                                                                         "alloc::fmt::format",
                                                                                                         [],
@@ -3645,6 +4321,8 @@ Module limits.
                                                                                                       |),
                                                                                                       [
                                                                                                         M.call_closure (|
+                                                                                                          Ty.path
+                                                                                                            "core::fmt::Arguments",
                                                                                                           M.get_associated_function (|
                                                                                                             Ty.path
                                                                                                               "core::fmt::Arguments",
@@ -3679,6 +4357,8 @@ Module limits.
                                                                                                                     Value.Array
                                                                                                                       [
                                                                                                                         M.call_closure (|
+                                                                                                                          Ty.path
+                                                                                                                            "core::fmt::rt::Argument",
                                                                                                                           M.get_associated_function (|
                                                                                                                             Ty.path
                                                                                                                               "core::fmt::rt::Argument",
@@ -3744,6 +4424,8 @@ Module limits.
                                                                     "core::result::Result::Err"
                                                                     [
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
                                                                         M.get_function (|
                                                                           "move_binary_format::errors::verification_error",
                                                                           [],
@@ -3813,7 +4495,7 @@ Module limits.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -3836,6 +4518,15 @@ Module limits.
                             (M.match_operator (|
                               M.alloc (|
                                 M.call_closure (|
+                                  Ty.apply
+                                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "move_core_types::identifier::Identifier" ]
+                                    ],
                                   M.get_trait_method (|
                                     "core::iter::traits::collect::IntoIterator",
                                     Ty.apply
@@ -3855,6 +4546,15 @@ Module limits.
                                   |),
                                   [
                                     M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [ Ty.path "move_core_types::identifier::Identifier" ]
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         Ty.apply
@@ -3869,6 +4569,10 @@ Module limits.
                                       |),
                                       [
                                         M.call_closure (|
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [ Ty.path "move_core_types::identifier::Identifier" ],
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "slice")
@@ -3883,6 +4587,18 @@ Module limits.
                                               Pointer.Kind.Ref,
                                               M.deref (|
                                                 M.call_closure (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::identifier::Identifier"
+                                                        ]
+                                                    ],
                                                   M.get_associated_function (|
                                                     Ty.path
                                                       "move_binary_format::file_format::CompiledModule",
@@ -3920,10 +4636,26 @@ Module limits.
                                     (let iter := M.copy (| γ |) in
                                     M.loop (|
                                       ltac:(M.monadic
-                                        (let~ _ :=
+                                        (let~ _ : Ty.tuple [] :=
                                           M.match_operator (|
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.path "usize";
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::identifier::Identifier"
+                                                          ]
+                                                      ]
+                                                  ],
                                                 M.get_trait_method (|
                                                   "core::iter::traits::iterator::Iterator",
                                                   Ty.apply
@@ -3990,6 +4722,7 @@ Module limits.
                                                               (M.alloc (|
                                                                 BinOp.gt (|
                                                                   M.call_closure (|
+                                                                    Ty.path "usize",
                                                                     M.get_associated_function (|
                                                                       Ty.path
                                                                         "move_core_types::identifier::IdentStr",
@@ -4002,6 +4735,13 @@ Module limits.
                                                                         Pointer.Kind.Ref,
                                                                         M.deref (|
                                                                           M.call_closure (|
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_core_types::identifier::IdentStr"
+                                                                              ],
                                                                             M.get_trait_method (|
                                                                               "core::ops::deref::Deref",
                                                                               Ty.path
@@ -4047,6 +4787,8 @@ Module limits.
                                                                     "core::result::Result::Err"
                                                                     [
                                                                       M.call_closure (|
+                                                                        Ty.path
+                                                                          "move_binary_format::errors::PartialVMError",
                                                                         M.get_function (|
                                                                           "move_binary_format::errors::verification_error",
                                                                           [],

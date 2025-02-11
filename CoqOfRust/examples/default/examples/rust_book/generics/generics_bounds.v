@@ -23,6 +23,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.call_closure (|
+          Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (|
             Ty.path "core::fmt::Formatter",
             "debug_struct_field2_finish",
@@ -137,13 +138,15 @@ Definition print_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.read (|
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -173,6 +176,7 @@ Definition print_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_debug",
@@ -216,6 +220,7 @@ Definition area (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let t := M.alloc (| t |) in
       M.call_closure (|
+        Ty.path "f64",
         M.get_trait_method (| "generics_bounds::HasArea", T, [], [], "area", [], [] |),
         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |) ]
       |)))
@@ -250,7 +255,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ rectangle :=
+        let~ rectangle : Ty.path "generics_bounds::Rectangle" :=
           M.alloc (|
             Value.StructRecord
               "generics_bounds::Rectangle"
@@ -259,7 +264,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ("height", M.read (| UnsupportedLiteral |))
               ]
           |) in
-        let~ _triangle :=
+        let~ _triangle : Ty.path "generics_bounds::Triangle" :=
           M.alloc (|
             Value.StructRecord
               "generics_bounds::Triangle"
@@ -268,9 +273,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ("height", M.read (| UnsupportedLiteral |))
               ]
           |) in
-        let~ _ :=
+        let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.call_closure (|
+              Ty.tuple [],
               M.get_function (|
                 "generics_bounds::print_debug",
                 [],
@@ -284,13 +290,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ _ :=
-          let~ _ :=
+        let~ _ : Ty.tuple [] :=
+          let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.call_closure (|
+                Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
                 [
                   M.call_closure (|
+                    Ty.path "core::fmt::Arguments",
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
@@ -321,6 +329,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Value.Array
                                 [
                                   M.call_closure (|
+                                    Ty.path "core::fmt::rt::Argument",
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::rt::Argument",
                                       "new_display",
@@ -335,6 +344,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               M.call_closure (|
+                                                Ty.path "f64",
                                                 M.get_trait_method (|
                                                   "generics_bounds::HasArea",
                                                   Ty.path "generics_bounds::Rectangle",

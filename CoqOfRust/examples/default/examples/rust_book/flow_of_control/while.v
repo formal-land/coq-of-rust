@@ -28,7 +28,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ n := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
+        let~ n : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 1 |) in
         M.loop (|
           ltac:(M.monadic
             (M.match_operator (|
@@ -42,7 +42,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           BinOp.lt (| M.read (| n |), Value.Integer IntegerKind.I32 101 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ :=
+                    let~ _ : Ty.tuple [] :=
                       M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
@@ -64,13 +64,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ _ :=
-                                let~ _ :=
+                              let~ _ : Ty.tuple [] :=
+                                let~ _ : Ty.tuple [] :=
                                   M.alloc (|
                                     M.call_closure (|
+                                      Ty.tuple [],
                                       M.get_function (| "std::io::stdio::_print", [], [] |),
                                       [
                                         M.call_closure (|
+                                          Ty.path "core::fmt::Arguments",
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
@@ -121,13 +123,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
-                                      let~ _ :=
-                                        let~ _ :=
+                                      let~ _ : Ty.tuple [] :=
+                                        let~ _ : Ty.tuple [] :=
                                           M.alloc (|
                                             M.call_closure (|
+                                              Ty.tuple [],
                                               M.get_function (| "std::io::stdio::_print", [], [] |),
                                               [
                                                 M.call_closure (|
+                                                  Ty.path "core::fmt::Arguments",
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_const",
@@ -178,10 +182,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              let~ _ :=
-                                                let~ _ :=
+                                              let~ _ : Ty.tuple [] :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.tuple [],
                                                       M.get_function (|
                                                         "std::io::stdio::_print",
                                                         [],
@@ -189,6 +194,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::Arguments",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_const",
@@ -222,10 +228,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.alloc (| Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let~ _ :=
-                                                let~ _ :=
+                                              (let~ _ : Ty.tuple [] :=
+                                                let~ _ : Ty.tuple [] :=
                                                   M.alloc (|
                                                     M.call_closure (|
+                                                      Ty.tuple [],
                                                       M.get_function (|
                                                         "std::io::stdio::_print",
                                                         [],
@@ -233,6 +240,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       |),
                                                       [
                                                         M.call_closure (|
+                                                          Ty.path "core::fmt::Arguments",
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
@@ -269,6 +277,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     Value.Array
                                                                       [
                                                                         M.call_closure (|
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument",
                                                                           M.get_associated_function (|
                                                                             Ty.path
                                                                               "core::fmt::rt::Argument",
@@ -306,11 +316,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               |)))
                         ]
                       |) in
-                    let~ _ :=
-                      let β := n in
-                      M.write (|
-                        β,
-                        BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |)
+                    let~ _ : Ty.tuple [] :=
+                      M.alloc (|
+                        let β := n in
+                        M.write (|
+                          β,
+                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |)
+                        |)
                       |) in
                     M.alloc (| Value.Tuple [] |)));
                 fun γ =>
@@ -318,7 +330,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     (M.alloc (|
                       M.never_to_any (|
                         M.read (|
-                          let~ _ := M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
                           M.alloc (| Value.Tuple [] |)
                         |)
                       |)

@@ -441,6 +441,7 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "f32",
             M.get_function (|
               "core::intrinsics::transmute",
               [],
@@ -449,6 +450,7 @@ Module f32.
             [
               BinOp.bit_and
                 (M.call_closure (|
+                  Ty.path "u32",
                   M.get_function (|
                     "core::intrinsics::transmute",
                     [],
@@ -504,6 +506,7 @@ Module f32.
           (let self := M.alloc (| self |) in
           BinOp.lt (|
             M.call_closure (|
+              Ty.path "f32",
               M.get_associated_function (| Ty.path "f32", "abs_private", [], [] |),
               [ M.read (| self |) ]
             |),
@@ -529,6 +532,7 @@ Module f32.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::num::FpCategory",
                   M.get_associated_function (| Ty.path "f32", "classify", [], [] |),
                   [ M.read (| self |) ]
                 |)
@@ -562,6 +566,7 @@ Module f32.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "core::num::FpCategory",
                   M.get_associated_function (| Ty.path "f32", "classify", [], [] |),
                   [ M.read (| self |) ]
                 |)
@@ -604,9 +609,10 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ b :=
+            let~ b : Ty.path "u32" :=
               M.alloc (|
                 M.call_closure (|
+                  Ty.path "u32",
                   M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                   [ M.read (| self |) ]
                 |)
@@ -698,6 +704,7 @@ Module f32.
           (let self := M.alloc (| self |) in
           UnOp.not (|
             M.call_closure (|
+              Ty.path "bool",
               M.get_associated_function (| Ty.path "f32", "is_sign_negative", [], [] |),
               [ M.read (| self |) ]
             |)
@@ -725,6 +732,7 @@ Module f32.
           BinOp.ne (|
             BinOp.bit_and
               (M.call_closure (|
+                Ty.path "u32",
                 M.get_function (|
                   "core::intrinsics::transmute",
                   [],
@@ -771,14 +779,15 @@ Module f32.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ bits :=
+                let~ bits : Ty.path "u32" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -789,6 +798,7 @@ Module f32.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (| Ty.path "f32", "is_nan", [], [] |),
                                     [ M.read (| self |) ]
                                   |),
@@ -796,6 +806,7 @@ Module f32.
                                     (BinOp.eq (|
                                       M.read (| bits |),
                                       M.call_closure (|
+                                        Ty.path "u32",
                                         M.get_associated_function (|
                                           Ty.path "f32",
                                           "to_bits",
@@ -815,13 +826,13 @@ Module f32.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ abs :=
+                let~ abs : Ty.path "u32" :=
                   M.alloc (|
                     BinOp.bit_and
                       (M.read (| bits |))
                       (UnOp.not (| M.read (| M.get_constant "core::f32::SIGN_MASK" |) |))
                   |) in
-                let~ next_bits :=
+                let~ next_bits : Ty.path "u32" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -874,6 +885,7 @@ Module f32.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "f32",
                     M.get_associated_function (| Ty.path "f32", "from_bits", [], [] |),
                     [ M.read (| next_bits |) ]
                   |)
@@ -915,14 +927,15 @@ Module f32.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ bits :=
+                let~ bits : Ty.path "u32" :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.path "u32",
                       M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ _ :=
+                let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
                     [
@@ -933,6 +946,7 @@ Module f32.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   M.call_closure (|
+                                    Ty.path "bool",
                                     M.get_associated_function (| Ty.path "f32", "is_nan", [], [] |),
                                     [ M.read (| self |) ]
                                   |),
@@ -940,6 +954,7 @@ Module f32.
                                     (BinOp.eq (|
                                       M.read (| bits |),
                                       M.call_closure (|
+                                        Ty.path "u32",
                                         M.get_associated_function (|
                                           Ty.path "f32",
                                           "to_bits",
@@ -959,13 +974,13 @@ Module f32.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ abs :=
+                let~ abs : Ty.path "u32" :=
                   M.alloc (|
                     BinOp.bit_and
                       (M.read (| bits |))
                       (UnOp.not (| M.read (| M.get_constant "core::f32::SIGN_MASK" |) |))
                   |) in
-                let~ next_bits :=
+                let~ next_bits : Ty.path "u32" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -1018,6 +1033,7 @@ Module f32.
                   |) in
                 M.alloc (|
                   M.call_closure (|
+                    Ty.path "f32",
                     M.get_associated_function (| Ty.path "f32", "from_bits", [], [] |),
                     [ M.read (| next_bits |) ]
                   |)
@@ -1102,6 +1118,7 @@ Module f32.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "f32",
             M.get_function (| "core::intrinsics::maxnumf32", [], [] |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
@@ -1123,6 +1140,7 @@ Module f32.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.call_closure (|
+            Ty.path "f32",
             M.get_function (| "core::intrinsics::minnumf32", [], [] |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
@@ -1203,6 +1221,7 @@ Module f32.
                                                 (M.alloc (|
                                                   LogicalOp.and (|
                                                     M.call_closure (|
+                                                      Ty.path "bool",
                                                       M.get_associated_function (|
                                                         Ty.path "f32",
                                                         "is_sign_positive",
@@ -1213,6 +1232,7 @@ Module f32.
                                                     |),
                                                     ltac:(M.monadic
                                                       (M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_associated_function (|
                                                           Ty.path "f32",
                                                           "is_sign_negative",
@@ -1322,6 +1342,7 @@ Module f32.
                                                 (M.alloc (|
                                                   LogicalOp.and (|
                                                     M.call_closure (|
+                                                      Ty.path "bool",
                                                       M.get_associated_function (|
                                                         Ty.path "f32",
                                                         "is_sign_negative",
@@ -1332,6 +1353,7 @@ Module f32.
                                                     |),
                                                     ltac:(M.monadic
                                                       (M.call_closure (|
+                                                        Ty.path "bool",
                                                         M.get_associated_function (|
                                                           Ty.path "f32",
                                                           "is_sign_positive",
@@ -1421,6 +1443,7 @@ Module f32.
             (BinOp.Wrap.div (|
               BinOp.Wrap.add (|
                 M.call_closure (|
+                  Ty.path "f64",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "f64",
@@ -1433,6 +1456,7 @@ Module f32.
                   [ M.read (| self |) ]
                 |),
                 M.call_closure (|
+                  Ty.path "f64",
                   M.get_trait_method (|
                     "core::convert::From",
                     Ty.path "f64",
@@ -1469,6 +1493,7 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Int,
             M.get_trait_method (|
               "core::convert::num::FloatToInt",
               Ty.path "f32",
@@ -1499,6 +1524,7 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.path "u32",
             M.get_function (|
               "core::intrinsics::transmute",
               [],
@@ -1525,6 +1551,7 @@ Module f32.
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
+            Ty.path "f32",
             M.get_function (|
               "core::intrinsics::transmute",
               [],
@@ -1549,9 +1576,11 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
             M.get_associated_function (| Ty.path "u32", "to_be_bytes", [], [] |),
             [
               M.call_closure (|
+                Ty.path "u32",
                 M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                 [ M.read (| self |) ]
               |)
@@ -1574,9 +1603,11 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
             M.get_associated_function (| Ty.path "u32", "to_le_bytes", [], [] |),
             [
               M.call_closure (|
+                Ty.path "u32",
                 M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                 [ M.read (| self |) ]
               |)
@@ -1599,9 +1630,11 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
             M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [], [] |),
             [
               M.call_closure (|
+                Ty.path "u32",
                 M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                 [ M.read (| self |) ]
               |)
@@ -1624,9 +1657,11 @@ Module f32.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
+            Ty.path "f32",
             M.get_associated_function (| Ty.path "f32", "from_bits", [], [] |),
             [
               M.call_closure (|
+                Ty.path "u32",
                 M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
@@ -1650,9 +1685,11 @@ Module f32.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
+            Ty.path "f32",
             M.get_associated_function (| Ty.path "f32", "from_bits", [], [] |),
             [
               M.call_closure (|
+                Ty.path "u32",
                 M.get_associated_function (| Ty.path "u32", "from_le_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
@@ -1676,9 +1713,11 @@ Module f32.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
+            Ty.path "f32",
             M.get_associated_function (| Ty.path "f32", "from_bits", [], [] |),
             [
               M.call_closure (|
+                Ty.path "u32",
                 M.get_associated_function (| Ty.path "u32", "from_ne_bytes", [], [] |),
                 [ M.read (| bytes |) ]
               |)
@@ -1731,56 +1770,69 @@ Module f32.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ left :=
+            let~ left : Ty.path "i32" :=
               M.alloc (|
                 M.cast
                   (Ty.path "i32")
                   (M.call_closure (|
+                    Ty.path "u32",
                     M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                     [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |))
               |) in
-            let~ right :=
+            let~ right : Ty.path "i32" :=
               M.alloc (|
                 M.cast
                   (Ty.path "i32")
                   (M.call_closure (|
+                    Ty.path "u32",
                     M.get_associated_function (| Ty.path "f32", "to_bits", [], [] |),
                     [ M.read (| M.deref (| M.read (| other |) |) |) ]
                   |))
               |) in
-            let~ _ :=
-              let β := left in
-              M.write (|
-                β,
-                BinOp.bit_xor
-                  (M.read (| β |))
-                  (M.cast
-                    (Ty.path "i32")
-                    (BinOp.Wrap.shr (|
-                      M.cast
-                        (Ty.path "u32")
-                        (BinOp.Wrap.shr (| M.read (| left |), Value.Integer IntegerKind.I32 31 |)),
-                      Value.Integer IntegerKind.I32 1
-                    |)))
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                let β := left in
+                M.write (|
+                  β,
+                  BinOp.bit_xor
+                    (M.read (| β |))
+                    (M.cast
+                      (Ty.path "i32")
+                      (BinOp.Wrap.shr (|
+                        M.cast
+                          (Ty.path "u32")
+                          (BinOp.Wrap.shr (|
+                            M.read (| left |),
+                            Value.Integer IntegerKind.I32 31
+                          |)),
+                        Value.Integer IntegerKind.I32 1
+                      |)))
+                |)
               |) in
-            let~ _ :=
-              let β := right in
-              M.write (|
-                β,
-                BinOp.bit_xor
-                  (M.read (| β |))
-                  (M.cast
-                    (Ty.path "i32")
-                    (BinOp.Wrap.shr (|
-                      M.cast
-                        (Ty.path "u32")
-                        (BinOp.Wrap.shr (| M.read (| right |), Value.Integer IntegerKind.I32 31 |)),
-                      Value.Integer IntegerKind.I32 1
-                    |)))
+            let~ _ : Ty.tuple [] :=
+              M.alloc (|
+                let β := right in
+                M.write (|
+                  β,
+                  BinOp.bit_xor
+                    (M.read (| β |))
+                    (M.cast
+                      (Ty.path "i32")
+                      (BinOp.Wrap.shr (|
+                        M.cast
+                          (Ty.path "u32")
+                          (BinOp.Wrap.shr (|
+                            M.read (| right |),
+                            Value.Integer IntegerKind.I32 31
+                          |)),
+                        Value.Integer IntegerKind.I32 1
+                      |)))
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
+                Ty.path "core::cmp::Ordering",
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "i32", [], [], "cmp", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.Ref, left |);
@@ -1818,7 +1870,7 @@ Module f32.
           let min := M.alloc (| min |) in
           let max := M.alloc (| max |) in
           M.read (|
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1833,9 +1885,11 @@ Module f32.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
+                            Ty.path "never",
                             M.get_function (| "core::panicking::panic_fmt", [], [] |),
                             [
                               M.call_closure (|
+                                Ty.path "core::fmt::Arguments",
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
@@ -1869,6 +1923,7 @@ Module f32.
                                           Value.Array
                                             [
                                               M.call_closure (|
+                                                Ty.path "core::fmt::rt::Argument",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_debug",
@@ -1885,6 +1940,7 @@ Module f32.
                                                 ]
                                               |);
                                               M.call_closure (|
+                                                Ty.path "core::fmt::rt::Argument",
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::rt::Argument",
                                                   "new_debug",
@@ -1914,7 +1970,7 @@ Module f32.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1923,12 +1979,12 @@ Module f32.
                       (let γ :=
                         M.use (M.alloc (| BinOp.lt (| M.read (| self |), M.read (| min |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ := M.write (| self, M.read (| min |) |) in
+                      let~ _ : Ty.tuple [] := M.alloc (| M.write (| self, M.read (| min |) |) |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ _ :=
+            let~ _ : Ty.tuple [] :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
                 [
@@ -1937,7 +1993,7 @@ Module f32.
                       (let γ :=
                         M.use (M.alloc (| BinOp.gt (| M.read (| self |), M.read (| max |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ := M.write (| self, M.read (| max |) |) in
+                      let~ _ : Ty.tuple [] := M.alloc (| M.write (| self, M.read (| max |) |) |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]

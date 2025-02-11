@@ -47,6 +47,7 @@ Module interpreter.
                     []);
                 ("gas",
                   M.call_closure (|
+                    Ty.path "revm_interpreter::gas::Gas",
                     M.get_associated_function (|
                       Ty.path "revm_interpreter::gas::Gas",
                       "new",
@@ -78,14 +79,16 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let result := M.alloc (| result |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_interpreter::interpreter::loop_control::LoopControl",
-                    "instruction_result"
-                  |),
-                  M.read (| result |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter::loop_control::LoopControl",
+                      "instruction_result"
+                    |),
+                    M.read (| result |)
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -106,23 +109,27 @@ Module interpreter.
             let action := M.alloc (| action |) in
             let result := M.alloc (| result |) in
             M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_interpreter::interpreter::loop_control::LoopControl",
-                    "next_action"
-                  |),
-                  M.read (| action |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter::loop_control::LoopControl",
+                      "next_action"
+                    |),
+                    M.read (| action |)
+                  |)
                 |) in
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_interpreter::interpreter::loop_control::LoopControl",
-                    "instruction_result"
-                  |),
-                  M.read (| result |)
+              let~ _ : Ty.tuple [] :=
+                M.alloc (|
+                  M.write (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::interpreter::loop_control::LoopControl",
+                      "instruction_result"
+                    |),
+                    M.read (| result |)
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -191,6 +198,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
+              Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
               M.get_function (|
                 "core::mem::take",
                 [],

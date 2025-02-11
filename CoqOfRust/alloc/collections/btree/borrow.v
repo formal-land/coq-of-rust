@@ -66,9 +66,10 @@ Module collections.
             ltac:(M.monadic
               (let t := M.alloc (| t |) in
               M.read (|
-                let~ ptr :=
+                let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
                   M.alloc (|
                     M.call_closure (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                       M.get_trait_method (|
                         "core::convert::From",
                         Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
@@ -81,7 +82,7 @@ Module collections.
                       [ M.read (| t |) ]
                     |)
                   |) in
-                let~ new_ref :=
+                let~ new_ref : Ty.apply (Ty.path "&mut") [] [ T ] :=
                   M.alloc (|
                     M.borrow (|
                       Pointer.Kind.MutRef,
@@ -90,6 +91,7 @@ Module collections.
                           Pointer.Kind.MutRef,
                           M.deref (|
                             M.call_closure (|
+                              Ty.apply (Ty.path "*mut") [] [ T ],
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "as_ptr",
@@ -149,6 +151,7 @@ Module collections.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "*mut") [] [ T ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                   "as_ptr",
@@ -206,6 +209,7 @@ Module collections.
                             Pointer.Kind.MutRef,
                             M.deref (|
                               M.call_closure (|
+                                Ty.apply (Ty.path "*mut") [] [ T ],
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                   "as_ptr",
@@ -262,6 +266,7 @@ Module collections.
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                           "as_ptr",
