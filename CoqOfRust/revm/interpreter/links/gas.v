@@ -422,7 +422,7 @@ Module Impl_Default_for_Gas.
   Defined.
 End Impl_Default_for_Gas.
 
-Module Impl_revm_interpreter_gas_Gas.
+Module Impl_Gas.
   Definition Self : Set := Gas.t.
 
   (*
@@ -648,4 +648,4 @@ Module Impl_revm_interpreter_gas_Gas.
     intros [|[]]; run_symbolic.
   Defined.
   Smpl Add apply run_record_memory_expansion : run_closure.
-End Impl_revm_interpreter_gas_Gas.
+End Impl_Gas.

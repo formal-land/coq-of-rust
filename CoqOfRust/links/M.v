@@ -523,10 +523,12 @@ Module Output.
     | Return (return_ : R)
     | Break
     | Continue
+    | BreakMatch
     | Panic (panic : Panic.t).
     Arguments Return {_}.
     Arguments Break {_}.
     Arguments Continue {_}.
+    Arguments BreakMatch {_}.
     Arguments Panic {_}.
 
     Definition to_exception {R : Set} `{Link R} (exception : t R) : M.Exception.t :=
@@ -534,6 +536,7 @@ Module Output.
       | Return return_ => M.Exception.Return (φ return_)
       | Break => M.Exception.Break
       | Continue => M.Exception.Continue
+      | BreakMatch => M.Exception.BreakMatch
       | Panic panic => M.Exception.Panic panic
       end.
 
@@ -555,6 +558,11 @@ Module Output.
       M.Exception.Continue = to_exception Continue.
     Proof. reflexivity. Qed.
     Smpl Add apply of_continue_eq : of_output.
+
+    Lemma of_break_match_eq {R : Set} `{Link R} :
+      M.Exception.BreakMatch = to_exception BreakMatch.
+    Proof. reflexivity. Qed.
+    Smpl Add apply of_break_match_eq : of_output.
 
     Lemma of_panic_eq {R : Set} `{Link R} panic :
       M.Exception.Panic panic = to_exception (Panic panic).
@@ -604,6 +612,12 @@ Module SuccessOrPanic.
     match output with
     | Success output => inl (φ output)
     | Panic panic => inr (M.Exception.Panic panic)
+    end.
+
+  Definition to_output {Output : Set} (output : t Output) : Output.t Output Output :=
+    match output with
+    | Success output => Output.Success output
+    | Panic panic => Output.Exception (Output.Exception.Panic panic)
     end.
 End SuccessOrPanic.
 
@@ -810,6 +824,26 @@ Module LowM.
   Arguments Call {_ _ _}.
   Arguments Loop {_ _ _}.
 End LowM.
+
+(* Definition evaluate_get_sub_pointer {R A : Set} `{Link A} {index : Pointer.Index.t}
+    (ref_core : Ref.Core.t A) (runner : SubPointer.Runner.t A index) :
+  let _ := runner.(SubPointer.Runner.H_Sub_A) in
+  Output.t R (Ref.Core.t runner.(SubPointer.Runner.Sub_A)).
+Proof.
+  destruct ref_core; cbn.
+  {  (* Immediate *)
+    destruct (runner.(SubPointer.Runner.projection) value) as [sub_value|].
+    {  (* Success *)
+      exact (Output.Success (Ref.Core.Immediate sub_value)).
+    }
+    {  (* Error *)
+      exact (Output.Exception Output.Exception.BreakMatch).
+    }
+  }
+  {  (* Mutable *)
+    exact (LowM.CallPrimitive (Primitive.GetSubPointer ref_core runner)).
+  }
+Defined. *)
 
 (* We do not define an equivalent of [M] as the resulting term is generated, so we are not
    interested into having syntactic sugar for the error monad. *)
