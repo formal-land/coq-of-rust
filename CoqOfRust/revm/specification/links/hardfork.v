@@ -56,7 +56,7 @@ Module SpecId.
     | CANCUN
     | PRAGUE
     | LATEST.
-    
+
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_primitives::specification::SpecId";
     φ x :=

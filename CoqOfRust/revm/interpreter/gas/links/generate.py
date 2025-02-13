@@ -58,7 +58,7 @@ def constants():
     output = """(* Generated *)
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import revm.translations.interpreter.gas.constants.
+Require Import revm.interpreter.gas.constants.
 """
     for name, value in constants:
         output += f"\nLemma {name}_eq :\n"

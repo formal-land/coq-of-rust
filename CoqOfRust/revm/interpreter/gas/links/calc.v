@@ -3,8 +3,8 @@ Require Import CoqOfRust.links.lib.
 Require Import CoqOfRust.links.M.
 Require Import core.num.mod.
 Require core.num.links.mod.
-Require Import revm.translations.interpreter.gas.calc.
-Require revm.links.interpreter.gas.constants.
+Require Import revm.interpreter.gas.calc.
+Require revm.interpreter.gas.links.constants.
 
 Import Run.
 

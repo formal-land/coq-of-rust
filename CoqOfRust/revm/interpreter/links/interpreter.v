@@ -1,13 +1,11 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.revm.links.dependencies.
-Require Import CoqOfRust.revm.links.interpreter.interpreter.instruction_result.
-Require Import CoqOfRust.revm.links.interpreter.interpreter.contract.
-Require Import CoqOfRust.revm.links.interpreter.interpreter.shared_memory.
-Require Import CoqOfRust.revm.links.interpreter.interpreter.stack.
-Require Import CoqOfRust.revm.links.interpreter.interpreter.function_stack.
-Require Import CoqOfRust.revm.links.interpreter.interpreter_action.
-Require Import CoqOfRust.revm.links.interpreter.gas.
+Require Import revm.links.dependencies.
+Require Import revm.interpreter.interpreter.links.instruction_result.
+Require Import revm.interpreter.interpreter.links.function_stack.
+Require Import revm.interpreter.interpreter.links.shared_memory.
+Require Import revm.interpreter.interpreter.links.stack.
+Require Import revm.interpreter.links.gas.
 
 (*
     /// EVM bytecode interpreter.

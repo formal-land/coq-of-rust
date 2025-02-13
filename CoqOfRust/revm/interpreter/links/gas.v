@@ -8,9 +8,9 @@ Require core.links.option.
 Require core.mem.links.mod.
 Require core.mem.mod.
 Require core.num.links.mod.
-Require Import revm.translations.interpreter.gas.calc.
-Require revm.links.interpreter.gas.calc.
-Require Import revm.translations.interpreter.gas.
+Require Import revm.interpreter.gas.calc.
+Require revm.interpreter.gas.links.calc.
+Require Import revm.interpreter.gas.
 
 Import Run.
 

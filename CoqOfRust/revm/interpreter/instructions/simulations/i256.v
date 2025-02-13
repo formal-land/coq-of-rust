@@ -1,6 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import revm.simulations.primitives.lib.
-Require Import simulations.integer.
+Require Import revm.primitives.simulations.lib.
 
 (*
 pub enum Sign {

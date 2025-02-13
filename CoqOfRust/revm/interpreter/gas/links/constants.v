@@ -1,7 +1,7 @@
 (* Generated *)
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import revm.translations.interpreter.gas.constants.
+Require Import revm.interpreter.gas.constants.
 
 Lemma ZERO_eq :
   M.get_constant "revm_interpreter::gas::constants::ZERO" =

@@ -1,9 +1,9 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.revm.links.dependencies.
-Require Import CoqOfRust.revm.links.primitives.specification.
-Require Import CoqOfRust.revm.simulations.dependencies.
-Require Import CoqOfRust.revm.simulations.primitives.specification.
-Require Import CoqOfRust.revm.simulations.interpreter.gas.constants.
+Require Import revm.links.dependencies.
+Require Import revm.primitives.links.specification.
+Require Import revm.simulations.dependencies.
+Require Import revm.interpreter.gas.simulations.constants.
+Require Import revm.primitives.links.specification.
 
 (*
     /// `EXP` opcode cost calculation.
@@ -26,7 +26,7 @@ Require Import CoqOfRust.revm.simulations.interpreter.gas.constants.
     }
 *)
 
-Definition exp_cost (spec_id : SpecId.t) (power : U256.t) : option Z :=
+(* Definition exp_cost (spec_id : SpecId.t) (power : U256.t) : option Z :=
   if U256.eq power U256.ZERO
   then Some EXP
   else
@@ -43,4 +43,4 @@ Definition exp_cost (spec_id : SpecId.t) (power : U256.t) : option Z :=
       | None => None
       | Some t2 => U256.u64_try_from t2
       end
-    end.
+    end. *)

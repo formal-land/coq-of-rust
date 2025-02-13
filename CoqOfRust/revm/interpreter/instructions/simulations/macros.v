@@ -2,14 +2,14 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import CoqOfRust.simulations.M.
 Import simulations.M.Notations.
-Require Import CoqOfRust.revm.links.dependencies.
-Require Import CoqOfRust.revm.links.interpreter.interpreter.
-Require Import CoqOfRust.revm.links.interpreter.interpreter.gas.
-Require Import CoqOfRust.revm.links.interpreter.interpreter.stack.
-Require Import CoqOfRust.revm.links.interpreter.interpreter.instruction_result.
-Require Import CoqOfRust.revm.simulations.interpreter.interpreter.
-Require Import CoqOfRust.revm.simulations.interpreter.interpreter.gas.
-Require Import CoqOfRust.revm.simulations.interpreter.interpreter.stack.
+Require Import revm.links.dependencies.
+(*Require Import revm.interpreter.links.interpreter.
+Require Import revm.interpreter.interpreter.links.gas.
+Require Import revm.interpreter.interpreter.links.stack.
+Require Import revm.interpreter.interpreter.links.instruction_result.
+Require Import revm.interpreter.simulations.interpreter.
+Require Import revm.interpreter.simulations.interpreter.gas.
+Require Import revm.interpreter.interpreter.simulations.stack.
 
 
 (*
@@ -136,3 +136,4 @@ Definition pop_top_macro3 :
     panicS? "Stack underflow"
   else
     liftS? Interpreter.Lens.stack Stack.pop2_top_unsafe.
+*)

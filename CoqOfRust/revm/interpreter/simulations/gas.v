@@ -1,7 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import simulations.M.
-Require Import CoqOfRust.revm.links.interpreter.gas.
+Require Import CoqOfRust.revm.interpreter.links.gas.
 
 Import Run.
 
@@ -29,7 +29,7 @@ Module Impl_MemoryGas.
   (* Lemma run_record_new_len *)
 End Impl_MemoryGas.
 
-Module Impl_revm_interpreter_gas_Gas.
+Module Impl_Gas.
   Definition Self : Set := Gas.t.
 
   (*
@@ -109,4 +109,4 @@ Module Impl_revm_interpreter_gas_Gas.
       M.evaluate (Impl_Gas.run_limit self) 🌲
       Output.Success (limit self)
     }}.
-End Impl_revm_interpreter_gas_Gas.
+End Impl_Gas.

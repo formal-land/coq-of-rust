@@ -1,6 +1,33 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import revm.links.dependencies.
+
+(*
+pub struct Eof {
+    pub header: EofHeader,
+    pub body: EofBody,
+    pub raw: Bytes,
+}
+*)
+Module Eof.
+  Record t : Set := {
+    header : EofHeader.t;
+    body : EofBody.t;
+    raw : Bytes.t;
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_bytecode::eof::Eof";
+    φ x :=
+      Value.StructRecord "revm_bytecode::eof::Eof" [
+        ("header", φ x.(header));
+        ("body", φ x.(body));
+        ("raw", φ x.(raw))
+      ];
+  }.
+End Eof.
+
+(*
+End Eof.
 
 (*
   /// Inputs for EOF create call.

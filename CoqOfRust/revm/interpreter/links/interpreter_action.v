@@ -1,11 +1,11 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.revm.links.dependencies.
-Require Import CoqOfRust.revm.links.interpreter.interpreter_action.call_inputs.
-Require Import CoqOfRust.revm.links.interpreter.interpreter_action.create_inputs.
-Require Import CoqOfRust.revm.links.interpreter.interpreter_action.eof_create_inputs.
-Require Import CoqOfRust.revm.links.interpreter.interpreter.instruction_result.
-Require Import CoqOfRust.revm.links.interpreter.gas.
+Require Import revm.links.dependencies.
+Require Import revm.interpreter.interpreter_action.links.call_inputs.
+Require Import revm.interpreter.interpreter_action.links.create_inputs.
+Require Import revm.interpreter.interpreter_action.links.eof_create_inputs.
+Require Import revm.interpreter.interpreter.links.instruction_result.
+Require Import revm.interpreter.links.gas.
 
 (*
   /// The result of an interpreter operation.
