@@ -1,0 +1,958 @@
+[
+  {
+    "file_name": "crates/bytecode/src/utils.rs",
+    "item": {
+      "Module": {
+        "name": "utils",
+        "body": [
+          {
+            "file_name": "crates/bytecode/src/utils.rs",
+            "item": {
+              "Definition": {
+                "name": "read_i16",
+                "path": [
+                  "revm_bytecode",
+                  "utils",
+                  "read_i16"
+                ],
+                "snippet": [
+                  "pub unsafe fn read_i16(ptr: *const u8) -> i16 {",
+                  "    i16::from_be_bytes(core::slice::from_raw_parts(ptr, 2).try_into().unwrap())",
+                  "}"
+                ],
+                "definition": {
+                  "const_params": [],
+                  "ty_params": [],
+                  "signature_and_body": {
+                    "args": [
+                      [
+                        "ptr",
+                        {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "*const"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "Path": {
+                                  "path": [
+                                    "u8"
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        null
+                      ]
+                    ],
+                    "ret_ty": {
+                      "Path": {
+                        "path": [
+                          "i16"
+                        ]
+                      }
+                    },
+                    "body": {
+                      "Let": {
+                        "name": "ptr",
+                        "ty": null,
+                        "init": {
+                          "Call": {
+                            "func": {
+                              "LocalVar": "M.alloc"
+                            },
+                            "args": [
+                              {
+                                "LocalVar": "ptr"
+                              }
+                            ],
+                            "kind": "Effectful"
+                          }
+                        },
+                        "body": {
+                          "Call": {
+                            "func": {
+                              "GetAssociatedFunction": {
+                                "ty": {
+                                  "Path": {
+                                    "path": [
+                                      "i16"
+                                    ]
+                                  }
+                                },
+                                "func": "from_be_bytes",
+                                "generic_consts": [],
+                                "generic_tys": []
+                              }
+                            },
+                            "args": [
+                              {
+                                "Call": {
+                                  "func": {
+                                    "GetAssociatedFunction": {
+                                      "ty": {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "core",
+                                                "result",
+                                                "Result"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "Application": {
+                                                "func": {
+                                                  "Path": {
+                                                    "path": [
+                                                      "array"
+                                                    ]
+                                                  }
+                                                },
+                                                "consts": [
+                                                  {
+                                                    "Literal": {
+                                                      "Integer": {
+                                                        "kind": "Usize",
+                                                        "negative_sign": false,
+                                                        "value": 2
+                                                      }
+                                                    }
+                                                  }
+                                                ],
+                                                "tys": [
+                                                  {
+                                                    "Path": {
+                                                      "path": [
+                                                        "u8"
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "Application": {
+                                                "func": {
+                                                  "Path": {
+                                                    "path": [
+                                                      "core",
+                                                      "array",
+                                                      "TryFromSliceError"
+                                                    ]
+                                                  }
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "func": "unwrap",
+                                      "generic_consts": [],
+                                      "generic_tys": []
+                                    }
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "GetTraitMethod": {
+                                            "trait_name": [
+                                              "core",
+                                              "convert",
+                                              "TryInto"
+                                            ],
+                                            "self_ty": {
+                                              "Application": {
+                                                "func": {
+                                                  "Path": {
+                                                    "path": [
+                                                      "&"
+                                                    ]
+                                                  }
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "slice"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": [
+                                                        {
+                                                          "Path": {
+                                                            "path": [
+                                                              "u8"
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            "trait_consts": [],
+                                            "trait_tys": [
+                                              {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "array"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [
+                                                    {
+                                                      "Literal": {
+                                                        "Integer": {
+                                                          "kind": "Usize",
+                                                          "negative_sign": false,
+                                                          "value": 2
+                                                        }
+                                                      }
+                                                    }
+                                                  ],
+                                                  "tys": [
+                                                    {
+                                                      "Path": {
+                                                        "path": [
+                                                          "u8"
+                                                        ]
+                                                      }
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ],
+                                            "method_name": "try_into",
+                                            "generic_consts": [],
+                                            "generic_tys": []
+                                          }
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.borrow"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "Pointer.Kind.Ref"
+                                                },
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.deref"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Call": {
+                                                          "func": {
+                                                            "GetFunction": {
+                                                              "func": [
+                                                                "core",
+                                                                "slice",
+                                                                "raw",
+                                                                "from_raw_parts"
+                                                              ],
+                                                              "generic_consts": [],
+                                                              "generic_tys": [
+                                                                {
+                                                                  "Path": {
+                                                                    "path": [
+                                                                      "u8"
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              ]
+                                                            }
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "LocalVar": "M.read"
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "LocalVar": "ptr"
+                                                                  }
+                                                                ],
+                                                                "kind": "Effectful"
+                                                              }
+                                                            },
+                                                            {
+                                                              "Literal": {
+                                                                "Integer": {
+                                                                  "kind": "Usize",
+                                                                  "negative_sign": false,
+                                                                  "value": 2
+                                                                }
+                                                              }
+                                                            }
+                                                          ],
+                                                          "kind": {
+                                                            "Closure": {
+                                                              "Application": {
+                                                                "func": {
+                                                                  "Path": {
+                                                                    "path": [
+                                                                      "&"
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "consts": [],
+                                                                "tys": [
+                                                                  {
+                                                                    "Application": {
+                                                                      "func": {
+                                                                        "Path": {
+                                                                          "path": [
+                                                                            "slice"
+                                                                          ]
+                                                                        }
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": [
+                                                                        {
+                                                                          "Path": {
+                                                                            "path": [
+                                                                              "u8"
+                                                                            ]
+                                                                          }
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        "kind": {
+                                          "Closure": {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "core",
+                                                    "result",
+                                                    "Result"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "array"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [
+                                                      {
+                                                        "Literal": {
+                                                          "Integer": {
+                                                            "kind": "Usize",
+                                                            "negative_sign": false,
+                                                            "value": 2
+                                                          }
+                                                        }
+                                                      }
+                                                    ],
+                                                    "tys": [
+                                                      {
+                                                        "Path": {
+                                                          "path": [
+                                                            "u8"
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "core",
+                                                          "array",
+                                                          "TryFromSliceError"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ],
+                                  "kind": {
+                                    "Closure": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "array"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [
+                                          {
+                                            "Literal": {
+                                              "Integer": {
+                                                "kind": "Usize",
+                                                "negative_sign": false,
+                                                "value": 2
+                                              }
+                                            }
+                                          }
+                                        ],
+                                        "tys": [
+                                          {
+                                            "Path": {
+                                              "path": [
+                                                "u8"
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            ],
+                            "kind": {
+                              "Closure": {
+                                "Path": {
+                                  "path": [
+                                    "i16"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "file_name": "crates/bytecode/src/utils.rs",
+            "item": {
+              "Definition": {
+                "name": "read_u16",
+                "path": [
+                  "revm_bytecode",
+                  "utils",
+                  "read_u16"
+                ],
+                "snippet": [
+                  "pub unsafe fn read_u16(ptr: *const u8) -> u16 {",
+                  "    u16::from_be_bytes(core::slice::from_raw_parts(ptr, 2).try_into().unwrap())",
+                  "}"
+                ],
+                "definition": {
+                  "const_params": [],
+                  "ty_params": [],
+                  "signature_and_body": {
+                    "args": [
+                      [
+                        "ptr",
+                        {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "*const"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "Path": {
+                                  "path": [
+                                    "u8"
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        null
+                      ]
+                    ],
+                    "ret_ty": {
+                      "Path": {
+                        "path": [
+                          "u16"
+                        ]
+                      }
+                    },
+                    "body": {
+                      "Let": {
+                        "name": "ptr",
+                        "ty": null,
+                        "init": {
+                          "Call": {
+                            "func": {
+                              "LocalVar": "M.alloc"
+                            },
+                            "args": [
+                              {
+                                "LocalVar": "ptr"
+                              }
+                            ],
+                            "kind": "Effectful"
+                          }
+                        },
+                        "body": {
+                          "Call": {
+                            "func": {
+                              "GetAssociatedFunction": {
+                                "ty": {
+                                  "Path": {
+                                    "path": [
+                                      "u16"
+                                    ]
+                                  }
+                                },
+                                "func": "from_be_bytes",
+                                "generic_consts": [],
+                                "generic_tys": []
+                              }
+                            },
+                            "args": [
+                              {
+                                "Call": {
+                                  "func": {
+                                    "GetAssociatedFunction": {
+                                      "ty": {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "core",
+                                                "result",
+                                                "Result"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "Application": {
+                                                "func": {
+                                                  "Path": {
+                                                    "path": [
+                                                      "array"
+                                                    ]
+                                                  }
+                                                },
+                                                "consts": [
+                                                  {
+                                                    "Literal": {
+                                                      "Integer": {
+                                                        "kind": "Usize",
+                                                        "negative_sign": false,
+                                                        "value": 2
+                                                      }
+                                                    }
+                                                  }
+                                                ],
+                                                "tys": [
+                                                  {
+                                                    "Path": {
+                                                      "path": [
+                                                        "u8"
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "Application": {
+                                                "func": {
+                                                  "Path": {
+                                                    "path": [
+                                                      "core",
+                                                      "array",
+                                                      "TryFromSliceError"
+                                                    ]
+                                                  }
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "func": "unwrap",
+                                      "generic_consts": [],
+                                      "generic_tys": []
+                                    }
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "GetTraitMethod": {
+                                            "trait_name": [
+                                              "core",
+                                              "convert",
+                                              "TryInto"
+                                            ],
+                                            "self_ty": {
+                                              "Application": {
+                                                "func": {
+                                                  "Path": {
+                                                    "path": [
+                                                      "&"
+                                                    ]
+                                                  }
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "slice"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": [
+                                                        {
+                                                          "Path": {
+                                                            "path": [
+                                                              "u8"
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            "trait_consts": [],
+                                            "trait_tys": [
+                                              {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "array"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [
+                                                    {
+                                                      "Literal": {
+                                                        "Integer": {
+                                                          "kind": "Usize",
+                                                          "negative_sign": false,
+                                                          "value": 2
+                                                        }
+                                                      }
+                                                    }
+                                                  ],
+                                                  "tys": [
+                                                    {
+                                                      "Path": {
+                                                        "path": [
+                                                          "u8"
+                                                        ]
+                                                      }
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ],
+                                            "method_name": "try_into",
+                                            "generic_consts": [],
+                                            "generic_tys": []
+                                          }
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.borrow"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "Pointer.Kind.Ref"
+                                                },
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.deref"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Call": {
+                                                          "func": {
+                                                            "GetFunction": {
+                                                              "func": [
+                                                                "core",
+                                                                "slice",
+                                                                "raw",
+                                                                "from_raw_parts"
+                                                              ],
+                                                              "generic_consts": [],
+                                                              "generic_tys": [
+                                                                {
+                                                                  "Path": {
+                                                                    "path": [
+                                                                      "u8"
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              ]
+                                                            }
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "LocalVar": "M.read"
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "LocalVar": "ptr"
+                                                                  }
+                                                                ],
+                                                                "kind": "Effectful"
+                                                              }
+                                                            },
+                                                            {
+                                                              "Literal": {
+                                                                "Integer": {
+                                                                  "kind": "Usize",
+                                                                  "negative_sign": false,
+                                                                  "value": 2
+                                                                }
+                                                              }
+                                                            }
+                                                          ],
+                                                          "kind": {
+                                                            "Closure": {
+                                                              "Application": {
+                                                                "func": {
+                                                                  "Path": {
+                                                                    "path": [
+                                                                      "&"
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "consts": [],
+                                                                "tys": [
+                                                                  {
+                                                                    "Application": {
+                                                                      "func": {
+                                                                        "Path": {
+                                                                          "path": [
+                                                                            "slice"
+                                                                          ]
+                                                                        }
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": [
+                                                                        {
+                                                                          "Path": {
+                                                                            "path": [
+                                                                              "u8"
+                                                                            ]
+                                                                          }
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        "kind": {
+                                          "Closure": {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "core",
+                                                    "result",
+                                                    "Result"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "array"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [
+                                                      {
+                                                        "Literal": {
+                                                          "Integer": {
+                                                            "kind": "Usize",
+                                                            "negative_sign": false,
+                                                            "value": 2
+                                                          }
+                                                        }
+                                                      }
+                                                    ],
+                                                    "tys": [
+                                                      {
+                                                        "Path": {
+                                                          "path": [
+                                                            "u8"
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "core",
+                                                          "array",
+                                                          "TryFromSliceError"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ],
+                                  "kind": {
+                                    "Closure": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "array"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [
+                                          {
+                                            "Literal": {
+                                              "Integer": {
+                                                "kind": "Usize",
+                                                "negative_sign": false,
+                                                "value": 2
+                                              }
+                                            }
+                                          }
+                                        ],
+                                        "tys": [
+                                          {
+                                            "Path": {
+                                              "path": [
+                                                "u8"
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            ],
+                            "kind": {
+                              "Closure": {
+                                "Path": {
+                                  "path": [
+                                    "u16"
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]

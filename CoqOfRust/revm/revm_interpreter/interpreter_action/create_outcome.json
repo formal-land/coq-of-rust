@@ -1,0 +1,2642 @@
+[
+  {
+    "file_name": "crates/interpreter/src/interpreter_action/create_outcome.rs",
+    "item": {
+      "Module": {
+        "name": "interpreter_action",
+        "body": [
+          {
+            "file_name": "crates/interpreter/src/interpreter_action/create_outcome.rs",
+            "item": {
+              "Module": {
+                "name": "create_outcome",
+                "body": [
+                  {
+                    "file_name": "crates/interpreter/src/interpreter_action/create_outcome.rs",
+                    "item": {
+                      "TypeStructStruct": {
+                        "name": "CreateOutcome",
+                        "const_params": [],
+                        "ty_params": [],
+                        "fields": [
+                          [
+                            "result",
+                            {
+                              "Application": {
+                                "func": {
+                                  "Path": {
+                                    "path": [
+                                      "revm_interpreter",
+                                      "interpreter",
+                                      "InterpreterResult"
+                                    ]
+                                  }
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            }
+                          ],
+                          [
+                            "address",
+                            {
+                              "Application": {
+                                "func": {
+                                  "Path": {
+                                    "path": [
+                                      "core",
+                                      "option",
+                                      "Option"
+                                    ]
+                                  }
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "alloy_primitives",
+                                            "bits",
+                                            "address",
+                                            "Address"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/interpreter/src/interpreter_action/create_outcome.rs",
+                    "item": {
+                      "TraitImpl": {
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "revm_interpreter",
+                                  "interpreter_action",
+                                  "create_outcome",
+                                  "CreateOutcome"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        },
+                        "of_trait": [
+                          "core",
+                          "fmt",
+                          "Debug"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "fmt",
+                            "snippet": [
+                              "Debug"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "revm_interpreter",
+                                                          "interpreter_action",
+                                                          "create_outcome",
+                                                          "CreateOutcome"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "f",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&mut"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "core",
+                                                          "fmt",
+                                                          "Formatter"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "core",
+                                                "result",
+                                                "Result"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "Tuple": {
+                                                "tys": []
+                                              }
+                                            },
+                                            {
+                                              "Application": {
+                                                "func": {
+                                                  "Path": {
+                                                    "path": [
+                                                      "core",
+                                                      "fmt",
+                                                      "Error"
+                                                    ]
+                                                  }
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "ty": null,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "f",
+                                              "ty": null,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "f"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetAssociatedFunction": {
+                                                      "ty": {
+                                                        "Application": {
+                                                          "func": {
+                                                            "Path": {
+                                                              "path": [
+                                                                "core",
+                                                                "fmt",
+                                                                "Formatter"
+                                                              ]
+                                                            }
+                                                          },
+                                                          "consts": [],
+                                                          "tys": []
+                                                        }
+                                                      },
+                                                      "func": "debug_struct_field2_finish",
+                                                      "generic_consts": [],
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.borrow"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "Pointer.Kind.MutRef"
+                                                          },
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.deref"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "LocalVar": "f"
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.borrow"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "Pointer.Kind.Ref"
+                                                          },
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.deref"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "Literal": {
+                                                                          "String": "CreateOutcome"
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.borrow"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "Pointer.Kind.Ref"
+                                                          },
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.deref"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "Literal": {
+                                                                          "String": "result"
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.borrow"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "Pointer.Kind.Ref"
+                                                          },
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.deref"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.borrow"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "LocalVar": "Pointer.Kind.Ref"
+                                                                      },
+                                                                      {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "Call": {
+                                                                                "func": {
+                                                                                  "LocalVar": "M.deref"
+                                                                                },
+                                                                                "args": [
+                                                                                  {
+                                                                                    "Call": {
+                                                                                      "func": {
+                                                                                        "LocalVar": "M.read"
+                                                                                      },
+                                                                                      "args": [
+                                                                                        {
+                                                                                          "LocalVar": "self"
+                                                                                        }
+                                                                                      ],
+                                                                                      "kind": "Effectful"
+                                                                                    }
+                                                                                  }
+                                                                                ],
+                                                                                "kind": "Effectful"
+                                                                              }
+                                                                            },
+                                                                            {
+                                                                              "InternalString": "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+                                                                            },
+                                                                            {
+                                                                              "InternalString": "result"
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.borrow"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "Pointer.Kind.Ref"
+                                                          },
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.deref"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "Literal": {
+                                                                          "String": "address"
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.borrow"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "Pointer.Kind.Ref"
+                                                          },
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.deref"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.borrow"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "LocalVar": "Pointer.Kind.Ref"
+                                                                      },
+                                                                      {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "M.alloc"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "Call": {
+                                                                                "func": {
+                                                                                  "LocalVar": "M.borrow"
+                                                                                },
+                                                                                "args": [
+                                                                                  {
+                                                                                    "LocalVar": "Pointer.Kind.Ref"
+                                                                                  },
+                                                                                  {
+                                                                                    "Call": {
+                                                                                      "func": {
+                                                                                        "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                                      },
+                                                                                      "args": [
+                                                                                        {
+                                                                                          "Call": {
+                                                                                            "func": {
+                                                                                              "LocalVar": "M.deref"
+                                                                                            },
+                                                                                            "args": [
+                                                                                              {
+                                                                                                "Call": {
+                                                                                                  "func": {
+                                                                                                    "LocalVar": "M.read"
+                                                                                                  },
+                                                                                                  "args": [
+                                                                                                    {
+                                                                                                      "LocalVar": "self"
+                                                                                                    }
+                                                                                                  ],
+                                                                                                  "kind": "Effectful"
+                                                                                                }
+                                                                                              }
+                                                                                            ],
+                                                                                            "kind": "Effectful"
+                                                                                          }
+                                                                                        },
+                                                                                        {
+                                                                                          "InternalString": "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+                                                                                        },
+                                                                                        {
+                                                                                          "InternalString": "address"
+                                                                                        }
+                                                                                      ],
+                                                                                      "kind": "Effectful"
+                                                                                    }
+                                                                                  }
+                                                                                ],
+                                                                                "kind": "Effectful"
+                                                                              }
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": {
+                                                    "Closure": {
+                                                      "Application": {
+                                                        "func": {
+                                                          "Path": {
+                                                            "path": [
+                                                              "core",
+                                                              "result",
+                                                              "Result"
+                                                            ]
+                                                          }
+                                                        },
+                                                        "consts": [],
+                                                        "tys": [
+                                                          {
+                                                            "Tuple": {
+                                                              "tys": []
+                                                            }
+                                                          },
+                                                          {
+                                                            "Application": {
+                                                              "func": {
+                                                                "Path": {
+                                                                  "path": [
+                                                                    "core",
+                                                                    "fmt",
+                                                                    "Error"
+                                                                  ]
+                                                                }
+                                                              },
+                                                              "consts": [],
+                                                              "tys": []
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/interpreter/src/interpreter_action/create_outcome.rs",
+                    "item": {
+                      "TraitImpl": {
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "revm_interpreter",
+                                  "interpreter_action",
+                                  "create_outcome",
+                                  "CreateOutcome"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        },
+                        "of_trait": [
+                          "core",
+                          "clone",
+                          "Clone"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "clone",
+                            "snippet": [
+                              "Clone"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "revm_interpreter",
+                                                          "interpreter_action",
+                                                          "create_outcome",
+                                                          "CreateOutcome"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "revm_interpreter",
+                                                "interpreter_action",
+                                                "create_outcome",
+                                                "CreateOutcome"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "ty": null,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "StructStruct": {
+                                              "path": [
+                                                "revm_interpreter",
+                                                "interpreter_action",
+                                                "create_outcome",
+                                                "CreateOutcome"
+                                              ],
+                                              "fields": [
+                                                [
+                                                  "result",
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "core",
+                                                            "clone",
+                                                            "Clone"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Application": {
+                                                              "func": {
+                                                                "Path": {
+                                                                  "path": [
+                                                                    "revm_interpreter",
+                                                                    "interpreter",
+                                                                    "InterpreterResult"
+                                                                  ]
+                                                                }
+                                                              },
+                                                              "consts": [],
+                                                              "tys": []
+                                                            }
+                                                          },
+                                                          "trait_consts": [],
+                                                          "trait_tys": [],
+                                                          "method_name": "clone",
+                                                          "generic_consts": [],
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.borrow"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "LocalVar": "Pointer.Kind.Ref"
+                                                              },
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.deref"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.borrow"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "LocalVar": "Pointer.Kind.Ref"
+                                                                          },
+                                                                          {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "Call": {
+                                                                                    "func": {
+                                                                                      "LocalVar": "M.deref"
+                                                                                    },
+                                                                                    "args": [
+                                                                                      {
+                                                                                        "Call": {
+                                                                                          "func": {
+                                                                                            "LocalVar": "M.read"
+                                                                                          },
+                                                                                          "args": [
+                                                                                            {
+                                                                                              "LocalVar": "self"
+                                                                                            }
+                                                                                          ],
+                                                                                          "kind": "Effectful"
+                                                                                        }
+                                                                                      }
+                                                                                    ],
+                                                                                    "kind": "Effectful"
+                                                                                  }
+                                                                                },
+                                                                                {
+                                                                                  "InternalString": "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+                                                                                },
+                                                                                {
+                                                                                  "InternalString": "result"
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Effectful"
+                                                                            }
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": {
+                                                        "Closure": {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "revm_interpreter",
+                                                                  "interpreter",
+                                                                  "InterpreterResult"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": []
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                ],
+                                                [
+                                                  "address",
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "core",
+                                                            "clone",
+                                                            "Clone"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Application": {
+                                                              "func": {
+                                                                "Path": {
+                                                                  "path": [
+                                                                    "core",
+                                                                    "option",
+                                                                    "Option"
+                                                                  ]
+                                                                }
+                                                              },
+                                                              "consts": [],
+                                                              "tys": [
+                                                                {
+                                                                  "Application": {
+                                                                    "func": {
+                                                                      "Path": {
+                                                                        "path": [
+                                                                          "alloy_primitives",
+                                                                          "bits",
+                                                                          "address",
+                                                                          "Address"
+                                                                        ]
+                                                                      }
+                                                                    },
+                                                                    "consts": [],
+                                                                    "tys": []
+                                                                  }
+                                                                }
+                                                              ]
+                                                            }
+                                                          },
+                                                          "trait_consts": [],
+                                                          "trait_tys": [],
+                                                          "method_name": "clone",
+                                                          "generic_consts": [],
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.borrow"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "LocalVar": "Pointer.Kind.Ref"
+                                                              },
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.deref"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.borrow"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "LocalVar": "Pointer.Kind.Ref"
+                                                                          },
+                                                                          {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "Call": {
+                                                                                    "func": {
+                                                                                      "LocalVar": "M.deref"
+                                                                                    },
+                                                                                    "args": [
+                                                                                      {
+                                                                                        "Call": {
+                                                                                          "func": {
+                                                                                            "LocalVar": "M.read"
+                                                                                          },
+                                                                                          "args": [
+                                                                                            {
+                                                                                              "LocalVar": "self"
+                                                                                            }
+                                                                                          ],
+                                                                                          "kind": "Effectful"
+                                                                                        }
+                                                                                      }
+                                                                                    ],
+                                                                                    "kind": "Effectful"
+                                                                                  }
+                                                                                },
+                                                                                {
+                                                                                  "InternalString": "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+                                                                                },
+                                                                                {
+                                                                                  "InternalString": "address"
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Effectful"
+                                                                            }
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": {
+                                                        "Closure": {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "core",
+                                                                  "option",
+                                                                  "Option"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "Application": {
+                                                                  "func": {
+                                                                    "Path": {
+                                                                      "path": [
+                                                                        "alloy_primitives",
+                                                                        "bits",
+                                                                        "address",
+                                                                        "Address"
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": []
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                ]
+                                              ],
+                                              "base": null
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "clone_from",
+                            "snippet": null,
+                            "kind": "Default"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/interpreter/src/interpreter_action/create_outcome.rs",
+                    "item": {
+                      "TraitImpl": {
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "revm_interpreter",
+                                  "interpreter_action",
+                                  "create_outcome",
+                                  "CreateOutcome"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        },
+                        "of_trait": [
+                          "core",
+                          "marker",
+                          "StructuralPartialEq"
+                        ],
+                        "trait_ty_params": [],
+                        "items": []
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/interpreter/src/interpreter_action/create_outcome.rs",
+                    "item": {
+                      "TraitImpl": {
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "revm_interpreter",
+                                  "interpreter_action",
+                                  "create_outcome",
+                                  "CreateOutcome"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        },
+                        "of_trait": [
+                          "core",
+                          "cmp",
+                          "PartialEq"
+                        ],
+                        "trait_ty_params": [
+                          [
+                            "Rhs",
+                            "Default"
+                          ]
+                        ],
+                        "items": [
+                          {
+                            "name": "eq",
+                            "snippet": [
+                              "PartialEq"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "revm_interpreter",
+                                                          "interpreter_action",
+                                                          "create_outcome",
+                                                          "CreateOutcome"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "other",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "revm_interpreter",
+                                                          "interpreter_action",
+                                                          "create_outcome",
+                                                          "CreateOutcome"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "Path": {
+                                          "path": [
+                                            "bool"
+                                          ]
+                                        }
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "ty": null,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "other",
+                                              "ty": null,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "other"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "LogicalOperator": {
+                                                  "name": "LogicalOp.and",
+                                                  "lhs": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "core",
+                                                            "cmp",
+                                                            "PartialEq"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Application": {
+                                                              "func": {
+                                                                "Path": {
+                                                                  "path": [
+                                                                    "revm_interpreter",
+                                                                    "interpreter",
+                                                                    "InterpreterResult"
+                                                                  ]
+                                                                }
+                                                              },
+                                                              "consts": [],
+                                                              "tys": []
+                                                            }
+                                                          },
+                                                          "trait_consts": [],
+                                                          "trait_tys": [
+                                                            {
+                                                              "Application": {
+                                                                "func": {
+                                                                  "Path": {
+                                                                    "path": [
+                                                                      "revm_interpreter",
+                                                                      "interpreter",
+                                                                      "InterpreterResult"
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "consts": [],
+                                                                "tys": []
+                                                              }
+                                                            }
+                                                          ],
+                                                          "method_name": "eq",
+                                                          "generic_consts": [],
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.borrow"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "LocalVar": "Pointer.Kind.Ref"
+                                                              },
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.deref"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "LocalVar": "M.read"
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "LocalVar": "self"
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Effectful"
+                                                                            }
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    },
+                                                                    {
+                                                                      "InternalString": "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+                                                                    },
+                                                                    {
+                                                                      "InternalString": "result"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        },
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.borrow"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "LocalVar": "Pointer.Kind.Ref"
+                                                              },
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.deref"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "LocalVar": "M.read"
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "LocalVar": "other"
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Effectful"
+                                                                            }
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    },
+                                                                    {
+                                                                      "InternalString": "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+                                                                    },
+                                                                    {
+                                                                      "InternalString": "result"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": {
+                                                        "Closure": {
+                                                          "Path": {
+                                                            "path": [
+                                                              "bool"
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                  "rhs": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "core",
+                                                            "cmp",
+                                                            "PartialEq"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Application": {
+                                                              "func": {
+                                                                "Path": {
+                                                                  "path": [
+                                                                    "core",
+                                                                    "option",
+                                                                    "Option"
+                                                                  ]
+                                                                }
+                                                              },
+                                                              "consts": [],
+                                                              "tys": [
+                                                                {
+                                                                  "Application": {
+                                                                    "func": {
+                                                                      "Path": {
+                                                                        "path": [
+                                                                          "alloy_primitives",
+                                                                          "bits",
+                                                                          "address",
+                                                                          "Address"
+                                                                        ]
+                                                                      }
+                                                                    },
+                                                                    "consts": [],
+                                                                    "tys": []
+                                                                  }
+                                                                }
+                                                              ]
+                                                            }
+                                                          },
+                                                          "trait_consts": [],
+                                                          "trait_tys": [
+                                                            {
+                                                              "Application": {
+                                                                "func": {
+                                                                  "Path": {
+                                                                    "path": [
+                                                                      "core",
+                                                                      "option",
+                                                                      "Option"
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "consts": [],
+                                                                "tys": [
+                                                                  {
+                                                                    "Application": {
+                                                                      "func": {
+                                                                        "Path": {
+                                                                          "path": [
+                                                                            "alloy_primitives",
+                                                                            "bits",
+                                                                            "address",
+                                                                            "Address"
+                                                                          ]
+                                                                        }
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": []
+                                                                    }
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ],
+                                                          "method_name": "eq",
+                                                          "generic_consts": [],
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.borrow"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "LocalVar": "Pointer.Kind.Ref"
+                                                              },
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.deref"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "LocalVar": "M.read"
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "LocalVar": "self"
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Effectful"
+                                                                            }
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    },
+                                                                    {
+                                                                      "InternalString": "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+                                                                    },
+                                                                    {
+                                                                      "InternalString": "address"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        },
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.borrow"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "LocalVar": "Pointer.Kind.Ref"
+                                                              },
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.deref"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "LocalVar": "M.read"
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "LocalVar": "other"
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Effectful"
+                                                                            }
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    },
+                                                                    {
+                                                                      "InternalString": "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+                                                                    },
+                                                                    {
+                                                                      "InternalString": "address"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": {
+                                                        "Closure": {
+                                                          "Path": {
+                                                            "path": [
+                                                              "bool"
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "ne",
+                            "snippet": null,
+                            "kind": "Default"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/interpreter/src/interpreter_action/create_outcome.rs",
+                    "item": {
+                      "TraitImpl": {
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "revm_interpreter",
+                                  "interpreter_action",
+                                  "create_outcome",
+                                  "CreateOutcome"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        },
+                        "of_trait": [
+                          "core",
+                          "cmp",
+                          "Eq"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "assert_receiver_is_total_eq",
+                            "snippet": [
+                              "Eq"
+                            ],
+                            "kind": {
+                              "OptionalValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "revm_interpreter",
+                                                          "interpreter_action",
+                                                          "create_outcome",
+                                                          "CreateOutcome"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "Tuple": {
+                                          "tys": []
+                                        }
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "ty": null,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "Match": {
+                                                    "scrutinee": {
+                                                      "LocalVar": "Value.DeclaredButUndefined"
+                                                    },
+                                                    "arms": [
+                                                      {
+                                                        "Lambda": {
+                                                          "args": [
+                                                            [
+                                                              "γ",
+                                                              null
+                                                            ]
+                                                          ],
+                                                          "body": {
+                                                            "Match": {
+                                                              "scrutinee": {
+                                                                "LocalVar": "Value.DeclaredButUndefined"
+                                                              },
+                                                              "arms": [
+                                                                {
+                                                                  "Lambda": {
+                                                                    "args": [
+                                                                      [
+                                                                        "γ",
+                                                                        null
+                                                                      ]
+                                                                    ],
+                                                                    "body": {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.alloc"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "Tuple": {
+                                                                              "elements": []
+                                                                            }
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    },
+                                                                    "is_for_match": true,
+                                                                    "form": "Function"
+                                                                  }
+                                                                }
+                                                              ]
+                                                            }
+                                                          },
+                                                          "is_for_match": true,
+                                                          "form": "Function"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/interpreter/src/interpreter_action/create_outcome.rs",
+                    "item": {
+                      "Impl": {
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "revm_interpreter",
+                                  "interpreter_action",
+                                  "create_outcome",
+                                  "CreateOutcome"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        },
+                        "items": [
+                          {
+                            "name": "new",
+                            "snippet": [
+                              "    pub fn new(result: InterpreterResult, address: Option<Address>) -> Self {",
+                              "        Self { result, address }",
+                              "    }"
+                            ],
+                            "kind": {
+                              "Definition": {
+                                "definition": {
+                                  "const_params": [],
+                                  "ty_params": [],
+                                  "signature_and_body": {
+                                    "args": [
+                                      [
+                                        "result",
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_interpreter",
+                                                  "interpreter",
+                                                  "InterpreterResult"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": []
+                                          }
+                                        },
+                                        null
+                                      ],
+                                      [
+                                        "address",
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "core",
+                                                  "option",
+                                                  "Option"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "alloy_primitives",
+                                                        "bits",
+                                                        "address",
+                                                        "Address"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        null
+                                      ]
+                                    ],
+                                    "ret_ty": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "revm_interpreter",
+                                              "interpreter_action",
+                                              "create_outcome",
+                                              "CreateOutcome"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "result",
+                                        "ty": null,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "result"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Let": {
+                                            "name": "address",
+                                            "ty": null,
+                                            "init": {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.alloc"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "LocalVar": "address"
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            "body": {
+                                              "StructStruct": {
+                                                "path": [
+                                                  "revm_interpreter",
+                                                  "interpreter_action",
+                                                  "create_outcome",
+                                                  "CreateOutcome"
+                                                ],
+                                                "fields": [
+                                                  [
+                                                    "result",
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "result"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  [
+                                                    "address",
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "address"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ]
+                                                ],
+                                                "base": null
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "instruction_result",
+                            "snippet": [
+                              "    pub fn instruction_result(&self) -> &InstructionResult {",
+                              "        &self.result.result",
+                              "    }"
+                            ],
+                            "kind": {
+                              "Definition": {
+                                "definition": {
+                                  "const_params": [],
+                                  "ty_params": [],
+                                  "signature_and_body": {
+                                    "args": [
+                                      [
+                                        "self",
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "&"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "revm_interpreter",
+                                                        "interpreter_action",
+                                                        "create_outcome",
+                                                        "CreateOutcome"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        null
+                                      ]
+                                    ],
+                                    "ret_ty": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "&"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "revm_interpreter",
+                                                    "instruction_result",
+                                                    "InstructionResult"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": []
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "self",
+                                        "ty": null,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "self"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.borrow"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "Pointer.Kind.Ref"
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.deref"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.borrow"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "Pointer.Kind.Ref"
+                                                          },
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "M.deref"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "Call": {
+                                                                                "func": {
+                                                                                  "LocalVar": "M.read"
+                                                                                },
+                                                                                "args": [
+                                                                                  {
+                                                                                    "LocalVar": "self"
+                                                                                  }
+                                                                                ],
+                                                                                "kind": "Effectful"
+                                                                              }
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "InternalString": "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+                                                                      },
+                                                                      {
+                                                                        "InternalString": "result"
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "InternalString": "revm_interpreter::interpreter::InterpreterResult"
+                                                                },
+                                                                {
+                                                                  "InternalString": "result"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "output",
+                            "snippet": [
+                              "    pub fn output(&self) -> &Bytes {",
+                              "        &self.result.output",
+                              "    }"
+                            ],
+                            "kind": {
+                              "Definition": {
+                                "definition": {
+                                  "const_params": [],
+                                  "ty_params": [],
+                                  "signature_and_body": {
+                                    "args": [
+                                      [
+                                        "self",
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "&"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "revm_interpreter",
+                                                        "interpreter_action",
+                                                        "create_outcome",
+                                                        "CreateOutcome"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        null
+                                      ]
+                                    ],
+                                    "ret_ty": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "&"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "alloy_primitives",
+                                                    "bytes_",
+                                                    "Bytes"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": []
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "self",
+                                        "ty": null,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "self"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.borrow"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "Pointer.Kind.Ref"
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.deref"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.borrow"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "Pointer.Kind.Ref"
+                                                          },
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "M.deref"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "Call": {
+                                                                                "func": {
+                                                                                  "LocalVar": "M.read"
+                                                                                },
+                                                                                "args": [
+                                                                                  {
+                                                                                    "LocalVar": "self"
+                                                                                  }
+                                                                                ],
+                                                                                "kind": "Effectful"
+                                                                              }
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "InternalString": "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+                                                                      },
+                                                                      {
+                                                                        "InternalString": "result"
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "InternalString": "revm_interpreter::interpreter::InterpreterResult"
+                                                                },
+                                                                {
+                                                                  "InternalString": "output"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "gas",
+                            "snippet": [
+                              "    pub fn gas(&self) -> &Gas {",
+                              "        &self.result.gas",
+                              "    }"
+                            ],
+                            "kind": {
+                              "Definition": {
+                                "definition": {
+                                  "const_params": [],
+                                  "ty_params": [],
+                                  "signature_and_body": {
+                                    "args": [
+                                      [
+                                        "self",
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "&"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "revm_interpreter",
+                                                        "interpreter_action",
+                                                        "create_outcome",
+                                                        "CreateOutcome"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        null
+                                      ]
+                                    ],
+                                    "ret_ty": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "&"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "revm_interpreter",
+                                                    "gas",
+                                                    "Gas"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": []
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "self",
+                                        "ty": null,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "self"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.borrow"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "Pointer.Kind.Ref"
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.deref"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.borrow"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "Pointer.Kind.Ref"
+                                                          },
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "M.deref"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "Call": {
+                                                                                "func": {
+                                                                                  "LocalVar": "M.read"
+                                                                                },
+                                                                                "args": [
+                                                                                  {
+                                                                                    "LocalVar": "self"
+                                                                                  }
+                                                                                ],
+                                                                                "kind": "Effectful"
+                                                                              }
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "InternalString": "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
+                                                                      },
+                                                                      {
+                                                                        "InternalString": "result"
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "InternalString": "revm_interpreter::interpreter::InterpreterResult"
+                                                                },
+                                                                {
+                                                                  "InternalString": "gas"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]
