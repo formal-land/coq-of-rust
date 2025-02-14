@@ -1,23 +1,39 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 
-(*
-  /// Wrapper type around [`bytes::Bytes`] to support "0x" prefixed hex strings.
-  #[derive(Clone, Default, Hash, PartialEq, Eq, PartialOrd, Ord)]
-  #[repr(transparent)]
-  pub struct Bytes(pub bytes::Bytes);
-*)
+Module alloy_primitives.
+  Module bits.
+    Module links.
+      Module address.
+        Module Address.
+          Parameter t: Set.
 
-Module Bytes.
-  Parameter t : Set.
+          Parameter to_value : t -> Value.t.
 
-  Parameter to_value : t -> Value.t.
+          Global Instance IsLink : Link t := {
+            Φ := Ty.path "alloy_primitives::bits::address::Address";
+            φ := to_value;
+          }.
+        End Address.
+      End address.
+    End links.
+  End bits.
 
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "bytes::bytes::Bytes";
-    φ := to_value;
-  }.
-End Bytes.
+  Module links.
+    Module bytes_.
+      Module Bytes.
+        Parameter t : Set.
+
+        Parameter to_value : t -> Value.t.
+
+        Global Instance IsLink : Link t := {
+          Φ := Ty.path "bytes::bytes::Bytes";
+          φ := to_value;
+        }.
+      End Bytes.
+    End bytes_.
+  End links.
+End alloy_primitives.
 
 Module Address.
   Parameter t : Set.

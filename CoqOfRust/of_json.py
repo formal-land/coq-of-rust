@@ -38,7 +38,7 @@ def find_top_level_item_by_name(crate: str, top_level, name: str) -> Tuple[list[
 def get_header(imports: list[str]) -> str:
     return """(* Generated file. Do not edit. *)
 Require Import CoqOfRust.CoqOfRust.
-Require Import simulations.M.
+Require Import links.M.
 """ + "".join("Require " + import_ + ".\n" for import_ in imports)
 
 
@@ -57,7 +57,31 @@ def paren(with_paren: bool, s: str) -> str:
 
 
 def pp_path(path) -> str:
-    return ".".join(path)
+    if path == ["i8"]:
+        return "I8"
+    if path == ["i16"]:
+        return "I16"
+    if path == ["i32"]:
+        return "I32"
+    if path == ["i64"]:
+        return "I64"
+    if path == ["i128"]:
+        return "I128"
+    if path == ["isize"]:
+        return "Isize"
+    if path == ["u8"]:
+        return "U8"
+    if path == ["u16"]:
+        return "U16"
+    if path == ["u32"]:
+        return "U32"
+    if path == ["u64"]:
+        return "U64"
+    if path == ["u128"]:
+        return "U128"
+    if path == ["usize"]:
+        return "Usize"
+    return ".".join(path[:-2]) + ".links." + ".".join(path[-2:])
 
 
 def pp_const(const) -> str:
@@ -213,8 +237,11 @@ def pp_type_enum(prefix: list[str], item) -> str:
         if "Tuple" in variant["item"] and len(variant["item"]["Tuple"]["tys"]) == 0:
             inductive_def += f"| {variant_name}\n"
         else:
-            tys = variant["item"]["tys"]
-            inductive_def += f"| {variant_name} : {' -> '.join(pp_type(False, ty) for ty in tys)} -> t{ty_params_args}\n"
+            fields = variant["item"]["Struct"]["fields"]
+            inductive_def += f"| {variant_name}\n"
+            inductive_def += indent('\n'.join(f"({field[0]} : {pp_type(False, field[1])})" for field in fields))
+            inductive_def += " :\n"
+            inductive_def += indent(f"t{ty_params_args}\n")
     inductive_def += "."
 
     # Generate the Arguments line if there are type parameters

@@ -6,10 +6,10 @@ examples/default/examples/ink_contracts/proofs/erc721.v
 examples/axiomatized/examples/custom/provided_method.v
 examples/axiomatized/examples/rust_book/traits/traits.v
 examples/axiomatized/examples/subtle.v
-# examples/
-revm/simulations
-# This file works but is taking a very long time (ten minutes)
-revm/translations/interpreter/opcode.v
+# These files take a very long time (ten minutes)
+revm/revm_bytecode/opcode.v
+revm/revm_interpreter/opcode.v
+revm/revm_bytecode/eof/links/header_Types.v
 core/array/mod.v
 core/iter/adapters/flatten.v
 core/net/ip_addr.v
