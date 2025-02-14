@@ -1,7 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.revm.links.dependencies.
 
-Module U256.
+(*Module U256.
   Import links.dependencies.U256.
 
   Definition limb_size : Z := 64.
@@ -60,3 +60,4 @@ Module U256.
       (fun n => (Z.shiftr a (limb_size * Z.of_nat n)) mod (2 ^ limb_size))
       (List.seq 0 (Z.to_nat LIMBS)).
 End U256.
+*)

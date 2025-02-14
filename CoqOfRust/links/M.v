@@ -982,7 +982,7 @@ Ltac run_symbolic_closure :=
 
 Ltac run_symbolic_closure_auto :=
   unshelve eapply Run.CallClosure; [
-    repeat smpl of_ty |
+    now repeat smpl of_ty |
     now (
       smpl run_closure ||
       match goal with
@@ -1054,6 +1054,21 @@ Ltac run_symbolic :=
     )
   )).
 
+Module Function1.
+  Record t {A Output : Set} `{Link A} `{Link Output} : Set := {
+    f : list Value.t -> M;
+    run : forall (a : A),
+      {{ f [ φ a ] 🔽 Output }};
+  }.
+  Arguments t _ _ {_ _}.
+
+  Global Instance IsLink (A Output : Set) `{Link A} `{Link Output} :
+      Link (t A Output) := {
+    Φ := Ty.function [Φ A] (Φ Output);
+    φ x := Value.Closure (existS (_, _) x.(f));
+  }.
+End Function1.
+
 Module Function2.
   Record t {A1 A2 Output : Set} `{Link A1} `{Link A2} `{Link Output} : Set := {
     f : list Value.t -> M;
@@ -1068,6 +1083,21 @@ Module Function2.
     φ x := Value.Closure (existS (_, _) x.(f));
   }.
 End Function2.
+
+Module Function3.
+  Record t {A1 A2 A3 Output : Set} `{Link A1} `{Link A2} `{Link A3} `{Link Output} : Set := {
+    f : list Value.t -> M;
+    run : forall (a1 : A1) (a2 : A2) (a3 : A3),
+      {{ f [ φ a1; φ a2; φ a3 ] 🔽 Output }};
+  }.
+  Arguments t _ _ _ _ {_ _ _ _}.
+
+  Global Instance IsLink (A1 A2 A3 Output : Set) `{Link A1} `{Link A2} `{Link A3} `{Link Output} :
+      Link (t A1 A2 A3 Output) := {
+    Φ := Ty.function [Φ A1; Φ A2; Φ A3] (Φ Output);
+    φ x := Value.Closure (existS (_, _) x.(f));
+  }.
+End Function3.
 
 Module OneElementTuple.
   (** There are no tuples of one element in Coq so we have to create it. This is different than the
