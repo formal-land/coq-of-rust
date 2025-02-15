@@ -1,7 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
-Require CoqOfRust.alloc.simulations.vec.
 Require Import CoqOfRust.simulations.integer.
+Require CoqOfRust.alloc.simulations.vec.
 Require Import CoqOfRust.core.simulations.option.
 Require Import CoqOfRust.core.simulations.eq.
 Require Import CoqOfRust.core.simulations.assert.

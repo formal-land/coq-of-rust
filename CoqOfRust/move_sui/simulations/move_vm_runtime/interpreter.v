@@ -1,6 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
+Require Import CoqOfRust.links.M.
 Require Import CoqOfRust.simulations.M.
-Require Import CoqOfRust.simulations.integer.
 Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.

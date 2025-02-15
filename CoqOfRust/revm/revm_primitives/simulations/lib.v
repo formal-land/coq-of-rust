@@ -1,5 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import simulations.integer.
+Require Import links.M.
 
 Module U256.
   Record t : Set := {
@@ -9,9 +9,8 @@ Module U256.
   Definition eqb (a b : t) : bool :=
     a.(value) =? b.(value).
 
-  Definition BITS : Usize.t := {|
-    Usize.value := 256;
-  |}.
+  Definition BITS : Usize.t :=
+    {| Integer.value := 256 |}.
 
   Parameter bit : t -> Usize.t -> bool.
 

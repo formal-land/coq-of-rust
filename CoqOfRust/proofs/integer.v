@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.lib.proofs.lib.
+Require Import links.M.
 Require Import simulations.integer.
 
 Module U64.

@@ -1,6 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.simulations.M.
-Require Import CoqOfRust.simulations.integer.
+Require Import links.M.
+Require Import simulations.M.
 Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
@@ -447,35 +447,35 @@ Module Value.
     Module cast.
       Global Instance cast_u8 : VMValueCast.Trait Self U8.t : Set := {
         cast (self : Self) := match self with
-          | ValueImpl.U8 x => Result.Ok {| U8.value := x |}
+          | ValueImpl.U8 x => Result.Ok {| Integer.value := x |}
           | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
       Global Instance cast_u16 : VMValueCast.Trait Self U16.t : Set := {
         cast (self : Self) := match self with
-          | ValueImpl.U16 x => Result.Ok {| U16.value := x |}
+          | ValueImpl.U16 x => Result.Ok {| Integer.value := x |}
           | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
       Global Instance cast_u32 : VMValueCast.Trait Self U32.t : Set := {
         cast (self : Self) := match self with
-          | ValueImpl.U32 x => Result.Ok {| U32.value := x |}
+          | ValueImpl.U32 x => Result.Ok {| Integer.value := x |}
           | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
       Global Instance cast_u64 : VMValueCast.Trait Self U64.t : Set := {
         cast (self : Self) := match self with
-          | ValueImpl.U64 x => Result.Ok {| U64.value := x |}
+          | ValueImpl.U64 x => Result.Ok {| Integer.value := x |}
           | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
       Global Instance cast_u128 : VMValueCast.Trait Self U128.t : Set := {
         cast (self : Self) := match self with
-          | ValueImpl.U128 x => Result.Ok {| U128.value := x |}
+          | ValueImpl.U128 x => Result.Ok {| Integer.value := x |}
           | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
@@ -1381,7 +1381,7 @@ Module IntegerValue.
     end.
 
   Definition shl_checked (self : IntegerValue.t) (nbits : U8.t) : PartialVMResult.t IntegerValue.t :=
-    let r : Z := nbits.(U8.value) in
+    let r : Z := nbits.(Integer.value) in
     match self with
     | IntegerValue.U8 l =>
       if r <? 8
@@ -1410,7 +1410,7 @@ Module IntegerValue.
     end.
 
   Definition shr_checked (self : IntegerValue.t) (nbits : U8.t) : PartialVMResult.t IntegerValue.t :=
-    let r : Z := nbits.(U8.value) in
+    let r : Z := nbits.(Integer.value) in
     match self with
     | IntegerValue.U8 l =>
       if r <? 8
