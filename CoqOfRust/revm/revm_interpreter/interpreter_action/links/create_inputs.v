@@ -23,7 +23,7 @@ Require Import revm_context_interface.links.cfg.
 
 Module CreateInputs.
   Record t : Set := {
-    caller : Address.t;
+    caller : alloy_primitives.bits.links.address.Address.t;
     scheme : CreateScheme.t;
     value : U256.t;
     init_code : alloy_primitives.links.bytes_.Bytes.t;

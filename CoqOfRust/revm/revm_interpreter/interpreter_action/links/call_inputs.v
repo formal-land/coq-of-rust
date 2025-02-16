@@ -112,11 +112,11 @@ End CallScheme.
 Module CallInputs.
   Record t : Set := {
     input : alloy_primitives.links.bytes_.Bytes.t;
-    return_memory_offset : (Z * Z);
-    gas_limit : Z;
-    bytecode_address : Address.t;
-    target_address : Address.t;
-    caller : Address.t;
+    return_memory_offset : Usize.t * Usize.t;
+    gas_limit : U64.t;
+    bytecode_address : alloy_primitives.bits.links.address.Address.t;
+    target_address : alloy_primitives.bits.links.address.Address.t;
+    caller : alloy_primitives.bits.links.address.Address.t;
     value : CallValue.t;
     scheme : CallScheme.t;
     is_static : bool;
