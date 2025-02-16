@@ -284,11 +284,11 @@ def pp_type_enum(prefix: list[str], item) -> str:
         variant_name = variant["name"]
         if "Tuple" in variant["item"]:
             is_link += indent(indent(
-                f'| {variant_name} {" ".join(f"γ{index}" for index, _ in enumerate(variant["item"]["Tuple"]["tys"]))} =>\n'
+                f'| {variant_name}{"".join(f" γ{index}" for index, _ in enumerate(variant["item"]["Tuple"]["tys"]))} =>\n'
             ))
         else:
             is_link += indent(indent(
-                f'| {variant_name} {" ".join(f"{field[0]}" for field in variant["item"]["Struct"]["fields"])} =>\n'
+                f'| {variant_name}{"".join(f" {field[0]}" for field in variant["item"]["Struct"]["fields"])} =>\n'
             ))
         if "Tuple" in variant["item"]:
             is_link += indent(indent(indent(
@@ -307,21 +307,135 @@ def pp_type_enum(prefix: list[str], item) -> str:
             )))
         else:
             is_link += indent(indent(indent(
-                f"Value.StructRecord \"{'::'.join(prefix + [name, variant_name])}\" [\n" +
-                indent(
-                    ';\n'.join(f'("{field[0]}", φ {field[0]})'
-                    for field in variant['item']['Struct']['fields'])
-                ) + "\n" +
+                f"Value.StructRecord \"{'::'.join(prefix + [name, variant_name])}\" [" +
+                (
+                    ""
+                    if len(variant['item']['Struct']['fields']) == 0
+                    else
+                        "\n" +
+                        indent(
+                            ';\n'.join(f'("{field[0]}", φ {field[0]})'
+                            for field in variant['item']['Struct']['fields'])
+                        ) + "\n"
+                ) +
                 "]\n"
             )))
     is_link += indent(indent("end\n"))
     is_link += "}."
 
+    of_ty = f'Definition of_ty : OfTy.t (Ty.path "{"::".join(prefix + [name])}").\n'
+    of_ty += """Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+Smpl Add simple apply of_ty : of_ty."""
+
+    of_value_with = ""
+    for variant in variants:
+        variant_name = variant["name"]
+        of_value_with += f"\n\nLemma of_value_with_{variant_name}"
+        if "Tuple" in variant["item"]:
+            variant = variant["item"]["Tuple"]
+            for index, ty in enumerate(variant["tys"]):
+                of_value_with += "\n"
+                of_value_with += indent(f"(γ{index} : {pp_type(False, ty)}) (γ{index}' : Value.t)")
+            of_value_with += " :\n"
+            for index, ty in enumerate(variant["tys"]):
+                of_value_with += indent(f"γ{index}' = φ γ{index} ->\n")
+            of_value_with += indent(
+                f"Value.StructTuple \"{'::'.join(prefix + [name, variant_name])}\" [" +
+                (
+                    ""
+                    if len(variant['tys']) == 0
+                    else
+                        "\n" +
+                        indent(
+                            ";\n".join(f'γ{index}'
+                            for index, _ in enumerate(variant['tys']))
+                        ) + "\n"
+                ) +
+                "] =\n" +
+                "φ " + paren(len(variant['tys']) > 0,
+                    f"{variant_name}{''.join(f' γ{index}' for index, _ in enumerate(variant['tys']))}"
+                ) + ".\n"
+            )
+        else:
+            variant = variant["item"]["Struct"]
+            for field in variant["fields"]:
+                of_value_with += "\n"
+                of_value_with += indent(f"({field[0]} : {pp_type(False, field[1])}) ({field[0]}' : Value.t)")
+            of_value_with += " :\n"
+            for field in variant["fields"]:
+                of_value_with += indent(f"{field[0]}' = φ {field[0]} ->\n")
+            of_value_with += indent(
+                f"Value.StructRecord \"{'::'.join(prefix + [name, variant_name])}\" [\n" +
+                indent(
+                    ';\n'.join(f'("{field[0]}", {field[0]}\')'
+                    for field in variant['fields'])
+                ) + "\n"
+                "] =\n" +
+                f"φ ({variant_name}{''.join(f' {field[0]}' for field in variant['fields'])}).\n"
+            )
+        of_value_with += f"""Proof. now intros; subst. Qed.
+Smpl Add simple apply of_value_with_{variant_name} : of_value."""
+
+    of_value = ""
+    for variant in variants:
+        variant_name = variant["name"]
+        of_value += f"\n\nDefinition of_value_{variant_name}"
+        if "Tuple" in variant["item"]:
+            variant = variant["item"]["Tuple"]
+            for index, ty in enumerate(variant["tys"]):
+                of_value += "\n"
+                of_value += indent(f"(γ{index} : {pp_type(False, ty)}) (γ{index}' : Value.t)")
+            of_value += " :\n"
+            for index, ty in enumerate(variant["tys"]):
+                of_value += indent(f"γ{index}' = φ γ{index} ->\n")
+            of_value += indent(
+                "OfValue.t (\n" + indent(
+                    f"Value.StructTuple \"{'::'.join(prefix + [name, variant_name])}\" [" +
+                    (
+                        ""
+                        if len(variant['tys']) == 0
+                        else
+                            "\n" +
+                            indent(
+                                ";\n".join(f'γ{index}'
+                                for index, _ in enumerate(variant['tys']))
+                            ) + "\n"
+                    ) +
+                    "]"
+                ) + "\n" +
+                ").\n"
+            )
+        else:
+            variant = variant["item"]["Struct"]
+            for field in variant["fields"]:
+                of_value += "\n"
+                of_value += indent(f"({field[0]} : {pp_type(False, field[1])}) ({field[0]}' : Value.t)")
+            of_value += " :\n"
+            for field in variant["fields"]:
+                of_value += indent(f"{field[0]}' = φ {field[0]} ->\n")
+            of_value += indent(
+                "OfValue.t (\n" + indent(
+                    f"Value.StructRecord \"{'::'.join(prefix + [name, variant_name])}\" [\n" +
+                    indent(
+                        ';\n'.join(f'("{field[0]}", {field[0]}\')'
+                        for field in variant['fields'])
+                    ) + "\n"
+                    "]"
+                ) + "\n" +
+                ").\n"
+            )
+        of_value += f"""Proof. econstructor; apply of_value_with_{variant_name}; eassumption. Defined.
+Smpl Add simple apply of_value_{variant_name} : of_value."""
+
     return pp_module(name,
         inductive_def +
         arguments_line +
         "\n" +
-        is_link
+        is_link +
+        "\n\n" +
+        of_ty +
+        of_value_with +
+        of_value
     )
 
 

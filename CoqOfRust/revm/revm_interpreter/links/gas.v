@@ -161,8 +161,7 @@ Module Impl_MemoryGas.
     run_symbolic.
     run_symbolic_let. {
       run_symbolic.
-      eapply Run.CallPrimitiveAreEqual with (A := bool); try smpl of_value.
-      intros []; run_symbolic.
+      run_symbolic_are_equal_bool; run_symbolic.
     }
     intros [|[]]; run_symbolic.
     run_symbolic_let. {
@@ -580,8 +579,7 @@ Module Impl_Gas.
     run_symbolic.
     run_symbolic_let. {
       run_symbolic.
-      eapply Run.CallPrimitiveAreEqual with (A := bool); try reflexivity.
-      intros []; run_symbolic.
+      run_symbolic_are_equal_bool; run_symbolic.
     }
     cbn; intros []; run_symbolic.
   Defined.
@@ -614,8 +612,7 @@ Module Impl_Gas.
     run_symbolic.
     run_symbolic_let. {
       run_symbolic.
-      eapply Run.CallPrimitiveAreEqual with (A := bool); try reflexivity.
-      intros []; run_symbolic.
+      run_symbolic_are_equal_bool; run_symbolic.
     }
     intros [|[]]; run_symbolic.
   Defined.
@@ -642,8 +639,7 @@ Module Impl_Gas.
     run_symbolic.
     run_symbolic_let. {
       run_symbolic.
-      eapply Run.CallPrimitiveAreEqual with (A := bool); try reflexivity.
-      intros []; run_symbolic.
+      run_symbolic_are_equal_bool; run_symbolic.
     }
     intros [|[]]; run_symbolic.
   Defined.

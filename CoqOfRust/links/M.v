@@ -78,6 +78,13 @@ Module OfValue.
   Qed.
 End OfValue.
 
+(** Implementation of the primitive Rust operator for equality check *)
+Module PrimitiveEq.
+  Class Trait (A : Set) : Set := {
+    eqb : A -> A -> bool;
+  }.
+End PrimitiveEq.
+
 Module Bool.
   Global Instance IsLink : Link bool := {
     Φ := Ty.path "bool";
@@ -99,6 +106,10 @@ Module Bool.
     eapply OfValue.Make with (A := bool); smpl of_value.
   Defined.
   Smpl Add apply of_value : of_value.
+
+  Global Instance IsPrimitiveEq : PrimitiveEq.Trait bool := {
+    PrimitiveEq.eqb := Bool.eqb;
+  }.
 End Bool.
 
 Module Integer.
@@ -187,6 +198,10 @@ Module Integer.
     OfValue.t (Value.Integer kind value).
   Proof. eapply OfValue.Make with (A := t kind); smpl of_value. Defined.
   Smpl Add apply of_value : of_value.
+
+  Global Instance IsPrimitiveEq {kind : IntegerKind.t} : PrimitiveEq.Trait (t kind) := {
+    PrimitiveEq.eqb x y := x.(value) =? y.(value);
+  }.
 End Integer.
 
 (** ** Integer kinds for better readability *)
@@ -699,8 +714,20 @@ Module Run.
       LowM.CallPrimitive (Primitive.GetSubPointer (φ ref) index) k 🔽
       R, Output
     }}
-  | CallPrimitiveAreEqual {A : Set} `{Link A}
-      (x y : A) (x' y' : Value.t)
+  | CallPrimitiveAreEqualBool
+      (x y : bool) (x' y' : Value.t)
+      (k : Value.t -> M) :
+    x' = φ x ->
+    y' = φ y ->
+    (forall (b : bool),
+      {{ k (φ b) 🔽 R, Output }}
+    ) ->
+    {{
+      LowM.CallPrimitive (Primitive.AreEqual x' y') k 🔽
+      R, Output
+    }}
+  | CallPrimitiveAreEqualInteger {kind : IntegerKind.t}
+      (x y : Integer.t kind) (x' y' : Value.t)
       (k : Value.t -> M) :
     x' = φ x ->
     y' = φ y ->
@@ -896,14 +923,17 @@ Proof.
     | H : forall _, _ |- _ => apply (H {| Ref.core := sub_ref_core |})
     end.
   }
-  { (* AreEqual *)
-    apply (LowM.CallPrimitive (Primitive.AreEqual x y)).
-    intros b.
+  { (* AreEqualBool *)
     eapply evaluate.
     match goal with
-    | H : forall _, _ |- _ => apply (H b)
+    | H : forall _, _ |- _ => apply (H (PrimitiveEq.eqb x y))
     end.
-
+  }
+  { (* AreEqualInteger *)
+    eapply evaluate.
+    match goal with
+    | H : forall _, _ |- _ => apply (H (PrimitiveEq.eqb x y))
+    end.
   }
   { (* CallPrimitiveGetFunction *)
     exact (evaluate _ _ _ _ _ run).
@@ -999,13 +1029,21 @@ Ltac run_sub_pointer :=
     smpl run_sub_pointer
   |]; intro.
 
+Lemma if_then_else_bool_eq (condition : bool) then_ else_ :
+  M.if_then_else_bool (φ condition) then_ else_ =
+  if condition then then_ else else_.
+Proof.
+  now destruct condition.
+Qed.
+
 Ltac run_main_rewrites :=
   eapply Run.Rewrite; [
     (repeat (
       rewrite OfValue.get_value_of_value_eq ||
       rewrite Ref.deref_eq ||
       rewrite Ref.borrow_eq ||
-      rewrite Ref.cast_cast_eq
+      rewrite Ref.cast_cast_eq ||
+      rewrite if_then_else_bool_eq
     ));
     reflexivity
   |].
@@ -1037,6 +1075,14 @@ Ltac run_symbolic_one_step_immediate :=
 
 Ltac run_symbolic_let :=
   unshelve eapply Run.Let; [repeat smpl of_ty | |].
+
+Ltac run_symbolic_are_equal_bool :=
+  eapply Run.CallPrimitiveAreEqualBool;
+    [now repeat smpl of_value | now repeat smpl of_value | intros []].
+
+Ltac run_symbolic_are_equal_integer :=
+  eapply Run.CallPrimitiveAreEqualInteger;
+    [now repeat smpl of_value | now repeat smpl of_value | intros []].
 
 Smpl Create run_symbolic.
 

@@ -758,13 +758,17 @@ Module SubPointer.
   Parameter get_slice_rest : Value.t -> Z -> Z -> M.
 End SubPointer.
 
+(** Explicit definition to simplify the links later *)
+Definition if_then_else_bool (condition : Value.t) (then_ else_ : M) : M :=
+  match condition with
+  | Value.Bool true => then_
+  | Value.Bool false => else_
+  | _ => impossible "if_then_else_bool: expected a boolean"
+  end.
+
 Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
   let* are_equal := are_equal value expected_value in
-  match are_equal with
-  | Value.Bool true => pure (Value.Tuple [])
-  | Value.Bool false => break_match
-  | _ => impossible "expected a boolean"
-  end.
+  if_then_else_bool are_equal (pure (Value.Tuple [])) break_match.
 
 Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
   let* value := read value in
