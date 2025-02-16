@@ -143,7 +143,7 @@ def revm_interpreter_interpreter_action_eof_create_inputs():
 def get_all_type_definitions():
     project_path = 'revm'
     items = []
-    for crate in os.listdir(project_path):
+    for crate in sorted(os.listdir(project_path)):
         crate_path = os.path.join(project_path, crate)
 
         # Check if the crate is a directory
@@ -151,7 +151,7 @@ def get_all_type_definitions():
             print(f"Processing crate: {crate}")
 
             # Loop through all files in the crate directory
-            for root, _, files in os.walk(crate_path):
+            for root, _, files in sorted(os.walk(crate_path)):
                 for filename in files:
                     # These files are too long and make an error in JSON parsing
                     if filename == "opcode.json":
