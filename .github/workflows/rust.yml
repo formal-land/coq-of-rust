@@ -104,8 +104,8 @@ jobs:
             cd context/interface
             cargo coq-of-rust
             touch src/lib.rs
-            cargo coq-of-rust
-            rsync -acv src/ ../../../../../CoqOfRust/revm/revm_context_interface/ --include='*/' --include='*.v' --exclude='*'
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../../CoqOfRust/revm/revm_context_interface/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
             cd ../..
             # interpreter
             cd interpreter
@@ -118,27 +118,24 @@ jobs:
             cd precompile
             cargo coq-of-rust
             touch src/lib.rs
-            cargo coq-of-rust
-            rsync -acv src/ ../../../../CoqOfRust/revm/revm_precompile/ --include='*/' --include='*.v' --exclude='*'
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../CoqOfRust/revm/revm_precompile/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
             cd ..
             # primitives
             cd primitives
             cargo coq-of-rust
             touch src/lib.rs
-            cargo coq-of-rust
-            rsync -acv src/ ../../../../CoqOfRust/revm/revm_primitives/ --include='*/' --include='*.v' --exclude='*'
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../CoqOfRust/revm/revm_primitives/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
             cd ..
             # specification
             cd specification
             cargo coq-of-rust
             touch src/lib.rs
-            cargo coq-of-rust
-            rsync -acv src/ ../../../../CoqOfRust/revm/revm_specification/ --include='*/' --include='*.v' --exclude='*'
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../CoqOfRust/revm/revm_specification/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
             cd ..
             cd ../../..
-            # These two files are very large
-            rm CoqOfRust/revm/revm_bytecode/opcode.json
-            rm CoqOfRust/revm/revm_interpreter/opcode.json
           endGroup
           startGroup "Translate Move Sui"
             cd third-party/move-sui
