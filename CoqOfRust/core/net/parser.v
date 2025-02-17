@@ -6723,36 +6723,39 @@ Module net.
           {
             name := "Ip";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Ipv4";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Ipv6";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Socket";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "SocketV4";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "SocketV6";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_AddrKind_Ip : M.IsDiscriminant "core::net::parser::AddrKind::Ip" 0.
+    Axiom IsDiscriminant_AddrKind_Ipv4 : M.IsDiscriminant "core::net::parser::AddrKind::Ipv4" 1.
+    Axiom IsDiscriminant_AddrKind_Ipv6 : M.IsDiscriminant "core::net::parser::AddrKind::Ipv6" 2.
+    Axiom IsDiscriminant_AddrKind_Socket : M.IsDiscriminant "core::net::parser::AddrKind::Socket" 3.
+    Axiom IsDiscriminant_AddrKind_SocketV4 :
+      M.IsDiscriminant "core::net::parser::AddrKind::SocketV4" 4.
+    Axiom IsDiscriminant_AddrKind_SocketV6 :
+      M.IsDiscriminant "core::net::parser::AddrKind::SocketV6" 5.
     
     Module Impl_core_fmt_Debug_for_core_net_parser_AddrKind.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrKind".

@@ -140,26 +140,27 @@ Module fmt.
           {
             name := "Left";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Right";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Center";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Unknown";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_Alignment_Left : M.IsDiscriminant "core::fmt::rt::Alignment::Left" 0.
+    Axiom IsDiscriminant_Alignment_Right : M.IsDiscriminant "core::fmt::rt::Alignment::Right" 1.
+    Axiom IsDiscriminant_Alignment_Center : M.IsDiscriminant "core::fmt::rt::Alignment::Center" 2.
+    Axiom IsDiscriminant_Alignment_Unknown : M.IsDiscriminant "core::fmt::rt::Alignment::Unknown" 3.
     
     Module Impl_core_marker_Copy_for_core_fmt_rt_Alignment.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Alignment".
@@ -288,21 +289,22 @@ Module fmt.
           {
             name := "Is";
             item := StructTuple [ Ty.path "usize" ];
-            discriminant := None;
           };
           {
             name := "Param";
             item := StructTuple [ Ty.path "usize" ];
-            discriminant := None;
           };
           {
             name := "Implied";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_Count_Is : M.IsDiscriminant "core::fmt::rt::Count::Is" 0.
+    Axiom IsDiscriminant_Count_Param : M.IsDiscriminant "core::fmt::rt::Count::Param" 1.
+    Axiom IsDiscriminant_Count_Implied : M.IsDiscriminant "core::fmt::rt::Count::Implied" 2.
     
     Module Impl_core_marker_Copy_for_core_fmt_rt_Count.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Count".
@@ -351,36 +353,40 @@ Module fmt.
           {
             name := "SignPlus";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "SignMinus";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Alternate";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "SignAwareZeroPad";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "DebugLowerHex";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "DebugUpperHex";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_Flag_SignPlus : M.IsDiscriminant "core::fmt::rt::Flag::SignPlus" 0.
+    Axiom IsDiscriminant_Flag_SignMinus : M.IsDiscriminant "core::fmt::rt::Flag::SignMinus" 1.
+    Axiom IsDiscriminant_Flag_Alternate : M.IsDiscriminant "core::fmt::rt::Flag::Alternate" 2.
+    Axiom IsDiscriminant_Flag_SignAwareZeroPad :
+      M.IsDiscriminant "core::fmt::rt::Flag::SignAwareZeroPad" 3.
+    Axiom IsDiscriminant_Flag_DebugLowerHex :
+      M.IsDiscriminant "core::fmt::rt::Flag::DebugLowerHex" 4.
+    Axiom IsDiscriminant_Flag_DebugUpperHex :
+      M.IsDiscriminant "core::fmt::rt::Flag::DebugUpperHex" 5.
     
     Module Impl_core_marker_Copy_for_core_fmt_rt_Flag.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Flag".
@@ -443,16 +449,19 @@ Module fmt.
                       []
                       [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ])
                 ];
-            discriminant := None;
           };
           {
             name := "Count";
             item := StructTuple [ Ty.path "usize" ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_ArgumentType_Placeholder :
+      M.IsDiscriminant "core::fmt::rt::ArgumentType::Placeholder" 0.
+    Axiom IsDiscriminant_ArgumentType_Count :
+      M.IsDiscriminant "core::fmt::rt::ArgumentType::Count" 1.
     
     Module Impl_core_marker_Copy_for_core_fmt_rt_ArgumentType.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::ArgumentType".

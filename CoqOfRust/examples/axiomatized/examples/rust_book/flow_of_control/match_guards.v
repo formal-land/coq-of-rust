@@ -11,16 +11,18 @@ Enum Temperature
       {
         name := "Celsius";
         item := StructTuple [ Ty.path "i32" ];
-        discriminant := None;
       };
       {
         name := "Fahrenheit";
         item := StructTuple [ Ty.path "i32" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Temperature_Celsius : M.IsDiscriminant "match_guards::Temperature::Celsius" 0.
+Axiom IsDiscriminant_Temperature_Fahrenheit :
+  M.IsDiscriminant "match_guards::Temperature::Fahrenheit" 1.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 

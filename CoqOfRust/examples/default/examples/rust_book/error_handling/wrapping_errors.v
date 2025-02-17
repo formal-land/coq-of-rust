@@ -11,16 +11,18 @@ Enum DoubleError
       {
         name := "EmptyVec";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Parse";
         item := StructTuple [ Ty.path "core::num::error::ParseIntError" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_DoubleError_EmptyVec :
+  M.IsDiscriminant "wrapping_errors::DoubleError::EmptyVec" 0.
+Axiom IsDiscriminant_DoubleError_Parse : M.IsDiscriminant "wrapping_errors::DoubleError::Parse" 1.
 
 Module Impl_core_fmt_Debug_for_wrapping_errors_DoubleError.
   Definition Self : Ty.t := Ty.path "wrapping_errors::DoubleError".

@@ -106,31 +106,37 @@ Module u256.
         {
           name := "TooLargeForU8";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "TooLargeForU16";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "TooLargeForU32";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "TooLargeForU64";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "TooLargeForU128";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_U256CastErrorKind_TooLargeForU8 :
+    M.IsDiscriminant "move_core_types::u256::U256CastErrorKind::TooLargeForU8" 0.
+  Axiom IsDiscriminant_U256CastErrorKind_TooLargeForU16 :
+    M.IsDiscriminant "move_core_types::u256::U256CastErrorKind::TooLargeForU16" 1.
+  Axiom IsDiscriminant_U256CastErrorKind_TooLargeForU32 :
+    M.IsDiscriminant "move_core_types::u256::U256CastErrorKind::TooLargeForU32" 2.
+  Axiom IsDiscriminant_U256CastErrorKind_TooLargeForU64 :
+    M.IsDiscriminant "move_core_types::u256::U256CastErrorKind::TooLargeForU64" 3.
+  Axiom IsDiscriminant_U256CastErrorKind_TooLargeForU128 :
+    M.IsDiscriminant "move_core_types::u256::U256CastErrorKind::TooLargeForU128" 4.
   
   Module Impl_core_fmt_Debug_for_move_core_types_u256_U256CastErrorKind.
     Definition Self : Ty.t := Ty.path "move_core_types::u256::U256CastErrorKind".

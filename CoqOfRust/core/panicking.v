@@ -1973,21 +1973,22 @@ Module panicking.
         {
           name := "Eq";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Ne";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Match";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_AssertKind_Eq : M.IsDiscriminant "core::panicking::AssertKind::Eq" 0.
+  Axiom IsDiscriminant_AssertKind_Ne : M.IsDiscriminant "core::panicking::AssertKind::Ne" 1.
+  Axiom IsDiscriminant_AssertKind_Match : M.IsDiscriminant "core::panicking::AssertKind::Match" 2.
   
   Module Impl_core_fmt_Debug_for_core_panicking_AssertKind.
     Definition Self : Ty.t := Ty.path "core::panicking::AssertKind".

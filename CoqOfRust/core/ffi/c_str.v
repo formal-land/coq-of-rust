@@ -375,16 +375,19 @@ Module ffi.
           {
             name := "InteriorNul";
             item := StructTuple [ Ty.path "usize" ];
-            discriminant := None;
           };
           {
             name := "NotNulTerminated";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_FromBytesWithNulErrorKind_InteriorNul :
+      M.IsDiscriminant "core::ffi::c_str::FromBytesWithNulErrorKind::InteriorNul" 0.
+    Axiom IsDiscriminant_FromBytesWithNulErrorKind_NotNulTerminated :
+      M.IsDiscriminant "core::ffi::c_str::FromBytesWithNulErrorKind::NotNulTerminated" 1.
     
     Module Impl_core_clone_Clone_for_core_ffi_c_str_FromBytesWithNulErrorKind.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind".

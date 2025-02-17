@@ -13,23 +13,24 @@ Module num.
           {
             name := "Zero";
             item := StructTuple [ Ty.path "usize" ];
-            discriminant := None;
           };
           {
             name := "Num";
             item := StructTuple [ Ty.path "u16" ];
-            discriminant := None;
           };
           {
             name := "Copy";
             item :=
               StructTuple
                 [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_Part_Zero : M.IsDiscriminant "core::num::fmt::Part::Zero" 0.
+    Axiom IsDiscriminant_Part_Num : M.IsDiscriminant "core::num::fmt::Part::Num" 1.
+    Axiom IsDiscriminant_Part_Copy : M.IsDiscriminant "core::num::fmt::Part::Copy" 2.
     
     Module Impl_core_marker_Copy_for_core_num_fmt_Part.
       Definition Self : Ty.t := Ty.path "core::num::fmt::Part".

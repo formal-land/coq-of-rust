@@ -12,17 +12,20 @@ Module check_bounds.
         {
           name := "Module";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ModuleFunction";
           item :=
             StructTuple [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_BoundsCheckingContext_Module :
+    M.IsDiscriminant "move_binary_format::check_bounds::BoundsCheckingContext::Module" 0.
+  Axiom IsDiscriminant_BoundsCheckingContext_ModuleFunction :
+    M.IsDiscriminant "move_binary_format::check_bounds::BoundsCheckingContext::ModuleFunction" 1.
   
   (* StructRecord
     {

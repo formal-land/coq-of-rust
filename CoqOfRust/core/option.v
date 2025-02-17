@@ -12,16 +12,17 @@ Module option.
         {
           name := "None";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Some";
           item := StructTuple [ T ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Option_None : M.IsDiscriminant "core::option::Option::None" 0.
+  Axiom IsDiscriminant_Option_Some : M.IsDiscriminant "core::option::Option::Some" 1.
   
   Module Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_option_Option_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].

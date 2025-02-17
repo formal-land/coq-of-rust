@@ -97,6 +97,7 @@ Enum MultiAddress
 }
 *)
 
+
 Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
   Definition Self : Ty.t :=
     Ty.apply
@@ -138,11 +139,13 @@ Enum BalancesCall
                   [ Ty.path "call_runtime::AccountId"; Ty.tuple [] ]);
               ("value", Ty.path "u128")
             ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_BalancesCall_Transfer :
+  M.IsDiscriminant "call_runtime::BalancesCall::Transfer" 0.
 
 (*
 Enum RuntimeCall
@@ -154,11 +157,13 @@ Enum RuntimeCall
       {
         name := "Balances";
         item := StructTuple [ Ty.path "call_runtime::BalancesCall" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_RuntimeCall_Balances :
+  M.IsDiscriminant "call_runtime::RuntimeCall::Balances" 0.
 
 (* StructTuple
   {
@@ -196,11 +201,13 @@ Enum RuntimeError
       {
         name := "CallRuntimeFailed";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_RuntimeError_CallRuntimeFailed :
+  M.IsDiscriminant "call_runtime::RuntimeError::CallRuntimeFailed" 0.
 
 Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
@@ -303,16 +310,19 @@ Enum EnvError
       {
         name := "CallRuntimeFailed";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "AnotherKindOfError";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_EnvError_CallRuntimeFailed :
+  M.IsDiscriminant "call_runtime::EnvError::CallRuntimeFailed" 0.
+Axiom IsDiscriminant_EnvError_AnotherKindOfError :
+  M.IsDiscriminant "call_runtime::EnvError::AnotherKindOfError" 1.
 
 Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".

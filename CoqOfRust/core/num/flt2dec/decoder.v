@@ -367,26 +367,31 @@ Module num.
             {
               name := "Nan";
               item := StructTuple [];
-              discriminant := None;
             };
             {
               name := "Infinite";
               item := StructTuple [];
-              discriminant := None;
             };
             {
               name := "Zero";
               item := StructTuple [];
-              discriminant := None;
             };
             {
               name := "Finite";
               item := StructTuple [ Ty.path "core::num::flt2dec::decoder::Decoded" ];
-              discriminant := None;
             }
           ];
       }
       *)
+      
+      Axiom IsDiscriminant_FullDecoded_Nan :
+        M.IsDiscriminant "core::num::flt2dec::decoder::FullDecoded::Nan" 0.
+      Axiom IsDiscriminant_FullDecoded_Infinite :
+        M.IsDiscriminant "core::num::flt2dec::decoder::FullDecoded::Infinite" 1.
+      Axiom IsDiscriminant_FullDecoded_Zero :
+        M.IsDiscriminant "core::num::flt2dec::decoder::FullDecoded::Zero" 2.
+      Axiom IsDiscriminant_FullDecoded_Finite :
+        M.IsDiscriminant "core::num::flt2dec::decoder::FullDecoded::Finite" 3.
       
       Module Impl_core_marker_Copy_for_core_num_flt2dec_decoder_FullDecoded.
         Definition Self : Ty.t := Ty.path "core::num::flt2dec::decoder::FullDecoded".

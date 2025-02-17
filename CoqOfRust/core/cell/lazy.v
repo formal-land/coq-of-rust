@@ -13,21 +13,22 @@ Module cell.
           {
             name := "Uninit";
             item := StructTuple [ F ];
-            discriminant := None;
           };
           {
             name := "Init";
             item := StructTuple [ T ];
-            discriminant := None;
           };
           {
             name := "Poisoned";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_State_Uninit : M.IsDiscriminant "core::cell::lazy::State::Uninit" 0.
+    Axiom IsDiscriminant_State_Init : M.IsDiscriminant "core::cell::lazy::State::Init" 1.
+    Axiom IsDiscriminant_State_Poisoned : M.IsDiscriminant "core::cell::lazy::State::Poisoned" 2.
     
     (* StructRecord
       {

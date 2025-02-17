@@ -89008,31 +89008,32 @@ Module num.
         {
           name := "Nan";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Infinite";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Zero";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Subnormal";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Normal";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_FpCategory_Nan : M.IsDiscriminant "core::num::FpCategory::Nan" 0.
+  Axiom IsDiscriminant_FpCategory_Infinite : M.IsDiscriminant "core::num::FpCategory::Infinite" 1.
+  Axiom IsDiscriminant_FpCategory_Zero : M.IsDiscriminant "core::num::FpCategory::Zero" 2.
+  Axiom IsDiscriminant_FpCategory_Subnormal : M.IsDiscriminant "core::num::FpCategory::Subnormal" 3.
+  Axiom IsDiscriminant_FpCategory_Normal : M.IsDiscriminant "core::num::FpCategory::Normal" 4.
   
   Module Impl_core_marker_Copy_for_core_num_FpCategory.
     Definition Self : Ty.t := Ty.path "core::num::FpCategory".

@@ -152,31 +152,37 @@ Module sync.
           {
             name := "Relaxed";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Release";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Acquire";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "AcqRel";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "SeqCst";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_Ordering_Relaxed :
+      M.IsDiscriminant "core::sync::atomic::Ordering::Relaxed" 0.
+    Axiom IsDiscriminant_Ordering_Release :
+      M.IsDiscriminant "core::sync::atomic::Ordering::Release" 1.
+    Axiom IsDiscriminant_Ordering_Acquire :
+      M.IsDiscriminant "core::sync::atomic::Ordering::Acquire" 2.
+    Axiom IsDiscriminant_Ordering_AcqRel :
+      M.IsDiscriminant "core::sync::atomic::Ordering::AcqRel" 3.
+    Axiom IsDiscriminant_Ordering_SeqCst :
+      M.IsDiscriminant "core::sync::atomic::Ordering::SeqCst" 4.
     
     Module Impl_core_marker_Copy_for_core_sync_atomic_Ordering.
       Definition Self : Ty.t := Ty.path "core::sync::atomic::Ordering".

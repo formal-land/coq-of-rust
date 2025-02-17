@@ -31,16 +31,19 @@ Module collections.
             {
               name := "A";
               item := StructTuple [ Ty.associated ];
-              discriminant := None;
             };
             {
               name := "B";
               item := StructTuple [ Ty.associated ];
-              discriminant := None;
             }
           ];
       }
       *)
+      
+      Axiom IsDiscriminant_Peeked_A :
+        M.IsDiscriminant "alloc::collections::btree::merge_iter::Peeked::A" 0.
+      Axiom IsDiscriminant_Peeked_B :
+        M.IsDiscriminant "alloc::collections::btree::merge_iter::Peeked::B" 1.
       
       Module Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_for_alloc_collections_btree_merge_iter_Peeked_I.
         Definition Self (I : Ty.t) : Ty.t :=

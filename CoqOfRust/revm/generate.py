@@ -152,7 +152,7 @@ def get_all_type_definitions():
 
             # Loop through all files in the crate directory
             for root, _, files in sorted(os.walk(crate_path)):
-                for filename in files:
+                for filename in sorted(files):
                     # These files are too long and make an error in JSON parsing
                     if filename == "opcode.json":
                         continue

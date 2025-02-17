@@ -11,26 +11,31 @@ Enum Scope
       {
         name := "Transaction";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Package";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Module";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Function";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Scope_Transaction :
+  M.IsDiscriminant "move_bytecode_verifier_meter::Scope::Transaction" 0.
+Axiom IsDiscriminant_Scope_Package :
+  M.IsDiscriminant "move_bytecode_verifier_meter::Scope::Package" 1.
+Axiom IsDiscriminant_Scope_Module :
+  M.IsDiscriminant "move_bytecode_verifier_meter::Scope::Module" 2.
+Axiom IsDiscriminant_Scope_Function :
+  M.IsDiscriminant "move_bytecode_verifier_meter::Scope::Function" 3.
 
 Module Impl_core_clone_Clone_for_move_bytecode_verifier_meter_Scope.
   Definition Self : Ty.t := Ty.path "move_bytecode_verifier_meter::Scope".

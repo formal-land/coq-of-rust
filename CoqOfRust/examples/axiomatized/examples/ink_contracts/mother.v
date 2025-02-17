@@ -240,21 +240,23 @@ Enum Outline
       {
         name := "NoWinner";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "WinnerDetected";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "PayoutCompleted";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Outline_NoWinner : M.IsDiscriminant "mother::Outline::NoWinner" 0.
+Axiom IsDiscriminant_Outline_WinnerDetected : M.IsDiscriminant "mother::Outline::WinnerDetected" 1.
+Axiom IsDiscriminant_Outline_PayoutCompleted :
+  M.IsDiscriminant "mother::Outline::PayoutCompleted" 2.
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Outline.
   Definition Self : Ty.t := Ty.path "mother::Outline".
@@ -317,31 +319,32 @@ Enum Status
       {
         name := "NotStarted";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "OpeningPeriod";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "EndingPeriod";
         item := StructTuple [ Ty.path "u32" ];
-        discriminant := None;
       };
       {
         name := "Ended";
         item := StructTuple [ Ty.path "mother::Outline" ];
-        discriminant := None;
       };
       {
         name := "RfDelay";
         item := StructTuple [ Ty.path "u32" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Status_NotStarted : M.IsDiscriminant "mother::Status::NotStarted" 0.
+Axiom IsDiscriminant_Status_OpeningPeriod : M.IsDiscriminant "mother::Status::OpeningPeriod" 1.
+Axiom IsDiscriminant_Status_EndingPeriod : M.IsDiscriminant "mother::Status::EndingPeriod" 2.
+Axiom IsDiscriminant_Status_Ended : M.IsDiscriminant "mother::Status::Ended" 3.
+Axiom IsDiscriminant_Status_RfDelay : M.IsDiscriminant "mother::Status::RfDelay" 4.
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Status.
   Definition Self : Ty.t := Ty.path "mother::Status".
@@ -488,16 +491,17 @@ Enum Failure
       {
         name := "Revert";
         item := StructTuple [ Ty.path "alloc::string::String" ];
-        discriminant := None;
       };
       {
         name := "Panic";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Failure_Revert : M.IsDiscriminant "mother::Failure::Revert" 0.
+Axiom IsDiscriminant_Failure_Panic : M.IsDiscriminant "mother::Failure::Panic" 1.
 
 Module Impl_core_marker_StructuralPartialEq_for_mother_Failure.
   Definition Self : Ty.t := Ty.path "mother::Failure".
@@ -555,11 +559,12 @@ Enum Event
       {
         name := "AuctionEchoed";
         item := StructTuple [ Ty.path "mother::AuctionEchoed" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Event_AuctionEchoed : M.IsDiscriminant "mother::Event::AuctionEchoed" 0.
 
 Module Impl_mother_Env.
   Definition Self : Ty.t := Ty.path "mother::Env".

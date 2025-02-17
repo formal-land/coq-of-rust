@@ -117,11 +117,13 @@ Enum LangError
       {
         name := "CouldNotReadInput";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_LangError_CouldNotReadInput :
+  M.IsDiscriminant "constructors_return_value::LangError::CouldNotReadInput" 0.
 
 Axiom ConstructorResult :
   forall (T : Ty.t),

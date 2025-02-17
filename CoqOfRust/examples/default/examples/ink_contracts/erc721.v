@@ -438,41 +438,42 @@ Enum Error
       {
         name := "NotOwner";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "NotApproved";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "TokenExists";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "TokenNotFound";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "CannotInsert";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "CannotFetchValue";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "NotAllowed";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Error_NotOwner : M.IsDiscriminant "erc721::Error::NotOwner" 0.
+Axiom IsDiscriminant_Error_NotApproved : M.IsDiscriminant "erc721::Error::NotApproved" 1.
+Axiom IsDiscriminant_Error_TokenExists : M.IsDiscriminant "erc721::Error::TokenExists" 2.
+Axiom IsDiscriminant_Error_TokenNotFound : M.IsDiscriminant "erc721::Error::TokenNotFound" 3.
+Axiom IsDiscriminant_Error_CannotInsert : M.IsDiscriminant "erc721::Error::CannotInsert" 4.
+Axiom IsDiscriminant_Error_CannotFetchValue : M.IsDiscriminant "erc721::Error::CannotFetchValue" 5.
+Axiom IsDiscriminant_Error_NotAllowed : M.IsDiscriminant "erc721::Error::NotAllowed" 6.
 
 Module Impl_core_marker_StructuralPartialEq_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".
@@ -636,21 +637,22 @@ Enum Event
       {
         name := "Transfer";
         item := StructTuple [ Ty.path "erc721::Transfer" ];
-        discriminant := None;
       };
       {
         name := "Approval";
         item := StructTuple [ Ty.path "erc721::Approval" ];
-        discriminant := None;
       };
       {
         name := "ApprovalForAll";
         item := StructTuple [ Ty.path "erc721::ApprovalForAll" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Event_Transfer : M.IsDiscriminant "erc721::Event::Transfer" 0.
+Axiom IsDiscriminant_Event_Approval : M.IsDiscriminant "erc721::Event::Approval" 1.
+Axiom IsDiscriminant_Event_ApprovalForAll : M.IsDiscriminant "erc721::Event::ApprovalForAll" 2.
 
 Module Impl_erc721_Env.
   Definition Self : Ty.t := Ty.path "erc721::Env".

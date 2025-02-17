@@ -11619,7 +11619,6 @@ Module file_format.
         {
           name := "Native";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Declared";
@@ -11634,11 +11633,15 @@ Module file_format.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_StructFieldInformation_Native :
+    M.IsDiscriminant "move_binary_format::file_format::StructFieldInformation::Native" 0.
+  Axiom IsDiscriminant_StructFieldInformation_Declared :
+    M.IsDiscriminant "move_binary_format::file_format::StructFieldInformation::Declared" 1.
   
   Module Impl_core_clone_Clone_for_move_binary_format_file_format_StructFieldInformation.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructFieldInformation".
@@ -14090,21 +14093,25 @@ Module file_format.
         {
           name := "Private";
           item := StructTuple [];
-          discriminant := Some 0;
         };
         {
           name := "Public";
           item := StructTuple [];
-          discriminant := Some 1;
         };
         {
           name := "Friend";
           item := StructTuple [];
-          discriminant := Some 3;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Visibility_Private :
+    M.IsDiscriminant "move_binary_format::file_format::Visibility::Private" 0.
+  Axiom IsDiscriminant_Visibility_Public :
+    M.IsDiscriminant "move_binary_format::file_format::Visibility::Public" 1.
+  Axiom IsDiscriminant_Visibility_Friend :
+    M.IsDiscriminant "move_binary_format::file_format::Visibility::Friend" 3.
   
   Module Impl_core_default_Default_for_move_binary_format_file_format_Visibility.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Visibility".
@@ -16818,26 +16825,31 @@ Module file_format.
         {
           name := "Copy";
           item := StructTuple [];
-          discriminant := Some 1;
         };
         {
           name := "Drop";
           item := StructTuple [];
-          discriminant := Some 2;
         };
         {
           name := "Store";
           item := StructTuple [];
-          discriminant := Some 4;
         };
         {
           name := "Key";
           item := StructTuple [];
-          discriminant := Some 8;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Ability_Copy :
+    M.IsDiscriminant "move_binary_format::file_format::Ability::Copy" 1.
+  Axiom IsDiscriminant_Ability_Drop :
+    M.IsDiscriminant "move_binary_format::file_format::Ability::Drop" 2.
+  Axiom IsDiscriminant_Ability_Store :
+    M.IsDiscriminant "move_binary_format::file_format::Ability::Store" 4.
+  Axiom IsDiscriminant_Ability_Key :
+    M.IsDiscriminant "move_binary_format::file_format::Ability::Key" 8.
   
   Module Impl_core_fmt_Debug_for_move_binary_format_file_format_Ability.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Ability".
@@ -19874,32 +19886,26 @@ Module file_format.
         {
           name := "Bool";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U8";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U64";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U128";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Address";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Signer";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Vector";
@@ -19914,12 +19920,10 @@ Module file_format.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         };
         {
           name := "Struct";
           item := StructTuple [ Ty.path "move_binary_format::file_format::StructHandleIndex" ];
-          discriminant := None;
         };
         {
           name := "StructInstantiation";
@@ -19944,7 +19948,6 @@ Module file_format.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         };
         {
           name := "Reference";
@@ -19959,7 +19962,6 @@ Module file_format.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         };
         {
           name := "MutableReference";
@@ -19974,31 +19976,57 @@ Module file_format.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         };
         {
           name := "TypeParameter";
           item := StructTuple [ Ty.path "u16" ];
-          discriminant := None;
         };
         {
           name := "U16";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U32";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U256";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_SignatureToken_Bool :
+    M.IsDiscriminant "move_binary_format::file_format::SignatureToken::Bool" 0.
+  Axiom IsDiscriminant_SignatureToken_U8 :
+    M.IsDiscriminant "move_binary_format::file_format::SignatureToken::U8" 1.
+  Axiom IsDiscriminant_SignatureToken_U64 :
+    M.IsDiscriminant "move_binary_format::file_format::SignatureToken::U64" 2.
+  Axiom IsDiscriminant_SignatureToken_U128 :
+    M.IsDiscriminant "move_binary_format::file_format::SignatureToken::U128" 3.
+  Axiom IsDiscriminant_SignatureToken_Address :
+    M.IsDiscriminant "move_binary_format::file_format::SignatureToken::Address" 4.
+  Axiom IsDiscriminant_SignatureToken_Signer :
+    M.IsDiscriminant "move_binary_format::file_format::SignatureToken::Signer" 5.
+  Axiom IsDiscriminant_SignatureToken_Vector :
+    M.IsDiscriminant "move_binary_format::file_format::SignatureToken::Vector" 6.
+  Axiom IsDiscriminant_SignatureToken_Struct :
+    M.IsDiscriminant "move_binary_format::file_format::SignatureToken::Struct" 7.
+  Axiom IsDiscriminant_SignatureToken_StructInstantiation :
+    M.IsDiscriminant "move_binary_format::file_format::SignatureToken::StructInstantiation" 8.
+  Axiom IsDiscriminant_SignatureToken_Reference :
+    M.IsDiscriminant "move_binary_format::file_format::SignatureToken::Reference" 9.
+  Axiom IsDiscriminant_SignatureToken_MutableReference :
+    M.IsDiscriminant "move_binary_format::file_format::SignatureToken::MutableReference" 10.
+  Axiom IsDiscriminant_SignatureToken_TypeParameter :
+    M.IsDiscriminant "move_binary_format::file_format::SignatureToken::TypeParameter" 11.
+  Axiom IsDiscriminant_SignatureToken_U16 :
+    M.IsDiscriminant "move_binary_format::file_format::SignatureToken::U16" 12.
+  Axiom IsDiscriminant_SignatureToken_U32 :
+    M.IsDiscriminant "move_binary_format::file_format::SignatureToken::U32" 13.
+  Axiom IsDiscriminant_SignatureToken_U256 :
+    M.IsDiscriminant "move_binary_format::file_format::SignatureToken::U256" 14.
   
   Module Impl_core_clone_Clone_for_move_binary_format_file_format_SignatureToken.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::SignatureToken".
@@ -26342,37 +26370,30 @@ Module file_format.
         {
           name := "Pop";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Ret";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BrTrue";
           item := StructTuple [ Ty.path "u16" ];
-          discriminant := None;
         };
         {
           name := "BrFalse";
           item := StructTuple [ Ty.path "u16" ];
-          discriminant := None;
         };
         {
           name := "Branch";
           item := StructTuple [ Ty.path "u16" ];
-          discriminant := None;
         };
         {
           name := "LdU8";
           item := StructTuple [ Ty.path "u8" ];
-          discriminant := None;
         };
         {
           name := "LdU64";
           item := StructTuple [ Ty.path "u64" ];
-          discriminant := None;
         };
         {
           name := "LdU128";
@@ -26384,291 +26405,235 @@ Module file_format.
                   []
                   [ Ty.path "u128"; Ty.path "alloc::alloc::Global" ]
               ];
-          discriminant := None;
         };
         {
           name := "CastU8";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CastU64";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CastU128";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "LdConst";
           item := StructTuple [ Ty.path "move_binary_format::file_format::ConstantPoolIndex" ];
-          discriminant := None;
         };
         {
           name := "LdTrue";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "LdFalse";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CopyLoc";
           item := StructTuple [ Ty.path "u8" ];
-          discriminant := None;
         };
         {
           name := "MoveLoc";
           item := StructTuple [ Ty.path "u8" ];
-          discriminant := None;
         };
         {
           name := "StLoc";
           item := StructTuple [ Ty.path "u8" ];
-          discriminant := None;
         };
         {
           name := "Call";
           item := StructTuple [ Ty.path "move_binary_format::file_format::FunctionHandleIndex" ];
-          discriminant := None;
         };
         {
           name := "CallGeneric";
           item :=
             StructTuple [ Ty.path "move_binary_format::file_format::FunctionInstantiationIndex" ];
-          discriminant := None;
         };
         {
           name := "Pack";
           item := StructTuple [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ];
-          discriminant := None;
         };
         {
           name := "PackGeneric";
           item :=
             StructTuple [ Ty.path "move_binary_format::file_format::StructDefInstantiationIndex" ];
-          discriminant := None;
         };
         {
           name := "Unpack";
           item := StructTuple [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ];
-          discriminant := None;
         };
         {
           name := "UnpackGeneric";
           item :=
             StructTuple [ Ty.path "move_binary_format::file_format::StructDefInstantiationIndex" ];
-          discriminant := None;
         };
         {
           name := "ReadRef";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "WriteRef";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "FreezeRef";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "MutBorrowLoc";
           item := StructTuple [ Ty.path "u8" ];
-          discriminant := None;
         };
         {
           name := "ImmBorrowLoc";
           item := StructTuple [ Ty.path "u8" ];
-          discriminant := None;
         };
         {
           name := "MutBorrowField";
           item := StructTuple [ Ty.path "move_binary_format::file_format::FieldHandleIndex" ];
-          discriminant := None;
         };
         {
           name := "MutBorrowFieldGeneric";
           item :=
             StructTuple [ Ty.path "move_binary_format::file_format::FieldInstantiationIndex" ];
-          discriminant := None;
         };
         {
           name := "ImmBorrowField";
           item := StructTuple [ Ty.path "move_binary_format::file_format::FieldHandleIndex" ];
-          discriminant := None;
         };
         {
           name := "ImmBorrowFieldGeneric";
           item :=
             StructTuple [ Ty.path "move_binary_format::file_format::FieldInstantiationIndex" ];
-          discriminant := None;
         };
         {
           name := "Add";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Sub";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Mul";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Mod";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Div";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BitOr";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BitAnd";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Xor";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Or";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "And";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Not";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Eq";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Neq";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Lt";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Gt";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Le";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Ge";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Abort";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Nop";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Shl";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Shr";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "VecPack";
           item :=
             StructTuple
               [ Ty.path "move_binary_format::file_format::SignatureIndex"; Ty.path "u64" ];
-          discriminant := None;
         };
         {
           name := "VecLen";
           item := StructTuple [ Ty.path "move_binary_format::file_format::SignatureIndex" ];
-          discriminant := None;
         };
         {
           name := "VecImmBorrow";
           item := StructTuple [ Ty.path "move_binary_format::file_format::SignatureIndex" ];
-          discriminant := None;
         };
         {
           name := "VecMutBorrow";
           item := StructTuple [ Ty.path "move_binary_format::file_format::SignatureIndex" ];
-          discriminant := None;
         };
         {
           name := "VecPushBack";
           item := StructTuple [ Ty.path "move_binary_format::file_format::SignatureIndex" ];
-          discriminant := None;
         };
         {
           name := "VecPopBack";
           item := StructTuple [ Ty.path "move_binary_format::file_format::SignatureIndex" ];
-          discriminant := None;
         };
         {
           name := "VecUnpack";
           item :=
             StructTuple
               [ Ty.path "move_binary_format::file_format::SignatureIndex"; Ty.path "u64" ];
-          discriminant := None;
         };
         {
           name := "VecSwap";
           item := StructTuple [ Ty.path "move_binary_format::file_format::SignatureIndex" ];
-          discriminant := None;
         };
         {
           name := "LdU16";
           item := StructTuple [ Ty.path "u16" ];
-          discriminant := None;
         };
         {
           name := "LdU32";
           item := StructTuple [ Ty.path "u32" ];
-          discriminant := None;
         };
         {
           name := "LdU256";
@@ -26680,81 +26645,226 @@ Module file_format.
                   []
                   [ Ty.path "move_core_types::u256::U256"; Ty.path "alloc::alloc::Global" ]
               ];
-          discriminant := None;
         };
         {
           name := "CastU16";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CastU32";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CastU256";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ExistsDeprecated";
           item := StructTuple [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ];
-          discriminant := None;
         };
         {
           name := "ExistsGenericDeprecated";
           item :=
             StructTuple [ Ty.path "move_binary_format::file_format::StructDefInstantiationIndex" ];
-          discriminant := None;
         };
         {
           name := "MoveFromDeprecated";
           item := StructTuple [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ];
-          discriminant := None;
         };
         {
           name := "MoveFromGenericDeprecated";
           item :=
             StructTuple [ Ty.path "move_binary_format::file_format::StructDefInstantiationIndex" ];
-          discriminant := None;
         };
         {
           name := "MoveToDeprecated";
           item := StructTuple [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ];
-          discriminant := None;
         };
         {
           name := "MoveToGenericDeprecated";
           item :=
             StructTuple [ Ty.path "move_binary_format::file_format::StructDefInstantiationIndex" ];
-          discriminant := None;
         };
         {
           name := "MutBorrowGlobalDeprecated";
           item := StructTuple [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ];
-          discriminant := None;
         };
         {
           name := "MutBorrowGlobalGenericDeprecated";
           item :=
             StructTuple [ Ty.path "move_binary_format::file_format::StructDefInstantiationIndex" ];
-          discriminant := None;
         };
         {
           name := "ImmBorrowGlobalDeprecated";
           item := StructTuple [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ];
-          discriminant := None;
         };
         {
           name := "ImmBorrowGlobalGenericDeprecated";
           item :=
             StructTuple [ Ty.path "move_binary_format::file_format::StructDefInstantiationIndex" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Bytecode_Pop :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Pop" 0.
+  Axiom IsDiscriminant_Bytecode_Ret :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Ret" 1.
+  Axiom IsDiscriminant_Bytecode_BrTrue :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::BrTrue" 2.
+  Axiom IsDiscriminant_Bytecode_BrFalse :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::BrFalse" 3.
+  Axiom IsDiscriminant_Bytecode_Branch :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Branch" 4.
+  Axiom IsDiscriminant_Bytecode_LdU8 :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::LdU8" 5.
+  Axiom IsDiscriminant_Bytecode_LdU64 :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::LdU64" 6.
+  Axiom IsDiscriminant_Bytecode_LdU128 :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::LdU128" 7.
+  Axiom IsDiscriminant_Bytecode_CastU8 :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::CastU8" 8.
+  Axiom IsDiscriminant_Bytecode_CastU64 :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::CastU64" 9.
+  Axiom IsDiscriminant_Bytecode_CastU128 :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::CastU128" 10.
+  Axiom IsDiscriminant_Bytecode_LdConst :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::LdConst" 11.
+  Axiom IsDiscriminant_Bytecode_LdTrue :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::LdTrue" 12.
+  Axiom IsDiscriminant_Bytecode_LdFalse :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::LdFalse" 13.
+  Axiom IsDiscriminant_Bytecode_CopyLoc :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::CopyLoc" 14.
+  Axiom IsDiscriminant_Bytecode_MoveLoc :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::MoveLoc" 15.
+  Axiom IsDiscriminant_Bytecode_StLoc :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::StLoc" 16.
+  Axiom IsDiscriminant_Bytecode_Call :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Call" 17.
+  Axiom IsDiscriminant_Bytecode_CallGeneric :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::CallGeneric" 18.
+  Axiom IsDiscriminant_Bytecode_Pack :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Pack" 19.
+  Axiom IsDiscriminant_Bytecode_PackGeneric :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::PackGeneric" 20.
+  Axiom IsDiscriminant_Bytecode_Unpack :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Unpack" 21.
+  Axiom IsDiscriminant_Bytecode_UnpackGeneric :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::UnpackGeneric" 22.
+  Axiom IsDiscriminant_Bytecode_ReadRef :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::ReadRef" 23.
+  Axiom IsDiscriminant_Bytecode_WriteRef :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::WriteRef" 24.
+  Axiom IsDiscriminant_Bytecode_FreezeRef :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::FreezeRef" 25.
+  Axiom IsDiscriminant_Bytecode_MutBorrowLoc :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::MutBorrowLoc" 26.
+  Axiom IsDiscriminant_Bytecode_ImmBorrowLoc :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::ImmBorrowLoc" 27.
+  Axiom IsDiscriminant_Bytecode_MutBorrowField :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::MutBorrowField" 28.
+  Axiom IsDiscriminant_Bytecode_MutBorrowFieldGeneric :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::MutBorrowFieldGeneric" 29.
+  Axiom IsDiscriminant_Bytecode_ImmBorrowField :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::ImmBorrowField" 30.
+  Axiom IsDiscriminant_Bytecode_ImmBorrowFieldGeneric :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::ImmBorrowFieldGeneric" 31.
+  Axiom IsDiscriminant_Bytecode_Add :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Add" 32.
+  Axiom IsDiscriminant_Bytecode_Sub :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Sub" 33.
+  Axiom IsDiscriminant_Bytecode_Mul :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Mul" 34.
+  Axiom IsDiscriminant_Bytecode_Mod :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Mod" 35.
+  Axiom IsDiscriminant_Bytecode_Div :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Div" 36.
+  Axiom IsDiscriminant_Bytecode_BitOr :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::BitOr" 37.
+  Axiom IsDiscriminant_Bytecode_BitAnd :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::BitAnd" 38.
+  Axiom IsDiscriminant_Bytecode_Xor :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Xor" 39.
+  Axiom IsDiscriminant_Bytecode_Or :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Or" 40.
+  Axiom IsDiscriminant_Bytecode_And :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::And" 41.
+  Axiom IsDiscriminant_Bytecode_Not :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Not" 42.
+  Axiom IsDiscriminant_Bytecode_Eq :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Eq" 43.
+  Axiom IsDiscriminant_Bytecode_Neq :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Neq" 44.
+  Axiom IsDiscriminant_Bytecode_Lt :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Lt" 45.
+  Axiom IsDiscriminant_Bytecode_Gt :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Gt" 46.
+  Axiom IsDiscriminant_Bytecode_Le :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Le" 47.
+  Axiom IsDiscriminant_Bytecode_Ge :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Ge" 48.
+  Axiom IsDiscriminant_Bytecode_Abort :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Abort" 49.
+  Axiom IsDiscriminant_Bytecode_Nop :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Nop" 50.
+  Axiom IsDiscriminant_Bytecode_Shl :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Shl" 51.
+  Axiom IsDiscriminant_Bytecode_Shr :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::Shr" 52.
+  Axiom IsDiscriminant_Bytecode_VecPack :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::VecPack" 53.
+  Axiom IsDiscriminant_Bytecode_VecLen :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::VecLen" 54.
+  Axiom IsDiscriminant_Bytecode_VecImmBorrow :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::VecImmBorrow" 55.
+  Axiom IsDiscriminant_Bytecode_VecMutBorrow :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::VecMutBorrow" 56.
+  Axiom IsDiscriminant_Bytecode_VecPushBack :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::VecPushBack" 57.
+  Axiom IsDiscriminant_Bytecode_VecPopBack :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::VecPopBack" 58.
+  Axiom IsDiscriminant_Bytecode_VecUnpack :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::VecUnpack" 59.
+  Axiom IsDiscriminant_Bytecode_VecSwap :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::VecSwap" 60.
+  Axiom IsDiscriminant_Bytecode_LdU16 :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::LdU16" 61.
+  Axiom IsDiscriminant_Bytecode_LdU32 :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::LdU32" 62.
+  Axiom IsDiscriminant_Bytecode_LdU256 :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::LdU256" 63.
+  Axiom IsDiscriminant_Bytecode_CastU16 :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::CastU16" 64.
+  Axiom IsDiscriminant_Bytecode_CastU32 :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::CastU32" 65.
+  Axiom IsDiscriminant_Bytecode_CastU256 :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::CastU256" 66.
+  Axiom IsDiscriminant_Bytecode_ExistsDeprecated :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::ExistsDeprecated" 67.
+  Axiom IsDiscriminant_Bytecode_ExistsGenericDeprecated :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::ExistsGenericDeprecated" 68.
+  Axiom IsDiscriminant_Bytecode_MoveFromDeprecated :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::MoveFromDeprecated" 69.
+  Axiom IsDiscriminant_Bytecode_MoveFromGenericDeprecated :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::MoveFromGenericDeprecated" 70.
+  Axiom IsDiscriminant_Bytecode_MoveToDeprecated :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::MoveToDeprecated" 71.
+  Axiom IsDiscriminant_Bytecode_MoveToGenericDeprecated :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::MoveToGenericDeprecated" 72.
+  Axiom IsDiscriminant_Bytecode_MutBorrowGlobalDeprecated :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::MutBorrowGlobalDeprecated" 73.
+  Axiom IsDiscriminant_Bytecode_MutBorrowGlobalGenericDeprecated :
+    M.IsDiscriminant
+      "move_binary_format::file_format::Bytecode::MutBorrowGlobalGenericDeprecated"
+      74.
+  Axiom IsDiscriminant_Bytecode_ImmBorrowGlobalDeprecated :
+    M.IsDiscriminant "move_binary_format::file_format::Bytecode::ImmBorrowGlobalDeprecated" 75.
+  Axiom IsDiscriminant_Bytecode_ImmBorrowGlobalGenericDeprecated :
+    M.IsDiscriminant
+      "move_binary_format::file_format::Bytecode::ImmBorrowGlobalGenericDeprecated"
+      76.
   
   Module Impl_core_clone_Clone_for_move_binary_format_file_format_Bytecode.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Bytecode".

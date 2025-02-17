@@ -12,7 +12,6 @@ Module bytecode.
         {
           name := "LegacyAnalyzed";
           item := StructTuple [ Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode" ];
-          discriminant := None;
         };
         {
           name := "Eof";
@@ -24,16 +23,20 @@ Module bytecode.
                   []
                   [ Ty.path "revm_bytecode::eof::Eof"; Ty.path "alloc::alloc::Global" ]
               ];
-          discriminant := None;
         };
         {
           name := "Eip7702";
           item := StructTuple [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Bytecode_LegacyAnalyzed :
+    M.IsDiscriminant "revm_bytecode::bytecode::Bytecode::LegacyAnalyzed" 0.
+  Axiom IsDiscriminant_Bytecode_Eof : M.IsDiscriminant "revm_bytecode::bytecode::Bytecode::Eof" 1.
+  Axiom IsDiscriminant_Bytecode_Eip7702 :
+    M.IsDiscriminant "revm_bytecode::bytecode::Bytecode::Eip7702" 2.
   
   Module Impl_core_clone_Clone_for_revm_bytecode_bytecode_Bytecode.
     Definition Self : Ty.t := Ty.path "revm_bytecode::bytecode::Bytecode".

@@ -1639,16 +1639,19 @@ Module cfg.
         {
           name := "Raw";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Analyse";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_AnalysisKind_Raw :
+    M.IsDiscriminant "revm_context_interface::cfg::AnalysisKind::Raw" 0.
+  Axiom IsDiscriminant_AnalysisKind_Analyse :
+    M.IsDiscriminant "revm_context_interface::cfg::AnalysisKind::Analyse" 1.
   
   Module Impl_core_clone_Clone_for_revm_context_interface_cfg_AnalysisKind.
     Definition Self : Ty.t := Ty.path "revm_context_interface::cfg::AnalysisKind".
@@ -1936,7 +1939,6 @@ Module cfg.
         {
           name := "Create";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Create2";
@@ -1949,11 +1951,15 @@ Module cfg.
                     [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                     [])
               ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_CreateScheme_Create :
+    M.IsDiscriminant "revm_context_interface::cfg::CreateScheme::Create" 0.
+  Axiom IsDiscriminant_CreateScheme_Create2 :
+    M.IsDiscriminant "revm_context_interface::cfg::CreateScheme::Create2" 1.
   
   Module Impl_core_clone_Clone_for_revm_context_interface_cfg_CreateScheme.
     Definition Self : Ty.t := Ty.path "revm_context_interface::cfg::CreateScheme".

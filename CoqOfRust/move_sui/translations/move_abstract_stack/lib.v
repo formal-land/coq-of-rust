@@ -2091,21 +2091,25 @@ Enum AbsStackError
       {
         name := "ElementNotEqual";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Underflow";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Overflow";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_AbsStackError_ElementNotEqual :
+  M.IsDiscriminant "move_abstract_stack::AbsStackError::ElementNotEqual" 0.
+Axiom IsDiscriminant_AbsStackError_Underflow :
+  M.IsDiscriminant "move_abstract_stack::AbsStackError::Underflow" 1.
+Axiom IsDiscriminant_AbsStackError_Overflow :
+  M.IsDiscriminant "move_abstract_stack::AbsStackError::Overflow" 2.
 
 Module Impl_core_cmp_Eq_for_move_abstract_stack_AbsStackError.
   Definition Self : Ty.t := Ty.path "move_abstract_stack::AbsStackError".

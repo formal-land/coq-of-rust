@@ -449,6 +449,7 @@ Module convert.
   }
   *)
   
+  
   Module Impl_core_marker_Copy_for_core_convert_Infallible.
     Definition Self : Ty.t := Ty.path "core::convert::Infallible".
     

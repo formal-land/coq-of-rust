@@ -11,21 +11,22 @@ Enum Food
       {
         name := "CordonBleu";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Steak";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Sushi";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Food_CordonBleu : M.IsDiscriminant "combinators_and_then::Food::CordonBleu" 0.
+Axiom IsDiscriminant_Food_Steak : M.IsDiscriminant "combinators_and_then::Food::Steak" 1.
+Axiom IsDiscriminant_Food_Sushi : M.IsDiscriminant "combinators_and_then::Food::Sushi" 2.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
   Definition Self : Ty.t := Ty.path "combinators_and_then::Food".
@@ -50,21 +51,22 @@ Enum Day
       {
         name := "Monday";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Tuesday";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Wednesday";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Day_Monday : M.IsDiscriminant "combinators_and_then::Day::Monday" 0.
+Axiom IsDiscriminant_Day_Tuesday : M.IsDiscriminant "combinators_and_then::Day::Tuesday" 1.
+Axiom IsDiscriminant_Day_Wednesday : M.IsDiscriminant "combinators_and_then::Day::Wednesday" 2.
 
 Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
   Definition Self : Ty.t := Ty.path "combinators_and_then::Day".

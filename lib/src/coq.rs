@@ -1019,13 +1019,6 @@ impl Expression {
         }
     }
 
-    pub(crate) fn of_option<'b, A>(expr: &'b Option<A>, to_coq: fn(&'b A) -> Rc<Self>) -> Rc<Self> {
-        match expr {
-            None => Expression::just_name("None"),
-            Some(expr) => Expression::just_name("Some").apply(to_coq(expr)),
-        }
-    }
-
     /// A pattern for a name, taking into account names that are known
     /// constructors in Coq.
     pub(crate) fn name_pattern(name: &str) -> Rc<Self> {

@@ -12,16 +12,19 @@ Module abi.
         {
           name := "TransactionScript";
           item := StructTuple [ Ty.path "move_core_types::abi::TransactionScriptABI" ];
-          discriminant := None;
         };
         {
           name := "ScriptFunction";
           item := StructTuple [ Ty.path "move_core_types::abi::ScriptFunctionABI" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_ScriptABI_TransactionScript :
+    M.IsDiscriminant "move_core_types::abi::ScriptABI::TransactionScript" 0.
+  Axiom IsDiscriminant_ScriptABI_ScriptFunction :
+    M.IsDiscriminant "move_core_types::abi::ScriptABI::ScriptFunction" 1.
   
   Module Impl_core_clone_Clone_for_move_core_types_abi_ScriptABI.
     Definition Self : Ty.t := Ty.path "move_core_types::abi::ScriptABI".

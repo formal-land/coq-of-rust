@@ -12,16 +12,17 @@ Module result.
         {
           name := "Ok";
           item := StructTuple [ T ];
-          discriminant := None;
         };
         {
           name := "Err";
           item := StructTuple [ E ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Result_Ok : M.IsDiscriminant "core::result::Result::Ok" 0.
+  Axiom IsDiscriminant_Result_Err : M.IsDiscriminant "core::result::Result::Err" 1.
   
   Module Impl_core_marker_Copy_where_core_marker_Copy_T_where_core_marker_Copy_E_for_core_result_Result_T_E.
     Definition Self (T E : Ty.t) : Ty.t := Ty.apply (Ty.path "core::result::Result") [] [ T; E ].

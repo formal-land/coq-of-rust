@@ -11,101 +11,121 @@ Enum IndexKind
       {
         name := "ModuleHandle";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "StructHandle";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "FunctionHandle";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "FieldHandle";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "FriendDeclaration";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "FunctionInstantiation";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "FieldInstantiation";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "StructDefinition";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "StructDefInstantiation";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "FunctionDefinition";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "FieldDefinition";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Signature";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Identifier";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "AddressIdentifier";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "ConstantPool";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "LocalPool";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "CodeDefinition";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "TypeParameter";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "MemberCount";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_IndexKind_ModuleHandle :
+  M.IsDiscriminant "move_binary_format::IndexKind::ModuleHandle" 0.
+Axiom IsDiscriminant_IndexKind_StructHandle :
+  M.IsDiscriminant "move_binary_format::IndexKind::StructHandle" 1.
+Axiom IsDiscriminant_IndexKind_FunctionHandle :
+  M.IsDiscriminant "move_binary_format::IndexKind::FunctionHandle" 2.
+Axiom IsDiscriminant_IndexKind_FieldHandle :
+  M.IsDiscriminant "move_binary_format::IndexKind::FieldHandle" 3.
+Axiom IsDiscriminant_IndexKind_FriendDeclaration :
+  M.IsDiscriminant "move_binary_format::IndexKind::FriendDeclaration" 4.
+Axiom IsDiscriminant_IndexKind_FunctionInstantiation :
+  M.IsDiscriminant "move_binary_format::IndexKind::FunctionInstantiation" 5.
+Axiom IsDiscriminant_IndexKind_FieldInstantiation :
+  M.IsDiscriminant "move_binary_format::IndexKind::FieldInstantiation" 6.
+Axiom IsDiscriminant_IndexKind_StructDefinition :
+  M.IsDiscriminant "move_binary_format::IndexKind::StructDefinition" 7.
+Axiom IsDiscriminant_IndexKind_StructDefInstantiation :
+  M.IsDiscriminant "move_binary_format::IndexKind::StructDefInstantiation" 8.
+Axiom IsDiscriminant_IndexKind_FunctionDefinition :
+  M.IsDiscriminant "move_binary_format::IndexKind::FunctionDefinition" 9.
+Axiom IsDiscriminant_IndexKind_FieldDefinition :
+  M.IsDiscriminant "move_binary_format::IndexKind::FieldDefinition" 10.
+Axiom IsDiscriminant_IndexKind_Signature :
+  M.IsDiscriminant "move_binary_format::IndexKind::Signature" 11.
+Axiom IsDiscriminant_IndexKind_Identifier :
+  M.IsDiscriminant "move_binary_format::IndexKind::Identifier" 12.
+Axiom IsDiscriminant_IndexKind_AddressIdentifier :
+  M.IsDiscriminant "move_binary_format::IndexKind::AddressIdentifier" 13.
+Axiom IsDiscriminant_IndexKind_ConstantPool :
+  M.IsDiscriminant "move_binary_format::IndexKind::ConstantPool" 14.
+Axiom IsDiscriminant_IndexKind_LocalPool :
+  M.IsDiscriminant "move_binary_format::IndexKind::LocalPool" 15.
+Axiom IsDiscriminant_IndexKind_CodeDefinition :
+  M.IsDiscriminant "move_binary_format::IndexKind::CodeDefinition" 16.
+Axiom IsDiscriminant_IndexKind_TypeParameter :
+  M.IsDiscriminant "move_binary_format::IndexKind::TypeParameter" 17.
+Axiom IsDiscriminant_IndexKind_MemberCount :
+  M.IsDiscriminant "move_binary_format::IndexKind::MemberCount" 18.
 
 Module Impl_core_marker_Copy_for_move_binary_format_IndexKind.
   Definition Self : Ty.t := Ty.path "move_binary_format::IndexKind".
@@ -1072,21 +1092,25 @@ Enum SignatureTokenKind
       {
         name := "Value";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Reference";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "MutableReference";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_SignatureTokenKind_Value :
+  M.IsDiscriminant "move_binary_format::SignatureTokenKind::Value" 0.
+Axiom IsDiscriminant_SignatureTokenKind_Reference :
+  M.IsDiscriminant "move_binary_format::SignatureTokenKind::Reference" 1.
+Axiom IsDiscriminant_SignatureTokenKind_MutableReference :
+  M.IsDiscriminant "move_binary_format::SignatureTokenKind::MutableReference" 2.
 
 Module Impl_core_marker_Copy_for_move_binary_format_SignatureTokenKind.
   Definition Self : Ty.t := Ty.path "move_binary_format::SignatureTokenKind".

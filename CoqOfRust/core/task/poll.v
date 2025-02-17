@@ -13,16 +13,17 @@ Module task.
           {
             name := "Ready";
             item := StructTuple [ T ];
-            discriminant := None;
           };
           {
             name := "Pending";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_Poll_Ready : M.IsDiscriminant "core::task::poll::Poll::Ready" 0.
+    Axiom IsDiscriminant_Poll_Pending : M.IsDiscriminant "core::task::poll::Poll::Pending" 1.
     
     Module Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_task_poll_Poll_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ].

@@ -13,21 +13,31 @@ Module locals_safety.
           {
             name := "Unavailable";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "MaybeAvailable";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Available";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_LocalState_Unavailable :
+      M.IsDiscriminant
+        "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
+        0.
+    Axiom IsDiscriminant_LocalState_MaybeAvailable :
+      M.IsDiscriminant
+        "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
+        1.
+    Axiom IsDiscriminant_LocalState_Available :
+      M.IsDiscriminant
+        "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
+        2.
     
     Module Impl_core_clone_Clone_for_move_bytecode_verifier_locals_safety_abstract_state_LocalState.
       Definition Self : Ty.t :=

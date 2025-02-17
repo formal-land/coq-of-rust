@@ -3,88 +3,6 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import revm.links.dependencies.
 
-Module Eip7702Bytecode.
-  Record t : Set := {
-    delegated_address: alloy_primitives.bits.links.address.Address.t;
-    version: U8.t;
-    raw: alloy_primitives.links.bytes_.Bytes.t;
-  }.
-
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
-    φ '(Build_t delegated_address version raw) :=
-      Value.StructRecord "revm_bytecode::eip7702::Eip7702Bytecode" [
-        ("delegated_address", φ delegated_address);
-        ("version", φ version);
-        ("raw", φ raw)
-      ]
-  }.
-End Eip7702Bytecode.
-
-Module Eip7702DecodeError.
-  Inductive t : Set :=
-  | InvalidLength
-  | InvalidMagic
-  | UnsupportedVersion
-  .
-
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_bytecode::eip7702::Eip7702DecodeError";
-    φ x :=
-      match x with
-      | InvalidLength =>
-        Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::InvalidLength" []
-      | InvalidMagic =>
-        Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::InvalidMagic" []
-      | UnsupportedVersion =>
-        Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::UnsupportedVersion" []
-      end
-  }.
-
-  Definition of_ty : OfTy.t (Ty.path "revm_bytecode::eip7702::Eip7702DecodeError").
-  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
-  Smpl Add simple apply of_ty : of_ty.
-
-  Lemma of_value_with_InvalidLength :
-    Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::InvalidLength" [] =
-    φ InvalidLength.
-  Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_InvalidLength : of_value.
-
-  Lemma of_value_with_InvalidMagic :
-    Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::InvalidMagic" [] =
-    φ InvalidMagic.
-  Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_InvalidMagic : of_value.
-
-  Lemma of_value_with_UnsupportedVersion :
-    Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::UnsupportedVersion" [] =
-    φ UnsupportedVersion.
-  Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_UnsupportedVersion : of_value.
-
-  Definition of_value_InvalidLength :
-    OfValue.t (
-      Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::InvalidLength" []
-    ).
-  Proof. econstructor; apply of_value_with_InvalidLength; eassumption. Defined.
-  Smpl Add simple apply of_value_InvalidLength : of_value.
-
-  Definition of_value_InvalidMagic :
-    OfValue.t (
-      Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::InvalidMagic" []
-    ).
-  Proof. econstructor; apply of_value_with_InvalidMagic; eassumption. Defined.
-  Smpl Add simple apply of_value_InvalidMagic : of_value.
-
-  Definition of_value_UnsupportedVersion :
-    OfValue.t (
-      Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::UnsupportedVersion" []
-    ).
-  Proof. econstructor; apply of_value_with_UnsupportedVersion; eassumption. Defined.
-  Smpl Add simple apply of_value_UnsupportedVersion : of_value.
-End Eip7702DecodeError.
-
 Module Bytecode.
   Inductive t : Set :=
   | LegacyAnalyzed
@@ -181,6 +99,158 @@ Module Bytecode.
   Proof. econstructor; apply of_value_with_Eip7702; eassumption. Defined.
   Smpl Add simple apply of_value_Eip7702 : of_value.
 End Bytecode.
+
+Module BytecodeDecodeError.
+  Inductive t : Set :=
+  | Eof
+    (_ : revm_bytecode.links.eof.EofDecodeError.t)
+  | Eip7702
+    (_ : revm_bytecode.links.eip7702.Eip7702DecodeError.t)
+  .
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError";
+    φ x :=
+      match x with
+      | Eof γ0 =>
+        Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eof" [
+          φ γ0
+        ]
+      | Eip7702 γ0 =>
+        Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702" [
+          φ γ0
+        ]
+      end
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add simple apply of_ty : of_ty.
+
+  Lemma of_value_with_Eof
+    (γ0 : revm_bytecode.links.eof.EofDecodeError.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eof" [
+      γ0
+    ] =
+    φ (Eof γ0).
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_Eof : of_value.
+
+  Lemma of_value_with_Eip7702
+    (γ0 : revm_bytecode.links.eip7702.Eip7702DecodeError.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702" [
+      γ0
+    ] =
+    φ (Eip7702 γ0).
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_Eip7702 : of_value.
+
+  Definition of_value_Eof
+    (γ0 : revm_bytecode.links.eof.EofDecodeError.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    OfValue.t (
+      Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eof" [
+        γ0
+      ]
+    ).
+  Proof. econstructor; apply of_value_with_Eof; eassumption. Defined.
+  Smpl Add simple apply of_value_Eof : of_value.
+
+  Definition of_value_Eip7702
+    (γ0 : revm_bytecode.links.eip7702.Eip7702DecodeError.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    OfValue.t (
+      Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702" [
+        γ0
+      ]
+    ).
+  Proof. econstructor; apply of_value_with_Eip7702; eassumption. Defined.
+  Smpl Add simple apply of_value_Eip7702 : of_value.
+End BytecodeDecodeError.
+
+Module Eip7702Bytecode.
+  Record t : Set := {
+    delegated_address: alloy_primitives.bits.links.address.Address.t;
+    version: U8.t;
+    raw: alloy_primitives.links.bytes_.Bytes.t;
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
+    φ '(Build_t delegated_address version raw) :=
+      Value.StructRecord "revm_bytecode::eip7702::Eip7702Bytecode" [
+        ("delegated_address", φ delegated_address);
+        ("version", φ version);
+        ("raw", φ raw)
+      ]
+  }.
+End Eip7702Bytecode.
+
+Module Eip7702DecodeError.
+  Inductive t : Set :=
+  | InvalidLength
+  | InvalidMagic
+  | UnsupportedVersion
+  .
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_bytecode::eip7702::Eip7702DecodeError";
+    φ x :=
+      match x with
+      | InvalidLength =>
+        Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::InvalidLength" []
+      | InvalidMagic =>
+        Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::InvalidMagic" []
+      | UnsupportedVersion =>
+        Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::UnsupportedVersion" []
+      end
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "revm_bytecode::eip7702::Eip7702DecodeError").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add simple apply of_ty : of_ty.
+
+  Lemma of_value_with_InvalidLength :
+    Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::InvalidLength" [] =
+    φ InvalidLength.
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_InvalidLength : of_value.
+
+  Lemma of_value_with_InvalidMagic :
+    Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::InvalidMagic" [] =
+    φ InvalidMagic.
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_InvalidMagic : of_value.
+
+  Lemma of_value_with_UnsupportedVersion :
+    Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::UnsupportedVersion" [] =
+    φ UnsupportedVersion.
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_UnsupportedVersion : of_value.
+
+  Definition of_value_InvalidLength :
+    OfValue.t (
+      Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::InvalidLength" []
+    ).
+  Proof. econstructor; apply of_value_with_InvalidLength; eassumption. Defined.
+  Smpl Add simple apply of_value_InvalidLength : of_value.
+
+  Definition of_value_InvalidMagic :
+    OfValue.t (
+      Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::InvalidMagic" []
+    ).
+  Proof. econstructor; apply of_value_with_InvalidMagic; eassumption. Defined.
+  Smpl Add simple apply of_value_InvalidMagic : of_value.
+
+  Definition of_value_UnsupportedVersion :
+    OfValue.t (
+      Value.StructTuple "revm_bytecode::eip7702::Eip7702DecodeError::UnsupportedVersion" []
+    ).
+  Proof. econstructor; apply of_value_with_UnsupportedVersion; eassumption. Defined.
+  Smpl Add simple apply of_value_UnsupportedVersion : of_value.
+End Eip7702DecodeError.
 
 Module Eof.
   Record t : Set := {
@@ -536,75 +606,29 @@ Module EofDecodeError.
   Smpl Add simple apply of_value_InvalidEOFSize : of_value.
 End EofDecodeError.
 
-Module BytecodeDecodeError.
-  Inductive t : Set :=
-  | Eof
-    (_ : revm_bytecode.links.eof.EofDecodeError.t)
-  | Eip7702
-    (_ : revm_bytecode.links.eip7702.Eip7702DecodeError.t)
-  .
-
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError";
-    φ x :=
-      match x with
-      | Eof γ0 =>
-        Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eof" [
-          φ γ0
-        ]
-      | Eip7702 γ0 =>
-        Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702" [
-          φ γ0
-        ]
-      end
+Module EofBody.
+  Record t : Set := {
+    types_section: alloc.links.vec.Vec.t revm_bytecode.eof.links.types_section.TypesSection.t alloc.links.alloc.Global.t;
+    code_section: alloc.links.vec.Vec.t Usize.t alloc.links.alloc.Global.t;
+    code: alloy_primitives.links.bytes_.Bytes.t;
+    container_section: alloc.links.vec.Vec.t alloy_primitives.links.bytes_.Bytes.t alloc.links.alloc.Global.t;
+    data_section: alloy_primitives.links.bytes_.Bytes.t;
+    is_data_filled: bool;
   }.
 
-  Definition of_ty : OfTy.t (Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError").
-  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
-  Smpl Add simple apply of_ty : of_ty.
-
-  Lemma of_value_with_Eof
-    (γ0 : revm_bytecode.links.eof.EofDecodeError.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
-    Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eof" [
-      γ0
-    ] =
-    φ (Eof γ0).
-  Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_Eof : of_value.
-
-  Lemma of_value_with_Eip7702
-    (γ0 : revm_bytecode.links.eip7702.Eip7702DecodeError.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
-    Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702" [
-      γ0
-    ] =
-    φ (Eip7702 γ0).
-  Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_Eip7702 : of_value.
-
-  Definition of_value_Eof
-    (γ0 : revm_bytecode.links.eof.EofDecodeError.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
-    OfValue.t (
-      Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eof" [
-        γ0
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_bytecode::eof::body::EofBody";
+    φ '(Build_t types_section code_section code container_section data_section is_data_filled) :=
+      Value.StructRecord "revm_bytecode::eof::body::EofBody" [
+        ("types_section", φ types_section);
+        ("code_section", φ code_section);
+        ("code", φ code);
+        ("container_section", φ container_section);
+        ("data_section", φ data_section);
+        ("is_data_filled", φ is_data_filled)
       ]
-    ).
-  Proof. econstructor; apply of_value_with_Eof; eassumption. Defined.
-  Smpl Add simple apply of_value_Eof : of_value.
-
-  Definition of_value_Eip7702
-    (γ0 : revm_bytecode.links.eip7702.Eip7702DecodeError.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
-    OfValue.t (
-      Value.StructTuple "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702" [
-        γ0
-      ]
-    ).
-  Proof. econstructor; apply of_value_with_Eip7702; eassumption. Defined.
-  Smpl Add simple apply of_value_Eip7702 : of_value.
-End BytecodeDecodeError.
+  }.
+End EofBody.
 
 Module EofHeader.
   Record t : Set := {
@@ -630,29 +654,23 @@ Module EofHeader.
   }.
 End EofHeader.
 
-Module EofBody.
+Module TypesSection.
   Record t : Set := {
-    types_section: alloc.links.vec.Vec.t revm_bytecode.eof.links.types_section.TypesSection.t alloc.links.alloc.Global.t;
-    code_section: alloc.links.vec.Vec.t Usize.t alloc.links.alloc.Global.t;
-    code: alloy_primitives.links.bytes_.Bytes.t;
-    container_section: alloc.links.vec.Vec.t alloy_primitives.links.bytes_.Bytes.t alloc.links.alloc.Global.t;
-    data_section: alloy_primitives.links.bytes_.Bytes.t;
-    is_data_filled: bool;
+    inputs: U8.t;
+    outputs: U8.t;
+    max_stack_size: U16.t;
   }.
 
   Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_bytecode::eof::body::EofBody";
-    φ '(Build_t types_section code_section code container_section data_section is_data_filled) :=
-      Value.StructRecord "revm_bytecode::eof::body::EofBody" [
-        ("types_section", φ types_section);
-        ("code_section", φ code_section);
-        ("code", φ code);
-        ("container_section", φ container_section);
-        ("data_section", φ data_section);
-        ("is_data_filled", φ is_data_filled)
+    Φ := Ty.path "revm_bytecode::eof::types_section::TypesSection";
+    φ '(Build_t inputs outputs max_stack_size) :=
+      Value.StructRecord "revm_bytecode::eof::types_section::TypesSection" [
+        ("inputs", φ inputs);
+        ("outputs", φ outputs);
+        ("max_stack_size", φ max_stack_size)
       ]
   }.
-End EofBody.
+End TypesSection.
 
 Module EofError.
   Inductive t : Set :=
@@ -1372,24 +1390,6 @@ Module InstructionInfo.
   }.
 End InstructionInfo.
 
-Module TypesSection.
-  Record t : Set := {
-    inputs: U8.t;
-    outputs: U8.t;
-    max_stack_size: U16.t;
-  }.
-
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_bytecode::eof::types_section::TypesSection";
-    φ '(Build_t inputs outputs max_stack_size) :=
-      Value.StructRecord "revm_bytecode::eof::types_section::TypesSection" [
-        ("inputs", φ inputs);
-        ("outputs", φ outputs);
-        ("max_stack_size", φ max_stack_size)
-      ]
-  }.
-End TypesSection.
-
 Module LegacyAnalyzedBytecode.
   Record t : Set := {
     bytecode: alloy_primitives.links.bytes_.Bytes.t;
@@ -1514,6 +1514,174 @@ Module CreateScheme.
   Proof. econstructor; apply of_value_with_Create2; eassumption. Defined.
   Smpl Add simple apply of_value_Create2 : of_value.
 End CreateScheme.
+
+Module SStoreResult.
+  Record t : Set := {
+    original_value: ruint.Uint.t 256 4;
+    present_value: ruint.Uint.t 256 4;
+    new_value: ruint.Uint.t 256 4;
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_context_interface::host::SStoreResult";
+    φ '(Build_t original_value present_value new_value) :=
+      Value.StructRecord "revm_context_interface::host::SStoreResult" [
+        ("original_value", φ original_value);
+        ("present_value", φ present_value);
+        ("new_value", φ new_value)
+      ]
+  }.
+End SStoreResult.
+
+Module SelfDestructResult.
+  Record t : Set := {
+    had_value: bool;
+    target_exists: bool;
+    previously_destroyed: bool;
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_context_interface::host::SelfDestructResult";
+    φ '(Build_t had_value target_exists previously_destroyed) :=
+      Value.StructRecord "revm_context_interface::host::SelfDestructResult" [
+        ("had_value", φ had_value);
+        ("target_exists", φ target_exists);
+        ("previously_destroyed", φ previously_destroyed)
+      ]
+  }.
+End SelfDestructResult.
+
+Module TransferError.
+  Inductive t : Set :=
+  | OutOfFunds
+  | OverflowPayment
+  | CreateCollision
+  .
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_context_interface::journaled_state::TransferError";
+    φ x :=
+      match x with
+      | OutOfFunds =>
+        Value.StructTuple "revm_context_interface::journaled_state::TransferError::OutOfFunds" []
+      | OverflowPayment =>
+        Value.StructTuple "revm_context_interface::journaled_state::TransferError::OverflowPayment" []
+      | CreateCollision =>
+        Value.StructTuple "revm_context_interface::journaled_state::TransferError::CreateCollision" []
+      end
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "revm_context_interface::journaled_state::TransferError").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add simple apply of_ty : of_ty.
+
+  Lemma of_value_with_OutOfFunds :
+    Value.StructTuple "revm_context_interface::journaled_state::TransferError::OutOfFunds" [] =
+    φ OutOfFunds.
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_OutOfFunds : of_value.
+
+  Lemma of_value_with_OverflowPayment :
+    Value.StructTuple "revm_context_interface::journaled_state::TransferError::OverflowPayment" [] =
+    φ OverflowPayment.
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_OverflowPayment : of_value.
+
+  Lemma of_value_with_CreateCollision :
+    Value.StructTuple "revm_context_interface::journaled_state::TransferError::CreateCollision" [] =
+    φ CreateCollision.
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_CreateCollision : of_value.
+
+  Definition of_value_OutOfFunds :
+    OfValue.t (
+      Value.StructTuple "revm_context_interface::journaled_state::TransferError::OutOfFunds" []
+    ).
+  Proof. econstructor; apply of_value_with_OutOfFunds; eassumption. Defined.
+  Smpl Add simple apply of_value_OutOfFunds : of_value.
+
+  Definition of_value_OverflowPayment :
+    OfValue.t (
+      Value.StructTuple "revm_context_interface::journaled_state::TransferError::OverflowPayment" []
+    ).
+  Proof. econstructor; apply of_value_with_OverflowPayment; eassumption. Defined.
+  Smpl Add simple apply of_value_OverflowPayment : of_value.
+
+  Definition of_value_CreateCollision :
+    OfValue.t (
+      Value.StructTuple "revm_context_interface::journaled_state::TransferError::CreateCollision" []
+    ).
+  Proof. econstructor; apply of_value_with_CreateCollision; eassumption. Defined.
+  Smpl Add simple apply of_value_CreateCollision : of_value.
+End TransferError.
+
+Module JournalCheckpoint.
+  Record t : Set := {
+    log_i: Usize.t;
+    journal_i: Usize.t;
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_context_interface::journaled_state::JournalCheckpoint";
+    φ '(Build_t log_i journal_i) :=
+      Value.StructRecord "revm_context_interface::journaled_state::JournalCheckpoint" [
+        ("log_i", φ log_i);
+        ("journal_i", φ journal_i)
+      ]
+  }.
+End JournalCheckpoint.
+
+Module StateLoad.
+  Record t {T: Set} : Set := {
+    data: T;
+    is_cold: bool;
+  }.
+  Arguments Build_t {_}.
+  Arguments t : clear implicits.
+
+  Global Instance IsLink {T: Set} `{Link T} : Link (t T) := {
+    Φ := Ty.path "revm_context_interface::journaled_state::StateLoad";
+    φ '(Build_t data is_cold) :=
+      Value.StructRecord "revm_context_interface::journaled_state::StateLoad" [
+        ("data", φ data);
+        ("is_cold", φ is_cold)
+      ]
+  }.
+End StateLoad.
+
+Module AccountLoad.
+  Record t : Set := {
+    load: revm_context_interface.links.journaled_state.Eip7702CodeLoad.t ();
+    is_empty: bool;
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_context_interface::journaled_state::AccountLoad";
+    φ '(Build_t load is_empty) :=
+      Value.StructRecord "revm_context_interface::journaled_state::AccountLoad" [
+        ("load", φ load);
+        ("is_empty", φ is_empty)
+      ]
+  }.
+End AccountLoad.
+
+Module Eip7702CodeLoad.
+  Record t {T: Set} : Set := {
+    state_load: revm_context_interface.links.journaled_state.StateLoad.t T;
+    is_delegate_account_cold: core.links.option.Option.t bool;
+  }.
+  Arguments Build_t {_}.
+  Arguments t : clear implicits.
+
+  Global Instance IsLink {T: Set} `{Link T} : Link (t T) := {
+    Φ := Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad";
+    φ '(Build_t state_load is_delegate_account_cold) :=
+      Value.StructRecord "revm_context_interface::journaled_state::Eip7702CodeLoad" [
+        ("state_load", φ state_load);
+        ("is_delegate_account_cold", φ is_delegate_account_cold)
+      ]
+  }.
+End Eip7702CodeLoad.
 
 Module ResultAndState.
   Record t {HaltReasonT: Set} : Set := {
@@ -3111,174 +3279,6 @@ Module OutOfGasError.
   Smpl Add simple apply of_value_ReentrancySentry : of_value.
 End OutOfGasError.
 
-Module TransferError.
-  Inductive t : Set :=
-  | OutOfFunds
-  | OverflowPayment
-  | CreateCollision
-  .
-
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_context_interface::journaled_state::TransferError";
-    φ x :=
-      match x with
-      | OutOfFunds =>
-        Value.StructTuple "revm_context_interface::journaled_state::TransferError::OutOfFunds" []
-      | OverflowPayment =>
-        Value.StructTuple "revm_context_interface::journaled_state::TransferError::OverflowPayment" []
-      | CreateCollision =>
-        Value.StructTuple "revm_context_interface::journaled_state::TransferError::CreateCollision" []
-      end
-  }.
-
-  Definition of_ty : OfTy.t (Ty.path "revm_context_interface::journaled_state::TransferError").
-  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
-  Smpl Add simple apply of_ty : of_ty.
-
-  Lemma of_value_with_OutOfFunds :
-    Value.StructTuple "revm_context_interface::journaled_state::TransferError::OutOfFunds" [] =
-    φ OutOfFunds.
-  Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_OutOfFunds : of_value.
-
-  Lemma of_value_with_OverflowPayment :
-    Value.StructTuple "revm_context_interface::journaled_state::TransferError::OverflowPayment" [] =
-    φ OverflowPayment.
-  Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_OverflowPayment : of_value.
-
-  Lemma of_value_with_CreateCollision :
-    Value.StructTuple "revm_context_interface::journaled_state::TransferError::CreateCollision" [] =
-    φ CreateCollision.
-  Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_CreateCollision : of_value.
-
-  Definition of_value_OutOfFunds :
-    OfValue.t (
-      Value.StructTuple "revm_context_interface::journaled_state::TransferError::OutOfFunds" []
-    ).
-  Proof. econstructor; apply of_value_with_OutOfFunds; eassumption. Defined.
-  Smpl Add simple apply of_value_OutOfFunds : of_value.
-
-  Definition of_value_OverflowPayment :
-    OfValue.t (
-      Value.StructTuple "revm_context_interface::journaled_state::TransferError::OverflowPayment" []
-    ).
-  Proof. econstructor; apply of_value_with_OverflowPayment; eassumption. Defined.
-  Smpl Add simple apply of_value_OverflowPayment : of_value.
-
-  Definition of_value_CreateCollision :
-    OfValue.t (
-      Value.StructTuple "revm_context_interface::journaled_state::TransferError::CreateCollision" []
-    ).
-  Proof. econstructor; apply of_value_with_CreateCollision; eassumption. Defined.
-  Smpl Add simple apply of_value_CreateCollision : of_value.
-End TransferError.
-
-Module JournalCheckpoint.
-  Record t : Set := {
-    log_i: Usize.t;
-    journal_i: Usize.t;
-  }.
-
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_context_interface::journaled_state::JournalCheckpoint";
-    φ '(Build_t log_i journal_i) :=
-      Value.StructRecord "revm_context_interface::journaled_state::JournalCheckpoint" [
-        ("log_i", φ log_i);
-        ("journal_i", φ journal_i)
-      ]
-  }.
-End JournalCheckpoint.
-
-Module StateLoad.
-  Record t {T: Set} : Set := {
-    data: T;
-    is_cold: bool;
-  }.
-  Arguments Build_t {_}.
-  Arguments t : clear implicits.
-
-  Global Instance IsLink {T: Set} `{Link T} : Link (t T) := {
-    Φ := Ty.path "revm_context_interface::journaled_state::StateLoad";
-    φ '(Build_t data is_cold) :=
-      Value.StructRecord "revm_context_interface::journaled_state::StateLoad" [
-        ("data", φ data);
-        ("is_cold", φ is_cold)
-      ]
-  }.
-End StateLoad.
-
-Module AccountLoad.
-  Record t : Set := {
-    load: revm_context_interface.links.journaled_state.Eip7702CodeLoad.t ();
-    is_empty: bool;
-  }.
-
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_context_interface::journaled_state::AccountLoad";
-    φ '(Build_t load is_empty) :=
-      Value.StructRecord "revm_context_interface::journaled_state::AccountLoad" [
-        ("load", φ load);
-        ("is_empty", φ is_empty)
-      ]
-  }.
-End AccountLoad.
-
-Module Eip7702CodeLoad.
-  Record t {T: Set} : Set := {
-    state_load: revm_context_interface.links.journaled_state.StateLoad.t T;
-    is_delegate_account_cold: core.links.option.Option.t bool;
-  }.
-  Arguments Build_t {_}.
-  Arguments t : clear implicits.
-
-  Global Instance IsLink {T: Set} `{Link T} : Link (t T) := {
-    Φ := Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad";
-    φ '(Build_t state_load is_delegate_account_cold) :=
-      Value.StructRecord "revm_context_interface::journaled_state::Eip7702CodeLoad" [
-        ("state_load", φ state_load);
-        ("is_delegate_account_cold", φ is_delegate_account_cold)
-      ]
-  }.
-End Eip7702CodeLoad.
-
-Module SStoreResult.
-  Record t : Set := {
-    original_value: ruint.Uint.t 256 4;
-    present_value: ruint.Uint.t 256 4;
-    new_value: ruint.Uint.t 256 4;
-  }.
-
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_context_interface::host::SStoreResult";
-    φ '(Build_t original_value present_value new_value) :=
-      Value.StructRecord "revm_context_interface::host::SStoreResult" [
-        ("original_value", φ original_value);
-        ("present_value", φ present_value);
-        ("new_value", φ new_value)
-      ]
-  }.
-End SStoreResult.
-
-Module SelfDestructResult.
-  Record t : Set := {
-    had_value: bool;
-    target_exists: bool;
-    previously_destroyed: bool;
-  }.
-
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_context_interface::host::SelfDestructResult";
-    φ '(Build_t had_value target_exists previously_destroyed) :=
-      Value.StructRecord "revm_context_interface::host::SelfDestructResult" [
-        ("had_value", φ had_value);
-        ("target_exists", φ target_exists);
-        ("previously_destroyed", φ previously_destroyed)
-      ]
-  }.
-End SelfDestructResult.
-
 Module BlobExcessGasAndPrice.
   Record t : Set := {
     excess_blob_gas: U64.t;
@@ -3433,341 +3433,105 @@ Module TransactionType.
   Smpl Add simple apply of_value_Custom : of_value.
 End TransactionType.
 
-Module InstructionTables.
-  Inductive t (W H CI: Set) : Set :=
-  | Plain
-    (_ : alloc.links.boxed.Box.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (revm_interpreter.links.interpreter.Interpreter.t W)) (Ref.t Pointer.Kind.MutRef H) ())) alloc.links.alloc.Global.t)
-  | Custom
-    (_ : alloc.links.boxed.Box.t (array.t 256 CI) alloc.links.alloc.Global.t)
-  .
-  Arguments Plain Custom {_ _ _}.
-
-  Global Instance IsLink (W H CI: Set) : Link t W H CI := {
-    Φ := Ty.path "revm_interpreter::table::InstructionTables";
-    φ x :=
-      match x with
-      | Plain γ0 =>
-        Value.StructTuple "revm_interpreter::table::InstructionTables::Plain" [
-          φ γ0
-        ]
-      | Custom γ0 =>
-        Value.StructTuple "revm_interpreter::table::InstructionTables::Custom" [
-          φ γ0
-        ]
-      end
-  }.
-
-  Definition of_ty : OfTy.t (Ty.path "revm_interpreter::table::InstructionTables").
-  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
-  Smpl Add simple apply of_ty : of_ty.
-
-  Lemma of_value_with_Plain
-    (γ0 : alloc.links.boxed.Box.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (revm_interpreter.links.interpreter.Interpreter.t W)) (Ref.t Pointer.Kind.MutRef H) ())) alloc.links.alloc.Global.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
-    Value.StructTuple "revm_interpreter::table::InstructionTables::Plain" [
-      γ0
-    ] =
-    φ (Plain γ0).
-  Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_Plain : of_value.
-
-  Lemma of_value_with_Custom
-    (γ0 : alloc.links.boxed.Box.t (array.t 256 CI) alloc.links.alloc.Global.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
-    Value.StructTuple "revm_interpreter::table::InstructionTables::Custom" [
-      γ0
-    ] =
-    φ (Custom γ0).
-  Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_Custom : of_value.
-
-  Definition of_value_Plain
-    (γ0 : alloc.links.boxed.Box.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (revm_interpreter.links.interpreter.Interpreter.t W)) (Ref.t Pointer.Kind.MutRef H) ())) alloc.links.alloc.Global.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
-    OfValue.t (
-      Value.StructTuple "revm_interpreter::table::InstructionTables::Plain" [
-        γ0
-      ]
-    ).
-  Proof. econstructor; apply of_value_with_Plain; eassumption. Defined.
-  Smpl Add simple apply of_value_Plain : of_value.
-
-  Definition of_value_Custom
-    (γ0 : alloc.links.boxed.Box.t (array.t 256 CI) alloc.links.alloc.Global.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
-    OfValue.t (
-      Value.StructTuple "revm_interpreter::table::InstructionTables::Custom" [
-        γ0
-      ]
-    ).
-  Proof. econstructor; apply of_value_with_Custom; eassumption. Defined.
-  Smpl Add simple apply of_value_Custom : of_value.
-End InstructionTables.
-
-Module Interpreter.
-  Record t {WIRE: Set} : Set := {
-    bytecode: Unknown type Associated;
-    stack: Unknown type Associated;
-    return_data: Unknown type Associated;
-    memory: Unknown type Associated;
-    input: Unknown type Associated;
-    sub_routine: Unknown type Associated;
-    control: Unknown type Associated;
-    runtime_flag: Unknown type Associated;
-    extend: Unknown type Associated;
-  }.
-  Arguments Build_t {_}.
-  Arguments t : clear implicits.
-
-  Global Instance IsLink {WIRE: Set} `{Link WIRE} : Link (t WIRE) := {
-    Φ := Ty.path "revm_interpreter::interpreter::Interpreter";
-    φ '(Build_t bytecode stack return_data memory input sub_routine control runtime_flag extend) :=
-      Value.StructRecord "revm_interpreter::interpreter::Interpreter" [
-        ("bytecode", φ bytecode);
-        ("stack", φ stack);
-        ("return_data", φ return_data);
-        ("memory", φ memory);
-        ("input", φ input);
-        ("sub_routine", φ sub_routine);
-        ("control", φ control);
-        ("runtime_flag", φ runtime_flag);
-        ("extend", φ extend)
-      ]
-  }.
-End Interpreter.
-
-Module EthInterpreter.
-  Record t {EXT MG: Set} : Set := {
-    _phantom: core.links.marker.PhantomData.t (Function0.t (EXT * MG));
-  }.
-  Arguments Build_t {_ _}.
-  Arguments t : clear implicits.
-
-  Global Instance IsLink {EXT MG: Set} `{Link EXT} `{Link MG} : Link (t EXT MG) := {
-    Φ := Ty.path "revm_interpreter::interpreter::EthInterpreter";
-    φ '(Build_t _phantom) :=
-      Value.StructRecord "revm_interpreter::interpreter::EthInterpreter" [
-        ("_phantom", φ _phantom)
-      ]
-  }.
-End EthInterpreter.
-
-Module EthInstructionProvider.
-  Record t {WIRE HOST: Set} : Set := {
-    instruction_table: alloc.links.rc.Rc.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (revm_interpreter.links.interpreter.Interpreter.t WIRE)) (Ref.t Pointer.Kind.MutRef HOST) ())) alloc.links.alloc.Global.t;
-  }.
-  Arguments Build_t {_ _}.
-  Arguments t : clear implicits.
-
-  Global Instance IsLink {WIRE HOST: Set} `{Link WIRE} `{Link HOST} : Link (t WIRE HOST) := {
-    Φ := Ty.path "revm_interpreter::interpreter::EthInstructionProvider";
-    φ '(Build_t instruction_table) :=
-      Value.StructRecord "revm_interpreter::interpreter::EthInstructionProvider" [
-        ("instruction_table", φ instruction_table)
-      ]
-  }.
-End EthInstructionProvider.
-
-Module InterpreterResult.
+Module Gas.
   Record t : Set := {
-    result: revm_interpreter.links.instruction_result.InstructionResult.t;
-    output: alloy_primitives.links.bytes_.Bytes.t;
-    gas: revm_interpreter.links.gas.Gas.t;
+    limit: U64.t;
+    remaining: U64.t;
+    refunded: I64.t;
+    memory: revm_interpreter.links.gas.MemoryGas.t;
   }.
 
   Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_interpreter::interpreter::InterpreterResult";
-    φ '(Build_t result output gas) :=
-      Value.StructRecord "revm_interpreter::interpreter::InterpreterResult" [
-        ("result", φ result);
-        ("output", φ output);
-        ("gas", φ gas)
+    Φ := Ty.path "revm_interpreter::gas::Gas";
+    φ '(Build_t limit remaining refunded memory) :=
+      Value.StructRecord "revm_interpreter::gas::Gas" [
+        ("limit", φ limit);
+        ("remaining", φ remaining);
+        ("refunded", φ refunded);
+        ("memory", φ memory)
       ]
   }.
-End InterpreterResult.
+End Gas.
 
-Module FrameInput.
+Module MemoryExtensionResult.
   Inductive t : Set :=
-  | Call
-    (_ : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.call_inputs.CallInputs.t alloc.links.alloc.Global.t)
-  | Create
-    (_ : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.create_inputs.CreateInputs.t alloc.links.alloc.Global.t)
-  | EOFCreate
-    (_ : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.eof_create_inputs.EOFCreateInputs.t alloc.links.alloc.Global.t)
+  | Extended
+  | Same
+  | OutOfGas
   .
 
   Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_interpreter::interpreter_action::FrameInput";
+    Φ := Ty.path "revm_interpreter::gas::MemoryExtensionResult";
     φ x :=
       match x with
-      | Call γ0 =>
-        Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Call" [
-          φ γ0
-        ]
-      | Create γ0 =>
-        Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Create" [
-          φ γ0
-        ]
-      | EOFCreate γ0 =>
-        Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::EOFCreate" [
-          φ γ0
-        ]
+      | Extended =>
+        Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" []
+      | Same =>
+        Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Same" []
+      | OutOfGas =>
+        Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" []
       end
   }.
 
-  Definition of_ty : OfTy.t (Ty.path "revm_interpreter::interpreter_action::FrameInput").
+  Definition of_ty : OfTy.t (Ty.path "revm_interpreter::gas::MemoryExtensionResult").
   Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
   Smpl Add simple apply of_ty : of_ty.
 
-  Lemma of_value_with_Call
-    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.call_inputs.CallInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
-    Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Call" [
-      γ0
-    ] =
-    φ (Call γ0).
+  Lemma of_value_with_Extended :
+    Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" [] =
+    φ Extended.
   Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_Call : of_value.
+  Smpl Add simple apply of_value_with_Extended : of_value.
 
-  Lemma of_value_with_Create
-    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.create_inputs.CreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
-    Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Create" [
-      γ0
-    ] =
-    φ (Create γ0).
+  Lemma of_value_with_Same :
+    Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Same" [] =
+    φ Same.
   Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_Create : of_value.
+  Smpl Add simple apply of_value_with_Same : of_value.
 
-  Lemma of_value_with_EOFCreate
-    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.eof_create_inputs.EOFCreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
-    Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::EOFCreate" [
-      γ0
-    ] =
-    φ (EOFCreate γ0).
+  Lemma of_value_with_OutOfGas :
+    Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" [] =
+    φ OutOfGas.
   Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_EOFCreate : of_value.
+  Smpl Add simple apply of_value_with_OutOfGas : of_value.
 
-  Definition of_value_Call
-    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.call_inputs.CallInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
+  Definition of_value_Extended :
     OfValue.t (
-      Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Call" [
-        γ0
-      ]
+      Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" []
     ).
-  Proof. econstructor; apply of_value_with_Call; eassumption. Defined.
-  Smpl Add simple apply of_value_Call : of_value.
+  Proof. econstructor; apply of_value_with_Extended; eassumption. Defined.
+  Smpl Add simple apply of_value_Extended : of_value.
 
-  Definition of_value_Create
-    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.create_inputs.CreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
+  Definition of_value_Same :
     OfValue.t (
-      Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Create" [
-        γ0
-      ]
+      Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Same" []
     ).
-  Proof. econstructor; apply of_value_with_Create; eassumption. Defined.
-  Smpl Add simple apply of_value_Create : of_value.
+  Proof. econstructor; apply of_value_with_Same; eassumption. Defined.
+  Smpl Add simple apply of_value_Same : of_value.
 
-  Definition of_value_EOFCreate
-    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.eof_create_inputs.EOFCreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
+  Definition of_value_OutOfGas :
     OfValue.t (
-      Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::EOFCreate" [
-        γ0
-      ]
+      Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" []
     ).
-  Proof. econstructor; apply of_value_with_EOFCreate; eassumption. Defined.
-  Smpl Add simple apply of_value_EOFCreate : of_value.
-End FrameInput.
+  Proof. econstructor; apply of_value_with_OutOfGas; eassumption. Defined.
+  Smpl Add simple apply of_value_OutOfGas : of_value.
+End MemoryExtensionResult.
 
-Module InterpreterAction.
-  Inductive t : Set :=
-  | NewFrame
-    (_ : revm_interpreter.links.interpreter_action.FrameInput.t)
-  | Return
-    (result : revm_interpreter.links.interpreter.InterpreterResult.t)
-  | None
-  .
+Module MemoryGas.
+  Record t : Set := {
+    words_num: Usize.t;
+    expansion_cost: U64.t;
+  }.
 
   Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_interpreter::interpreter_action::InterpreterAction";
-    φ x :=
-      match x with
-      | NewFrame γ0 =>
-        Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" [
-          φ γ0
-        ]
-      | Return result =>
-        Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" [
-          ("result", φ result)
-        ]
-      | None =>
-        Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" []
-      end
+    Φ := Ty.path "revm_interpreter::gas::MemoryGas";
+    φ '(Build_t words_num expansion_cost) :=
+      Value.StructRecord "revm_interpreter::gas::MemoryGas" [
+        ("words_num", φ words_num);
+        ("expansion_cost", φ expansion_cost)
+      ]
   }.
-
-  Definition of_ty : OfTy.t (Ty.path "revm_interpreter::interpreter_action::InterpreterAction").
-  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
-  Smpl Add simple apply of_ty : of_ty.
-
-  Lemma of_value_with_NewFrame
-    (γ0 : revm_interpreter.links.interpreter_action.FrameInput.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
-    Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" [
-      γ0
-    ] =
-    φ (NewFrame γ0).
-  Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_NewFrame : of_value.
-
-  Lemma of_value_with_Return
-    (result : revm_interpreter.links.interpreter.InterpreterResult.t) (result' : Value.t) :
-    result' = φ result ->
-    Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" [
-      ("result", result')
-    ] =
-    φ (Return result).
-  Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_Return : of_value.
-
-  Lemma of_value_with_None :
-    Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" [] =
-    φ None.
-  Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_None : of_value.
-
-  Definition of_value_NewFrame
-    (γ0 : revm_interpreter.links.interpreter_action.FrameInput.t) (γ0' : Value.t) :
-    γ0' = φ γ0 ->
-    OfValue.t (
-      Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" [
-        γ0
-      ]
-    ).
-  Proof. econstructor; apply of_value_with_NewFrame; eassumption. Defined.
-  Smpl Add simple apply of_value_NewFrame : of_value.
-
-  Definition of_value_Return
-    (result : revm_interpreter.links.interpreter.InterpreterResult.t) (result' : Value.t) :
-    result' = φ result ->
-    OfValue.t (
-      Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" [
-        ("result", result')
-      ]
-    ).
-  Proof. econstructor; apply of_value_with_Return; eassumption. Defined.
-  Smpl Add simple apply of_value_Return : of_value.
-
-  Definition of_value_None :
-    OfValue.t (
-      Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" []
-    ).
-  Proof. econstructor; apply of_value_with_None; eassumption. Defined.
-  Smpl Add simple apply of_value_None : of_value.
-End InterpreterAction.
+End MemoryGas.
 
 Module InstructionResult.
   Inductive t : Set :=
@@ -4651,105 +4415,341 @@ Module SuccessOrHalt.
   Smpl Add simple apply of_value_Internal : of_value.
 End SuccessOrHalt.
 
-Module Gas.
+Module Interpreter.
+  Record t {WIRE: Set} : Set := {
+    bytecode: Unknown type Associated;
+    stack: Unknown type Associated;
+    return_data: Unknown type Associated;
+    memory: Unknown type Associated;
+    input: Unknown type Associated;
+    sub_routine: Unknown type Associated;
+    control: Unknown type Associated;
+    runtime_flag: Unknown type Associated;
+    extend: Unknown type Associated;
+  }.
+  Arguments Build_t {_}.
+  Arguments t : clear implicits.
+
+  Global Instance IsLink {WIRE: Set} `{Link WIRE} : Link (t WIRE) := {
+    Φ := Ty.path "revm_interpreter::interpreter::Interpreter";
+    φ '(Build_t bytecode stack return_data memory input sub_routine control runtime_flag extend) :=
+      Value.StructRecord "revm_interpreter::interpreter::Interpreter" [
+        ("bytecode", φ bytecode);
+        ("stack", φ stack);
+        ("return_data", φ return_data);
+        ("memory", φ memory);
+        ("input", φ input);
+        ("sub_routine", φ sub_routine);
+        ("control", φ control);
+        ("runtime_flag", φ runtime_flag);
+        ("extend", φ extend)
+      ]
+  }.
+End Interpreter.
+
+Module EthInterpreter.
+  Record t {EXT MG: Set} : Set := {
+    _phantom: core.links.marker.PhantomData.t (Function0.t (EXT * MG));
+  }.
+  Arguments Build_t {_ _}.
+  Arguments t : clear implicits.
+
+  Global Instance IsLink {EXT MG: Set} `{Link EXT} `{Link MG} : Link (t EXT MG) := {
+    Φ := Ty.path "revm_interpreter::interpreter::EthInterpreter";
+    φ '(Build_t _phantom) :=
+      Value.StructRecord "revm_interpreter::interpreter::EthInterpreter" [
+        ("_phantom", φ _phantom)
+      ]
+  }.
+End EthInterpreter.
+
+Module EthInstructionProvider.
+  Record t {WIRE HOST: Set} : Set := {
+    instruction_table: alloc.links.rc.Rc.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (revm_interpreter.links.interpreter.Interpreter.t WIRE)) (Ref.t Pointer.Kind.MutRef HOST) ())) alloc.links.alloc.Global.t;
+  }.
+  Arguments Build_t {_ _}.
+  Arguments t : clear implicits.
+
+  Global Instance IsLink {WIRE HOST: Set} `{Link WIRE} `{Link HOST} : Link (t WIRE HOST) := {
+    Φ := Ty.path "revm_interpreter::interpreter::EthInstructionProvider";
+    φ '(Build_t instruction_table) :=
+      Value.StructRecord "revm_interpreter::interpreter::EthInstructionProvider" [
+        ("instruction_table", φ instruction_table)
+      ]
+  }.
+End EthInstructionProvider.
+
+Module InterpreterResult.
   Record t : Set := {
-    limit: U64.t;
-    remaining: U64.t;
-    refunded: I64.t;
-    memory: revm_interpreter.links.gas.MemoryGas.t;
+    result: revm_interpreter.links.instruction_result.InstructionResult.t;
+    output: alloy_primitives.links.bytes_.Bytes.t;
+    gas: revm_interpreter.links.gas.Gas.t;
   }.
 
   Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_interpreter::gas::Gas";
-    φ '(Build_t limit remaining refunded memory) :=
-      Value.StructRecord "revm_interpreter::gas::Gas" [
-        ("limit", φ limit);
-        ("remaining", φ remaining);
-        ("refunded", φ refunded);
-        ("memory", φ memory)
+    Φ := Ty.path "revm_interpreter::interpreter::InterpreterResult";
+    φ '(Build_t result output gas) :=
+      Value.StructRecord "revm_interpreter::interpreter::InterpreterResult" [
+        ("result", φ result);
+        ("output", φ output);
+        ("gas", φ gas)
       ]
   }.
-End Gas.
+End InterpreterResult.
 
-Module MemoryExtensionResult.
+Module FrameInput.
   Inductive t : Set :=
-  | Extended
-  | Same
-  | OutOfGas
+  | Call
+    (_ : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.call_inputs.CallInputs.t alloc.links.alloc.Global.t)
+  | Create
+    (_ : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.create_inputs.CreateInputs.t alloc.links.alloc.Global.t)
+  | EOFCreate
+    (_ : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.eof_create_inputs.EOFCreateInputs.t alloc.links.alloc.Global.t)
   .
 
   Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_interpreter::gas::MemoryExtensionResult";
+    Φ := Ty.path "revm_interpreter::interpreter_action::FrameInput";
     φ x :=
       match x with
-      | Extended =>
-        Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" []
-      | Same =>
-        Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Same" []
-      | OutOfGas =>
-        Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" []
+      | Call γ0 =>
+        Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Call" [
+          φ γ0
+        ]
+      | Create γ0 =>
+        Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Create" [
+          φ γ0
+        ]
+      | EOFCreate γ0 =>
+        Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::EOFCreate" [
+          φ γ0
+        ]
       end
   }.
 
-  Definition of_ty : OfTy.t (Ty.path "revm_interpreter::gas::MemoryExtensionResult").
+  Definition of_ty : OfTy.t (Ty.path "revm_interpreter::interpreter_action::FrameInput").
   Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
   Smpl Add simple apply of_ty : of_ty.
 
-  Lemma of_value_with_Extended :
-    Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" [] =
-    φ Extended.
+  Lemma of_value_with_Call
+    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.call_inputs.CallInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Call" [
+      γ0
+    ] =
+    φ (Call γ0).
   Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_Extended : of_value.
+  Smpl Add simple apply of_value_with_Call : of_value.
 
-  Lemma of_value_with_Same :
-    Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Same" [] =
-    φ Same.
+  Lemma of_value_with_Create
+    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.create_inputs.CreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Create" [
+      γ0
+    ] =
+    φ (Create γ0).
   Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_Same : of_value.
+  Smpl Add simple apply of_value_with_Create : of_value.
 
-  Lemma of_value_with_OutOfGas :
-    Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" [] =
-    φ OutOfGas.
+  Lemma of_value_with_EOFCreate
+    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.eof_create_inputs.EOFCreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::EOFCreate" [
+      γ0
+    ] =
+    φ (EOFCreate γ0).
   Proof. now intros; subst. Qed.
-  Smpl Add simple apply of_value_with_OutOfGas : of_value.
+  Smpl Add simple apply of_value_with_EOFCreate : of_value.
 
-  Definition of_value_Extended :
+  Definition of_value_Call
+    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.call_inputs.CallInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
     OfValue.t (
-      Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Extended" []
+      Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Call" [
+        γ0
+      ]
     ).
-  Proof. econstructor; apply of_value_with_Extended; eassumption. Defined.
-  Smpl Add simple apply of_value_Extended : of_value.
+  Proof. econstructor; apply of_value_with_Call; eassumption. Defined.
+  Smpl Add simple apply of_value_Call : of_value.
 
-  Definition of_value_Same :
+  Definition of_value_Create
+    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.create_inputs.CreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
     OfValue.t (
-      Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::Same" []
+      Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::Create" [
+        γ0
+      ]
     ).
-  Proof. econstructor; apply of_value_with_Same; eassumption. Defined.
-  Smpl Add simple apply of_value_Same : of_value.
+  Proof. econstructor; apply of_value_with_Create; eassumption. Defined.
+  Smpl Add simple apply of_value_Create : of_value.
 
-  Definition of_value_OutOfGas :
+  Definition of_value_EOFCreate
+    (γ0 : alloc.links.boxed.Box.t revm_interpreter.interpreter_action.links.eof_create_inputs.EOFCreateInputs.t alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
     OfValue.t (
-      Value.StructTuple "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" []
+      Value.StructTuple "revm_interpreter::interpreter_action::FrameInput::EOFCreate" [
+        γ0
+      ]
     ).
-  Proof. econstructor; apply of_value_with_OutOfGas; eassumption. Defined.
-  Smpl Add simple apply of_value_OutOfGas : of_value.
-End MemoryExtensionResult.
+  Proof. econstructor; apply of_value_with_EOFCreate; eassumption. Defined.
+  Smpl Add simple apply of_value_EOFCreate : of_value.
+End FrameInput.
 
-Module MemoryGas.
-  Record t : Set := {
-    words_num: Usize.t;
-    expansion_cost: U64.t;
-  }.
+Module InterpreterAction.
+  Inductive t : Set :=
+  | NewFrame
+    (_ : revm_interpreter.links.interpreter_action.FrameInput.t)
+  | Return
+    (result : revm_interpreter.links.interpreter.InterpreterResult.t)
+  | None
+  .
 
   Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_interpreter::gas::MemoryGas";
-    φ '(Build_t words_num expansion_cost) :=
-      Value.StructRecord "revm_interpreter::gas::MemoryGas" [
-        ("words_num", φ words_num);
-        ("expansion_cost", φ expansion_cost)
-      ]
+    Φ := Ty.path "revm_interpreter::interpreter_action::InterpreterAction";
+    φ x :=
+      match x with
+      | NewFrame γ0 =>
+        Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" [
+          φ γ0
+        ]
+      | Return result =>
+        Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" [
+          ("result", φ result)
+        ]
+      | None =>
+        Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" []
+      end
   }.
-End MemoryGas.
+
+  Definition of_ty : OfTy.t (Ty.path "revm_interpreter::interpreter_action::InterpreterAction").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add simple apply of_ty : of_ty.
+
+  Lemma of_value_with_NewFrame
+    (γ0 : revm_interpreter.links.interpreter_action.FrameInput.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" [
+      γ0
+    ] =
+    φ (NewFrame γ0).
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_NewFrame : of_value.
+
+  Lemma of_value_with_Return
+    (result : revm_interpreter.links.interpreter.InterpreterResult.t) (result' : Value.t) :
+    result' = φ result ->
+    Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" [
+      ("result", result')
+    ] =
+    φ (Return result).
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_Return : of_value.
+
+  Lemma of_value_with_None :
+    Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" [] =
+    φ None.
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_None : of_value.
+
+  Definition of_value_NewFrame
+    (γ0 : revm_interpreter.links.interpreter_action.FrameInput.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    OfValue.t (
+      Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" [
+        γ0
+      ]
+    ).
+  Proof. econstructor; apply of_value_with_NewFrame; eassumption. Defined.
+  Smpl Add simple apply of_value_NewFrame : of_value.
+
+  Definition of_value_Return
+    (result : revm_interpreter.links.interpreter.InterpreterResult.t) (result' : Value.t) :
+    result' = φ result ->
+    OfValue.t (
+      Value.StructRecord "revm_interpreter::interpreter_action::InterpreterAction::Return" [
+        ("result", result')
+      ]
+    ).
+  Proof. econstructor; apply of_value_with_Return; eassumption. Defined.
+  Smpl Add simple apply of_value_Return : of_value.
+
+  Definition of_value_None :
+    OfValue.t (
+      Value.StructTuple "revm_interpreter::interpreter_action::InterpreterAction::None" []
+    ).
+  Proof. econstructor; apply of_value_with_None; eassumption. Defined.
+  Smpl Add simple apply of_value_None : of_value.
+End InterpreterAction.
+
+Module InstructionTables.
+  Inductive t (W H CI: Set) : Set :=
+  | Plain
+    (_ : alloc.links.boxed.Box.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (revm_interpreter.links.interpreter.Interpreter.t W)) (Ref.t Pointer.Kind.MutRef H) ())) alloc.links.alloc.Global.t)
+  | Custom
+    (_ : alloc.links.boxed.Box.t (array.t 256 CI) alloc.links.alloc.Global.t)
+  .
+  Arguments Plain Custom {_ _ _}.
+
+  Global Instance IsLink (W H CI: Set) : Link t W H CI := {
+    Φ := Ty.path "revm_interpreter::table::InstructionTables";
+    φ x :=
+      match x with
+      | Plain γ0 =>
+        Value.StructTuple "revm_interpreter::table::InstructionTables::Plain" [
+          φ γ0
+        ]
+      | Custom γ0 =>
+        Value.StructTuple "revm_interpreter::table::InstructionTables::Custom" [
+          φ γ0
+        ]
+      end
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "revm_interpreter::table::InstructionTables").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add simple apply of_ty : of_ty.
+
+  Lemma of_value_with_Plain
+    (γ0 : alloc.links.boxed.Box.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (revm_interpreter.links.interpreter.Interpreter.t W)) (Ref.t Pointer.Kind.MutRef H) ())) alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    Value.StructTuple "revm_interpreter::table::InstructionTables::Plain" [
+      γ0
+    ] =
+    φ (Plain γ0).
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_Plain : of_value.
+
+  Lemma of_value_with_Custom
+    (γ0 : alloc.links.boxed.Box.t (array.t 256 CI) alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    Value.StructTuple "revm_interpreter::table::InstructionTables::Custom" [
+      γ0
+    ] =
+    φ (Custom γ0).
+  Proof. now intros; subst. Qed.
+  Smpl Add simple apply of_value_with_Custom : of_value.
+
+  Definition of_value_Plain
+    (γ0 : alloc.links.boxed.Box.t (array.t 256 (Function2.t (Ref.t Pointer.Kind.MutRef (revm_interpreter.links.interpreter.Interpreter.t W)) (Ref.t Pointer.Kind.MutRef H) ())) alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    OfValue.t (
+      Value.StructTuple "revm_interpreter::table::InstructionTables::Plain" [
+        γ0
+      ]
+    ).
+  Proof. econstructor; apply of_value_with_Plain; eassumption. Defined.
+  Smpl Add simple apply of_value_Plain : of_value.
+
+  Definition of_value_Custom
+    (γ0 : alloc.links.boxed.Box.t (array.t 256 CI) alloc.links.alloc.Global.t) (γ0' : Value.t) :
+    γ0' = φ γ0 ->
+    OfValue.t (
+      Value.StructTuple "revm_interpreter::table::InstructionTables::Custom" [
+        γ0
+      ]
+    ).
+  Proof. econstructor; apply of_value_with_Custom; eassumption. Defined.
+  Smpl Add simple apply of_value_Custom : of_value.
+End InstructionTables.
 
 Module Sign.
   Inductive t : Set :=
@@ -4815,6 +4815,22 @@ Module Sign.
   Smpl Add simple apply of_value_Plus : of_value.
 End Sign.
 
+Module ExtBytecode.
+  Record t : Set := {
+    base: revm_bytecode.links.bytecode.Bytecode.t;
+    instruction_pointer: Ref.t Pointer.Kind.ConstPointer U8.t;
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_interpreter::interpreter::ext_bytecode::ExtBytecode";
+    φ '(Build_t base instruction_pointer) :=
+      Value.StructRecord "revm_interpreter::interpreter::ext_bytecode::ExtBytecode" [
+        ("base", φ base);
+        ("instruction_pointer", φ instruction_pointer)
+      ]
+  }.
+End ExtBytecode.
+
 Module InputsImpl.
   Record t : Set := {
     target_address: alloy_primitives.bits.links.address.Address.t;
@@ -4835,24 +4851,6 @@ Module InputsImpl.
   }.
 End InputsImpl.
 
-Module SharedMemory.
-  Record t : Set := {
-    buffer: alloc.links.vec.Vec.t U8.t alloc.links.alloc.Global.t;
-    checkpoints: alloc.links.vec.Vec.t Usize.t alloc.links.alloc.Global.t;
-    last_checkpoint: Usize.t;
-  }.
-
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory";
-    φ '(Build_t buffer checkpoints last_checkpoint) :=
-      Value.StructRecord "revm_interpreter::interpreter::shared_memory::SharedMemory" [
-        ("buffer", φ buffer);
-        ("checkpoints", φ checkpoints);
-        ("last_checkpoint", φ last_checkpoint)
-      ]
-  }.
-End SharedMemory.
-
 Module LoopControl.
   Record t : Set := {
     instruction_result: revm_interpreter.links.instruction_result.InstructionResult.t;
@@ -4870,36 +4868,6 @@ Module LoopControl.
       ]
   }.
 End LoopControl.
-
-Module Stack.
-  Record t : Set := {
-    data: alloc.links.vec.Vec.t (ruint.Uint.t 256 4) alloc.links.alloc.Global.t;
-  }.
-
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_interpreter::interpreter::stack::Stack";
-    φ '(Build_t data) :=
-      Value.StructRecord "revm_interpreter::interpreter::stack::Stack" [
-        ("data", φ data)
-      ]
-  }.
-End Stack.
-
-Module ExtBytecode.
-  Record t : Set := {
-    base: revm_bytecode.links.bytecode.Bytecode.t;
-    instruction_pointer: Ref.t Pointer.Kind.ConstPointer U8.t;
-  }.
-
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_interpreter::interpreter::ext_bytecode::ExtBytecode";
-    φ '(Build_t base instruction_pointer) :=
-      Value.StructRecord "revm_interpreter::interpreter::ext_bytecode::ExtBytecode" [
-        ("base", φ base);
-        ("instruction_pointer", φ instruction_pointer)
-      ]
-  }.
-End ExtBytecode.
 
 Module RuntimeFlags.
   Record t : Set := {
@@ -4920,6 +4888,38 @@ Module RuntimeFlags.
       ]
   }.
 End RuntimeFlags.
+
+Module SharedMemory.
+  Record t : Set := {
+    buffer: alloc.links.vec.Vec.t U8.t alloc.links.alloc.Global.t;
+    checkpoints: alloc.links.vec.Vec.t Usize.t alloc.links.alloc.Global.t;
+    last_checkpoint: Usize.t;
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory";
+    φ '(Build_t buffer checkpoints last_checkpoint) :=
+      Value.StructRecord "revm_interpreter::interpreter::shared_memory::SharedMemory" [
+        ("buffer", φ buffer);
+        ("checkpoints", φ checkpoints);
+        ("last_checkpoint", φ last_checkpoint)
+      ]
+  }.
+End SharedMemory.
+
+Module Stack.
+  Record t : Set := {
+    data: alloc.links.vec.Vec.t (ruint.Uint.t 256 4) alloc.links.alloc.Global.t;
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_interpreter::interpreter::stack::Stack";
+    φ '(Build_t data) :=
+      Value.StructRecord "revm_interpreter::interpreter::stack::Stack" [
+        ("data", φ data)
+      ]
+  }.
+End Stack.
 
 Module SubRoutineReturnFrame.
   Record t : Set := {
@@ -5183,6 +5183,60 @@ Module CallValue.
   Smpl Add simple apply of_value_Apparent : of_value.
 End CallValue.
 
+Module CallOutcome.
+  Record t : Set := {
+    result: revm_interpreter.links.interpreter.InterpreterResult.t;
+    memory_offset: core.ops.links.range.Range.t Usize.t;
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_interpreter::interpreter_action::call_outcome::CallOutcome";
+    φ '(Build_t result memory_offset) :=
+      Value.StructRecord "revm_interpreter::interpreter_action::call_outcome::CallOutcome" [
+        ("result", φ result);
+        ("memory_offset", φ memory_offset)
+      ]
+  }.
+End CallOutcome.
+
+Module CreateInputs.
+  Record t : Set := {
+    caller: alloy_primitives.bits.links.address.Address.t;
+    scheme: revm_context_interface.links.cfg.CreateScheme.t;
+    value: ruint.Uint.t 256 4;
+    init_code: alloy_primitives.links.bytes_.Bytes.t;
+    gas_limit: U64.t;
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+    φ '(Build_t caller scheme value init_code gas_limit) :=
+      Value.StructRecord "revm_interpreter::interpreter_action::create_inputs::CreateInputs" [
+        ("caller", φ caller);
+        ("scheme", φ scheme);
+        ("value", φ value);
+        ("init_code", φ init_code);
+        ("gas_limit", φ gas_limit)
+      ]
+  }.
+End CreateInputs.
+
+Module CreateOutcome.
+  Record t : Set := {
+    result: revm_interpreter.links.interpreter.InterpreterResult.t;
+    address: core.links.option.Option.t alloy_primitives.bits.links.address.Address.t;
+  }.
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_interpreter::interpreter_action::create_outcome::CreateOutcome";
+    φ '(Build_t result address) :=
+      Value.StructRecord "revm_interpreter::interpreter_action::create_outcome::CreateOutcome" [
+        ("result", φ result);
+        ("address", φ address)
+      ]
+  }.
+End CreateOutcome.
+
 Module EOFCreateKind.
   Inductive t : Set :=
   | Tx
@@ -5288,60 +5342,6 @@ Module EOFCreateInputs.
       ]
   }.
 End EOFCreateInputs.
-
-Module CreateInputs.
-  Record t : Set := {
-    caller: alloy_primitives.bits.links.address.Address.t;
-    scheme: revm_context_interface.links.cfg.CreateScheme.t;
-    value: ruint.Uint.t 256 4;
-    init_code: alloy_primitives.links.bytes_.Bytes.t;
-    gas_limit: U64.t;
-  }.
-
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-    φ '(Build_t caller scheme value init_code gas_limit) :=
-      Value.StructRecord "revm_interpreter::interpreter_action::create_inputs::CreateInputs" [
-        ("caller", φ caller);
-        ("scheme", φ scheme);
-        ("value", φ value);
-        ("init_code", φ init_code);
-        ("gas_limit", φ gas_limit)
-      ]
-  }.
-End CreateInputs.
-
-Module CallOutcome.
-  Record t : Set := {
-    result: revm_interpreter.links.interpreter.InterpreterResult.t;
-    memory_offset: core.ops.links.range.Range.t Usize.t;
-  }.
-
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_interpreter::interpreter_action::call_outcome::CallOutcome";
-    φ '(Build_t result memory_offset) :=
-      Value.StructRecord "revm_interpreter::interpreter_action::call_outcome::CallOutcome" [
-        ("result", φ result);
-        ("memory_offset", φ memory_offset)
-      ]
-  }.
-End CallOutcome.
-
-Module CreateOutcome.
-  Record t : Set := {
-    result: revm_interpreter.links.interpreter.InterpreterResult.t;
-    address: core.links.option.Option.t alloy_primitives.bits.links.address.Address.t;
-  }.
-
-  Global Instance IsLink : Link t := {
-    Φ := Ty.path "revm_interpreter::interpreter_action::create_outcome::CreateOutcome";
-    φ '(Build_t result address) :=
-      Value.StructRecord "revm_interpreter::interpreter_action::create_outcome::CreateOutcome" [
-        ("result", φ result);
-        ("address", φ address)
-      ]
-  }.
-End CreateOutcome.
 
 Module PrecompileOutput.
   Record t : Set := {

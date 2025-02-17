@@ -2994,16 +2994,19 @@ Module eof.
           {
             name := "Decode";
             item := StructTuple [ Ty.path "revm_bytecode::eof::EofDecodeError" ];
-            discriminant := None;
           };
           {
             name := "Validation";
             item := StructTuple [ Ty.path "revm_bytecode::eof::verification::EofValidationError" ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_EofError_Decode :
+      M.IsDiscriminant "revm_bytecode::eof::verification::EofError::Decode" 0.
+    Axiom IsDiscriminant_EofError_Validation :
+      M.IsDiscriminant "revm_bytecode::eof::verification::EofError::Validation" 1.
     
     Module Impl_core_fmt_Debug_for_revm_bytecode_eof_verification_EofError.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::verification::EofError".
@@ -4113,176 +4116,255 @@ Module eof.
           {
             name := "FalsePositive";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "UnknownOpcode";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "OpcodeDisabled";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "InstructionNotForwardAccessed";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "MissingImmediateBytes";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "MissingRJUMPVImmediateBytes";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "JumpToImmediateBytes";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "BackwardJumpToImmediateBytes";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "RJUMPVZeroMaxIndex";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "JumpZeroOffset";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "EOFCREATEInvalidIndex";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "CodeSectionOutOfBounds";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "CALLFNonReturningFunction";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "StackOverflow";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "JUMPFEnoughOutputs";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "JUMPFStackHigherThanOutputs";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "DataLoadOutOfBounds";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "RETFBiggestStackNumMoreThenOutputs";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "StackUnderflow";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "TypesStackUnderflow";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "JumpUnderflow";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "JumpOverflow";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "BackwardJumpBiggestNumMismatch";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "BackwardJumpSmallestNumMismatch";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "LastInstructionNotTerminating";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "CodeSectionNotAccessed";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "InvalidTypesSection";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "InvalidFirstTypesSection";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "MaxStackMismatch";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "NoCodeSections";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "SubContainerCalledInTwoModes";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "SubContainerNotAccessed";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "DataNotFilled";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "NonReturningSectionIsReturning";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_EofValidationError_FalsePositive :
+      M.IsDiscriminant "revm_bytecode::eof::verification::EofValidationError::FalsePositive" 0.
+    Axiom IsDiscriminant_EofValidationError_UnknownOpcode :
+      M.IsDiscriminant "revm_bytecode::eof::verification::EofValidationError::UnknownOpcode" 1.
+    Axiom IsDiscriminant_EofValidationError_OpcodeDisabled :
+      M.IsDiscriminant "revm_bytecode::eof::verification::EofValidationError::OpcodeDisabled" 2.
+    Axiom IsDiscriminant_EofValidationError_InstructionNotForwardAccessed :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::InstructionNotForwardAccessed"
+        3.
+    Axiom IsDiscriminant_EofValidationError_MissingImmediateBytes :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::MissingImmediateBytes"
+        4.
+    Axiom IsDiscriminant_EofValidationError_MissingRJUMPVImmediateBytes :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::MissingRJUMPVImmediateBytes"
+        5.
+    Axiom IsDiscriminant_EofValidationError_JumpToImmediateBytes :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::JumpToImmediateBytes"
+        6.
+    Axiom IsDiscriminant_EofValidationError_BackwardJumpToImmediateBytes :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::BackwardJumpToImmediateBytes"
+        7.
+    Axiom IsDiscriminant_EofValidationError_RJUMPVZeroMaxIndex :
+      M.IsDiscriminant "revm_bytecode::eof::verification::EofValidationError::RJUMPVZeroMaxIndex" 8.
+    Axiom IsDiscriminant_EofValidationError_JumpZeroOffset :
+      M.IsDiscriminant "revm_bytecode::eof::verification::EofValidationError::JumpZeroOffset" 9.
+    Axiom IsDiscriminant_EofValidationError_EOFCREATEInvalidIndex :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::EOFCREATEInvalidIndex"
+        10.
+    Axiom IsDiscriminant_EofValidationError_CodeSectionOutOfBounds :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::CodeSectionOutOfBounds"
+        11.
+    Axiom IsDiscriminant_EofValidationError_CALLFNonReturningFunction :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::CALLFNonReturningFunction"
+        12.
+    Axiom IsDiscriminant_EofValidationError_StackOverflow :
+      M.IsDiscriminant "revm_bytecode::eof::verification::EofValidationError::StackOverflow" 13.
+    Axiom IsDiscriminant_EofValidationError_JUMPFEnoughOutputs :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::JUMPFEnoughOutputs"
+        14.
+    Axiom IsDiscriminant_EofValidationError_JUMPFStackHigherThanOutputs :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::JUMPFStackHigherThanOutputs"
+        15.
+    Axiom IsDiscriminant_EofValidationError_DataLoadOutOfBounds :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::DataLoadOutOfBounds"
+        16.
+    Axiom IsDiscriminant_EofValidationError_RETFBiggestStackNumMoreThenOutputs :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::RETFBiggestStackNumMoreThenOutputs"
+        17.
+    Axiom IsDiscriminant_EofValidationError_StackUnderflow :
+      M.IsDiscriminant "revm_bytecode::eof::verification::EofValidationError::StackUnderflow" 18.
+    Axiom IsDiscriminant_EofValidationError_TypesStackUnderflow :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::TypesStackUnderflow"
+        19.
+    Axiom IsDiscriminant_EofValidationError_JumpUnderflow :
+      M.IsDiscriminant "revm_bytecode::eof::verification::EofValidationError::JumpUnderflow" 20.
+    Axiom IsDiscriminant_EofValidationError_JumpOverflow :
+      M.IsDiscriminant "revm_bytecode::eof::verification::EofValidationError::JumpOverflow" 21.
+    Axiom IsDiscriminant_EofValidationError_BackwardJumpBiggestNumMismatch :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::BackwardJumpBiggestNumMismatch"
+        22.
+    Axiom IsDiscriminant_EofValidationError_BackwardJumpSmallestNumMismatch :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::BackwardJumpSmallestNumMismatch"
+        23.
+    Axiom IsDiscriminant_EofValidationError_LastInstructionNotTerminating :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::LastInstructionNotTerminating"
+        24.
+    Axiom IsDiscriminant_EofValidationError_CodeSectionNotAccessed :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::CodeSectionNotAccessed"
+        25.
+    Axiom IsDiscriminant_EofValidationError_InvalidTypesSection :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::InvalidTypesSection"
+        26.
+    Axiom IsDiscriminant_EofValidationError_InvalidFirstTypesSection :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::InvalidFirstTypesSection"
+        27.
+    Axiom IsDiscriminant_EofValidationError_MaxStackMismatch :
+      M.IsDiscriminant "revm_bytecode::eof::verification::EofValidationError::MaxStackMismatch" 28.
+    Axiom IsDiscriminant_EofValidationError_NoCodeSections :
+      M.IsDiscriminant "revm_bytecode::eof::verification::EofValidationError::NoCodeSections" 29.
+    Axiom IsDiscriminant_EofValidationError_SubContainerCalledInTwoModes :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::SubContainerCalledInTwoModes"
+        30.
+    Axiom IsDiscriminant_EofValidationError_SubContainerNotAccessed :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::SubContainerNotAccessed"
+        31.
+    Axiom IsDiscriminant_EofValidationError_DataNotFilled :
+      M.IsDiscriminant "revm_bytecode::eof::verification::EofValidationError::DataNotFilled" 32.
+    Axiom IsDiscriminant_EofValidationError_NonReturningSectionIsReturning :
+      M.IsDiscriminant
+        "revm_bytecode::eof::verification::EofValidationError::NonReturningSectionIsReturning"
+        33.
     
     Module Impl_core_fmt_Debug_for_revm_bytecode_eof_verification_EofValidationError.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::verification::EofValidationError".
@@ -6236,16 +6318,19 @@ Module eof.
           {
             name := "ReturnContract";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "ReturnOrStop";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_CodeType_ReturnContract :
+      M.IsDiscriminant "revm_bytecode::eof::verification::CodeType::ReturnContract" 0.
+    Axiom IsDiscriminant_CodeType_ReturnOrStop :
+      M.IsDiscriminant "revm_bytecode::eof::verification::CodeType::ReturnOrStop" 1.
     
     Module Impl_core_clone_Clone_for_revm_bytecode_eof_verification_CodeType.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::verification::CodeType".

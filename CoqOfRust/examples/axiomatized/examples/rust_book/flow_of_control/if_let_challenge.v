@@ -11,11 +11,12 @@ Enum Foo
       {
         name := "Bar";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Foo_Bar : M.IsDiscriminant "if_let_challenge::Foo::Bar" 0.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 

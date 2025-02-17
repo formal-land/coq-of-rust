@@ -11,6 +11,7 @@ Module file_format_common.
   }
   *)
   
+  
   Module Impl_move_binary_format_file_format_common_BinaryConstants.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format_common::BinaryConstants".
     
@@ -360,81 +361,97 @@ Module file_format_common.
         {
           name := "MODULE_HANDLES";
           item := StructTuple [];
-          discriminant := Some 1;
         };
         {
           name := "STRUCT_HANDLES";
           item := StructTuple [];
-          discriminant := Some 2;
         };
         {
           name := "FUNCTION_HANDLES";
           item := StructTuple [];
-          discriminant := Some 3;
         };
         {
           name := "FUNCTION_INST";
           item := StructTuple [];
-          discriminant := Some 4;
         };
         {
           name := "SIGNATURES";
           item := StructTuple [];
-          discriminant := Some 5;
         };
         {
           name := "CONSTANT_POOL";
           item := StructTuple [];
-          discriminant := Some 6;
         };
         {
           name := "IDENTIFIERS";
           item := StructTuple [];
-          discriminant := Some 7;
         };
         {
           name := "ADDRESS_IDENTIFIERS";
           item := StructTuple [];
-          discriminant := Some 8;
         };
         {
           name := "STRUCT_DEFS";
           item := StructTuple [];
-          discriminant := Some 10;
         };
         {
           name := "STRUCT_DEF_INST";
           item := StructTuple [];
-          discriminant := Some 11;
         };
         {
           name := "FUNCTION_DEFS";
           item := StructTuple [];
-          discriminant := Some 12;
         };
         {
           name := "FIELD_HANDLE";
           item := StructTuple [];
-          discriminant := Some 13;
         };
         {
           name := "FIELD_INST";
           item := StructTuple [];
-          discriminant := Some 14;
         };
         {
           name := "FRIEND_DECLS";
           item := StructTuple [];
-          discriminant := Some 15;
         };
         {
           name := "METADATA";
           item := StructTuple [];
-          discriminant := Some 16;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_TableType_MODULE_HANDLES :
+    M.IsDiscriminant "move_binary_format::file_format_common::TableType::MODULE_HANDLES" 1.
+  Axiom IsDiscriminant_TableType_STRUCT_HANDLES :
+    M.IsDiscriminant "move_binary_format::file_format_common::TableType::STRUCT_HANDLES" 2.
+  Axiom IsDiscriminant_TableType_FUNCTION_HANDLES :
+    M.IsDiscriminant "move_binary_format::file_format_common::TableType::FUNCTION_HANDLES" 3.
+  Axiom IsDiscriminant_TableType_FUNCTION_INST :
+    M.IsDiscriminant "move_binary_format::file_format_common::TableType::FUNCTION_INST" 4.
+  Axiom IsDiscriminant_TableType_SIGNATURES :
+    M.IsDiscriminant "move_binary_format::file_format_common::TableType::SIGNATURES" 5.
+  Axiom IsDiscriminant_TableType_CONSTANT_POOL :
+    M.IsDiscriminant "move_binary_format::file_format_common::TableType::CONSTANT_POOL" 6.
+  Axiom IsDiscriminant_TableType_IDENTIFIERS :
+    M.IsDiscriminant "move_binary_format::file_format_common::TableType::IDENTIFIERS" 7.
+  Axiom IsDiscriminant_TableType_ADDRESS_IDENTIFIERS :
+    M.IsDiscriminant "move_binary_format::file_format_common::TableType::ADDRESS_IDENTIFIERS" 8.
+  Axiom IsDiscriminant_TableType_STRUCT_DEFS :
+    M.IsDiscriminant "move_binary_format::file_format_common::TableType::STRUCT_DEFS" 10.
+  Axiom IsDiscriminant_TableType_STRUCT_DEF_INST :
+    M.IsDiscriminant "move_binary_format::file_format_common::TableType::STRUCT_DEF_INST" 11.
+  Axiom IsDiscriminant_TableType_FUNCTION_DEFS :
+    M.IsDiscriminant "move_binary_format::file_format_common::TableType::FUNCTION_DEFS" 12.
+  Axiom IsDiscriminant_TableType_FIELD_HANDLE :
+    M.IsDiscriminant "move_binary_format::file_format_common::TableType::FIELD_HANDLE" 13.
+  Axiom IsDiscriminant_TableType_FIELD_INST :
+    M.IsDiscriminant "move_binary_format::file_format_common::TableType::FIELD_INST" 14.
+  Axiom IsDiscriminant_TableType_FRIEND_DECLS :
+    M.IsDiscriminant "move_binary_format::file_format_common::TableType::FRIEND_DECLS" 15.
+  Axiom IsDiscriminant_TableType_METADATA :
+    M.IsDiscriminant "move_binary_format::file_format_common::TableType::METADATA" 16.
   
   Module Impl_core_clone_Clone_for_move_binary_format_file_format_common_TableType.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format_common::TableType".
@@ -867,81 +884,97 @@ Module file_format_common.
         {
           name := "BOOL";
           item := StructTuple [];
-          discriminant := Some 1;
         };
         {
           name := "U8";
           item := StructTuple [];
-          discriminant := Some 2;
         };
         {
           name := "U64";
           item := StructTuple [];
-          discriminant := Some 3;
         };
         {
           name := "U128";
           item := StructTuple [];
-          discriminant := Some 4;
         };
         {
           name := "ADDRESS";
           item := StructTuple [];
-          discriminant := Some 5;
         };
         {
           name := "REFERENCE";
           item := StructTuple [];
-          discriminant := Some 6;
         };
         {
           name := "MUTABLE_REFERENCE";
           item := StructTuple [];
-          discriminant := Some 7;
         };
         {
           name := "STRUCT";
           item := StructTuple [];
-          discriminant := Some 8;
         };
         {
           name := "TYPE_PARAMETER";
           item := StructTuple [];
-          discriminant := Some 9;
         };
         {
           name := "VECTOR";
           item := StructTuple [];
-          discriminant := Some 10;
         };
         {
           name := "STRUCT_INST";
           item := StructTuple [];
-          discriminant := Some 11;
         };
         {
           name := "SIGNER";
           item := StructTuple [];
-          discriminant := Some 12;
         };
         {
           name := "U16";
           item := StructTuple [];
-          discriminant := Some 13;
         };
         {
           name := "U32";
           item := StructTuple [];
-          discriminant := Some 14;
         };
         {
           name := "U256";
           item := StructTuple [];
-          discriminant := Some 15;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_SerializedType_BOOL :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedType::BOOL" 1.
+  Axiom IsDiscriminant_SerializedType_U8 :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedType::U8" 2.
+  Axiom IsDiscriminant_SerializedType_U64 :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedType::U64" 3.
+  Axiom IsDiscriminant_SerializedType_U128 :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedType::U128" 4.
+  Axiom IsDiscriminant_SerializedType_ADDRESS :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedType::ADDRESS" 5.
+  Axiom IsDiscriminant_SerializedType_REFERENCE :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedType::REFERENCE" 6.
+  Axiom IsDiscriminant_SerializedType_MUTABLE_REFERENCE :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedType::MUTABLE_REFERENCE" 7.
+  Axiom IsDiscriminant_SerializedType_STRUCT :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedType::STRUCT" 8.
+  Axiom IsDiscriminant_SerializedType_TYPE_PARAMETER :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedType::TYPE_PARAMETER" 9.
+  Axiom IsDiscriminant_SerializedType_VECTOR :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedType::VECTOR" 10.
+  Axiom IsDiscriminant_SerializedType_STRUCT_INST :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedType::STRUCT_INST" 11.
+  Axiom IsDiscriminant_SerializedType_SIGNER :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedType::SIGNER" 12.
+  Axiom IsDiscriminant_SerializedType_U16 :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedType::U16" 13.
+  Axiom IsDiscriminant_SerializedType_U32 :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedType::U32" 14.
+  Axiom IsDiscriminant_SerializedType_U256 :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedType::U256" 15.
   
   Module Impl_core_clone_Clone_for_move_binary_format_file_format_common_SerializedType.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format_common::SerializedType".
@@ -1233,16 +1266,21 @@ Module file_format_common.
         {
           name := "NATIVE";
           item := StructTuple [];
-          discriminant := Some 1;
         };
         {
           name := "DECLARED";
           item := StructTuple [];
-          discriminant := Some 2;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_SerializedNativeStructFlag_NATIVE :
+    M.IsDiscriminant "move_binary_format::file_format_common::SerializedNativeStructFlag::NATIVE" 1.
+  Axiom IsDiscriminant_SerializedNativeStructFlag_DECLARED :
+    M.IsDiscriminant
+      "move_binary_format::file_format_common::SerializedNativeStructFlag::DECLARED"
+      2.
   
   Module Impl_core_clone_Clone_for_move_binary_format_file_format_common_SerializedNativeStructFlag.
     Definition Self : Ty.t :=
@@ -1355,391 +1393,483 @@ Module file_format_common.
         {
           name := "POP";
           item := StructTuple [];
-          discriminant := Some 1;
         };
         {
           name := "RET";
           item := StructTuple [];
-          discriminant := Some 2;
         };
         {
           name := "BR_TRUE";
           item := StructTuple [];
-          discriminant := Some 3;
         };
         {
           name := "BR_FALSE";
           item := StructTuple [];
-          discriminant := Some 4;
         };
         {
           name := "BRANCH";
           item := StructTuple [];
-          discriminant := Some 5;
         };
         {
           name := "LD_U64";
           item := StructTuple [];
-          discriminant := Some 6;
         };
         {
           name := "LD_CONST";
           item := StructTuple [];
-          discriminant := Some 7;
         };
         {
           name := "LD_TRUE";
           item := StructTuple [];
-          discriminant := Some 8;
         };
         {
           name := "LD_FALSE";
           item := StructTuple [];
-          discriminant := Some 9;
         };
         {
           name := "COPY_LOC";
           item := StructTuple [];
-          discriminant := Some 10;
         };
         {
           name := "MOVE_LOC";
           item := StructTuple [];
-          discriminant := Some 11;
         };
         {
           name := "ST_LOC";
           item := StructTuple [];
-          discriminant := Some 12;
         };
         {
           name := "MUT_BORROW_LOC";
           item := StructTuple [];
-          discriminant := Some 13;
         };
         {
           name := "IMM_BORROW_LOC";
           item := StructTuple [];
-          discriminant := Some 14;
         };
         {
           name := "MUT_BORROW_FIELD";
           item := StructTuple [];
-          discriminant := Some 15;
         };
         {
           name := "IMM_BORROW_FIELD";
           item := StructTuple [];
-          discriminant := Some 16;
         };
         {
           name := "CALL";
           item := StructTuple [];
-          discriminant := Some 17;
         };
         {
           name := "PACK";
           item := StructTuple [];
-          discriminant := Some 18;
         };
         {
           name := "UNPACK";
           item := StructTuple [];
-          discriminant := Some 19;
         };
         {
           name := "READ_REF";
           item := StructTuple [];
-          discriminant := Some 20;
         };
         {
           name := "WRITE_REF";
           item := StructTuple [];
-          discriminant := Some 21;
         };
         {
           name := "ADD";
           item := StructTuple [];
-          discriminant := Some 22;
         };
         {
           name := "SUB";
           item := StructTuple [];
-          discriminant := Some 23;
         };
         {
           name := "MUL";
           item := StructTuple [];
-          discriminant := Some 24;
         };
         {
           name := "MOD";
           item := StructTuple [];
-          discriminant := Some 25;
         };
         {
           name := "DIV";
           item := StructTuple [];
-          discriminant := Some 26;
         };
         {
           name := "BIT_OR";
           item := StructTuple [];
-          discriminant := Some 27;
         };
         {
           name := "BIT_AND";
           item := StructTuple [];
-          discriminant := Some 28;
         };
         {
           name := "XOR";
           item := StructTuple [];
-          discriminant := Some 29;
         };
         {
           name := "OR";
           item := StructTuple [];
-          discriminant := Some 30;
         };
         {
           name := "AND";
           item := StructTuple [];
-          discriminant := Some 31;
         };
         {
           name := "NOT";
           item := StructTuple [];
-          discriminant := Some 32;
         };
         {
           name := "EQ";
           item := StructTuple [];
-          discriminant := Some 33;
         };
         {
           name := "NEQ";
           item := StructTuple [];
-          discriminant := Some 34;
         };
         {
           name := "LT";
           item := StructTuple [];
-          discriminant := Some 35;
         };
         {
           name := "GT";
           item := StructTuple [];
-          discriminant := Some 36;
         };
         {
           name := "LE";
           item := StructTuple [];
-          discriminant := Some 37;
         };
         {
           name := "GE";
           item := StructTuple [];
-          discriminant := Some 38;
         };
         {
           name := "ABORT";
           item := StructTuple [];
-          discriminant := Some 39;
         };
         {
           name := "NOP";
           item := StructTuple [];
-          discriminant := Some 40;
         };
         {
           name := "FREEZE_REF";
           item := StructTuple [];
-          discriminant := Some 46;
         };
         {
           name := "SHL";
           item := StructTuple [];
-          discriminant := Some 47;
         };
         {
           name := "SHR";
           item := StructTuple [];
-          discriminant := Some 48;
         };
         {
           name := "LD_U8";
           item := StructTuple [];
-          discriminant := Some 49;
         };
         {
           name := "LD_U128";
           item := StructTuple [];
-          discriminant := Some 50;
         };
         {
           name := "CAST_U8";
           item := StructTuple [];
-          discriminant := Some 51;
         };
         {
           name := "CAST_U64";
           item := StructTuple [];
-          discriminant := Some 52;
         };
         {
           name := "CAST_U128";
           item := StructTuple [];
-          discriminant := Some 53;
         };
         {
           name := "MUT_BORROW_FIELD_GENERIC";
           item := StructTuple [];
-          discriminant := Some 54;
         };
         {
           name := "IMM_BORROW_FIELD_GENERIC";
           item := StructTuple [];
-          discriminant := Some 55;
         };
         {
           name := "CALL_GENERIC";
           item := StructTuple [];
-          discriminant := Some 56;
         };
         {
           name := "PACK_GENERIC";
           item := StructTuple [];
-          discriminant := Some 57;
         };
         {
           name := "UNPACK_GENERIC";
           item := StructTuple [];
-          discriminant := Some 58;
         };
         {
           name := "VEC_PACK";
           item := StructTuple [];
-          discriminant := Some 64;
         };
         {
           name := "VEC_LEN";
           item := StructTuple [];
-          discriminant := Some 65;
         };
         {
           name := "VEC_IMM_BORROW";
           item := StructTuple [];
-          discriminant := Some 66;
         };
         {
           name := "VEC_MUT_BORROW";
           item := StructTuple [];
-          discriminant := Some 67;
         };
         {
           name := "VEC_PUSH_BACK";
           item := StructTuple [];
-          discriminant := Some 68;
         };
         {
           name := "VEC_POP_BACK";
           item := StructTuple [];
-          discriminant := Some 69;
         };
         {
           name := "VEC_UNPACK";
           item := StructTuple [];
-          discriminant := Some 70;
         };
         {
           name := "VEC_SWAP";
           item := StructTuple [];
-          discriminant := Some 71;
         };
         {
           name := "LD_U16";
           item := StructTuple [];
-          discriminant := Some 72;
         };
         {
           name := "LD_U32";
           item := StructTuple [];
-          discriminant := Some 73;
         };
         {
           name := "LD_U256";
           item := StructTuple [];
-          discriminant := Some 74;
         };
         {
           name := "CAST_U16";
           item := StructTuple [];
-          discriminant := Some 75;
         };
         {
           name := "CAST_U32";
           item := StructTuple [];
-          discriminant := Some 76;
         };
         {
           name := "CAST_U256";
           item := StructTuple [];
-          discriminant := Some 77;
         };
         {
           name := "EXISTS_DEPRECATED";
           item := StructTuple [];
-          discriminant := Some 41;
         };
         {
           name := "MUT_BORROW_GLOBAL_DEPRECATED";
           item := StructTuple [];
-          discriminant := Some 42;
         };
         {
           name := "IMM_BORROW_GLOBAL_DEPRECATED";
           item := StructTuple [];
-          discriminant := Some 43;
         };
         {
           name := "MOVE_FROM_DEPRECATED";
           item := StructTuple [];
-          discriminant := Some 44;
         };
         {
           name := "MOVE_TO_DEPRECATED";
           item := StructTuple [];
-          discriminant := Some 45;
         };
         {
           name := "EXISTS_GENERIC_DEPRECATED";
           item := StructTuple [];
-          discriminant := Some 59;
         };
         {
           name := "MUT_BORROW_GLOBAL_GENERIC_DEPRECATED";
           item := StructTuple [];
-          discriminant := Some 60;
         };
         {
           name := "IMM_BORROW_GLOBAL_GENERIC_DEPRECATED";
           item := StructTuple [];
-          discriminant := Some 61;
         };
         {
           name := "MOVE_FROM_GENERIC_DEPRECATED";
           item := StructTuple [];
-          discriminant := Some 62;
         };
         {
           name := "MOVE_TO_GENERIC_DEPRECATED";
           item := StructTuple [];
-          discriminant := Some 63;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Opcodes_POP :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::POP" 1.
+  Axiom IsDiscriminant_Opcodes_RET :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::RET" 2.
+  Axiom IsDiscriminant_Opcodes_BR_TRUE :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::BR_TRUE" 3.
+  Axiom IsDiscriminant_Opcodes_BR_FALSE :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::BR_FALSE" 4.
+  Axiom IsDiscriminant_Opcodes_BRANCH :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::BRANCH" 5.
+  Axiom IsDiscriminant_Opcodes_LD_U64 :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::LD_U64" 6.
+  Axiom IsDiscriminant_Opcodes_LD_CONST :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::LD_CONST" 7.
+  Axiom IsDiscriminant_Opcodes_LD_TRUE :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::LD_TRUE" 8.
+  Axiom IsDiscriminant_Opcodes_LD_FALSE :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::LD_FALSE" 9.
+  Axiom IsDiscriminant_Opcodes_COPY_LOC :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::COPY_LOC" 10.
+  Axiom IsDiscriminant_Opcodes_MOVE_LOC :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::MOVE_LOC" 11.
+  Axiom IsDiscriminant_Opcodes_ST_LOC :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::ST_LOC" 12.
+  Axiom IsDiscriminant_Opcodes_MUT_BORROW_LOC :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::MUT_BORROW_LOC" 13.
+  Axiom IsDiscriminant_Opcodes_IMM_BORROW_LOC :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::IMM_BORROW_LOC" 14.
+  Axiom IsDiscriminant_Opcodes_MUT_BORROW_FIELD :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD" 15.
+  Axiom IsDiscriminant_Opcodes_IMM_BORROW_FIELD :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD" 16.
+  Axiom IsDiscriminant_Opcodes_CALL :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::CALL" 17.
+  Axiom IsDiscriminant_Opcodes_PACK :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::PACK" 18.
+  Axiom IsDiscriminant_Opcodes_UNPACK :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::UNPACK" 19.
+  Axiom IsDiscriminant_Opcodes_READ_REF :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::READ_REF" 20.
+  Axiom IsDiscriminant_Opcodes_WRITE_REF :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::WRITE_REF" 21.
+  Axiom IsDiscriminant_Opcodes_ADD :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::ADD" 22.
+  Axiom IsDiscriminant_Opcodes_SUB :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::SUB" 23.
+  Axiom IsDiscriminant_Opcodes_MUL :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::MUL" 24.
+  Axiom IsDiscriminant_Opcodes_MOD :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::MOD" 25.
+  Axiom IsDiscriminant_Opcodes_DIV :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::DIV" 26.
+  Axiom IsDiscriminant_Opcodes_BIT_OR :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::BIT_OR" 27.
+  Axiom IsDiscriminant_Opcodes_BIT_AND :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::BIT_AND" 28.
+  Axiom IsDiscriminant_Opcodes_XOR :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::XOR" 29.
+  Axiom IsDiscriminant_Opcodes_OR :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::OR" 30.
+  Axiom IsDiscriminant_Opcodes_AND :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::AND" 31.
+  Axiom IsDiscriminant_Opcodes_NOT :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::NOT" 32.
+  Axiom IsDiscriminant_Opcodes_EQ :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::EQ" 33.
+  Axiom IsDiscriminant_Opcodes_NEQ :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::NEQ" 34.
+  Axiom IsDiscriminant_Opcodes_LT :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::LT" 35.
+  Axiom IsDiscriminant_Opcodes_GT :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::GT" 36.
+  Axiom IsDiscriminant_Opcodes_LE :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::LE" 37.
+  Axiom IsDiscriminant_Opcodes_GE :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::GE" 38.
+  Axiom IsDiscriminant_Opcodes_ABORT :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::ABORT" 39.
+  Axiom IsDiscriminant_Opcodes_NOP :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::NOP" 40.
+  Axiom IsDiscriminant_Opcodes_FREEZE_REF :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::FREEZE_REF" 46.
+  Axiom IsDiscriminant_Opcodes_SHL :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::SHL" 47.
+  Axiom IsDiscriminant_Opcodes_SHR :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::SHR" 48.
+  Axiom IsDiscriminant_Opcodes_LD_U8 :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::LD_U8" 49.
+  Axiom IsDiscriminant_Opcodes_LD_U128 :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::LD_U128" 50.
+  Axiom IsDiscriminant_Opcodes_CAST_U8 :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::CAST_U8" 51.
+  Axiom IsDiscriminant_Opcodes_CAST_U64 :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::CAST_U64" 52.
+  Axiom IsDiscriminant_Opcodes_CAST_U128 :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::CAST_U128" 53.
+  Axiom IsDiscriminant_Opcodes_MUT_BORROW_FIELD_GENERIC :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD_GENERIC" 54.
+  Axiom IsDiscriminant_Opcodes_IMM_BORROW_FIELD_GENERIC :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD_GENERIC" 55.
+  Axiom IsDiscriminant_Opcodes_CALL_GENERIC :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::CALL_GENERIC" 56.
+  Axiom IsDiscriminant_Opcodes_PACK_GENERIC :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::PACK_GENERIC" 57.
+  Axiom IsDiscriminant_Opcodes_UNPACK_GENERIC :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::UNPACK_GENERIC" 58.
+  Axiom IsDiscriminant_Opcodes_VEC_PACK :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::VEC_PACK" 64.
+  Axiom IsDiscriminant_Opcodes_VEC_LEN :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::VEC_LEN" 65.
+  Axiom IsDiscriminant_Opcodes_VEC_IMM_BORROW :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::VEC_IMM_BORROW" 66.
+  Axiom IsDiscriminant_Opcodes_VEC_MUT_BORROW :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::VEC_MUT_BORROW" 67.
+  Axiom IsDiscriminant_Opcodes_VEC_PUSH_BACK :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::VEC_PUSH_BACK" 68.
+  Axiom IsDiscriminant_Opcodes_VEC_POP_BACK :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::VEC_POP_BACK" 69.
+  Axiom IsDiscriminant_Opcodes_VEC_UNPACK :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::VEC_UNPACK" 70.
+  Axiom IsDiscriminant_Opcodes_VEC_SWAP :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::VEC_SWAP" 71.
+  Axiom IsDiscriminant_Opcodes_LD_U16 :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::LD_U16" 72.
+  Axiom IsDiscriminant_Opcodes_LD_U32 :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::LD_U32" 73.
+  Axiom IsDiscriminant_Opcodes_LD_U256 :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::LD_U256" 74.
+  Axiom IsDiscriminant_Opcodes_CAST_U16 :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::CAST_U16" 75.
+  Axiom IsDiscriminant_Opcodes_CAST_U32 :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::CAST_U32" 76.
+  Axiom IsDiscriminant_Opcodes_CAST_U256 :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::CAST_U256" 77.
+  Axiom IsDiscriminant_Opcodes_EXISTS_DEPRECATED :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::EXISTS_DEPRECATED" 41.
+  Axiom IsDiscriminant_Opcodes_MUT_BORROW_GLOBAL_DEPRECATED :
+    M.IsDiscriminant
+      "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_DEPRECATED"
+      42.
+  Axiom IsDiscriminant_Opcodes_IMM_BORROW_GLOBAL_DEPRECATED :
+    M.IsDiscriminant
+      "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_DEPRECATED"
+      43.
+  Axiom IsDiscriminant_Opcodes_MOVE_FROM_DEPRECATED :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::MOVE_FROM_DEPRECATED" 44.
+  Axiom IsDiscriminant_Opcodes_MOVE_TO_DEPRECATED :
+    M.IsDiscriminant "move_binary_format::file_format_common::Opcodes::MOVE_TO_DEPRECATED" 45.
+  Axiom IsDiscriminant_Opcodes_EXISTS_GENERIC_DEPRECATED :
+    M.IsDiscriminant
+      "move_binary_format::file_format_common::Opcodes::EXISTS_GENERIC_DEPRECATED"
+      59.
+  Axiom IsDiscriminant_Opcodes_MUT_BORROW_GLOBAL_GENERIC_DEPRECATED :
+    M.IsDiscriminant
+      "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_GENERIC_DEPRECATED"
+      60.
+  Axiom IsDiscriminant_Opcodes_IMM_BORROW_GLOBAL_GENERIC_DEPRECATED :
+    M.IsDiscriminant
+      "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_GENERIC_DEPRECATED"
+      61.
+  Axiom IsDiscriminant_Opcodes_MOVE_FROM_GENERIC_DEPRECATED :
+    M.IsDiscriminant
+      "move_binary_format::file_format_common::Opcodes::MOVE_FROM_GENERIC_DEPRECATED"
+      62.
+  Axiom IsDiscriminant_Opcodes_MOVE_TO_GENERIC_DEPRECATED :
+    M.IsDiscriminant
+      "move_binary_format::file_format_common::Opcodes::MOVE_TO_GENERIC_DEPRECATED"
+      63.
   
   Module Impl_core_clone_Clone_for_move_binary_format_file_format_common_Opcodes.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format_common::Opcodes".

@@ -371,36 +371,40 @@ Enum Error
       {
         name := "UnexistentToken";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "ZeroAddressTransfer";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "NotApproved";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "InsufficientBalance";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "SelfApproval";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "BatchTransferMismatch";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Error_UnexistentToken : M.IsDiscriminant "erc1155::Error::UnexistentToken" 0.
+Axiom IsDiscriminant_Error_ZeroAddressTransfer :
+  M.IsDiscriminant "erc1155::Error::ZeroAddressTransfer" 1.
+Axiom IsDiscriminant_Error_NotApproved : M.IsDiscriminant "erc1155::Error::NotApproved" 2.
+Axiom IsDiscriminant_Error_InsufficientBalance :
+  M.IsDiscriminant "erc1155::Error::InsufficientBalance" 3.
+Axiom IsDiscriminant_Error_SelfApproval : M.IsDiscriminant "erc1155::Error::SelfApproval" 4.
+Axiom IsDiscriminant_Error_BatchTransferMismatch :
+  M.IsDiscriminant "erc1155::Error::BatchTransferMismatch" 5.
 
 Module Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
   Definition Self : Ty.t := Ty.path "erc1155::Error".
@@ -548,21 +552,22 @@ Enum Event
       {
         name := "TransferSingle";
         item := StructTuple [ Ty.path "erc1155::TransferSingle" ];
-        discriminant := None;
       };
       {
         name := "ApprovalForAll";
         item := StructTuple [ Ty.path "erc1155::ApprovalForAll" ];
-        discriminant := None;
       };
       {
         name := "Uri";
         item := StructTuple [ Ty.path "erc1155::Uri" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Event_TransferSingle : M.IsDiscriminant "erc1155::Event::TransferSingle" 0.
+Axiom IsDiscriminant_Event_ApprovalForAll : M.IsDiscriminant "erc1155::Event::ApprovalForAll" 1.
+Axiom IsDiscriminant_Event_Uri : M.IsDiscriminant "erc1155::Event::Uri" 2.
 
 Module Impl_erc1155_Env.
   Definition Self : Ty.t := Ty.path "erc1155::Env".

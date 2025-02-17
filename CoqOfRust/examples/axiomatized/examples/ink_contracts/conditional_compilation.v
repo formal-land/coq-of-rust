@@ -89,16 +89,18 @@ Enum Event
       {
         name := "Changes";
         item := StructTuple [ Ty.path "conditional_compilation::Changes" ];
-        discriminant := None;
       };
       {
         name := "ChangesDated";
         item := StructTuple [ Ty.path "conditional_compilation::ChangesDated" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Event_Changes : M.IsDiscriminant "conditional_compilation::Event::Changes" 0.
+Axiom IsDiscriminant_Event_ChangesDated :
+  M.IsDiscriminant "conditional_compilation::Event::ChangesDated" 1.
 
 Module Impl_conditional_compilation_Env.
   Definition Self : Ty.t := Ty.path "conditional_compilation::Env".

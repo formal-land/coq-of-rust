@@ -188,6 +188,7 @@ Module ops.
     }
     *)
     
+    
     Module Impl_core_ops_try_trait_Try_for_core_ops_try_trait_NeverShortCircuit_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ].

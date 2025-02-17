@@ -12,26 +12,30 @@ Module state.
         {
           name := "DESERIALIZER";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "VERIFIER";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "RUNTIME";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OTHER";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_VMState_DESERIALIZER :
+    M.IsDiscriminant "move_core_types::state::VMState::DESERIALIZER" 0.
+  Axiom IsDiscriminant_VMState_VERIFIER :
+    M.IsDiscriminant "move_core_types::state::VMState::VERIFIER" 1.
+  Axiom IsDiscriminant_VMState_RUNTIME :
+    M.IsDiscriminant "move_core_types::state::VMState::RUNTIME" 2.
+  Axiom IsDiscriminant_VMState_OTHER : M.IsDiscriminant "move_core_types::state::VMState::OTHER" 3.
   
   Module Impl_core_clone_Clone_for_move_core_types_state_VMState.
     Definition Self : Ty.t := Ty.path "move_core_types::state::VMState".

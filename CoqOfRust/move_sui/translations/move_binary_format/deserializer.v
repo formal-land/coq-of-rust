@@ -24413,22 +24413,18 @@ Module deserializer.
           {
             name := "Saturated";
             item := StructTuple [ Ty.path "move_binary_format::file_format::SignatureToken" ];
-            discriminant := None;
           };
           {
             name := "Vector";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Reference";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "MutableReference";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "StructInst";
@@ -24446,11 +24442,31 @@ Module deserializer.
                         Ty.path "alloc::alloc::Global"
                       ])
                 ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_TypeBuilder_Saturated :
+      M.IsDiscriminant
+        "move_binary_format::deserializer::load_signature_token::TypeBuilder::Saturated"
+        0.
+    Axiom IsDiscriminant_TypeBuilder_Vector :
+      M.IsDiscriminant
+        "move_binary_format::deserializer::load_signature_token::TypeBuilder::Vector"
+        1.
+    Axiom IsDiscriminant_TypeBuilder_Reference :
+      M.IsDiscriminant
+        "move_binary_format::deserializer::load_signature_token::TypeBuilder::Reference"
+        2.
+    Axiom IsDiscriminant_TypeBuilder_MutableReference :
+      M.IsDiscriminant
+        "move_binary_format::deserializer::load_signature_token::TypeBuilder::MutableReference"
+        3.
+    Axiom IsDiscriminant_TypeBuilder_StructInst :
+      M.IsDiscriminant
+        "move_binary_format::deserializer::load_signature_token::TypeBuilder::StructInst"
+        4.
     
     Module Impl_move_binary_format_deserializer_load_signature_token_TypeBuilder.
       Definition Self : Ty.t :=
@@ -24980,21 +24996,27 @@ Module deserializer.
         {
           name := "FunctionTypeParameters";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "StructTypeParameters";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "StructHandle";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_AbilitySetPosition_FunctionTypeParameters :
+    M.IsDiscriminant
+      "move_binary_format::deserializer::AbilitySetPosition::FunctionTypeParameters"
+      0.
+  Axiom IsDiscriminant_AbilitySetPosition_StructTypeParameters :
+    M.IsDiscriminant "move_binary_format::deserializer::AbilitySetPosition::StructTypeParameters" 1.
+  Axiom IsDiscriminant_AbilitySetPosition_StructHandle :
+    M.IsDiscriminant "move_binary_format::deserializer::AbilitySetPosition::StructHandle" 2.
   
   Module Impl_core_marker_Copy_for_move_binary_format_deserializer_AbilitySetPosition.
     Definition Self : Ty.t := Ty.path "move_binary_format::deserializer::AbilitySetPosition".
@@ -41587,16 +41609,23 @@ Module deserializer.
         {
           name := "NOMINAL_RESOURCE";
           item := StructTuple [];
-          discriminant := Some 1;
         };
         {
           name := "NORMAL_STRUCT";
           item := StructTuple [];
-          discriminant := Some 2;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_DeprecatedNominalResourceFlag_NOMINAL_RESOURCE :
+    M.IsDiscriminant
+      "move_binary_format::deserializer::DeprecatedNominalResourceFlag::NOMINAL_RESOURCE"
+      1.
+  Axiom IsDiscriminant_DeprecatedNominalResourceFlag_NORMAL_STRUCT :
+    M.IsDiscriminant
+      "move_binary_format::deserializer::DeprecatedNominalResourceFlag::NORMAL_STRUCT"
+      2.
   
   Module Impl_core_clone_Clone_for_move_binary_format_deserializer_DeprecatedNominalResourceFlag.
     Definition Self : Ty.t :=
@@ -41795,21 +41824,25 @@ Module deserializer.
         {
           name := "ALL";
           item := StructTuple [];
-          discriminant := Some 1;
         };
         {
           name := "COPYABLE";
           item := StructTuple [];
-          discriminant := Some 2;
         };
         {
           name := "RESOURCE";
           item := StructTuple [];
-          discriminant := Some 3;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_DeprecatedKind_ALL :
+    M.IsDiscriminant "move_binary_format::deserializer::DeprecatedKind::ALL" 1.
+  Axiom IsDiscriminant_DeprecatedKind_COPYABLE :
+    M.IsDiscriminant "move_binary_format::deserializer::DeprecatedKind::COPYABLE" 2.
+  Axiom IsDiscriminant_DeprecatedKind_RESOURCE :
+    M.IsDiscriminant "move_binary_format::deserializer::DeprecatedKind::RESOURCE" 3.
   
   Module Impl_move_binary_format_deserializer_DeprecatedKind.
     Definition Self : Ty.t := Ty.path "move_binary_format::deserializer::DeprecatedKind".

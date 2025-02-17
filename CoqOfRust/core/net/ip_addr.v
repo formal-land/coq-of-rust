@@ -13,16 +13,17 @@ Module net.
           {
             name := "V4";
             item := StructTuple [ Ty.path "core::net::ip_addr::Ipv4Addr" ];
-            discriminant := None;
           };
           {
             name := "V6";
             item := StructTuple [ Ty.path "core::net::ip_addr::Ipv6Addr" ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_IpAddr_V4 : M.IsDiscriminant "core::net::ip_addr::IpAddr::V4" 0.
+    Axiom IsDiscriminant_IpAddr_V6 : M.IsDiscriminant "core::net::ip_addr::IpAddr::V6" 1.
     
     Module Impl_core_marker_Copy_for_core_net_ip_addr_IpAddr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
@@ -1177,41 +1178,49 @@ Module net.
           {
             name := "InterfaceLocal";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "LinkLocal";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "RealmLocal";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "AdminLocal";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "SiteLocal";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "OrganizationLocal";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Global";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_Ipv6MulticastScope_InterfaceLocal :
+      M.IsDiscriminant "core::net::ip_addr::Ipv6MulticastScope::InterfaceLocal" 0.
+    Axiom IsDiscriminant_Ipv6MulticastScope_LinkLocal :
+      M.IsDiscriminant "core::net::ip_addr::Ipv6MulticastScope::LinkLocal" 1.
+    Axiom IsDiscriminant_Ipv6MulticastScope_RealmLocal :
+      M.IsDiscriminant "core::net::ip_addr::Ipv6MulticastScope::RealmLocal" 2.
+    Axiom IsDiscriminant_Ipv6MulticastScope_AdminLocal :
+      M.IsDiscriminant "core::net::ip_addr::Ipv6MulticastScope::AdminLocal" 3.
+    Axiom IsDiscriminant_Ipv6MulticastScope_SiteLocal :
+      M.IsDiscriminant "core::net::ip_addr::Ipv6MulticastScope::SiteLocal" 4.
+    Axiom IsDiscriminant_Ipv6MulticastScope_OrganizationLocal :
+      M.IsDiscriminant "core::net::ip_addr::Ipv6MulticastScope::OrganizationLocal" 5.
+    Axiom IsDiscriminant_Ipv6MulticastScope_Global :
+      M.IsDiscriminant "core::net::ip_addr::Ipv6MulticastScope::Global" 6.
     
     Module Impl_core_marker_Copy_for_core_net_ip_addr_Ipv6MulticastScope.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6MulticastScope".

@@ -58,11 +58,12 @@ Enum LoopB
       {
         name := "Item";
         item := StructRecord [ ("ident", Ty.path "mutual_loop::LoopA") ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_LoopB_Item : M.IsDiscriminant "mutual_loop::LoopB::Item" 0.
 
 Module Impl_mutual_loop_LoopB.
   Definition Self : Ty.t := Ty.path "mutual_loop::LoopB".

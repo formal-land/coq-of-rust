@@ -412,6 +412,12 @@ Parameter IsProvidedMethod :
     (method : Ty.t -> PolymorphicFunction.t),
   Prop.
 
+Parameter IsDiscriminant :
+  forall
+    (variant_name : string)
+    (discriminant : Z),
+  Prop.
+
 Module IsTraitMethod.
   Inductive t
       (trait_name : string)

@@ -53,21 +53,7 @@ Proof.
 Admitted.
 
 Ltac rewrite_cast :=
-  match goal with
-  | |- context [ M.cast ?x _ ] =>
-    change x with (Φ U8.t) ||
-    change x with (Φ U16.t) ||
-    change x with (Φ U32.t) ||
-    change x with (Φ U64.t) ||
-    change x with (Φ U128.t) ||
-    change x with (Φ Usize.t) ||
-    change x with (Φ I8.t) ||
-    change x with (Φ I16.t) ||
-    change x with (Φ I32.t) ||
-    change x with (Φ I64.t) ||
-    change x with (Φ I128.t) ||
-    change x with (Φ Isize.t)
-  end;
+  change_cast_integer;
   match goal with
   | |- context[M.cast _ (φ _)] =>
     eapply Run.Rewrite; [

@@ -11,21 +11,22 @@ Enum Foo
       {
         name := "Bar";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Baz";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Qux";
         item := StructTuple [ Ty.path "u32" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Foo_Bar : M.IsDiscriminant "if_let_match_enum_values::Foo::Bar" 0.
+Axiom IsDiscriminant_Foo_Baz : M.IsDiscriminant "if_let_match_enum_values::Foo::Baz" 1.
+Axiom IsDiscriminant_Foo_Qux : M.IsDiscriminant "if_let_match_enum_values::Foo::Qux" 2.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 

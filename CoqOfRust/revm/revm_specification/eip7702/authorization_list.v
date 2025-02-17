@@ -23,7 +23,6 @@ Module eip7702.
                       Ty.path "alloc::alloc::Global"
                     ]
                 ];
-            discriminant := None;
           };
           {
             name := "Recovered";
@@ -39,11 +38,19 @@ Module eip7702.
                       Ty.path "alloc::alloc::Global"
                     ]
                 ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_AuthorizationList_Signed :
+      M.IsDiscriminant
+        "revm_specification::eip7702::authorization_list::AuthorizationList::Signed"
+        0.
+    Axiom IsDiscriminant_AuthorizationList_Recovered :
+      M.IsDiscriminant
+        "revm_specification::eip7702::authorization_list::AuthorizationList::Recovered"
+        1.
     
     Module Impl_core_clone_Clone_for_revm_specification_eip7702_authorization_list_AuthorizationList.
       Definition Self : Ty.t :=
@@ -1399,21 +1406,31 @@ Module eip7702.
           {
             name := "InvalidChainId";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "InvalidYParity";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Eip2InvalidSValue";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_InvalidAuthorization_InvalidChainId :
+      M.IsDiscriminant
+        "revm_specification::eip7702::authorization_list::InvalidAuthorization::InvalidChainId"
+        0.
+    Axiom IsDiscriminant_InvalidAuthorization_InvalidYParity :
+      M.IsDiscriminant
+        "revm_specification::eip7702::authorization_list::InvalidAuthorization::InvalidYParity"
+        1.
+    Axiom IsDiscriminant_InvalidAuthorization_Eip2InvalidSValue :
+      M.IsDiscriminant
+        "revm_specification::eip7702::authorization_list::InvalidAuthorization::Eip2InvalidSValue"
+        2.
     
     Module Impl_core_fmt_Debug_for_revm_specification_eip7702_authorization_list_InvalidAuthorization.
       Definition Self : Ty.t :=

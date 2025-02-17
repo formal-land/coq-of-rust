@@ -163,16 +163,17 @@ Enum Event
       {
         name := "Transfer";
         item := StructTuple [ Ty.path "erc20::Transfer" ];
-        discriminant := None;
       };
       {
         name := "Approval";
         item := StructTuple [ Ty.path "erc20::Approval" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Event_Transfer : M.IsDiscriminant "erc20::Event::Transfer" 0.
+Axiom IsDiscriminant_Event_Approval : M.IsDiscriminant "erc20::Event::Approval" 1.
 
 (*
 Enum Error
@@ -184,16 +185,19 @@ Enum Error
       {
         name := "InsufficientBalance";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "InsufficientAllowance";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Error_InsufficientBalance :
+  M.IsDiscriminant "erc20::Error::InsufficientBalance" 0.
+Axiom IsDiscriminant_Error_InsufficientAllowance :
+  M.IsDiscriminant "erc20::Error::InsufficientAllowance" 1.
 
 Axiom Result :
   forall (T : Ty.t),

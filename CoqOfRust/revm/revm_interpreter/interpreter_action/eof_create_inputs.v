@@ -13,7 +13,6 @@ Module interpreter_action.
           {
             name := "Tx";
             item := StructRecord [ ("initdata", Ty.path "alloy_primitives::bytes_::Bytes") ];
-            discriminant := None;
           };
           {
             name := "Opcode";
@@ -24,11 +23,19 @@ Module interpreter_action.
                   ("input", Ty.path "alloy_primitives::bytes_::Bytes");
                   ("created_address", Ty.path "alloy_primitives::bits::address::Address")
                 ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_EOFCreateKind_Tx :
+      M.IsDiscriminant
+        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx"
+        0.
+    Axiom IsDiscriminant_EOFCreateKind_Opcode :
+      M.IsDiscriminant
+        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode"
+        1.
     
     Module Impl_core_fmt_Debug_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
       Definition Self : Ty.t :=

@@ -266,7 +266,6 @@ Module collections.
         {
           name := "CapacityOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "AllocError";
@@ -274,11 +273,15 @@ Module collections.
             StructRecord
               [ ("layout", Ty.path "core::alloc::layout::Layout"); ("non_exhaustive", Ty.tuple [])
               ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_TryReserveErrorKind_CapacityOverflow :
+    M.IsDiscriminant "alloc::collections::TryReserveErrorKind::CapacityOverflow" 0.
+  Axiom IsDiscriminant_TryReserveErrorKind_AllocError :
+    M.IsDiscriminant "alloc::collections::TryReserveErrorKind::AllocError" 1.
   
   Module Impl_core_clone_Clone_for_alloc_collections_TryReserveErrorKind.
     Definition Self : Ty.t := Ty.path "alloc::collections::TryReserveErrorKind".

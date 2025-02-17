@@ -191,16 +191,19 @@ Enum Error
       {
         name := "InsufficientBalance";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "InsufficientAllowance";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Error_InsufficientBalance :
+  M.IsDiscriminant "trait_erc20::Error::InsufficientBalance" 0.
+Axiom IsDiscriminant_Error_InsufficientAllowance :
+  M.IsDiscriminant "trait_erc20::Error::InsufficientAllowance" 1.
 
 Module Impl_core_fmt_Debug_for_trait_erc20_Error.
   Definition Self : Ty.t := Ty.path "trait_erc20::Error".
@@ -496,16 +499,17 @@ Enum Event
       {
         name := "Transfer";
         item := StructTuple [ Ty.path "trait_erc20::Transfer" ];
-        discriminant := None;
       };
       {
         name := "Approval";
         item := StructTuple [ Ty.path "trait_erc20::Approval" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Event_Transfer : M.IsDiscriminant "trait_erc20::Event::Transfer" 0.
+Axiom IsDiscriminant_Event_Approval : M.IsDiscriminant "trait_erc20::Event::Approval" 1.
 
 Module Impl_trait_erc20_Env.
   Definition Self : Ty.t := Ty.path "trait_erc20::Env".

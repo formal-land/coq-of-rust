@@ -10,6 +10,7 @@ Enum Inch
 }
 *)
 
+
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
   Definition Self : Ty.t := Ty.path "generics_phantom_type_test_case_unit_clarification::Inch".
   
@@ -51,6 +52,7 @@ Enum Mm
   variants := [];
 }
 *)
+
 
 Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
   Definition Self : Ty.t := Ty.path "generics_phantom_type_test_case_unit_clarification::Mm".

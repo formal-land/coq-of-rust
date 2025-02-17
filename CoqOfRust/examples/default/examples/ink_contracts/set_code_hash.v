@@ -10,6 +10,7 @@ Enum Error
 }
 *)
 
+
 (*
 fn set_code_hash<E>(code_hash: &E) -> Result<(), Error> {
     unimplemented!()

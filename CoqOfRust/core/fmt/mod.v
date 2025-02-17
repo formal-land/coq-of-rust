@@ -12,21 +12,22 @@ Module fmt.
         {
           name := "Left";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Right";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Center";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Alignment_Left : M.IsDiscriminant "core::fmt::Alignment::Left" 0.
+  Axiom IsDiscriminant_Alignment_Right : M.IsDiscriminant "core::fmt::Alignment::Right" 1.
+  Axiom IsDiscriminant_Alignment_Center : M.IsDiscriminant "core::fmt::Alignment::Center" 2.
   
   Module Impl_core_marker_Copy_for_core_fmt_Alignment.
     Definition Self : Ty.t := Ty.path "core::fmt::Alignment".

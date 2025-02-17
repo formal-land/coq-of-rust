@@ -13,21 +13,25 @@ Module instructions.
           {
             name := "Minus";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Zero";
             item := StructTuple [];
-            discriminant := Some 0;
           };
           {
             name := "Plus";
             item := StructTuple [];
-            discriminant := Some 1;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_Sign_Minus :
+      M.IsDiscriminant "revm_interpreter::instructions::i256::Sign::Minus" 0.
+    Axiom IsDiscriminant_Sign_Zero :
+      M.IsDiscriminant "revm_interpreter::instructions::i256::Sign::Zero" 0.
+    Axiom IsDiscriminant_Sign_Plus :
+      M.IsDiscriminant "revm_interpreter::instructions::i256::Sign::Plus" 1.
     
     Module Impl_core_clone_Clone_for_revm_interpreter_instructions_i256_Sign.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".

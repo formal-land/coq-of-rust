@@ -1084,6 +1084,23 @@ Ltac run_rewrites :=
     reflexivity
   |].
 
+Ltac change_cast_integer :=
+  match goal with
+  | |- context [ M.cast (Ty.path ?x) _ ] =>
+    change (Ty.path x) with (Φ U8.t) ||
+    change (Ty.path x) with (Φ U16.t) ||
+    change (Ty.path x) with (Φ U32.t) ||
+    change (Ty.path x) with (Φ U64.t) ||
+    change (Ty.path x) with (Φ U128.t) ||
+    change (Ty.path x) with (Φ Usize.t) ||
+    change (Ty.path x) with (Φ I8.t) ||
+    change (Ty.path x) with (Φ I16.t) ||
+    change (Ty.path x) with (Φ I32.t) ||
+    change (Ty.path x) with (Φ I64.t) ||
+    change (Ty.path x) with (Φ I128.t) ||
+    change (Ty.path x) with (Φ Isize.t)
+  end.
+
 Ltac run_symbolic_one_step_immediate :=
   match goal with
   | |- {{ _ 🔽 _, _ }} =>
@@ -1129,6 +1146,24 @@ Ltac run_symbolic :=
       intros [|[]]; run_symbolic
     )
   )).
+
+Axiom is_discriminant_tuple_eq :
+  forall
+    (kind : IntegerKind.t)
+    (variant_name : string) (fields : list Value.t)
+    (discriminant : Z),
+  M.IsDiscriminant variant_name discriminant ->
+  M.cast (Φ (Integer.t kind)) (Value.StructTuple variant_name fields) =
+  Value.Integer kind (Integer.normalize_wrap kind discriminant).
+
+Axiom is_discriminant_record_eq :
+  forall
+    (kind : IntegerKind.t)
+    (variant_name : string) (fields : list (string * Value.t))
+    (discriminant : Z),
+  M.IsDiscriminant variant_name discriminant ->
+  M.cast (Φ (Integer.t kind)) (Value.StructRecord variant_name fields) =
+  Value.Integer kind (Integer.normalize_wrap kind discriminant).
 
 Module Function1.
   Record t {A Output : Set} `{Link A} `{Link Output} : Set := {

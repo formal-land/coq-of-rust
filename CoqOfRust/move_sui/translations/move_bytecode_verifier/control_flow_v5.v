@@ -463,16 +463,19 @@ Module control_flow_v5.
         {
           name := "Loop";
           item := StructRecord [ ("last_continue", Ty.path "u16") ];
-          discriminant := None;
         };
         {
           name := "Code";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Label_Loop :
+    M.IsDiscriminant "move_bytecode_verifier::control_flow_v5::Label::Loop" 0.
+  Axiom IsDiscriminant_Label_Code :
+    M.IsDiscriminant "move_bytecode_verifier::control_flow_v5::Label::Code" 1.
   
   Module Impl_core_clone_Clone_for_move_bytecode_verifier_control_flow_v5_Label.
     Definition Self : Ty.t := Ty.path "move_bytecode_verifier::control_flow_v5::Label".

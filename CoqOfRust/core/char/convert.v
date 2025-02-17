@@ -644,16 +644,19 @@ Module char.
           {
             name := "EmptyString";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "TooManyChars";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_CharErrorKind_EmptyString :
+      M.IsDiscriminant "core::char::convert::CharErrorKind::EmptyString" 0.
+    Axiom IsDiscriminant_CharErrorKind_TooManyChars :
+      M.IsDiscriminant "core::char::convert::CharErrorKind::TooManyChars" 1.
     
     Module Impl_core_marker_Copy_for_core_char_convert_CharErrorKind.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
