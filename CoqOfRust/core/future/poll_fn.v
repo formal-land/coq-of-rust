@@ -39,8 +39,9 @@ Module future.
         forall (F : Ty.t),
         M.IsTraitInstance
           "core::marker::Unpin"
-          (Self F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F)
           (* Instance *) [].
     End Impl_core_marker_Unpin_where_core_marker_Unpin_F_for_core_future_poll_fn_PollFn_F.
     
@@ -102,8 +103,9 @@ Module future.
         forall (F : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt F)) ].
     End Impl_core_fmt_Debug_for_core_future_poll_fn_PollFn_F.
     
@@ -185,8 +187,9 @@ Module future.
         forall (T F : Ty.t),
         M.IsTraitInstance
           "core::future::future::Future"
-          (Self T F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T F)
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output T F)); ("poll", InstanceField.Method (poll T F)) ].
     End Impl_core_future_future_Future_where_core_ops_function_FnMut_F_Tuple_ref_mut_core_task_wake_Context__for_core_future_poll_fn_PollFn_F.

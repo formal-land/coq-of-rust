@@ -1341,8 +1341,9 @@ Module instructions.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::instructions::utility::IntoU256"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("into_u256", InstanceField.Method into_u256) ].
     End Impl_revm_interpreter_instructions_utility_IntoU256_for_alloy_primitives_bits_address_Address.
     
@@ -1393,8 +1394,9 @@ Module instructions.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::instructions::utility::IntoU256"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("into_u256", InstanceField.Method into_u256) ].
     End Impl_revm_interpreter_instructions_utility_IntoU256_for_alloy_primitives_bits_fixed_FixedBytes_Usize_32.
     
@@ -1476,8 +1478,9 @@ Module instructions.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::instructions::utility::IntoAddress"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("into_address", InstanceField.Method into_address) ].
     End Impl_revm_interpreter_instructions_utility_IntoAddress_for_ruint_Uint_Usize_256_Usize_4.
   End utility.

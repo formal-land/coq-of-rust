@@ -76,8 +76,9 @@ Module collections.
           forall (T I : Ty.t),
           M.IsTraitInstance
             "alloc::collections::vec_deque::spec_from_iter::SpecFromIter"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ T; I ]
             (Self T I)
-            (* Trait polymorphic types *) [ (* T *) T; (* I *) I ]
             (* Instance *) [ ("spec_from_iter", InstanceField.Method (spec_from_iter T I)) ].
       End Impl_alloc_collections_vec_deque_spec_from_iter_SpecFromIter_where_core_iter_traits_iterator_Iterator_I_T_I_for_alloc_collections_vec_deque_VecDeque_T_alloc_alloc_Global.
       
@@ -127,16 +128,16 @@ Module collections.
           forall (T : Ty.t),
           M.IsTraitInstance
             "alloc::collections::vec_deque::spec_from_iter::SpecFromIter"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* T *) T;
-              (* I *)
+              T;
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
                 []
                 [ T; Ty.path "alloc::alloc::Global" ]
             ]
+            (Self T)
             (* Instance *) [ ("spec_from_iter", InstanceField.Method (spec_from_iter T)) ].
       End Impl_alloc_collections_vec_deque_spec_from_iter_SpecFromIter_T_alloc_vec_into_iter_IntoIter_T_alloc_alloc_Global_for_alloc_collections_vec_deque_VecDeque_T_alloc_alloc_Global.
       
@@ -186,16 +187,16 @@ Module collections.
           forall (T : Ty.t),
           M.IsTraitInstance
             "alloc::collections::vec_deque::spec_from_iter::SpecFromIter"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* T *) T;
-              (* I *)
+              T;
               Ty.apply
                 (Ty.path "alloc::collections::vec_deque::into_iter::IntoIter")
                 []
                 [ T; Ty.path "alloc::alloc::Global" ]
             ]
+            (Self T)
             (* Instance *) [ ("spec_from_iter", InstanceField.Method (spec_from_iter T)) ].
       End Impl_alloc_collections_vec_deque_spec_from_iter_SpecFromIter_T_alloc_collections_vec_deque_into_iter_IntoIter_T_alloc_alloc_Global_for_alloc_collections_vec_deque_VecDeque_T_alloc_alloc_Global.
     End spec_from_iter.

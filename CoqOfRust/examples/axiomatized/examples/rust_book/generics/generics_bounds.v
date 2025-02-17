@@ -20,8 +20,9 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
 
@@ -41,8 +42,9 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
   Axiom Implements :
     M.IsTraitInstance
       "generics_bounds::HasArea"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("area", InstanceField.Method area) ].
 End Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
 

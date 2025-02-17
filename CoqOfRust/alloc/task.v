@@ -86,9 +86,10 @@ Module task.
       forall (W : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self W)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ] ]
+        [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ] ]
+        (Self W)
         (* Instance *) [ ("from", InstanceField.Method (from W)) ].
   End Impl_core_convert_From_where_alloc_task_Wake_W_where_core_marker_Send_W_where_core_marker_Sync_W_alloc_sync_Arc_W_alloc_alloc_Global_for_core_task_wake_Waker.
   
@@ -118,9 +119,10 @@ Module task.
       forall (W : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self W)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ] ]
+        [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ] ]
+        (Self W)
         (* Instance *) [ ("from", InstanceField.Method (from W)) ].
   End Impl_core_convert_From_where_alloc_task_Wake_W_where_core_marker_Send_W_where_core_marker_Sync_W_alloc_sync_Arc_W_alloc_alloc_Global_for_core_task_wake_RawWaker.
   
@@ -586,9 +588,10 @@ Module task.
       forall (W : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self W)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ] ]
+        [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ] ]
+        (Self W)
         (* Instance *) [ ("from", InstanceField.Method (from W)) ].
   End Impl_core_convert_From_where_alloc_task_LocalWake_W_alloc_rc_Rc_W_alloc_alloc_Global_for_core_task_wake_LocalWaker.
   
@@ -618,9 +621,10 @@ Module task.
       forall (W : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self W)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ] ]
+        [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ] ]
+        (Self W)
         (* Instance *) [ ("from", InstanceField.Method (from W)) ].
   End Impl_core_convert_From_where_alloc_task_LocalWake_W_alloc_rc_Rc_W_alloc_alloc_Global_for_core_task_wake_RawWaker.
   

@@ -16,7 +16,9 @@ Module future.
           };
           {
             name := "Done";
-            item := StructTuple [ Ty.associated ];
+            item :=
+              StructTuple
+                [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output" ];
           };
           {
             name := "Taken";
@@ -223,7 +225,13 @@ Module future.
                                 0
                               |) in
                             let f := M.alloc (| γ0_0 |) in
-                            let~ val : Ty.associated :=
+                            let~ val :
+                                Ty.associated_in_trait
+                                  "core::future::future::Future"
+                                  []
+                                  []
+                                  F
+                                  "Output" :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (|
@@ -231,7 +239,14 @@ Module future.
                                       Ty.apply
                                         (Ty.path "core::task::poll::Poll")
                                         []
-                                        [ Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::future::future::Future"
+                                            []
+                                            []
+                                            F
+                                            "Output"
+                                        ],
                                       M.get_trait_method (|
                                         "core::future::future::Future",
                                         F,
@@ -367,8 +382,9 @@ Module future.
         forall (F : Ty.t),
         M.IsTraitInstance
           "core::future::future::Future"
-          (Self F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F)
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output F)); ("poll", InstanceField.Method (poll F)) ].
     End Impl_core_future_future_Future_where_core_future_future_Future_F_for_core_future_join_MaybeDone_F.

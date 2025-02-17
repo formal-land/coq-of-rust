@@ -106,8 +106,9 @@ Module resolver.
       forall (E T : Ty.t),
       M.IsTraitInstance
         "move_core_types::resolver::MoveResolver"
-        (Self E T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self E T)
         (* Instance *) [ ("Err", InstanceField.Ty (_Err E T)) ].
   End Impl_move_core_types_resolver_MoveResolver_where_core_fmt_Debug_E_where_move_core_types_resolver_LinkageResolver_T_where_move_core_types_resolver_ModuleResolver_T_where_move_core_types_resolver_ResourceResolver_T_where_core_marker_Sized_T_for_T.
   
@@ -115,7 +116,8 @@ Module resolver.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     (*     type Error = T::Error; *)
-    Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
+    Definition _Error (T : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "move_core_types::resolver::ResourceResolver" [] [] T "Error".
     
     (*
         fn get_resource(
@@ -148,7 +150,7 @@ Module resolver.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                   ];
-                Ty.associated
+                Ty.associated_in_trait "move_core_types::resolver::ResourceResolver" [] [] T "Error"
               ],
             M.get_trait_method (|
               "move_core_types::resolver::ResourceResolver",
@@ -175,8 +177,9 @@ Module resolver.
       forall (T : Ty.t),
       M.IsTraitInstance
         "move_core_types::resolver::ResourceResolver"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("Error", InstanceField.Ty (_Error T));
@@ -188,7 +191,8 @@ Module resolver.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     (*     type Error = T::Error; *)
-    Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
+    Definition _Error (T : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "move_core_types::resolver::ModuleResolver" [] [] T "Error".
     
     (*
         fn get_module(&self, module_id: &ModuleId) -> Result<Option<Vec<u8>>, Self::Error> {
@@ -216,7 +220,7 @@ Module resolver.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                   ];
-                Ty.associated
+                Ty.associated_in_trait "move_core_types::resolver::ModuleResolver" [] [] T "Error"
               ],
             M.get_trait_method (|
               "move_core_types::resolver::ModuleResolver",
@@ -242,8 +246,9 @@ Module resolver.
       forall (T : Ty.t),
       M.IsTraitInstance
         "move_core_types::resolver::ModuleResolver"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("Error", InstanceField.Ty (_Error T));
@@ -256,7 +261,8 @@ Module resolver.
       Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ].
     
     (*     type Error = T::Error; *)
-    Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
+    Definition _Error (T : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "move_core_types::resolver::ModuleResolver" [] [] T "Error".
     
     (*
         fn get_module(&self, module_id: &ModuleId) -> Result<Option<Vec<u8>>, Self::Error> {
@@ -284,7 +290,7 @@ Module resolver.
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                   ];
-                Ty.associated
+                Ty.associated_in_trait "move_core_types::resolver::ModuleResolver" [] [] T "Error"
               ],
             M.get_trait_method (|
               "move_core_types::resolver::ModuleResolver",
@@ -327,8 +333,9 @@ Module resolver.
       forall (T : Ty.t),
       M.IsTraitInstance
         "move_core_types::resolver::ModuleResolver"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("Error", InstanceField.Ty (_Error T));
@@ -340,7 +347,8 @@ Module resolver.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
     
     (*     type Error = T::Error; *)
-    Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
+    Definition _Error (T : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "move_core_types::resolver::LinkageResolver" [] [] T "Error".
     
     (*
         fn link_context(&self) -> AccountAddress {
@@ -390,7 +398,10 @@ Module resolver.
             Ty.apply
               (Ty.path "core::result::Result")
               []
-              [ Ty.path "move_core_types::language_storage::ModuleId"; Ty.associated ],
+              [
+                Ty.path "move_core_types::language_storage::ModuleId";
+                Ty.associated_in_trait "move_core_types::resolver::LinkageResolver" [] [] T "Error"
+              ],
             M.get_trait_method (|
               "move_core_types::resolver::LinkageResolver",
               T,
@@ -437,7 +448,10 @@ Module resolver.
             Ty.apply
               (Ty.path "core::result::Result")
               []
-              [ Ty.path "move_core_types::language_storage::ModuleId"; Ty.associated ],
+              [
+                Ty.path "move_core_types::language_storage::ModuleId";
+                Ty.associated_in_trait "move_core_types::resolver::LinkageResolver" [] [] T "Error"
+              ],
             M.get_trait_method (|
               "move_core_types::resolver::LinkageResolver",
               T,
@@ -463,8 +477,9 @@ Module resolver.
       forall (T : Ty.t),
       M.IsTraitInstance
         "move_core_types::resolver::LinkageResolver"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("Error", InstanceField.Ty (_Error T));

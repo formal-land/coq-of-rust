@@ -74,8 +74,9 @@ Module iter.
           forall (I F : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I F)
             (* Instance *) [ ("clone", InstanceField.Method (clone I F)) ].
       End Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_clone_Clone_F_for_core_iter_adapters_map_Map_I_F.
       
@@ -229,8 +230,9 @@ Module iter.
           forall (I F : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I F)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt I F)) ].
       End Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_iter_adapters_map_Map_I_F.
       
@@ -406,7 +408,7 @@ Module iter.
         (* Error OpaqueTy *)
       End map_try_fold.
       
-      Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_map_Map_I_F.
+      Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_Map_I_F.
         Definition Self (B I F : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ].
         
@@ -427,14 +429,28 @@ Module iter.
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ B ],
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                    ],
                   "map",
                   [],
                   [ B; Ty.apply (Ty.path "&mut") [] [ F ] ]
                 |),
                 [
                   M.call_closure (|
-                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item"
+                      ],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
                       I,
@@ -545,7 +561,7 @@ Module iter.
                   [],
                   "try_fold",
                   [],
-                  [ Acc; Ty.associated; R ]
+                  [ Acc; Ty.associated_unknown; R ]
                 |),
                 [
                   M.borrow (|
@@ -558,11 +574,23 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_function (|
                       "core::iter::adapters::map::map_try_fold",
                       [],
-                      [ Ty.associated; B; Acc; R; F; G ]
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item";
+                        B;
+                        Acc;
+                        R;
+                        F;
+                        G
+                      ]
                     |),
                     [
                       M.borrow (|
@@ -611,7 +639,7 @@ Module iter.
                   [],
                   "fold",
                   [],
-                  [ Acc; Ty.associated ]
+                  [ Acc; Ty.associated_unknown ]
                 |),
                 [
                   M.read (|
@@ -623,11 +651,22 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_function (|
                       "core::iter::adapters::map::map_fold",
                       [],
-                      [ Ty.associated; B; Acc; F; G ]
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item";
+                        B;
+                        Acc;
+                        F;
+                        G
+                      ]
                     |),
                     [
                       M.read (|
@@ -673,7 +712,17 @@ Module iter.
                   "core::ops::function::FnMut",
                   F,
                   [],
-                  [ Ty.tuple [ Ty.associated ] ],
+                  [
+                    Ty.tuple
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item"
+                      ]
+                  ],
                   "call_mut",
                   [],
                   []
@@ -690,7 +739,12 @@ Module iter.
                   Value.Tuple
                     [
                       M.call_closure (|
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item",
                         M.get_function (|
                           "core::iter::adapters::zip::try_get_unchecked",
                           [],
@@ -723,8 +777,9 @@ Module iter.
           forall (B I F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self B I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self B I F)
             (* Instance *)
             [
               ("Item", InstanceField.Ty (_Item B I F));
@@ -734,9 +789,9 @@ Module iter.
               ("fold", InstanceField.Method (fold B I F));
               ("__iterator_get_unchecked", InstanceField.Method (__iterator_get_unchecked B I F))
             ].
-      End Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_map_Map_I_F.
+      End Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_Map_I_F.
       
-      Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_map_Map_I_F.
+      Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_Map_I_F.
         Definition Self (B I F : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ].
         
@@ -759,14 +814,28 @@ Module iter.
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ B ],
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                    ],
                   "map",
                   [],
                   [ B; Ty.apply (Ty.path "&mut") [] [ F ] ]
                 |),
                 [
                   M.call_closure (|
-                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item"
+                      ],
                     M.get_trait_method (|
                       "core::iter::traits::double_ended::DoubleEndedIterator",
                       I,
@@ -832,7 +901,7 @@ Module iter.
                   [],
                   "try_rfold",
                   [],
-                  [ Acc; Ty.associated; R ]
+                  [ Acc; Ty.associated_unknown; R ]
                 |),
                 [
                   M.borrow (|
@@ -845,11 +914,23 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_function (|
                       "core::iter::adapters::map::map_try_fold",
                       [],
-                      [ Ty.associated; B; Acc; R; F; G ]
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item";
+                        B;
+                        Acc;
+                        R;
+                        F;
+                        G
+                      ]
                     |),
                     [
                       M.borrow (|
@@ -898,7 +979,7 @@ Module iter.
                   [],
                   "rfold",
                   [],
-                  [ Acc; Ty.associated ]
+                  [ Acc; Ty.associated_unknown ]
                 |),
                 [
                   M.read (|
@@ -910,11 +991,22 @@ Module iter.
                   |);
                   M.read (| init |);
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_unknown,
                     M.get_function (|
                       "core::iter::adapters::map::map_fold",
                       [],
-                      [ Ty.associated; B; Acc; F; G ]
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item";
+                        B;
+                        Acc;
+                        F;
+                        G
+                      ]
                     |),
                     [
                       M.read (|
@@ -936,17 +1028,18 @@ Module iter.
           forall (B I F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::double_ended::DoubleEndedIterator"
-            (Self B I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self B I F)
             (* Instance *)
             [
               ("next_back", InstanceField.Method (next_back B I F));
               ("try_rfold", InstanceField.Method (try_rfold B I F));
               ("rfold", InstanceField.Method (rfold B I F))
             ].
-      End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_map_Map_I_F.
+      End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_double_ended_DoubleEndedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_Map_I_F.
       
-      Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_map_Map_I_F.
+      Module Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_Map_I_F.
         Definition Self (B I F : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ].
         
@@ -1031,16 +1124,17 @@ Module iter.
           forall (B I F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::exact_size::ExactSizeIterator"
-            (Self B I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self B I F)
             (* Instance *)
             [
               ("len", InstanceField.Method (len B I F));
               ("is_empty", InstanceField.Method (is_empty B I F))
             ].
-      End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_map_Map_I_F.
+      End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_exact_size_ExactSizeIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_Map_I_F.
       
-      Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_map_Map_I_F.
+      Module Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_Map_I_F.
         Definition Self (B I F : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ].
         
@@ -1048,10 +1142,11 @@ Module iter.
           forall (B I F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::FusedIterator"
-            (Self B I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self B I F)
             (* Instance *) [].
-      End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_map_Map_I_F.
+      End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_Map_I_F.
       
       Module Impl_core_iter_traits_marker_TrustedFused_where_core_iter_traits_marker_TrustedFused_I_for_core_iter_adapters_map_Map_I_F.
         Definition Self (I F : Ty.t) : Ty.t :=
@@ -1061,12 +1156,13 @@ Module iter.
           forall (I F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::TrustedFused"
-            (Self I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I F)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_TrustedFused_where_core_iter_traits_marker_TrustedFused_I_for_core_iter_adapters_map_Map_I_F.
       
-      Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_map_Map_I_F.
+      Module Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_Map_I_F.
         Definition Self (B I F : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ].
         
@@ -1074,12 +1170,13 @@ Module iter.
           forall (B I F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::TrustedLen"
-            (Self B I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self B I F)
             (* Instance *) [].
-      End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_map_Map_I_F.
+      End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_I_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_Map_I_F.
       
-      Module Impl_core_iter_traits_unchecked_iterator_UncheckedIterator_where_core_iter_traits_unchecked_iterator_UncheckedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_map_Map_I_F.
+      Module Impl_core_iter_traits_unchecked_iterator_UncheckedIterator_where_core_iter_traits_unchecked_iterator_UncheckedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_Map_I_F.
         Definition Self (B I F : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ].
         
@@ -1103,10 +1200,21 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ item : Ty.associated :=
+                let~ item :
+                    Ty.associated_in_trait
+                      "core::iter::traits::iterator::Iterator"
+                      []
+                      []
+                      I
+                      "Item" :=
                   M.alloc (|
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "core::iter::traits::iterator::Iterator"
+                        []
+                        []
+                        I
+                        "Item",
                       M.get_trait_method (|
                         "core::iter::traits::unchecked_iterator::UncheckedIterator",
                         I,
@@ -1135,7 +1243,17 @@ Module iter.
                       "core::ops::function::FnMut",
                       F,
                       [],
-                      [ Ty.tuple [ Ty.associated ] ],
+                      [
+                        Ty.tuple
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              I
+                              "Item"
+                          ]
+                      ],
                       "call_mut",
                       [],
                       []
@@ -1161,10 +1279,11 @@ Module iter.
           forall (B I F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::unchecked_iterator::UncheckedIterator"
-            (Self B I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self B I F)
             (* Instance *) [ ("next_unchecked", InstanceField.Method (next_unchecked B I F)) ].
-      End Impl_core_iter_traits_unchecked_iterator_UncheckedIterator_where_core_iter_traits_unchecked_iterator_UncheckedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_type__for_core_iter_adapters_map_Map_I_F.
+      End Impl_core_iter_traits_unchecked_iterator_UncheckedIterator_where_core_iter_traits_unchecked_iterator_UncheckedIterator_I_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_map_Map_I_F.
       
       Module Impl_core_iter_adapters_zip_TrustedRandomAccess_where_core_iter_adapters_zip_TrustedRandomAccess_I_for_core_iter_adapters_map_Map_I_F.
         Definition Self (I F : Ty.t) : Ty.t :=
@@ -1174,8 +1293,9 @@ Module iter.
           forall (I F : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::zip::TrustedRandomAccess"
-            (Self I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I F)
             (* Instance *) [].
       End Impl_core_iter_adapters_zip_TrustedRandomAccess_where_core_iter_adapters_zip_TrustedRandomAccess_I_for_core_iter_adapters_map_Map_I_F.
       
@@ -1193,8 +1313,9 @@ Module iter.
           forall (I F : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-            (Self I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I F)
             (* Instance *)
             [
               ("value_MAY_HAVE_SIDE_EFFECT",
@@ -1207,7 +1328,8 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::map::Map") [] [ I; F ].
         
         (*     type Source = I::Source; *)
-        Definition _Source (I F : Ty.t) : Ty.t := Ty.associated.
+        Definition _Source (I F : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::iter::adapters::SourceIter" [] [] I "Source".
         
         (*
             unsafe fn as_inner(&mut self) -> &mut I::Source {
@@ -1236,7 +1358,17 @@ Module iter.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
-                            Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::adapters::SourceIter"
+                                  []
+                                  []
+                                  I
+                                  "Source"
+                              ],
                             M.get_trait_method (|
                               "core::iter::adapters::SourceIter",
                               I,
@@ -1275,8 +1407,9 @@ Module iter.
           forall (I F : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::SourceIter"
-            (Self I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I F)
             (* Instance *)
             [
               ("Source", InstanceField.Ty (_Source I F));
@@ -1314,8 +1447,9 @@ Module iter.
           forall (I F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::InPlaceIterable"
-            (Self I F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I F)
             (* Instance *)
             [
               ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I F));

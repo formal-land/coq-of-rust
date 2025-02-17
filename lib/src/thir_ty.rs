@@ -146,7 +146,37 @@ pub(crate) fn compile_type<'a>(
                 .map(|ty| compile_type(env, span, generics, &ty))
                 .collect(),
         }),
-        TyKind::Alias(_, _) => Rc::new(CoqType::Associated),
+        TyKind::Alias(alias_kind, alias_ty) => match alias_kind {
+            rustc_middle::ty::AliasTyKind::Projection => {
+                let self_ty = compile_type(env, span, generics, &alias_ty.self_ty());
+                let (trait_ref, own_args) = alias_ty.trait_ref_and_own_args(env.tcx);
+                let trait_name = compile_def_id(env, trait_ref.def_id);
+                let const_args = own_args
+                    .iter()
+                    .filter_map(|arg| match &arg.unpack() {
+                        GenericArgKind::Const(constant) => Some(compile_const(env, span, constant)),
+                        _ => None,
+                    })
+                    .collect();
+                let ty_args = own_args
+                    .iter()
+                    .filter_map(|arg| match &arg.unpack() {
+                        GenericArgKind::Type(ty) => Some(compile_type(env, span, generics, ty)),
+                        _ => None,
+                    })
+                    .collect();
+                let path = compile_def_id(env, alias_ty.def_id);
+
+                Rc::new(CoqType::AssociatedInTrait {
+                    trait_name,
+                    const_args,
+                    ty_args,
+                    self_ty,
+                    name: path.segments.last().unwrap().clone(),
+                })
+            }
+            _ => Rc::new(CoqType::AssociatedUnknown),
+        },
         TyKind::Param(param) => {
             if generics.has_self && param.index == 0 {
                 return CoqType::var("Self");

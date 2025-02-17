@@ -23,8 +23,9 @@ Module boxed.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_marker_Sized_T_where_core_marker_Send_T_for_alloc_boxed_thin_ThinBox_T.
     
@@ -36,8 +37,9 @@ Module boxed.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sized_T_where_core_marker_Sync_T_for_alloc_boxed_thin_ThinBox_T.
     
@@ -221,9 +223,15 @@ Module boxed.
             M.read (|
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "*mut") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "*mut")
+                    []
+                    [ Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata" ],
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "alloc::boxed::thin::WithHeader")
+                      []
+                      [ Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata" ],
                     "header",
                     [],
                     []
@@ -240,7 +248,14 @@ Module boxed.
                               Ty.apply
                                 (Ty.path "alloc::boxed::thin::WithHeader")
                                 []
-                                [ Ty.associated ]
+                                [
+                                  Ty.associated_in_trait
+                                    "core::ptr::metadata::Pointee"
+                                    []
+                                    []
+                                    T
+                                    "Metadata"
+                                ]
                             ],
                           M.get_associated_function (|
                             Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
@@ -278,7 +293,10 @@ Module boxed.
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
               M.get_associated_function (|
-                Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "alloc::boxed::thin::WithHeader")
+                  []
+                  [ Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata" ],
                 "value",
                 [],
                 []
@@ -291,7 +309,18 @@ Module boxed.
                       Ty.apply
                         (Ty.path "&")
                         []
-                        [ Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ]
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::boxed::thin::WithHeader")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::ptr::metadata::Pointee"
+                                []
+                                []
+                                T
+                                "Metadata"
+                            ]
                         ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
@@ -335,7 +364,18 @@ Module boxed.
                       (Ty.apply
                         (Ty.path "*const")
                         []
-                        [ Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ]
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::boxed::thin::WithHeader")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::ptr::metadata::Pointee"
+                                []
+                                []
+                                T
+                                "Metadata"
+                            ]
                         ])
                       (M.borrow (|
                         Pointer.Kind.ConstPointer,
@@ -430,10 +470,21 @@ Module boxed.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let~ meta : Ty.associated :=
+                      (let~ meta :
+                          Ty.associated_in_trait
+                            "core::ptr::metadata::Pointee"
+                            []
+                            []
+                            Dyn
+                            "Metadata" :=
                         M.alloc (|
                           M.call_closure (|
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "core::ptr::metadata::Pointee"
+                              []
+                              []
+                              Dyn
+                              "Metadata",
                             M.get_function (| "core::ptr::metadata::metadata", [], [ Dyn ] |),
                             [
                               M.borrow (|
@@ -461,7 +512,15 @@ Module boxed.
                               Ty.path "alloc::boxed::thin::WithOpaqueHeader",
                               "new",
                               [],
-                              [ Ty.associated; T ]
+                              [
+                                Ty.associated_in_trait
+                                  "core::ptr::metadata::Pointee"
+                                  []
+                                  []
+                                  Dyn
+                                  "Metadata";
+                                T
+                              ]
                             |),
                             [ M.read (| meta |); M.read (| value |) ]
                           |)
@@ -537,8 +596,9 @@ Module boxed.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_marker_Sized_T_where_core_fmt_Debug_T_for_alloc_boxed_thin_ThinBox_T.
     
@@ -593,8 +653,9 @@ Module boxed.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Display"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Display_where_core_marker_Sized_T_where_core_fmt_Display_T_for_alloc_boxed_thin_ThinBox_T.
     
@@ -633,10 +694,11 @@ Module boxed.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              let~ metadata : Ty.associated :=
+              let~ metadata :
+                  Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata" :=
                 M.alloc (|
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata",
                     M.get_associated_function (|
                       Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                       "meta",
@@ -675,8 +737,9 @@ Module boxed.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::Deref"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Target", InstanceField.Ty (_Target T)); ("deref", InstanceField.Method (deref T)) ].
     End Impl_core_ops_deref_Deref_where_core_marker_Sized_T_for_alloc_boxed_thin_ThinBox_T.
@@ -716,10 +779,11 @@ Module boxed.
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |) in
-                  let~ metadata : Ty.associated :=
+                  let~ metadata :
+                      Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata" :=
                     M.alloc (|
                       M.call_closure (|
-                        Ty.associated,
+                        Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata",
                         M.get_associated_function (|
                           Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
                           "meta",
@@ -769,8 +833,9 @@ Module boxed.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::DerefMut"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("deref_mut", InstanceField.Method (deref_mut T)) ].
     End Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_for_alloc_boxed_thin_ThinBox_T.
     
@@ -822,7 +887,11 @@ Module boxed.
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
+                      Ty.apply
+                        (Ty.path "alloc::boxed::thin::WithHeader")
+                        []
+                        [ Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata"
+                        ],
                       "drop",
                       [],
                       [ T ]
@@ -839,7 +908,14 @@ Module boxed.
                                 Ty.apply
                                   (Ty.path "alloc::boxed::thin::WithHeader")
                                   []
-                                  [ Ty.associated ]
+                                  [
+                                    Ty.associated_in_trait
+                                      "core::ptr::metadata::Pointee"
+                                      []
+                                      []
+                                      T
+                                      "Metadata"
+                                  ]
                               ],
                             M.get_associated_function (|
                               Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
@@ -864,8 +940,9 @@ Module boxed.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("drop", InstanceField.Method (drop T)) ].
     End Impl_core_ops_drop_Drop_where_core_marker_Sized_T_for_alloc_boxed_thin_ThinBox_T.
     
@@ -955,12 +1032,25 @@ Module boxed.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.read (|
-              let~ ptr : Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ] :=
+              let~ ptr :
+                  Ty.apply
+                    (Ty.path "alloc::boxed::thin::WithHeader")
+                    []
+                    [ Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] Dyn "Metadata"
+                    ] :=
                 M.alloc (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "alloc::boxed::thin::WithHeader")
+                      []
+                      [ Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] Dyn "Metadata"
+                      ],
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
+                      Ty.apply
+                        (Ty.path "alloc::boxed::thin::WithHeader")
+                        []
+                        [ Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] Dyn "Metadata"
+                        ],
                       "new_unsize_zst",
                       [],
                       [ Dyn; T ]
@@ -2518,8 +2608,9 @@ Module boxed.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::error::Error"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("source", InstanceField.Method (source T)) ].
     End Impl_core_error_Error_where_core_marker_Sized_T_where_core_error_Error_T_for_alloc_boxed_thin_ThinBox_T.
   End thin.

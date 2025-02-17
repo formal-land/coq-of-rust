@@ -30,11 +30,17 @@ Module collections.
           [
             {
               name := "A";
-              item := StructTuple [ Ty.associated ];
+              item :=
+                StructTuple
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                  ];
             };
             {
               name := "B";
-              item := StructTuple [ Ty.associated ];
+              item :=
+                StructTuple
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                  ];
             }
           ];
       }
@@ -45,7 +51,7 @@ Module collections.
       Axiom IsDiscriminant_Peeked_B :
         M.IsDiscriminant "alloc::collections::btree::merge_iter::Peeked::B" 1.
       
-      Module Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_for_alloc_collections_btree_merge_iter_Peeked_I.
+      Module Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_where_core_clone_Clone_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_alloc_collections_btree_merge_iter_Peeked_I.
         Definition Self (I : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "alloc::collections::btree::merge_iter::Peeked") [] [ I ].
         
@@ -75,10 +81,20 @@ Module collections.
                             "alloc::collections::btree::merge_iter::Peeked::A"
                             [
                               M.call_closure (|
-                                Ty.associated,
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item",
                                 M.get_trait_method (|
                                   "core::clone::Clone",
-                                  Ty.associated,
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    I
+                                    "Item",
                                   [],
                                   [],
                                   "clone",
@@ -109,10 +125,20 @@ Module collections.
                             "alloc::collections::btree::merge_iter::Peeked::B"
                             [
                               M.call_closure (|
-                                Ty.associated,
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item",
                                 M.get_trait_method (|
                                   "core::clone::Clone",
-                                  Ty.associated,
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    I
+                                    "Item",
                                   [],
                                   [],
                                   "clone",
@@ -138,12 +164,13 @@ Module collections.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [ ("clone", InstanceField.Method (clone I)) ].
-      End Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_for_alloc_collections_btree_merge_iter_Peeked_I.
+      End Impl_core_clone_Clone_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_where_core_clone_Clone_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_alloc_collections_btree_merge_iter_Peeked_I.
       
-      Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_for_alloc_collections_btree_merge_iter_Peeked_I.
+      Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_where_core_fmt_Debug_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_alloc_collections_btree_merge_iter_Peeked_I.
         Definition Self (I : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "alloc::collections::btree::merge_iter::Peeked") [] [ I ].
         
@@ -239,12 +266,13 @@ Module collections.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt I)) ].
-      End Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_for_alloc_collections_btree_merge_iter_Peeked_I.
+      End Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_where_core_fmt_Debug_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_alloc_collections_btree_merge_iter_Peeked_I.
       
-      Module Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_associated_type_for_alloc_collections_btree_merge_iter_MergeIterInner_I.
+      Module Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_alloc_collections_btree_merge_iter_MergeIterInner_I.
         Definition Self (I : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "alloc::collections::btree::merge_iter::MergeIterInner") [] [ I ].
         
@@ -339,12 +367,13 @@ Module collections.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [ ("clone", InstanceField.Method (clone I)) ].
-      End Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_associated_type_for_alloc_collections_btree_merge_iter_MergeIterInner_I.
+      End Impl_core_clone_Clone_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_I_where_core_clone_Clone_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_alloc_collections_btree_merge_iter_MergeIterInner_I.
       
-      Module Impl_core_fmt_Debug_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_I_where_core_fmt_Debug_associated_type_for_alloc_collections_btree_merge_iter_MergeIterInner_I.
+      Module Impl_core_fmt_Debug_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_I_where_core_fmt_Debug_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_alloc_collections_btree_merge_iter_MergeIterInner_I.
         Definition Self (I : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "alloc::collections::btree::merge_iter::MergeIterInner") [] [ I ].
         
@@ -500,10 +529,11 @@ Module collections.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt I)) ].
-      End Impl_core_fmt_Debug_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_I_where_core_fmt_Debug_associated_type_for_alloc_collections_btree_merge_iter_MergeIterInner_I.
+      End Impl_core_fmt_Debug_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_I_where_core_fmt_Debug_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_alloc_collections_btree_merge_iter_MergeIterInner_I.
       
       Module Impl_alloc_collections_btree_merge_iter_MergeIterInner_I.
         Definition Self (I : Ty.t) : Ty.t :=
@@ -647,7 +677,17 @@ Module collections.
                               M.write (|
                                 b_next,
                                 M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        I
+                                        "Item"
+                                    ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     I,
@@ -698,7 +738,17 @@ Module collections.
                               M.write (|
                                 a_next,
                                 M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        I
+                                        "Item"
+                                    ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     I,
@@ -730,7 +780,17 @@ Module collections.
                               M.write (|
                                 a_next,
                                 M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        I
+                                        "Item"
+                                    ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     I,
@@ -758,7 +818,17 @@ Module collections.
                               M.write (|
                                 b_next,
                                 M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        I
+                                        "Item"
+                                    ],
                                   M.get_trait_method (|
                                     "core::iter::traits::iterator::Iterator",
                                     I,
@@ -827,8 +897,28 @@ Module collections.
                                   [
                                     Ty.tuple
                                       [
-                                        Ty.apply (Ty.path "&") [] [ Ty.associated ];
-                                        Ty.apply (Ty.path "&") [] [ Ty.associated ]
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::iterator::Iterator"
+                                              []
+                                              []
+                                              I
+                                              "Item"
+                                          ];
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::iterator::Iterator"
+                                              []
+                                              []
+                                              I
+                                              "Item"
+                                          ]
                                       ]
                                   ],
                                   "call",
@@ -875,7 +965,14 @@ Module collections.
                                           Ty.apply
                                             (Ty.path "core::option::Option")
                                             []
-                                            [ Ty.associated ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                I
+                                                "Item"
+                                            ],
                                           "map",
                                           [],
                                           [
@@ -885,7 +982,14 @@ Module collections.
                                               []
                                               [ I ];
                                             Ty.function
-                                              [ Ty.associated ]
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::iter::traits::iterator::Iterator"
+                                                  []
+                                                  []
+                                                  I
+                                                  "Item"
+                                              ]
                                               (Ty.apply
                                                 (Ty.path
                                                   "alloc::collections::btree::merge_iter::Peeked")
@@ -898,12 +1002,26 @@ Module collections.
                                             Ty.apply
                                               (Ty.path "core::option::Option")
                                               []
-                                              [ Ty.associated ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::iter::traits::iterator::Iterator"
+                                                  []
+                                                  []
+                                                  I
+                                                  "Item"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
                                                 []
-                                                [ Ty.associated ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::iter::traits::iterator::Iterator"
+                                                    []
+                                                    []
+                                                    I
+                                                    "Item"
+                                                ],
                                               "take",
                                               [],
                                               []
@@ -942,7 +1060,14 @@ Module collections.
                                           Ty.apply
                                             (Ty.path "core::option::Option")
                                             []
-                                            [ Ty.associated ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                I
+                                                "Item"
+                                            ],
                                           "map",
                                           [],
                                           [
@@ -952,7 +1077,14 @@ Module collections.
                                               []
                                               [ I ];
                                             Ty.function
-                                              [ Ty.associated ]
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::iter::traits::iterator::Iterator"
+                                                  []
+                                                  []
+                                                  I
+                                                  "Item"
+                                              ]
                                               (Ty.apply
                                                 (Ty.path
                                                   "alloc::collections::btree::merge_iter::Peeked")
@@ -965,12 +1097,26 @@ Module collections.
                                             Ty.apply
                                               (Ty.path "core::option::Option")
                                               []
-                                              [ Ty.associated ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::iter::traits::iterator::Iterator"
+                                                  []
+                                                  []
+                                                  I
+                                                  "Item"
+                                              ],
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
                                                 []
-                                                [ Ty.associated ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::iter::traits::iterator::Iterator"
+                                                    []
+                                                    []
+                                                    I
+                                                    "Item"
+                                                ],
                                               "take",
                                               [],
                                               []

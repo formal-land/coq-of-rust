@@ -30,8 +30,9 @@ Module borrow.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::borrow::Borrow"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* Borrowed *) T ]
         (* Instance *) [ ("borrow", InstanceField.Method (borrow T)) ].
   End Impl_core_borrow_Borrow_where_core_marker_Sized_T_T_for_T.
   
@@ -60,8 +61,9 @@ Module borrow.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::borrow::BorrowMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* Borrowed *) T ]
         (* Instance *) [ ("borrow_mut", InstanceField.Method (borrow_mut T)) ].
   End Impl_core_borrow_BorrowMut_where_core_marker_Sized_T_T_for_T.
   
@@ -95,8 +97,9 @@ Module borrow.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::borrow::Borrow"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* Borrowed *) T ]
         (* Instance *) [ ("borrow", InstanceField.Method (borrow T)) ].
   End Impl_core_borrow_Borrow_where_core_marker_Sized_T_T_for_ref__T.
   
@@ -130,8 +133,9 @@ Module borrow.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::borrow::Borrow"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* Borrowed *) T ]
         (* Instance *) [ ("borrow", InstanceField.Method (borrow T)) ].
   End Impl_core_borrow_Borrow_where_core_marker_Sized_T_T_for_ref_mut_T.
   
@@ -170,8 +174,9 @@ Module borrow.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::borrow::BorrowMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* Borrowed *) T ]
         (* Instance *) [ ("borrow_mut", InstanceField.Method (borrow_mut T)) ].
   End Impl_core_borrow_BorrowMut_where_core_marker_Sized_T_T_for_ref_mut_T.
 End borrow.

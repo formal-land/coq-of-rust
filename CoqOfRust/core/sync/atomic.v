@@ -46,8 +46,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_sync_atomic_AtomicBool.
     
@@ -57,8 +58,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Sync"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_sync_atomic_AtomicBool.
     
@@ -111,8 +113,9 @@ Module sync.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_for_core_sync_atomic_AtomicPtr_T.
     
@@ -124,8 +127,9 @@ Module sync.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Send_for_core_sync_atomic_AtomicPtr_T.
     
@@ -137,8 +141,9 @@ Module sync.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_sync_atomic_AtomicPtr_T.
     
@@ -190,8 +195,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_sync_atomic_Ordering.
     
@@ -211,8 +217,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_sync_atomic_Ordering.
     
@@ -304,8 +311,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_sync_atomic_Ordering.
     
@@ -329,8 +337,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_sync_atomic_Ordering.
@@ -341,8 +350,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_sync_atomic_Ordering.
     
@@ -389,8 +399,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_sync_atomic_Ordering.
     
@@ -445,8 +456,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_sync_atomic_Ordering.
     
@@ -3640,8 +3652,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "bool" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_bool_for_core_sync_atomic_AtomicBool.
     
@@ -3677,8 +3690,9 @@ Module sync.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "*mut") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*mut") [] [ T ] ]
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_pointer_mut_T_for_core_sync_atomic_AtomicPtr_T.
     
@@ -3727,8 +3741,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_sync_atomic_AtomicI8.
     
@@ -3752,8 +3767,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i8_for_core_sync_atomic_AtomicI8.
     
@@ -3810,8 +3826,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_sync_atomic_AtomicI8.
     
@@ -3821,8 +3838,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Sync"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_sync_atomic_AtomicI8.
     
@@ -5115,8 +5133,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_sync_atomic_AtomicU8.
     
@@ -5140,8 +5159,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u8_for_core_sync_atomic_AtomicU8.
     
@@ -5198,8 +5218,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_sync_atomic_AtomicU8.
     
@@ -5209,8 +5230,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Sync"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_sync_atomic_AtomicU8.
     
@@ -6508,8 +6530,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_sync_atomic_AtomicI16.
     
@@ -6538,8 +6561,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i16_for_core_sync_atomic_AtomicI16.
     
@@ -6596,8 +6620,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_sync_atomic_AtomicI16.
     
@@ -6607,8 +6632,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Sync"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_sync_atomic_AtomicI16.
     
@@ -7909,8 +7935,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_sync_atomic_AtomicU16.
     
@@ -7939,8 +7966,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u16_for_core_sync_atomic_AtomicU16.
     
@@ -7997,8 +8025,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_sync_atomic_AtomicU16.
     
@@ -8008,8 +8037,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Sync"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_sync_atomic_AtomicU16.
     
@@ -9310,8 +9340,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_sync_atomic_AtomicI32.
     
@@ -9340,8 +9371,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i32_for_core_sync_atomic_AtomicI32.
     
@@ -9398,8 +9430,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_sync_atomic_AtomicI32.
     
@@ -9409,8 +9442,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Sync"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_sync_atomic_AtomicI32.
     
@@ -10711,8 +10745,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_sync_atomic_AtomicU32.
     
@@ -10741,8 +10776,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u32_for_core_sync_atomic_AtomicU32.
     
@@ -10799,8 +10835,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_sync_atomic_AtomicU32.
     
@@ -10810,8 +10847,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Sync"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_sync_atomic_AtomicU32.
     
@@ -12112,8 +12150,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_sync_atomic_AtomicI64.
     
@@ -12142,8 +12181,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i64" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i64_for_core_sync_atomic_AtomicI64.
     
@@ -12200,8 +12240,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_sync_atomic_AtomicI64.
     
@@ -12211,8 +12252,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Sync"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_sync_atomic_AtomicI64.
     
@@ -13513,8 +13555,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_sync_atomic_AtomicU64.
     
@@ -13543,8 +13586,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u64_for_core_sync_atomic_AtomicU64.
     
@@ -13601,8 +13645,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_sync_atomic_AtomicU64.
     
@@ -13612,8 +13657,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Sync"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_sync_atomic_AtomicU64.
     
@@ -14914,8 +14960,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_sync_atomic_AtomicIsize.
     
@@ -14944,8 +14991,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "isize" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_isize_for_core_sync_atomic_AtomicIsize.
     
@@ -15002,8 +15050,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_sync_atomic_AtomicIsize.
     
@@ -15013,8 +15062,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Sync"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_sync_atomic_AtomicIsize.
     
@@ -16322,8 +16372,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_sync_atomic_AtomicUsize.
     
@@ -16352,8 +16403,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "usize" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_usize_for_core_sync_atomic_AtomicUsize.
     
@@ -16410,8 +16462,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_sync_atomic_AtomicUsize.
     
@@ -16421,8 +16474,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Sync"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_sync_atomic_AtomicUsize.
     
@@ -20203,8 +20257,9 @@ Module sync.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_sync_atomic_AtomicBool.
     
@@ -20272,8 +20327,9 @@ Module sync.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_for_core_sync_atomic_AtomicPtr_T.
     
@@ -20341,8 +20397,9 @@ Module sync.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Pointer"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Pointer_for_core_sync_atomic_AtomicPtr_T.
     

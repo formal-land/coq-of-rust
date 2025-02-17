@@ -46,8 +46,9 @@ Module borrow.
       forall (B : Ty.t),
       M.IsTraitInstance
         "core::borrow::Borrow"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ B ]
         (Self B)
-        (* Trait polymorphic types *) [ (* Borrowed *) B ]
         (* Instance *) [ ("borrow", InstanceField.Method (borrow B)) ].
   End Impl_core_borrow_Borrow_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_B_for_alloc_borrow_Cow_B.
   
@@ -65,7 +66,7 @@ Module borrow.
                 M.write (|
                   M.deref (| M.read (| target |) |),
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] Self "Owned",
                     M.get_trait_method (|
                       "alloc::borrow::ToOwned",
                       Self,
@@ -146,8 +147,9 @@ Module borrow.
       forall (T : Ty.t),
       M.IsTraitInstance
         "alloc::borrow::ToOwned"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("Owned", InstanceField.Ty (_Owned T));
@@ -169,7 +171,7 @@ Module borrow.
         };
         {
           name := "Owned";
-          item := StructTuple [ Ty.associated ];
+          item := StructTuple [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned" ];
         }
       ];
   }
@@ -230,7 +232,7 @@ Module borrow.
                               Ty.apply (Ty.path "&") [] [ B ],
                               M.get_trait_method (|
                                 "core::borrow::Borrow",
-                                Ty.associated,
+                                Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
                                 [],
                                 [ B ],
                                 "borrow",
@@ -247,7 +249,7 @@ Module borrow.
                         "alloc::borrow::Cow::Owned"
                         [
                           M.call_closure (|
-                            Ty.associated,
+                            Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
                             M.get_trait_method (|
                               "alloc::borrow::ToOwned",
                               B,
@@ -326,7 +328,7 @@ Module borrow.
                                 Ty.apply (Ty.path "&") [] [ B ],
                                 M.get_trait_method (|
                                   "core::borrow::Borrow",
-                                  Ty.associated,
+                                  Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
                                   [],
                                   [ B ],
                                   "borrow",
@@ -375,8 +377,9 @@ Module borrow.
       forall (B : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self B)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B)
         (* Instance *)
         [
           ("clone", InstanceField.Method (clone B));
@@ -513,7 +516,12 @@ Module borrow.
                                             "alloc::borrow::Cow::Owned"
                                             [
                                               M.call_closure (|
-                                                Ty.associated,
+                                                Ty.associated_in_trait
+                                                  "alloc::borrow::ToOwned"
+                                                  []
+                                                  []
+                                                  B
+                                                  "Owned",
                                                 M.get_trait_method (|
                                                   "alloc::borrow::ToOwned",
                                                   B,
@@ -647,7 +655,7 @@ Module borrow.
                     let borrowed := M.copy (| γ0_0 |) in
                     M.alloc (|
                       M.call_closure (|
-                        Ty.associated,
+                        Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
                         M.get_trait_method (|
                           "alloc::borrow::ToOwned",
                           B,
@@ -678,7 +686,7 @@ Module borrow.
     Smpl Add apply AssociatedFunction_into_owned : is_associated.
   End Impl_alloc_borrow_Cow_B.
   
-  Module Impl_core_ops_deref_Deref_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_where_core_borrow_Borrow_associated_type_B_for_alloc_borrow_Cow_B.
+  Module Impl_core_ops_deref_Deref_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_where_core_borrow_Borrow_associated_in_trait_alloc_borrow_ToOwned___B_Owned_B_for_alloc_borrow_Cow_B.
     Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     (*     type Target = B; *)
@@ -734,7 +742,7 @@ Module borrow.
                                 Ty.apply (Ty.path "&") [] [ B ],
                                 M.get_trait_method (|
                                   "core::borrow::Borrow",
-                                  Ty.associated,
+                                  Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
                                   [],
                                   [ B ],
                                   "borrow",
@@ -759,30 +767,37 @@ Module borrow.
       forall (B : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::Deref"
-        (Self B)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B)
         (* Instance *)
         [ ("Target", InstanceField.Ty (_Target B)); ("deref", InstanceField.Method (deref B)) ].
-  End Impl_core_ops_deref_Deref_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_where_core_borrow_Borrow_associated_type_B_for_alloc_borrow_Cow_B.
+  End Impl_core_ops_deref_Deref_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_where_core_borrow_Borrow_associated_in_trait_alloc_borrow_ToOwned___B_Owned_B_for_alloc_borrow_Cow_B.
   
-  Module Impl_core_ops_deref_DerefPure_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_where_core_borrow_Borrow_associated_type_B_for_alloc_borrow_Cow_B.
+  Module Impl_core_ops_deref_DerefPure_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_where_core_borrow_Borrow_associated_in_trait_alloc_borrow_ToOwned___B_Owned_B_for_alloc_borrow_Cow_B.
     Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     Axiom Implements :
       forall (B : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::DerefPure"
-        (Self B)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B)
         (* Instance *) [].
-  End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_where_core_borrow_Borrow_associated_type_B_for_alloc_borrow_Cow_B.
+  End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_where_core_borrow_Borrow_associated_in_trait_alloc_borrow_ToOwned___B_Owned_B_for_alloc_borrow_Cow_B.
   
   Module Impl_core_cmp_Eq_where_core_marker_Sized_B_where_core_cmp_Eq_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
     Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     Axiom Implements :
       forall (B : Ty.t),
-      M.IsTraitInstance "core::cmp::Eq" (Self B) (* Trait polymorphic types *) [] (* Instance *) [].
+      M.IsTraitInstance
+        "core::cmp::Eq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        (Self B)
+        (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_marker_Sized_B_where_core_cmp_Eq_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
   
   Module Impl_core_cmp_Ord_where_core_marker_Sized_B_where_core_cmp_Ord_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
@@ -859,8 +874,9 @@ Module borrow.
       forall (B : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self B)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp B)) ].
   End Impl_core_cmp_Ord_where_core_marker_Sized_B_where_core_cmp_Ord_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
   
@@ -938,8 +954,9 @@ Module borrow.
       forall (B C : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ C ] ]
         (Self B C)
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ C ] ]
         (* Instance *) [ ("eq", InstanceField.Method (eq B C)) ].
   End Impl_core_cmp_PartialEq_where_core_marker_Sized_B_where_core_marker_Sized_C_where_core_cmp_PartialEq_B_C_where_alloc_borrow_ToOwned_B_where_alloc_borrow_ToOwned_C_alloc_borrow_Cow_C_for_alloc_borrow_Cow_B.
   
@@ -1017,8 +1034,9 @@ Module borrow.
       forall (B : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self B)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B)
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp B)) ].
   End Impl_core_cmp_PartialOrd_where_core_marker_Sized_B_where_core_cmp_PartialOrd_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
   
@@ -1087,7 +1105,7 @@ Module borrow.
                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_trait_method (|
                           "core::fmt::Debug",
-                          Ty.associated,
+                          Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
                           [],
                           [],
                           "fmt",
@@ -1110,8 +1128,9 @@ Module borrow.
       forall (B : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self B)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt B)) ].
   End Impl_core_fmt_Debug_where_core_marker_Sized_B_where_core_fmt_Debug_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
   
@@ -1180,7 +1199,7 @@ Module borrow.
                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.get_trait_method (|
                           "core::fmt::Display",
-                          Ty.associated,
+                          Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
                           [],
                           [],
                           "fmt",
@@ -1203,8 +1222,9 @@ Module borrow.
       forall (B : Ty.t),
       M.IsTraitInstance
         "core::fmt::Display"
-        (Self B)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt B)) ].
   End Impl_core_fmt_Display_where_core_marker_Sized_B_where_core_fmt_Display_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
   
@@ -1225,10 +1245,10 @@ Module borrow.
             "alloc::borrow::Cow::Owned"
             [
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.associated,
+                  Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
                   [],
                   [],
                   "default",
@@ -1245,8 +1265,9 @@ Module borrow.
       forall (B : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self B)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B)
         (* Instance *) [ ("default", InstanceField.Method (default B)) ].
   End Impl_core_default_Default_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
   
@@ -1302,8 +1323,9 @@ Module borrow.
       forall (B : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self B)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B)
         (* Instance *) [ ("hash", InstanceField.Method (hash B)) ].
   End Impl_core_hash_Hash_where_core_marker_Sized_B_where_core_hash_Hash_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
   
@@ -1346,8 +1368,9 @@ Module borrow.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T)) ].
   End Impl_core_convert_AsRef_where_core_marker_Sized_T_where_alloc_borrow_ToOwned_T_T_for_alloc_borrow_Cow_T.
   
@@ -1394,8 +1417,9 @@ Module borrow.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::Add"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
   End Impl_core_ops_arith_Add_ref__str_for_alloc_borrow_Cow_str.
   
@@ -1442,9 +1466,10 @@ Module borrow.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::Add"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* Rhs *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        Self
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
   End Impl_core_ops_arith_Add_alloc_borrow_Cow_str_for_alloc_borrow_Cow_str.
   
@@ -1695,8 +1720,9 @@ Module borrow.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::AddAssign"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
   End Impl_core_ops_arith_AddAssign_ref__str_for_alloc_borrow_Cow_str.
   
@@ -2002,9 +2028,10 @@ Module borrow.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::AddAssign"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* Rhs *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        Self
         (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
   End Impl_core_ops_arith_AddAssign_alloc_borrow_Cow_str_for_alloc_borrow_Cow_str.
 End borrow.

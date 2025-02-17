@@ -17,8 +17,9 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_payment_channel_AccountId.
 
@@ -30,8 +31,9 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_payment_channel_AccountId.
 
@@ -39,7 +41,12 @@ Module Impl_core_marker_Copy_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_payment_channel_AccountId.
 
 Module Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
@@ -48,8 +55,9 @@ Module Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
 
@@ -61,8 +69,9 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
 
@@ -74,8 +83,9 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_payment_channel_AccountId.
@@ -88,9 +98,10 @@ Module Impl_core_convert_From_array_Usize_32_u8_for_payment_channel_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *)
-      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
+      [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
+      Self
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_array_Usize_32_u8_for_payment_channel_AccountId.
 
@@ -175,8 +186,9 @@ Module Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
 
@@ -188,8 +200,9 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_Error.
 
@@ -201,8 +214,9 @@ Module Impl_core_cmp_Eq_for_payment_channel_Error.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_payment_channel_Error.
@@ -344,8 +358,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("Type_", InstanceField.Ty _Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
 
@@ -358,8 +373,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("Type_", InstanceField.Ty _Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
 
@@ -372,8 +388,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("Type_", InstanceField.Ty _Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
 
@@ -386,8 +403,9 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::HashOutput"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("Type_", InstanceField.Ty _Type_) ].
 End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
 
@@ -399,8 +417,9 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::CryptoHash"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Sha2x256.
 
@@ -412,8 +431,9 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::CryptoHash"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Keccak256.
 
@@ -425,8 +445,9 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::CryptoHash"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x256.
 
@@ -438,8 +459,9 @@ Module Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
   Axiom Implements :
     M.IsTraitInstance
       "payment_channel::CryptoHash"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("hash", InstanceField.Method hash) ].
 End Impl_payment_channel_CryptoHash_for_payment_channel_Blake2x128.
 

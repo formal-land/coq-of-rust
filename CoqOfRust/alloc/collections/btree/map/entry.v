@@ -220,8 +220,9 @@ Module collections.
             forall (K V A : Ty.t),
             M.IsTraitInstance
               "core::fmt::Debug"
-              (Self K V A)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self K V A)
               (* Instance *) [ ("fmt", InstanceField.Method (fmt K V A)) ].
         End Impl_core_fmt_Debug_where_core_fmt_Debug_K_where_core_cmp_Ord_K_where_core_fmt_Debug_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_btree_map_entry_Entry_K_V_A.
         
@@ -368,8 +369,9 @@ Module collections.
             forall (K V A : Ty.t),
             M.IsTraitInstance
               "core::fmt::Debug"
-              (Self K V A)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self K V A)
               (* Instance *) [ ("fmt", InstanceField.Method (fmt K V A)) ].
         End Impl_core_fmt_Debug_where_core_fmt_Debug_K_where_core_cmp_Ord_K_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_btree_map_entry_VacantEntry_K_V_A.
         
@@ -567,8 +569,9 @@ Module collections.
             forall (K V A : Ty.t),
             M.IsTraitInstance
               "core::fmt::Debug"
-              (Self K V A)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self K V A)
               (* Instance *) [ ("fmt", InstanceField.Method (fmt K V A)) ].
         End Impl_core_fmt_Debug_where_core_fmt_Debug_K_where_core_cmp_Ord_K_where_core_fmt_Debug_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_btree_map_entry_OccupiedEntry_K_V_A.
         
@@ -796,8 +799,9 @@ Module collections.
             forall (K V A : Ty.t),
             M.IsTraitInstance
               "core::fmt::Debug"
-              (Self K V A)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self K V A)
               (* Instance *) [ ("fmt", InstanceField.Method (fmt K V A)) ].
         End Impl_core_fmt_Debug_where_core_fmt_Debug_K_where_core_cmp_Ord_K_where_core_fmt_Debug_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_btree_map_entry_OccupiedError_K_V_A.
         
@@ -1000,8 +1004,9 @@ Module collections.
             forall (K V A : Ty.t),
             M.IsTraitInstance
               "core::fmt::Display"
-              (Self K V A)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self K V A)
               (* Instance *) [ ("fmt", InstanceField.Method (fmt K V A)) ].
         End Impl_core_fmt_Display_where_core_fmt_Debug_K_where_core_cmp_Ord_K_where_core_fmt_Debug_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_btree_map_entry_OccupiedError_K_V_A.
         
@@ -1039,8 +1044,9 @@ Module collections.
             forall (K V : Ty.t),
             M.IsTraitInstance
               "core::error::Error"
-              (Self K V)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self K V)
               (* Instance *) [ ("description", InstanceField.Method (description K V)) ].
         End Impl_core_error_Error_where_core_fmt_Debug_K_where_core_cmp_Ord_K_where_core_fmt_Debug_V_for_alloc_collections_btree_map_entry_OccupiedError_K_V_alloc_alloc_Global.
         

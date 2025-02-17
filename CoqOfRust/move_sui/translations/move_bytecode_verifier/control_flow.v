@@ -1008,10 +1008,16 @@ Module control_flow.
                   (M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
-                        Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ Ty.associated ],
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::rev::Rev")
+                          []
+                          [ Ty.associated_unknown ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
-                          Ty.apply (Ty.path "core::iter::adapters::rev::Rev") [] [ Ty.associated ],
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::rev::Rev")
+                            []
+                            [ Ty.associated_unknown ],
                           [],
                           [],
                           "into_iter",
@@ -1023,10 +1029,10 @@ Module control_flow.
                             Ty.apply
                               (Ty.path "core::iter::adapters::rev::Rev")
                               []
-                              [ Ty.associated ],
+                              [ Ty.associated_unknown ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              Ty.associated,
+                              Ty.associated_unknown,
                               [],
                               [],
                               "rev",
@@ -1035,7 +1041,7 @@ Module control_flow.
                             |),
                             [
                               M.call_closure (|
-                                Ty.associated,
+                                Ty.associated_unknown,
                                 M.get_associated_function (|
                                   Ty.path "move_bytecode_verifier::loop_summary::LoopSummary",
                                   "preorder",
@@ -1068,7 +1074,7 @@ Module control_flow.
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::rev::Rev")
                                           []
-                                          [ Ty.associated ],
+                                          [ Ty.associated_unknown ],
                                         [],
                                         [],
                                         "next",

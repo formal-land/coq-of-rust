@@ -57,8 +57,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_str.
     
@@ -116,8 +117,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_str.
     
@@ -125,7 +127,12 @@ Module str.
       Definition Self : Ty.t := Ty.path "str".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_str.
     
     Module Impl_core_cmp_PartialOrd_for_str.
@@ -160,8 +167,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_str.
     
@@ -169,7 +177,8 @@ Module str.
       Definition Self (I : Ty.t) : Ty.t := Ty.path "str".
       
       (*     type Output = I::Output; *)
-      Definition _Output (I : Ty.t) : Ty.t := Ty.associated.
+      Definition _Output (I : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output".
       
       (*
           fn index(&self, index: I) -> &I::Output {
@@ -187,7 +196,10 @@ Module str.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
                   M.get_trait_method (|
                     "core::slice::index::SliceIndex",
                     I,
@@ -211,8 +223,9 @@ Module str.
         forall (I : Ty.t),
         M.IsTraitInstance
           "core::ops::index::Index"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ I ]
           (Self I)
-          (* Trait polymorphic types *) [ (* Idx *) I ]
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output I)); ("index", InstanceField.Method (index I)) ].
     End Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_str_I_for_str.
@@ -239,7 +252,11 @@ Module str.
                   Pointer.Kind.MutRef,
                   M.deref (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output"
+                        ],
                       M.get_trait_method (|
                         "core::slice::index::SliceIndex",
                         I,
@@ -265,8 +282,9 @@ Module str.
         forall (I : Ty.t),
         M.IsTraitInstance
           "core::ops::index::IndexMut"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ I ]
           (Self I)
-          (* Trait polymorphic types *) [ (* Idx *) I ]
           (* Instance *) [ ("index_mut", InstanceField.Method (index_mut I)) ].
     End Impl_core_ops_index_IndexMut_where_core_slice_index_SliceIndex_I_str_I_for_str.
     
@@ -417,8 +435,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "str" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty _Output);
@@ -1387,8 +1406,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "str" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty _Output);
@@ -2345,8 +2365,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "str" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty _Output);
@@ -2896,8 +2917,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "str" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty _Output);
@@ -3416,8 +3438,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "str" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty _Output);
@@ -4033,8 +4056,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "str" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty _Output);
@@ -4646,8 +4670,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "str" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty _Output);
@@ -5127,8 +5152,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "str" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty _Output);
@@ -5565,8 +5591,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "str" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty _Output);
@@ -5912,8 +5939,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::slice::index::SliceIndex"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "str" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty _Output);
@@ -5983,8 +6011,9 @@ Module str.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::traits::FromStr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
     End Impl_core_str_traits_FromStr_for_bool.

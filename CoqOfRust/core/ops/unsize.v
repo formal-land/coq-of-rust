@@ -13,8 +13,9 @@ Module ops.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&mut") [] [ U ] ]
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&mut") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_ref_mut_U_for_ref_mut_T.
     
@@ -25,8 +26,9 @@ Module ops.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ U ] ]
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_ref__U_for_ref_mut_T.
     
@@ -37,8 +39,9 @@ Module ops.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "*mut") [] [ U ] ]
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*mut") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_mut_U_for_ref_mut_T.
     
@@ -49,8 +52,9 @@ Module ops.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "*const") [] [ U ] ]
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*const") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_const_U_for_ref_mut_T.
     
@@ -61,8 +65,9 @@ Module ops.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ U ] ]
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_ref__U_for_ref__T.
     
@@ -73,8 +78,9 @@ Module ops.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "*const") [] [ U ] ]
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*const") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_const_U_for_ref__T.
     
@@ -85,8 +91,9 @@ Module ops.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "*mut") [] [ U ] ]
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*mut") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_mut_U_for_pointer_mut_T.
     
@@ -97,8 +104,9 @@ Module ops.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "*const") [] [ U ] ]
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*const") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_const_U_for_pointer_mut_T.
     
@@ -109,8 +117,9 @@ Module ops.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "*const") [] [ U ] ]
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*const") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_const_U_for_pointer_const_T.
     
@@ -124,8 +133,9 @@ Module ops.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::DispatchFromDyn"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ U ] ]
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_ref__U_for_ref__T.
     
@@ -136,8 +146,9 @@ Module ops.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::DispatchFromDyn"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&mut") [] [ U ] ]
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&mut") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_ref_mut_U_for_ref_mut_T.
     
@@ -148,8 +159,9 @@ Module ops.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::DispatchFromDyn"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "*const") [] [ U ] ]
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*const") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_const_U_for_pointer_const_T.
     
@@ -160,8 +172,9 @@ Module ops.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::DispatchFromDyn"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "*mut") [] [ U ] ]
           (Self T U)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "*mut") [] [ U ] ]
           (* Instance *) [].
     End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_pointer_mut_U_for_pointer_mut_T.
   End unsize.

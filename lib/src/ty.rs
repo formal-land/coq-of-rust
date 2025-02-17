@@ -32,7 +32,14 @@ pub(crate) enum CoqType {
     Dyn {
         traits: Vec<Rc<Path>>,
     },
-    Associated,
+    AssociatedInTrait {
+        trait_name: Rc<Path>,
+        const_args: Vec<Rc<Expr>>,
+        ty_args: Vec<Rc<CoqType>>,
+        self_ty: Rc<CoqType>,
+        name: String,
+    },
+    AssociatedUnknown,
     Infer,
 }
 
@@ -190,7 +197,24 @@ impl CoqType {
                         .collect(),
                 }))
             }
-            CoqType::Associated => coq::Expression::just_name("Ty.associated"),
+            CoqType::AssociatedInTrait {
+                trait_name,
+                const_args,
+                ty_args,
+                self_ty,
+                name,
+            } => coq::Expression::just_name("Ty.associated_in_trait").apply_many(&[
+                Rc::new(coq::Expression::String(trait_name.to_string())),
+                Rc::new(coq::Expression::List {
+                    exprs: const_args.iter().map(|const_| const_.to_coq()).collect(),
+                }),
+                Rc::new(coq::Expression::List {
+                    exprs: ty_args.iter().map(|ty| ty.to_coq()).collect(),
+                }),
+                self_ty.to_coq(),
+                Rc::new(coq::Expression::String(name.clone())),
+            ]),
+            CoqType::AssociatedUnknown => coq::Expression::just_name("Ty.associated_unknown"),
             CoqType::Infer => Rc::new(coq::Expression::Wild),
         }
     }
@@ -241,7 +265,31 @@ impl CoqType {
                 }
                 name
             }
-            CoqType::Associated => "associated_type".to_string(),
+            CoqType::AssociatedInTrait {
+                trait_name,
+                const_args,
+                ty_args,
+                self_ty,
+                name,
+            } => {
+                format!(
+                    "associated_in_trait_{}_{}_{}_{}_{}",
+                    trait_name.to_name(),
+                    const_args
+                        .iter()
+                        .map(|const_| const_.to_name())
+                        .collect::<Vec<_>>()
+                        .join("_"),
+                    ty_args
+                        .iter()
+                        .map(|ty| ty.to_name())
+                        .collect::<Vec<_>>()
+                        .join("_"),
+                    self_ty.to_name(),
+                    name
+                )
+            }
+            CoqType::AssociatedUnknown => "associated_unknown_type".to_string(),
             CoqType::Infer => "inferred_type".to_string(),
         }
     }

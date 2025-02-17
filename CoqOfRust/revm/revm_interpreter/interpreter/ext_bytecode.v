@@ -86,8 +86,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_revm_interpreter_interpreter_ext_bytecode_ExtBytecode.
     
@@ -123,8 +124,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::AsRef"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "revm_bytecode::bytecode::Bytecode" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "revm_bytecode::bytecode::Bytecode" ]
           (* Instance *) [ ("as_ref", InstanceField.Method as_ref) ].
     End Impl_core_convert_AsRef_revm_bytecode_bytecode_Bytecode_for_revm_interpreter_interpreter_ext_bytecode_ExtBytecode.
     
@@ -637,8 +639,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::interpreter_types::Jumps"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("relative_jump", InstanceField.Method relative_jump);
@@ -888,8 +891,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::interpreter_types::Immediates"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("read_i16", InstanceField.Method read_i16);
@@ -1296,8 +1300,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::interpreter_types::EofCodeInfo"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("code_section_info", InstanceField.Method code_section_info);
@@ -1702,8 +1707,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::interpreter_types::EofData"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("data", InstanceField.Method data);
@@ -1927,8 +1933,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::interpreter_types::EofContainer"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eof_container", InstanceField.Method eof_container) ].
     End Impl_revm_interpreter_interpreter_types_EofContainer_for_revm_interpreter_interpreter_ext_bytecode_ExtBytecode.
     
@@ -2317,8 +2324,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::interpreter_types::LegacyBytecode"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("bytecode_len", InstanceField.Method bytecode_len);

@@ -1604,7 +1604,12 @@ Module str.
             Ty.apply
               (Ty.path "core::option::Option")
               []
-              [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
+              [
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ]
+              ],
             M.get_trait_method (|
               "core::slice::index::SliceIndex",
               I,
@@ -1637,7 +1642,12 @@ Module str.
             Ty.apply
               (Ty.path "core::option::Option")
               []
-              [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
+              [
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ]
+              ],
             M.get_trait_method (|
               "core::slice::index::SliceIndex",
               I,
@@ -1676,7 +1686,10 @@ Module str.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "*const") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "*const")
+                      []
+                      [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
                     M.get_trait_method (|
                       "core::slice::index::SliceIndex",
                       I,
@@ -1729,7 +1742,17 @@ Module str.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
-                            Ty.apply (Ty.path "*mut") [] [ Ty.associated ],
+                            Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::slice::index::SliceIndex"
+                                  []
+                                  []
+                                  I
+                                  "Output"
+                              ],
                             M.get_trait_method (|
                               "core::slice::index::SliceIndex",
                               I,
@@ -2937,7 +2960,7 @@ Module str.
                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                 M.get_trait_method (|
                   "core::str::pattern::Searcher",
-                  Ty.associated,
+                  Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                   [],
                   [],
                   "next_match",
@@ -2949,7 +2972,7 @@ Module str.
                     Pointer.Kind.MutRef,
                     M.alloc (|
                       M.call_closure (|
-                        Ty.associated,
+                        Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                         M.get_trait_method (|
                           "core::str::pattern::Pattern",
                           P,
@@ -3033,7 +3056,7 @@ Module str.
                   [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                 M.get_trait_method (|
                   "core::str::pattern::ReverseSearcher",
-                  Ty.associated,
+                  Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                   [],
                   [],
                   "next_match_back",
@@ -3045,7 +3068,7 @@ Module str.
                     Pointer.Kind.MutRef,
                     M.alloc (|
                       M.call_closure (|
-                        Ty.associated,
+                        Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                         M.get_trait_method (|
                           "core::str::pattern::Pattern",
                           P,
@@ -3123,7 +3146,7 @@ Module str.
                     |));
                   ("matcher",
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                       M.get_trait_method (|
                         "core::str::pattern::Pattern",
                         P,
@@ -3180,7 +3203,7 @@ Module str.
                     |));
                   ("matcher",
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                       M.get_trait_method (|
                         "core::str::pattern::Pattern",
                         P,
@@ -3463,7 +3486,12 @@ Module str.
                               [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                             M.get_trait_method (|
                               "core::str::pattern::Searcher",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "core::str::pattern::Pattern"
+                                []
+                                []
+                                P
+                                "Searcher",
                               [],
                               [],
                               "next_match",
@@ -3475,7 +3503,12 @@ Module str.
                                 Pointer.Kind.MutRef,
                                 M.alloc (|
                                   M.call_closure (|
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "core::str::pattern::Pattern"
+                                      []
+                                      []
+                                      P
+                                      "Searcher",
                                     M.get_trait_method (|
                                       "core::str::pattern::Pattern",
                                       P,
@@ -3701,7 +3734,12 @@ Module str.
                               [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                             M.get_trait_method (|
                               "core::str::pattern::ReverseSearcher",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "core::str::pattern::Pattern"
+                                []
+                                []
+                                P
+                                "Searcher",
                               [],
                               [],
                               "next_match_back",
@@ -3713,7 +3751,12 @@ Module str.
                                 Pointer.Kind.MutRef,
                                 M.alloc (|
                                   M.call_closure (|
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "core::str::pattern::Pattern"
+                                      []
+                                      []
+                                      P
+                                      "Searcher",
                                     M.get_trait_method (|
                                       "core::str::pattern::Pattern",
                                       P,
@@ -3904,7 +3947,7 @@ Module str.
                 "core::str::iter::MatchesInternal"
                 [
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                     M.get_trait_method (|
                       "core::str::pattern::Pattern",
                       P,
@@ -3985,7 +4028,7 @@ Module str.
                 "core::str::iter::MatchIndicesInternal"
                 [
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                     M.get_trait_method (|
                       "core::str::pattern::Pattern",
                       P,
@@ -4308,10 +4351,11 @@ Module str.
           M.read (|
             let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
             let~ j : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-            let~ matcher : Ty.associated :=
+            let~ matcher :
+                Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher" :=
               M.alloc (|
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                   M.get_trait_method (|
                     "core::str::pattern::Pattern",
                     P,
@@ -4342,7 +4386,12 @@ Module str.
                               [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                             M.get_trait_method (|
                               "core::str::pattern::Searcher",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "core::str::pattern::Pattern"
+                                []
+                                []
+                                P
+                                "Searcher",
                               [],
                               [],
                               "next_reject",
@@ -4383,7 +4432,12 @@ Module str.
                               [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                             M.get_trait_method (|
                               "core::str::pattern::ReverseSearcher",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "core::str::pattern::Pattern"
+                                []
+                                []
+                                P
+                                "Searcher",
                               [],
                               [],
                               "next_reject_back",
@@ -4462,10 +4516,11 @@ Module str.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            let~ matcher : Ty.associated :=
+            let~ matcher :
+                Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher" :=
               M.alloc (|
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                   M.get_trait_method (|
                     "core::str::pattern::Pattern",
                     P,
@@ -4496,7 +4551,12 @@ Module str.
                               [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                             M.get_trait_method (|
                               "core::str::pattern::Searcher",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "core::str::pattern::Pattern"
+                                []
+                                []
+                                P
+                                "Searcher",
                               [],
                               [],
                               "next_reject",
@@ -4651,10 +4711,11 @@ Module str.
           let pat := M.alloc (| pat |) in
           M.read (|
             let~ j : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-            let~ matcher : Ty.associated :=
+            let~ matcher :
+                Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher" :=
               M.alloc (|
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                   M.get_trait_method (|
                     "core::str::pattern::Pattern",
                     P,
@@ -4685,7 +4746,12 @@ Module str.
                               [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ],
                             M.get_trait_method (|
                               "core::str::pattern::ReverseSearcher",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "core::str::pattern::Pattern"
+                                []
+                                []
+                                P
+                                "Searcher",
                               [],
                               [],
                               "next_reject_back",
@@ -4811,7 +4877,10 @@ Module str.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::result::Result") [] [ F; Ty.associated ],
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ F; Ty.associated_in_trait "core::str::traits::FromStr" [] [] F "Err" ],
             M.get_trait_method (| "core::str::traits::FromStr", F, [], [], "from_str", [], [] |),
             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
@@ -5668,8 +5737,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
         (* Instance *) [ ("as_ref", InstanceField.Method as_ref) ].
   End Impl_core_convert_AsRef_slice_u8_for_str.
   
@@ -5692,8 +5762,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_ref__str.
   
@@ -5743,8 +5814,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_ref_mut_str.
   
@@ -5764,8 +5836,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_str_LinesMap.
   
@@ -5785,8 +5858,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_str_CharEscapeDebugContinue.
   
@@ -5806,8 +5880,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_str_CharEscapeUnicode.
   
@@ -5827,8 +5902,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_str_CharEscapeDefault.
   
@@ -5848,8 +5924,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_str_IsWhitespace.
   
@@ -5869,8 +5946,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_str_IsAsciiWhitespace.
   
@@ -5890,8 +5968,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_str_IsNotEmpty.
   
@@ -5911,8 +5990,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_str_BytesIsNotEmpty.
   
@@ -5932,8 +6012,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_str_UnsafeBytesToStr.
   
@@ -5943,8 +6024,9 @@ Module str.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_ref__str.
 End str.

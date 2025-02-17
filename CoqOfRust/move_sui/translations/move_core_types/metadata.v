@@ -109,8 +109,9 @@ Module metadata.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_metadata_Metadata.
   
@@ -120,8 +121,9 @@ Module metadata.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_metadata_Metadata.
   
@@ -220,8 +222,9 @@ Module metadata.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_metadata_Metadata.
   
@@ -257,8 +260,9 @@ Module metadata.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_metadata_Metadata.
@@ -328,8 +332,9 @@ Module metadata.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_metadata_Metadata.
   
@@ -347,7 +352,8 @@ Module metadata.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -355,7 +361,15 @@ Module metadata.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -419,10 +433,18 @@ Module metadata.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -496,10 +518,18 @@ Module metadata.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -568,10 +598,16 @@ Module metadata.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -589,8 +625,9 @@ Module metadata.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_core_types_metadata_Metadata.
     Module Impl_serde_de_Deserialize_for_move_core_types_metadata_Metadata.
@@ -606,7 +643,10 @@ Module metadata.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_core_types::metadata::Metadata"; Ty.associated ],
+                [
+                  Ty.path "move_core_types::metadata::Metadata";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -634,8 +674,9 @@ Module metadata.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_metadata_Metadata.
   End underscore.

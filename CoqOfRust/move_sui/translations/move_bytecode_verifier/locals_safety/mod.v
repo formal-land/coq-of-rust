@@ -2420,8 +2420,9 @@ Module locals_safety.
     Axiom Implements :
       M.IsTraitInstance
         "move_bytecode_verifier::absint::TransferFunctions"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("State", InstanceField.Ty _State);
@@ -2436,8 +2437,9 @@ Module locals_safety.
     Axiom Implements :
       M.IsTraitInstance
         "move_bytecode_verifier::absint::AbstractInterpreter"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_move_bytecode_verifier_absint_AbstractInterpreter_for_move_bytecode_verifier_locals_safety_LocalsSafetyAnalysis.
 End locals_safety.

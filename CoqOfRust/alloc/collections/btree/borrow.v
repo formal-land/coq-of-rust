@@ -28,8 +28,9 @@ Module collections.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::marker::Sync"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_marker_Sync_where_core_marker_Sync_ref_mut_T_for_alloc_collections_btree_borrow_DormantMutRef_T.
       
@@ -41,8 +42,9 @@ Module collections.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::marker::Send"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_marker_Send_where_core_marker_Send_ref_mut_T_for_alloc_collections_btree_borrow_DormantMutRef_T.
       

@@ -57,8 +57,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -115,8 +116,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -126,8 +128,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -177,8 +180,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -207,8 +211,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
@@ -257,8 +262,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -318,8 +324,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -379,8 +386,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -702,8 +710,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "alloy_primitives::bytes_::Bytes" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "alloy_primitives::bytes_::Bytes" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloy_primitives_bytes__Bytes_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -746,9 +755,9 @@ Module legacy.
         forall (N : Value.t),
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ]
           (Self N)
-          (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ]
           (* Instance *) [ ("from", InstanceField.Method (from N)) ].
     End Impl_core_convert_From_array_N_u8_for_revm_bytecode_legacy_raw_LegacyRawBytecode.
     
@@ -787,8 +796,9 @@ Module legacy.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::deref::Deref"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Target", InstanceField.Ty _Target); ("deref", InstanceField.Method deref) ].
     End Impl_core_ops_deref_Deref_for_revm_bytecode_legacy_raw_LegacyRawBytecode.

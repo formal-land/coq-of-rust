@@ -26,7 +26,12 @@ Module transaction.
                         (Ty.path "core::iter::adapters::map::Map")
                         []
                         [
-                          Ty.associated;
+                          Ty.associated_in_trait
+                            "revm_context_interface::transaction::access_list::AccessListTrait"
+                            []
+                            []
+                            Self
+                            "{{synthetic}}";
                           Ty.function
                             [
                               Ty.tuple
@@ -34,7 +39,12 @@ Module transaction.
                                   Ty.tuple
                                     [
                                       Ty.path "alloy_primitives::bits::address::Address";
-                                      Ty.associated
+                                      Ty.associated_in_trait
+                                        "revm_context_interface::transaction::access_list::AccessListTrait"
+                                        []
+                                        []
+                                        Self
+                                        "{{synthetic}}'1"
                                     ]
                                 ]
                             ]
@@ -52,7 +62,12 @@ Module transaction.
                           (Ty.path "core::iter::adapters::map::Map")
                           []
                           [
-                            Ty.associated;
+                            Ty.associated_in_trait
+                              "revm_context_interface::transaction::access_list::AccessListTrait"
+                              []
+                              []
+                              Self
+                              "{{synthetic}}";
                             Ty.function
                               [
                                 Ty.tuple
@@ -60,7 +75,12 @@ Module transaction.
                                     Ty.tuple
                                       [
                                         Ty.path "alloy_primitives::bits::address::Address";
-                                        Ty.associated
+                                        Ty.associated_in_trait
+                                          "revm_context_interface::transaction::access_list::AccessListTrait"
+                                          []
+                                          []
+                                          Self
+                                          "{{synthetic}}'1"
                                       ]
                                   ]
                               ]
@@ -68,7 +88,12 @@ Module transaction.
                           ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
-                          Ty.associated,
+                          Ty.associated_in_trait
+                            "revm_context_interface::transaction::access_list::AccessListTrait"
+                            []
+                            []
+                            Self
+                            "{{synthetic}}",
                           [],
                           [],
                           "map",
@@ -82,7 +107,12 @@ Module transaction.
                                     Ty.tuple
                                       [
                                         Ty.path "alloy_primitives::bits::address::Address";
-                                        Ty.associated
+                                        Ty.associated_in_trait
+                                          "revm_context_interface::transaction::access_list::AccessListTrait"
+                                          []
+                                          []
+                                          Self
+                                          "{{synthetic}}'1"
                                       ]
                                   ]
                               ]
@@ -91,7 +121,12 @@ Module transaction.
                         |),
                         [
                           M.call_closure (|
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "revm_context_interface::transaction::access_list::AccessListTrait"
+                              []
+                              []
+                              Self
+                              "{{synthetic}}",
                             M.get_trait_method (|
                               "revm_context_interface::transaction::access_list::AccessListTrait",
                               Self,
@@ -119,7 +154,12 @@ Module transaction.
                                               Ty.path "usize",
                                               M.get_trait_method (|
                                                 "core::iter::traits::iterator::Iterator",
-                                                Ty.associated,
+                                                Ty.associated_in_trait
+                                                  "revm_context_interface::transaction::access_list::AccessListTrait"
+                                                  []
+                                                  []
+                                                  Self
+                                                  "{{synthetic}}'1",
                                                 [],
                                                 [],
                                                 "count",
@@ -144,7 +184,12 @@ Module transaction.
                     Ty.path "usize",
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "revm_context_interface::transaction::access_list::AccessListTrait"
+                        []
+                        []
+                        Self
+                        "{{synthetic}}",
                       [],
                       [],
                       "count",
@@ -153,7 +198,12 @@ Module transaction.
                     |),
                     [
                       M.call_closure (|
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "revm_context_interface::transaction::access_list::AccessListTrait"
+                          []
+                          []
+                          Self
+                          "{{synthetic}}",
                         M.get_trait_method (|
                           "revm_context_interface::transaction::access_list::AccessListTrait",
                           Self,
@@ -192,7 +242,12 @@ Module transaction.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "revm_context_interface::transaction::access_list::AccessListTrait"
+                  []
+                  []
+                  T
+                  "{{synthetic}}",
                 M.get_trait_method (|
                   "revm_context_interface::transaction::access_list::AccessListTrait",
                   T,
@@ -249,8 +304,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::access_list::AccessListTrait"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("iter", InstanceField.Method (iter T));
@@ -269,7 +325,12 @@ Module transaction.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "revm_context_interface::transaction::access_list::AccessListTrait"
+                  []
+                  []
+                  T
+                  "{{synthetic}}",
                 M.get_trait_method (|
                   "revm_context_interface::transaction::access_list::AccessListTrait",
                   T,
@@ -326,8 +387,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::access_list::AccessListTrait"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("iter", InstanceField.Method (iter T));
@@ -346,7 +408,12 @@ Module transaction.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "revm_context_interface::transaction::access_list::AccessListTrait"
+                  []
+                  []
+                  T
+                  "{{synthetic}}",
                 M.get_trait_method (|
                   "revm_context_interface::transaction::access_list::AccessListTrait",
                   T,
@@ -437,8 +504,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::access_list::AccessListTrait"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("iter", InstanceField.Method (iter T));
@@ -457,7 +525,12 @@ Module transaction.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "revm_context_interface::transaction::access_list::AccessListTrait"
+                  []
+                  []
+                  T
+                  "{{synthetic}}",
                 M.get_trait_method (|
                   "revm_context_interface::transaction::access_list::AccessListTrait",
                   T,
@@ -548,8 +621,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::access_list::AccessListTrait"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("iter", InstanceField.Method (iter T));
@@ -901,8 +975,9 @@ Module transaction.
       Axiom Implements :
         M.IsTraitInstance
           "revm_context_interface::transaction::access_list::AccessListTrait"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("iter", InstanceField.Method iter) ].
     End Impl_revm_context_interface_transaction_access_list_AccessListTrait_for_alloy_eip2930_AccessList.
   End access_list.

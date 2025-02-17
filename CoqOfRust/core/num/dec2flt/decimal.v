@@ -162,8 +162,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_dec2flt_decimal_Decimal.
       
@@ -197,8 +198,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::default::Default"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("default", InstanceField.Method default) ].
       End Impl_core_default_Default_for_core_num_dec2flt_decimal_Decimal.
       

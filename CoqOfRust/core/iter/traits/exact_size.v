@@ -284,8 +284,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::exact_size::ExactSizeIterator"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *)
             [ ("len", InstanceField.Method (len I)); ("is_empty", InstanceField.Method (is_empty I))
             ].

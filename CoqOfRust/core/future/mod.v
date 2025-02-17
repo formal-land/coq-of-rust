@@ -66,8 +66,9 @@ Module future.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_future_ResumeTy.
   
@@ -77,8 +78,9 @@ Module future.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_core_future_ResumeTy.
   
@@ -103,8 +105,9 @@ Module future.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_future_ResumeTy.
   
@@ -114,8 +117,9 @@ Module future.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Send"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Send_for_core_future_ResumeTy.
   
@@ -125,8 +129,9 @@ Module future.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Sync"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Sync_for_core_future_ResumeTy.
   

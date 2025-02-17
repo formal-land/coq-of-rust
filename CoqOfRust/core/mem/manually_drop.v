@@ -19,8 +19,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Copy"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Copy_where_core_marker_Copy_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
     
@@ -66,8 +67,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
     
@@ -128,8 +130,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
     
@@ -160,8 +163,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_where_core_default_Default_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
     
@@ -173,8 +177,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
     
@@ -219,8 +224,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
     
@@ -253,8 +259,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq T)) ].
     End Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
@@ -310,8 +317,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T)) ].
     End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
     
@@ -366,8 +374,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Ord"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
     End Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
     
@@ -410,8 +419,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
     
@@ -587,8 +597,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::Deref"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Target", InstanceField.Ty (_Target T)); ("deref", InstanceField.Method (deref T)) ].
     End Impl_core_ops_deref_Deref_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
@@ -633,8 +644,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::DerefMut"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("deref_mut", InstanceField.Method (deref_mut T)) ].
     End Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
     
@@ -646,8 +658,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::DerefPure"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
   End manually_drop.

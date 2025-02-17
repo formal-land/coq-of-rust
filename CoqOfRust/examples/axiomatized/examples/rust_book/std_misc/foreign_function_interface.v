@@ -37,8 +37,9 @@ Module Impl_core_clone_Clone_for_foreign_function_interface_Complex.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_foreign_function_interface_Complex.
 
@@ -46,7 +47,12 @@ Module Impl_core_marker_Copy_for_foreign_function_interface_Complex.
   Definition Self : Ty.t := Ty.path "foreign_function_interface::Complex".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_foreign_function_interface_Complex.
 
 Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
@@ -57,7 +63,8 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_foreign_function_interface_Complex.

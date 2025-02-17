@@ -24,8 +24,9 @@ Module panic.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::panic::unwind_safe::UnwindSafe"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_UnwindSafe_where_core_marker_Sized_T_for_ref_mut_T.
     
@@ -36,8 +37,9 @@ Module panic.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::panic::unwind_safe::UnwindSafe"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_for_ref__T.
     
@@ -48,8 +50,9 @@ Module panic.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::panic::unwind_safe::UnwindSafe"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_for_pointer_const_T.
     
@@ -60,8 +63,9 @@ Module panic.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::panic::unwind_safe::UnwindSafe"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_for_pointer_mut_T.
     
@@ -72,8 +76,9 @@ Module panic.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::panic::unwind_safe::UnwindSafe"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_UnwindSafe_T_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
     
@@ -85,8 +90,9 @@ Module panic.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::panic::unwind_safe::UnwindSafe"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_UnwindSafe_where_core_panic_unwind_safe_RefUnwindSafe_T_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
@@ -98,8 +104,9 @@ Module panic.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::panic::unwind_safe::UnwindSafe"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_UnwindSafe_for_core_panic_unwind_safe_AssertUnwindSafe_T.
     
@@ -110,8 +117,9 @@ Module panic.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::panic::unwind_safe::RefUnwindSafe"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_RefUnwindSafe_where_core_marker_Sized_T_for_core_cell_UnsafeCell_T.
     
@@ -123,8 +131,9 @@ Module panic.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::panic::unwind_safe::RefUnwindSafe"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_panic_unwind_safe_AssertUnwindSafe_T.
     
@@ -134,8 +143,9 @@ Module panic.
       Axiom Implements :
         M.IsTraitInstance
           "core::panic::unwind_safe::RefUnwindSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_sync_atomic_AtomicIsize.
     
@@ -145,8 +155,9 @@ Module panic.
       Axiom Implements :
         M.IsTraitInstance
           "core::panic::unwind_safe::RefUnwindSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_sync_atomic_AtomicI8.
     
@@ -156,8 +167,9 @@ Module panic.
       Axiom Implements :
         M.IsTraitInstance
           "core::panic::unwind_safe::RefUnwindSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_sync_atomic_AtomicI16.
     
@@ -167,8 +179,9 @@ Module panic.
       Axiom Implements :
         M.IsTraitInstance
           "core::panic::unwind_safe::RefUnwindSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_sync_atomic_AtomicI32.
     
@@ -178,8 +191,9 @@ Module panic.
       Axiom Implements :
         M.IsTraitInstance
           "core::panic::unwind_safe::RefUnwindSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_sync_atomic_AtomicI64.
     
@@ -189,8 +203,9 @@ Module panic.
       Axiom Implements :
         M.IsTraitInstance
           "core::panic::unwind_safe::RefUnwindSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_sync_atomic_AtomicUsize.
     
@@ -200,8 +215,9 @@ Module panic.
       Axiom Implements :
         M.IsTraitInstance
           "core::panic::unwind_safe::RefUnwindSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_sync_atomic_AtomicU8.
     
@@ -211,8 +227,9 @@ Module panic.
       Axiom Implements :
         M.IsTraitInstance
           "core::panic::unwind_safe::RefUnwindSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_sync_atomic_AtomicU16.
     
@@ -222,8 +239,9 @@ Module panic.
       Axiom Implements :
         M.IsTraitInstance
           "core::panic::unwind_safe::RefUnwindSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_sync_atomic_AtomicU32.
     
@@ -233,8 +251,9 @@ Module panic.
       Axiom Implements :
         M.IsTraitInstance
           "core::panic::unwind_safe::RefUnwindSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_sync_atomic_AtomicU64.
     
@@ -244,8 +263,9 @@ Module panic.
       Axiom Implements :
         M.IsTraitInstance
           "core::panic::unwind_safe::RefUnwindSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_sync_atomic_AtomicBool.
     
@@ -257,8 +277,9 @@ Module panic.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::panic::unwind_safe::RefUnwindSafe"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_RefUnwindSafe_for_core_sync_atomic_AtomicPtr_T.
     
@@ -300,8 +321,9 @@ Module panic.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::Deref"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Target", InstanceField.Ty (_Target T)); ("deref", InstanceField.Method (deref T)) ].
     End Impl_core_ops_deref_Deref_for_core_panic_unwind_safe_AssertUnwindSafe_T.
@@ -346,8 +368,9 @@ Module panic.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::DerefMut"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("deref_mut", InstanceField.Method (deref_mut T)) ].
     End Impl_core_ops_deref_DerefMut_for_core_panic_unwind_safe_AssertUnwindSafe_T.
     
@@ -399,8 +422,9 @@ Module panic.
         forall (R F : Ty.t),
         M.IsTraitInstance
           "core::ops::function::FnOnce"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.tuple [] ]
           (Self R F)
-          (* Trait polymorphic types *) [ (* Args *) Ty.tuple [] ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output R F));
@@ -495,8 +519,9 @@ Module panic.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_panic_unwind_safe_AssertUnwindSafe_T.
     
@@ -530,8 +555,9 @@ Module panic.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_where_core_default_Default_T_for_core_panic_unwind_safe_AssertUnwindSafe_T.
     
@@ -540,7 +566,8 @@ Module panic.
         Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ F ].
       
       (*     type Output = F::Output; *)
-      Definition _Output (F : Ty.t) : Ty.t := Ty.associated.
+      Definition _Output (F : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::future::future::Future" [] [] F "Output".
       
       (*
           fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
@@ -635,7 +662,10 @@ Module panic.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "core::task::poll::Poll")
+                    []
+                    [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output" ],
                   M.get_trait_method (|
                     "core::future::future::Future",
                     F,
@@ -659,8 +689,9 @@ Module panic.
         forall (F : Ty.t),
         M.IsTraitInstance
           "core::future::future::Future"
-          (Self F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F)
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output F)); ("poll", InstanceField.Method (poll F)) ].
     End Impl_core_future_future_Future_where_core_future_future_Future_F_for_core_panic_unwind_safe_AssertUnwindSafe_F.
@@ -670,7 +701,8 @@ Module panic.
         Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ S ].
       
       (*     type Item = S::Item; *)
-      Definition _Item (S : Ty.t) : Ty.t := Ty.associated.
+      Definition _Item (S : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::async_iter::async_iter::AsyncIterator" [] [] S "Item".
       
       (*
           fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<S::Item>> {
@@ -689,7 +721,19 @@ Module panic.
               Ty.apply
                 (Ty.path "core::task::poll::Poll")
                 []
-                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "core::async_iter::async_iter::AsyncIterator"
+                        []
+                        []
+                        S
+                        "Item"
+                    ]
+                ],
               M.get_trait_method (|
                 "core::async_iter::async_iter::AsyncIterator",
                 S,
@@ -816,8 +860,9 @@ Module panic.
         forall (S : Ty.t),
         M.IsTraitInstance
           "core::async_iter::async_iter::AsyncIterator"
-          (Self S)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self S)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item S));

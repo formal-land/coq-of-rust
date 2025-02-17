@@ -35039,8 +35039,9 @@ Module reference_safety.
     Axiom Implements :
       M.IsTraitInstance
         "move_bytecode_verifier::absint::TransferFunctions"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("State", InstanceField.Ty _State);
@@ -35056,8 +35057,9 @@ Module reference_safety.
     Axiom Implements :
       M.IsTraitInstance
         "move_bytecode_verifier::absint::AbstractInterpreter"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_move_bytecode_verifier_absint_AbstractInterpreter_for_move_bytecode_verifier_reference_safety_ReferenceSafetyAnalysis.
 End reference_safety.

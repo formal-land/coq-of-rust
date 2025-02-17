@@ -109,7 +109,8 @@ Module gas_algebra.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -117,7 +118,15 @@ Module gas_algebra.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -181,10 +190,18 @@ Module gas_algebra.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -253,10 +270,18 @@ Module gas_algebra.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -320,10 +345,16 @@ Module gas_algebra.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -342,8 +373,9 @@ Module gas_algebra.
         forall (U : Ty.t),
         M.IsTraitInstance
           "serde::ser::Serialize"
-          (Self U)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self U)
           (* Instance *) [ ("serialize", InstanceField.Method (serialize U)) ].
     End Impl_serde_ser_Serialize_for_move_core_types_gas_algebra_GasQuantity_U.
     Module Impl_serde_de_Deserialize_for_move_core_types_gas_algebra_GasQuantity_U.
@@ -363,7 +395,7 @@ Module gas_algebra.
                 []
                 [
                   Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ];
-                  Ty.associated
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
                 ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
@@ -400,8 +432,9 @@ Module gas_algebra.
         forall (U : Ty.t),
         M.IsTraitInstance
           "serde::de::Deserialize"
-          (Self U)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self U)
           (* Instance *) [ ("deserialize", InstanceField.Method (deserialize U)) ].
     End Impl_serde_de_Deserialize_for_move_core_types_gas_algebra_GasQuantity_U.
   End underscore.
@@ -1448,8 +1481,9 @@ Module gas_algebra.
       forall (U : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "u64" ]
         (Self U)
-        (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
         (* Instance *) [ ("from", InstanceField.Method (from U)) ].
   End Impl_core_convert_From_u64_for_move_core_types_gas_algebra_GasQuantity_U.
   
@@ -1481,9 +1515,10 @@ Module gas_algebra.
       forall (U : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self U)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ]
+        [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ]
+        (Self U)
         (* Instance *) [ ("from", InstanceField.Method (from U)) ].
   End Impl_core_convert_From_move_core_types_gas_algebra_GasQuantity_U_for_u64.
   
@@ -1527,8 +1562,9 @@ Module gas_algebra.
       forall (U : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self U)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U)
         (* Instance *) [ ("clone", InstanceField.Method (clone U)) ].
   End Impl_core_clone_Clone_for_move_core_types_gas_algebra_GasQuantity_U.
   
@@ -1540,8 +1576,9 @@ Module gas_algebra.
       forall (U : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self U)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U)
         (* Instance *) [].
   End Impl_core_marker_Copy_for_move_core_types_gas_algebra_GasQuantity_U.
   
@@ -1630,8 +1667,9 @@ Module gas_algebra.
       forall (U : Ty.t),
       M.IsTraitInstance
         "core::fmt::Display"
-        (Self U)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt U)) ].
   End Impl_core_fmt_Display_for_move_core_types_gas_algebra_GasQuantity_U.
   
@@ -1753,8 +1791,9 @@ Module gas_algebra.
       forall (U : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self U)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt U)) ].
   End Impl_core_fmt_Debug_for_move_core_types_gas_algebra_GasQuantity_U.
   
@@ -1808,8 +1847,9 @@ Module gas_algebra.
       forall (U : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self U)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U)
         (* Instance *) [ ("eq", InstanceField.Method (eq U)) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_gas_algebra_GasQuantity_U.
   
@@ -1819,7 +1859,12 @@ Module gas_algebra.
     
     Axiom Implements :
       forall (U : Ty.t),
-      M.IsTraitInstance "core::cmp::Eq" (Self U) (* Trait polymorphic types *) [] (* Instance *) [].
+      M.IsTraitInstance
+        "core::cmp::Eq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        (Self U)
+        (* Instance *) [].
   End Impl_core_cmp_Eq_for_move_core_types_gas_algebra_GasQuantity_U.
   
   Module Impl_core_cmp_PartialOrd_for_move_core_types_gas_algebra_GasQuantity_U.
@@ -1865,8 +1910,9 @@ Module gas_algebra.
       forall (U : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self U)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U)
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp U)) ].
   End Impl_core_cmp_PartialOrd_for_move_core_types_gas_algebra_GasQuantity_U.
   
@@ -1906,8 +1952,9 @@ Module gas_algebra.
       forall (U : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self U)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp U)) ].
   End Impl_core_cmp_Ord_for_move_core_types_gas_algebra_GasQuantity_U.
   
@@ -1969,9 +2016,10 @@ Module gas_algebra.
       forall (U : Ty.t),
       M.IsTraitInstance
         "core::ops::arith::Add"
-        (Self U)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* Rhs *) Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ]
+        [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ]
+        (Self U)
         (* Instance *)
         [ ("Output", InstanceField.Ty (_Output U)); ("add", InstanceField.Method (add U)) ].
   End Impl_core_ops_arith_Add_move_core_types_gas_algebra_GasQuantity_U_for_move_core_types_gas_algebra_GasQuantity_U.
@@ -2015,9 +2063,10 @@ Module gas_algebra.
       forall (U : Ty.t),
       M.IsTraitInstance
         "core::ops::arith::AddAssign"
-        (Self U)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* Rhs *) Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ]
+        [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ]
+        (Self U)
         (* Instance *) [ ("add_assign", InstanceField.Method (add_assign U)) ].
   End Impl_core_ops_arith_AddAssign_move_core_types_gas_algebra_GasQuantity_U_for_move_core_types_gas_algebra_GasQuantity_U.
   
@@ -2102,15 +2151,15 @@ Module gas_algebra.
       forall (U1 U2 : Ty.t),
       M.IsTraitInstance
         "core::ops::arith::Mul"
-        (Self U1 U2)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
         [
-          (* Rhs *)
           Ty.apply
             (Ty.path "move_core_types::gas_algebra::GasQuantity")
             []
             [ Ty.apply (Ty.path "move_core_types::gas_algebra::UnitDiv") [] [ U1; U2 ] ]
         ]
+        (Self U1 U2)
         (* Instance *)
         [ ("Output", InstanceField.Ty (_Output U1 U2)); ("mul", InstanceField.Method (mul U1 U2)) ].
   End Impl_core_ops_arith_Mul_move_core_types_gas_algebra_GasQuantity_move_core_types_gas_algebra_UnitDiv_U1_U2_for_move_core_types_gas_algebra_GasQuantity_U2.
@@ -2150,9 +2199,10 @@ Module gas_algebra.
       forall (U1 U2 : Ty.t),
       M.IsTraitInstance
         "core::ops::arith::Mul"
-        (Self U1 U2)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* Rhs *) Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U2 ] ]
+        [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U2 ] ]
+        (Self U1 U2)
         (* Instance *)
         [ ("Output", InstanceField.Ty (_Output U1 U2)); ("mul", InstanceField.Method (mul U1 U2)) ].
   End Impl_core_ops_arith_Mul_move_core_types_gas_algebra_GasQuantity_U2_for_move_core_types_gas_algebra_GasQuantity_move_core_types_gas_algebra_UnitDiv_U1_U2.
@@ -2630,8 +2680,9 @@ Module gas_algebra.
     Axiom Implements :
       M.IsTraitInstance
         "move_core_types::gas_algebra::ToUnit"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::Byte" ]
         Self
-        (* Trait polymorphic types *) [ (* U *) Ty.path "move_core_types::gas_algebra::Byte" ]
         (* Instance *) [ ("value_MULTIPLIER", InstanceField.Constant value_MULTIPLIER) ].
   End Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_Byte_for_move_core_types_gas_algebra_KibiByte.
   
@@ -2653,8 +2704,9 @@ Module gas_algebra.
     Axiom Implements :
       M.IsTraitInstance
         "move_core_types::gas_algebra::ToUnit"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::Byte" ]
         Self
-        (* Trait polymorphic types *) [ (* U *) Ty.path "move_core_types::gas_algebra::Byte" ]
         (* Instance *) [ ("value_MULTIPLIER", InstanceField.Constant value_MULTIPLIER) ].
   End Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_Byte_for_move_core_types_gas_algebra_MebiByte.
   
@@ -2679,8 +2731,9 @@ Module gas_algebra.
     Axiom Implements :
       M.IsTraitInstance
         "move_core_types::gas_algebra::ToUnit"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::Byte" ]
         Self
-        (* Trait polymorphic types *) [ (* U *) Ty.path "move_core_types::gas_algebra::Byte" ]
         (* Instance *) [ ("value_MULTIPLIER", InstanceField.Constant value_MULTIPLIER) ].
   End Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_Byte_for_move_core_types_gas_algebra_GibiByte.
   
@@ -2695,8 +2748,9 @@ Module gas_algebra.
     Axiom Implements :
       M.IsTraitInstance
         "move_core_types::gas_algebra::ToUnit"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::KibiByte" ]
         Self
-        (* Trait polymorphic types *) [ (* U *) Ty.path "move_core_types::gas_algebra::KibiByte" ]
         (* Instance *) [ ("value_MULTIPLIER", InstanceField.Constant value_MULTIPLIER) ].
   End Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_KibiByte_for_move_core_types_gas_algebra_MebiByte.
   
@@ -2718,8 +2772,9 @@ Module gas_algebra.
     Axiom Implements :
       M.IsTraitInstance
         "move_core_types::gas_algebra::ToUnit"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::KibiByte" ]
         Self
-        (* Trait polymorphic types *) [ (* U *) Ty.path "move_core_types::gas_algebra::KibiByte" ]
         (* Instance *) [ ("value_MULTIPLIER", InstanceField.Constant value_MULTIPLIER) ].
   End Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_KibiByte_for_move_core_types_gas_algebra_GibiByte.
   
@@ -2734,8 +2789,9 @@ Module gas_algebra.
     Axiom Implements :
       M.IsTraitInstance
         "move_core_types::gas_algebra::ToUnit"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::MebiByte" ]
         Self
-        (* Trait polymorphic types *) [ (* U *) Ty.path "move_core_types::gas_algebra::MebiByte" ]
         (* Instance *) [ ("value_MULTIPLIER", InstanceField.Constant value_MULTIPLIER) ].
   End Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_MebiByte_for_move_core_types_gas_algebra_GibiByte.
   
@@ -2755,8 +2811,9 @@ Module gas_algebra.
     Axiom Implements :
       M.IsTraitInstance
         "move_core_types::gas_algebra::ToUnitFractional"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::KibiByte" ]
         Self
-        (* Trait polymorphic types *) [ (* U *) Ty.path "move_core_types::gas_algebra::KibiByte" ]
         (* Instance *)
         [
           ("value_NOMINATOR", InstanceField.Constant value_NOMINATOR);
@@ -2780,8 +2837,9 @@ Module gas_algebra.
     Axiom Implements :
       M.IsTraitInstance
         "move_core_types::gas_algebra::ToUnitFractional"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::MebiByte" ]
         Self
-        (* Trait polymorphic types *) [ (* U *) Ty.path "move_core_types::gas_algebra::MebiByte" ]
         (* Instance *)
         [
           ("value_NOMINATOR", InstanceField.Constant value_NOMINATOR);
@@ -2812,8 +2870,9 @@ Module gas_algebra.
     Axiom Implements :
       M.IsTraitInstance
         "move_core_types::gas_algebra::ToUnitFractional"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::MebiByte" ]
         Self
-        (* Trait polymorphic types *) [ (* U *) Ty.path "move_core_types::gas_algebra::MebiByte" ]
         (* Instance *)
         [
           ("value_NOMINATOR", InstanceField.Constant value_NOMINATOR);
@@ -2837,8 +2896,9 @@ Module gas_algebra.
     Axiom Implements :
       M.IsTraitInstance
         "move_core_types::gas_algebra::ToUnitFractional"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::GibiByte" ]
         Self
-        (* Trait polymorphic types *) [ (* U *) Ty.path "move_core_types::gas_algebra::GibiByte" ]
         (* Instance *)
         [
           ("value_NOMINATOR", InstanceField.Constant value_NOMINATOR);
@@ -2869,8 +2929,9 @@ Module gas_algebra.
     Axiom Implements :
       M.IsTraitInstance
         "move_core_types::gas_algebra::ToUnitFractional"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::GibiByte" ]
         Self
-        (* Trait polymorphic types *) [ (* U *) Ty.path "move_core_types::gas_algebra::GibiByte" ]
         (* Instance *)
         [
           ("value_NOMINATOR", InstanceField.Constant value_NOMINATOR);
@@ -2904,8 +2965,9 @@ Module gas_algebra.
     Axiom Implements :
       M.IsTraitInstance
         "move_core_types::gas_algebra::ToUnitFractional"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::GibiByte" ]
         Self
-        (* Trait polymorphic types *) [ (* U *) Ty.path "move_core_types::gas_algebra::GibiByte" ]
         (* Instance *)
         [
           ("value_NOMINATOR", InstanceField.Constant value_NOMINATOR);

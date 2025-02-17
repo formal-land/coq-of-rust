@@ -74,8 +74,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [ ("clone", InstanceField.Method (clone I)) ].
       End Impl_core_clone_Clone_where_core_clone_Clone_I_for_core_iter_adapters_cycle_Cycle_I.
       
@@ -147,8 +148,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt I)) ].
       End Impl_core_fmt_Debug_where_core_fmt_Debug_I_for_core_iter_adapters_cycle_Cycle_I.
       
@@ -192,7 +194,8 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::cycle::Cycle") [] [ I ].
         
         (*     type Item = <I as Iterator>::Item; *)
-        Definition _Item (I : Ty.t) : Ty.t := Ty.associated.
+        Definition _Item (I : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item".
         
         (*
             fn next(&mut self) -> Option<<I as Iterator>::Item> {
@@ -215,7 +218,17 @@ Module iter.
                 M.match_operator (|
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            I
+                            "Item"
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
                         I,
@@ -275,7 +288,17 @@ Module iter.
                           |) in
                         M.alloc (|
                           M.call_closure (|
-                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item"
+                              ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
                               I,
@@ -459,7 +482,15 @@ Module iter.
                                   Ty.apply
                                     (Ty.path "core::ops::control_flow::ControlFlow")
                                     []
-                                    [ Ty.associated; Acc ],
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::ops::try_trait::Try"
+                                        []
+                                        []
+                                        R
+                                        "Residual";
+                                      Acc
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::Try",
                                     R,
@@ -517,7 +548,14 @@ Module iter.
                                                 "core::ops::try_trait::FromResidual",
                                                 R,
                                                 [],
-                                                [ Ty.associated ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::ops::try_trait::Try"
+                                                    []
+                                                    []
+                                                    R
+                                                    "Residual"
+                                                ],
                                                 "from_residual",
                                                 [],
                                                 []
@@ -587,7 +625,15 @@ Module iter.
                                   Ty.apply
                                     (Ty.path "core::ops::control_flow::ControlFlow")
                                     []
-                                    [ Ty.associated; Acc ],
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::ops::try_trait::Try"
+                                        []
+                                        []
+                                        R
+                                        "Residual";
+                                      Acc
+                                    ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::Try",
                                     R,
@@ -607,7 +653,23 @@ Module iter.
                                         [],
                                         "try_fold",
                                         [],
-                                        [ Acc; Ty.function [ Ty.tuple [ Acc; Ty.associated ] ] R; R
+                                        [
+                                          Acc;
+                                          Ty.function
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Acc;
+                                                  Ty.associated_in_trait
+                                                    "core::iter::traits::iterator::Iterator"
+                                                    []
+                                                    []
+                                                    I
+                                                    "Item"
+                                                ]
+                                            ]
+                                            R;
+                                          R
                                         ]
                                       |),
                                       [
@@ -655,7 +717,15 @@ Module iter.
                                                                           [],
                                                                           [
                                                                             Ty.tuple
-                                                                              [ Acc; Ty.associated ]
+                                                                              [
+                                                                                Acc;
+                                                                                Ty.associated_in_trait
+                                                                                  "core::iter::traits::iterator::Iterator"
+                                                                                  []
+                                                                                  []
+                                                                                  I
+                                                                                  "Item"
+                                                                              ]
                                                                           ],
                                                                           "call_mut",
                                                                           [],
@@ -706,7 +776,14 @@ Module iter.
                                                 "core::ops::try_trait::FromResidual",
                                                 R,
                                                 [],
-                                                [ Ty.associated ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::ops::try_trait::Try"
+                                                    []
+                                                    []
+                                                    R
+                                                    "Residual"
+                                                ],
                                                 "from_residual",
                                                 [],
                                                 []
@@ -816,7 +893,15 @@ Module iter.
                                             Ty.apply
                                               (Ty.path "core::ops::control_flow::ControlFlow")
                                               []
-                                              [ Ty.associated; Acc ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::ops::try_trait::Try"
+                                                  []
+                                                  []
+                                                  R
+                                                  "Residual";
+                                                Acc
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               R,
@@ -874,7 +959,14 @@ Module iter.
                                                           "core::ops::try_trait::FromResidual",
                                                           R,
                                                           [],
-                                                          [ Ty.associated ],
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "core::ops::try_trait::Try"
+                                                              []
+                                                              []
+                                                              R
+                                                              "Residual"
+                                                          ],
                                                           "from_residual",
                                                           [],
                                                           []
@@ -1314,8 +1406,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *)
             [
               ("Item", InstanceField.Ty (_Item I));
@@ -1334,8 +1427,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::FusedIterator"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_FusedIterator_where_core_clone_Clone_I_where_core_iter_traits_iterator_Iterator_I_for_core_iter_adapters_cycle_Cycle_I.
     End cycle.

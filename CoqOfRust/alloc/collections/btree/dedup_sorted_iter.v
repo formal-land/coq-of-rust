@@ -282,8 +282,9 @@ Module collections.
           forall (K V I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self K V I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self K V I)
             (* Instance *)
             [ ("Item", InstanceField.Ty (_Item K V I)); ("next", InstanceField.Method (next K V I))
             ].

@@ -42,8 +42,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip1559::Eip1559Tx"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [ ("kind", InstanceField.Method (kind T)) ].
       End Impl_revm_context_interface_transaction_eip1559_Eip1559Tx_where_revm_context_interface_transaction_eip1559_Eip1559Tx_T_where_core_marker_Sized_T_where_revm_context_interface_transaction_eip1559_Eip1559CommonTxFields_ref__T_for_ref__T.
       Module Impl_revm_context_interface_transaction_eip1559_Eip1559Tx_where_revm_context_interface_transaction_eip1559_Eip1559Tx_T_where_core_marker_Sized_T_where_revm_context_interface_transaction_eip1559_Eip1559CommonTxFields_alloc_boxed_Box_T_alloc_alloc_Global_for_alloc_boxed_Box_T_alloc_alloc_Global.
@@ -82,8 +83,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip1559::Eip1559Tx"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [ ("kind", InstanceField.Method (kind T)) ].
       End Impl_revm_context_interface_transaction_eip1559_Eip1559Tx_where_revm_context_interface_transaction_eip1559_Eip1559Tx_T_where_core_marker_Sized_T_where_revm_context_interface_transaction_eip1559_Eip1559CommonTxFields_alloc_boxed_Box_T_alloc_alloc_Global_for_alloc_boxed_Box_T_alloc_alloc_Global.
       Module Impl_revm_context_interface_transaction_eip1559_Eip1559Tx_where_revm_context_interface_transaction_eip1559_Eip1559Tx_T_where_core_marker_Sized_T_where_revm_context_interface_transaction_eip1559_Eip1559CommonTxFields_alloc_sync_Arc_T_alloc_alloc_Global_for_alloc_sync_Arc_T_alloc_alloc_Global.
@@ -139,8 +141,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip1559::Eip1559Tx"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [ ("kind", InstanceField.Method (kind T)) ].
       End Impl_revm_context_interface_transaction_eip1559_Eip1559Tx_where_revm_context_interface_transaction_eip1559_Eip1559Tx_T_where_core_marker_Sized_T_where_revm_context_interface_transaction_eip1559_Eip1559CommonTxFields_alloc_sync_Arc_T_alloc_alloc_Global_for_alloc_sync_Arc_T_alloc_alloc_Global.
       Module Impl_revm_context_interface_transaction_eip1559_Eip1559Tx_where_revm_context_interface_transaction_eip1559_Eip1559Tx_T_where_core_marker_Sized_T_where_revm_context_interface_transaction_eip1559_Eip1559CommonTxFields_alloc_rc_Rc_T_alloc_alloc_Global_for_alloc_rc_Rc_T_alloc_alloc_Global.
@@ -196,15 +199,22 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip1559::Eip1559Tx"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [ ("kind", InstanceField.Method (kind T)) ].
       End Impl_revm_context_interface_transaction_eip1559_Eip1559Tx_where_revm_context_interface_transaction_eip1559_Eip1559Tx_T_where_core_marker_Sized_T_where_revm_context_interface_transaction_eip1559_Eip1559CommonTxFields_alloc_rc_Rc_T_alloc_alloc_Global_for_alloc_rc_Rc_T_alloc_alloc_Global.
       Module Impl_revm_context_interface_transaction_eip1559_Eip1559CommonTxFields_where_revm_context_interface_transaction_eip1559_Eip1559CommonTxFields_T_where_core_marker_Sized_T_where_revm_context_interface_transaction_common_CommonTxFields_ref__T_for_ref__T.
         Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
         
         (* #[auto_impl(&, Box, Arc, Rc)] *)
-        Definition _AccessList (T : Ty.t) : Ty.t := Ty.associated.
+        Definition _AccessList (T : Ty.t) : Ty.t :=
+          Ty.associated_in_trait
+            "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields"
+            []
+            []
+            T
+            "AccessList".
         
         (* #[auto_impl(&, Box, Arc, Rc)] *)
         Definition chain_id (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -316,7 +326,17 @@ Module transaction.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields"
+                          []
+                          []
+                          T
+                          "AccessList"
+                      ],
                     M.get_trait_method (|
                       "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
                       T,
@@ -342,8 +362,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("AccessList", InstanceField.Ty (_AccessList T));
@@ -358,7 +379,13 @@ Module transaction.
           Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
         
         (* #[auto_impl(&, Box, Arc, Rc)] *)
-        Definition _AccessList (T : Ty.t) : Ty.t := Ty.associated.
+        Definition _AccessList (T : Ty.t) : Ty.t :=
+          Ty.associated_in_trait
+            "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields"
+            []
+            []
+            T
+            "AccessList".
         
         (* #[auto_impl(&, Box, Arc, Rc)] *)
         Definition chain_id (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -470,7 +497,17 @@ Module transaction.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields"
+                          []
+                          []
+                          T
+                          "AccessList"
+                      ],
                     M.get_trait_method (|
                       "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
                       T,
@@ -496,8 +533,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("AccessList", InstanceField.Ty (_AccessList T));
@@ -512,7 +550,13 @@ Module transaction.
           Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ].
         
         (* #[auto_impl(&, Box, Arc, Rc)] *)
-        Definition _AccessList (T : Ty.t) : Ty.t := Ty.associated.
+        Definition _AccessList (T : Ty.t) : Ty.t :=
+          Ty.associated_in_trait
+            "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields"
+            []
+            []
+            T
+            "AccessList".
         
         (* #[auto_impl(&, Box, Arc, Rc)] *)
         Definition chain_id (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -675,7 +719,17 @@ Module transaction.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields"
+                          []
+                          []
+                          T
+                          "AccessList"
+                      ],
                     M.get_trait_method (|
                       "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
                       T,
@@ -718,8 +772,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("AccessList", InstanceField.Ty (_AccessList T));
@@ -734,7 +789,13 @@ Module transaction.
           Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ].
         
         (* #[auto_impl(&, Box, Arc, Rc)] *)
-        Definition _AccessList (T : Ty.t) : Ty.t := Ty.associated.
+        Definition _AccessList (T : Ty.t) : Ty.t :=
+          Ty.associated_in_trait
+            "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields"
+            []
+            []
+            T
+            "AccessList".
         
         (* #[auto_impl(&, Box, Arc, Rc)] *)
         Definition chain_id (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -897,7 +958,17 @@ Module transaction.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields"
+                          []
+                          []
+                          T
+                          "AccessList"
+                      ],
                     M.get_trait_method (|
                       "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields",
                       T,
@@ -940,8 +1011,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip1559::Eip1559CommonTxFields"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("AccessList", InstanceField.Ty (_AccessList T));

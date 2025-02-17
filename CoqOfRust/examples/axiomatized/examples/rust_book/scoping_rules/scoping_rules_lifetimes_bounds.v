@@ -19,8 +19,9 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bo
     forall (T : Ty.t),
     M.IsTraitInstance
       "core::fmt::Debug"
-      (Self T)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self T)
       (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
 End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bounds_Ref_T.
 

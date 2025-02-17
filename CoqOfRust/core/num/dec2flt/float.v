@@ -346,8 +346,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::num::dec2flt::float::RawFloat"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *)
             [
               ("value_INFINITY", InstanceField.Constant value_INFINITY);
@@ -710,8 +711,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::num::dec2flt::float::RawFloat"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *)
             [
               ("value_INFINITY", InstanceField.Constant value_INFINITY);

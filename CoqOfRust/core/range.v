@@ -71,8 +71,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [ ("clone", InstanceField.Method (clone Idx)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_Idx_for_core_range_Range_Idx.
   
@@ -83,8 +84,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [].
   End Impl_core_marker_Copy_where_core_marker_Copy_Idx_for_core_range_Range_Idx.
   
@@ -120,8 +122,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [ ("default", InstanceField.Method (default Idx)) ].
   End Impl_core_default_Default_where_core_default_Default_Idx_for_core_range_Range_Idx.
   
@@ -132,8 +135,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_range_Range_Idx.
   
@@ -202,8 +206,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_range_Range_Idx.
   
@@ -235,8 +240,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq Idx)) ].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_range_Range_Idx.
@@ -306,8 +312,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [ ("hash", InstanceField.Method (hash Idx)) ].
   End Impl_core_hash_Hash_where_core_hash_Hash_Idx_for_core_range_Range_Idx.
   
@@ -674,8 +681,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt Idx)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_range_Range_Idx.
   
@@ -881,8 +889,9 @@ Module range.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::range::RangeBounds"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *)
         [
           ("start_bound", InstanceField.Method (start_bound T));
@@ -958,8 +967,9 @@ Module range.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::range::RangeBounds"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *)
         [
           ("start_bound", InstanceField.Method (start_bound T));
@@ -1000,8 +1010,9 @@ Module range.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::range::Range") [] [ T ] ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "core::range::Range") [] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_core_range_Range_T_for_core_ops_range_Range_T.
   
@@ -1042,9 +1053,9 @@ Module range.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::ops::range::Range") [] [ T ] ]
         (Self T)
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "core::ops::range::Range") [] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_core_ops_range_Range_T_for_core_range_Range_T.
   
@@ -1118,8 +1129,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [ ("clone", InstanceField.Method (clone Idx)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_Idx_for_core_range_RangeInclusive_Idx.
   
@@ -1131,8 +1143,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [].
   End Impl_core_marker_Copy_where_core_marker_Copy_Idx_for_core_range_RangeInclusive_Idx.
   
@@ -1144,8 +1157,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_range_RangeInclusive_Idx.
   
@@ -1215,8 +1229,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_range_RangeInclusive_Idx.
   
@@ -1249,8 +1264,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq Idx)) ].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_range_RangeInclusive_Idx.
@@ -1321,8 +1337,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [ ("hash", InstanceField.Method (hash Idx)) ].
   End Impl_core_hash_Hash_where_core_hash_Hash_Idx_for_core_range_RangeInclusive_Idx.
   
@@ -1692,8 +1709,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt Idx)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_range_RangeInclusive_Idx.
   
@@ -1945,8 +1963,9 @@ Module range.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::range::RangeBounds"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *)
         [
           ("start_bound", InstanceField.Method (start_bound T));
@@ -2022,8 +2041,9 @@ Module range.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::range::RangeBounds"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *)
         [
           ("start_bound", InstanceField.Method (start_bound T));
@@ -2078,9 +2098,9 @@ Module range.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ T ] ]
         (Self T)
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "core::range::RangeInclusive") [] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_core_range_RangeInclusive_T_for_core_ops_range_RangeInclusive_T.
   
@@ -2203,9 +2223,10 @@ Module range.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ T ] ]
+        [ Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ T ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_core_ops_range_RangeInclusive_T_for_core_range_RangeInclusive_T.
   
@@ -2258,8 +2279,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [ ("clone", InstanceField.Method (clone Idx)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_Idx_for_core_range_RangeFrom_Idx.
   
@@ -2270,8 +2292,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [].
   End Impl_core_marker_Copy_where_core_marker_Copy_Idx_for_core_range_RangeFrom_Idx.
   
@@ -2282,8 +2305,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_range_RangeFrom_Idx.
   
@@ -2327,8 +2351,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_range_RangeFrom_Idx.
   
@@ -2360,8 +2385,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq Idx)) ].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_range_RangeFrom_Idx.
@@ -2404,8 +2430,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [ ("hash", InstanceField.Method (hash Idx)) ].
   End Impl_core_hash_Hash_where_core_hash_Hash_Idx_for_core_range_RangeFrom_Idx.
   
@@ -2666,8 +2693,9 @@ Module range.
       forall (Idx : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self Idx)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Idx)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt Idx)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_range_RangeFrom_Idx.
   
@@ -2814,8 +2842,9 @@ Module range.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::range::RangeBounds"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *)
         [
           ("start_bound", InstanceField.Method (start_bound T));
@@ -2876,8 +2905,9 @@ Module range.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::ops::range::RangeBounds"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *)
         [
           ("start_bound", InstanceField.Method (start_bound T));
@@ -2918,9 +2948,9 @@ Module range.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ T ] ]
         (Self T)
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "core::range::RangeFrom") [] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_core_range_RangeFrom_T_for_core_ops_range_RangeFrom_T.
   
@@ -2957,9 +2987,9 @@ Module range.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ T ] ]
         (Self T)
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_core_ops_range_RangeFrom_T_for_core_range_RangeFrom_T.
 End range.

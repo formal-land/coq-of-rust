@@ -162,8 +162,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::common::CommonTxFields"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("caller", InstanceField.Method (caller T));
@@ -329,8 +330,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::common::CommonTxFields"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("caller", InstanceField.Method (caller T));
@@ -581,8 +583,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::common::CommonTxFields"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("caller", InstanceField.Method (caller T));
@@ -833,8 +836,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::common::CommonTxFields"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("caller", InstanceField.Method (caller T));

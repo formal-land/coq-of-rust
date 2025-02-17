@@ -149,8 +149,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_ffi_va_list_VaListImpl.
     
@@ -235,8 +236,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_ffi_va_list_VaList.
     
@@ -417,8 +419,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::deref::Deref"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Target", InstanceField.Ty _Target); ("deref", InstanceField.Method deref) ].
     End Impl_core_ops_deref_Deref_for_core_ffi_va_list_VaList.
@@ -464,8 +467,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::deref::DerefMut"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deref_mut", InstanceField.Method deref_mut) ].
     End Impl_core_ops_deref_DerefMut_for_core_ffi_va_list_VaList.
     
@@ -480,8 +484,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ffi::va_list::sealed_trait::VaArgSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_ffi_va_list_sealed_trait_VaArgSafe_for_i8.
     
@@ -491,8 +496,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ffi::va_list::sealed_trait::VaArgSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_ffi_va_list_sealed_trait_VaArgSafe_for_i16.
     
@@ -502,8 +508,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ffi::va_list::sealed_trait::VaArgSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_ffi_va_list_sealed_trait_VaArgSafe_for_i32.
     
@@ -513,8 +520,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ffi::va_list::sealed_trait::VaArgSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_ffi_va_list_sealed_trait_VaArgSafe_for_i64.
     
@@ -524,8 +532,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ffi::va_list::sealed_trait::VaArgSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_ffi_va_list_sealed_trait_VaArgSafe_for_usize.
     
@@ -535,8 +544,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ffi::va_list::sealed_trait::VaArgSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_ffi_va_list_sealed_trait_VaArgSafe_for_u8.
     
@@ -546,8 +556,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ffi::va_list::sealed_trait::VaArgSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_ffi_va_list_sealed_trait_VaArgSafe_for_u16.
     
@@ -557,8 +568,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ffi::va_list::sealed_trait::VaArgSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_ffi_va_list_sealed_trait_VaArgSafe_for_u32.
     
@@ -568,8 +580,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ffi::va_list::sealed_trait::VaArgSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_ffi_va_list_sealed_trait_VaArgSafe_for_u64.
     
@@ -579,8 +592,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ffi::va_list::sealed_trait::VaArgSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_ffi_va_list_sealed_trait_VaArgSafe_for_isize.
     
@@ -590,8 +604,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ffi::va_list::sealed_trait::VaArgSafe"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_ffi_va_list_sealed_trait_VaArgSafe_for_f64.
     
@@ -602,8 +617,9 @@ Module ffi.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ffi::va_list::sealed_trait::VaArgSafe"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_ffi_va_list_sealed_trait_VaArgSafe_for_pointer_mut_T.
     
@@ -614,8 +630,9 @@ Module ffi.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ffi::va_list::sealed_trait::VaArgSafe"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_ffi_va_list_sealed_trait_VaArgSafe_for_pointer_const_T.
     
@@ -707,8 +724,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_ffi_va_list_VaListImpl.
     
@@ -741,8 +759,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("drop", InstanceField.Method drop) ].
     End Impl_core_ops_drop_Drop_for_core_ffi_va_list_VaListImpl.
     

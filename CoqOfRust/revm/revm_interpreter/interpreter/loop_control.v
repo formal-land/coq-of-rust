@@ -226,8 +226,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::interpreter_types::LoopControl"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("set_instruction_result", InstanceField.Method set_instruction_result);

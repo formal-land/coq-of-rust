@@ -15,7 +15,7 @@ Import Run.
 Module Clone.
   Definition Run_clone (Self : Set) `{Link Self} : Set :=
     {clone @
-      IsTraitMethod.t "core::clone::Clone" (Φ Self) [] "clone" clone *
+      IsTraitMethod.t "core::clone::Clone" [] [] (Φ Self) "clone" clone *
       forall (self : Ref.t Pointer.Kind.Ref Self),
         {{ clone [] [] [ φ self ] 🔽 Self }}
     }.

@@ -207,8 +207,9 @@ Module collections.
           forall (K V : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self K V)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self K V)
             (* Instance *) [ ("clone", InstanceField.Method (clone K V)) ].
       End Impl_core_clone_Clone_for_alloc_collections_btree_navigate_LeafRange_alloc_collections_btree_node_marker_Immut_K_V.
       
@@ -244,8 +245,9 @@ Module collections.
           forall (B K V : Ty.t),
           M.IsTraitInstance
             "core::default::Default"
-            (Self B K V)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self B K V)
             (* Instance *) [ ("default", InstanceField.Method (default B K V)) ].
       End Impl_core_default_Default_for_alloc_collections_btree_navigate_LeafRange_B_K_V.
       
@@ -2822,8 +2824,9 @@ Module collections.
           forall (K V : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self K V)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self K V)
             (* Instance *) [ ("clone", InstanceField.Method (clone K V)) ].
       End Impl_core_clone_Clone_for_alloc_collections_btree_navigate_LazyLeafHandle_alloc_collections_btree_node_marker_Immut_K_V.
       
@@ -3029,8 +3032,9 @@ Module collections.
           forall (B K V : Ty.t),
           M.IsTraitInstance
             "core::default::Default"
-            (Self B K V)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self B K V)
             (* Instance *) [ ("default", InstanceField.Method (default B K V)) ].
       End Impl_core_default_Default_for_alloc_collections_btree_navigate_LazyLeafRange_B_K_V.
       
@@ -3141,8 +3145,9 @@ Module collections.
           forall (K V : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self K V)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self K V)
             (* Instance *) [ ("clone", InstanceField.Method (clone K V)) ].
       End Impl_core_clone_Clone_for_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_Immut_K_V.
       

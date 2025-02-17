@@ -67,8 +67,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt A)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_A_for_core_range_iter_IterRange_A.
     
@@ -121,8 +122,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [ ("clone", InstanceField.Method (clone A)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_A_for_core_range_iter_IterRange_A.
     
@@ -185,8 +187,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_usize.
     
@@ -202,8 +205,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_usize.
@@ -215,8 +219,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_u8.
     
@@ -232,8 +237,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_u8.
@@ -245,8 +251,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_u16.
     
@@ -262,8 +269,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_u16.
@@ -275,8 +283,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_isize.
     
@@ -292,8 +301,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_isize.
@@ -305,8 +315,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_i8.
     
@@ -322,8 +333,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_i8.
@@ -335,8 +347,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_i16.
     
@@ -352,8 +365,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_i16.
@@ -365,8 +379,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_u32.
     
@@ -382,8 +397,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_u32.
@@ -395,8 +411,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_i32.
     
@@ -412,8 +429,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_i32.
@@ -425,8 +443,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_u64.
     
@@ -442,8 +461,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_u64.
@@ -455,8 +475,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccess"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_i64.
     
@@ -472,8 +493,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_i64.
@@ -850,8 +872,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item A));
@@ -999,8 +1022,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back A));
@@ -1017,8 +1041,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedStep_A_for_core_range_iter_IterRange_A.
     
@@ -1030,8 +1055,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_range_Step_A_for_core_range_iter_IterRange_A.
     
@@ -1080,8 +1106,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::IntoIterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item A));
@@ -1154,8 +1181,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt A)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_A_for_core_range_iter_IterRangeInclusive_A.
     
@@ -1208,8 +1236,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [ ("clone", InstanceField.Method (clone A)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_A_for_core_range_iter_IterRangeInclusive_A.
     
@@ -1652,8 +1681,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item A));
@@ -1800,8 +1830,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back A));
@@ -1818,8 +1849,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedStep_A_for_core_range_iter_IterRangeInclusive_A.
     
@@ -1831,8 +1863,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_range_Step_A_for_core_range_iter_IterRangeInclusive_A.
     
@@ -1882,8 +1915,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::IntoIterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item A));
@@ -1899,8 +1933,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_range_iter_IterRange_usize.
     
@@ -1911,8 +1946,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_range_iter_IterRange_u8.
     
@@ -1923,8 +1959,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_range_iter_IterRange_u16.
     
@@ -1935,8 +1972,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_range_iter_IterRange_isize.
     
@@ -1947,8 +1985,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_range_iter_IterRange_i8.
     
@@ -1959,8 +1998,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_range_iter_IterRange_i16.
     
@@ -1971,8 +2011,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_range_iter_IterRangeInclusive_u8.
     
@@ -1983,8 +2024,9 @@ Module range.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_range_iter_IterRangeInclusive_i8.
     
@@ -2052,8 +2094,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt A)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_A_for_core_range_iter_IterRangeFrom_A.
     
@@ -2106,8 +2149,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [ ("clone", InstanceField.Method (clone A)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_A_for_core_range_iter_IterRangeFrom_A.
     
@@ -2274,8 +2318,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item A));
@@ -2293,8 +2338,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedStep_A_for_core_range_iter_IterRangeFrom_A.
     
@@ -2306,8 +2352,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_range_Step_A_for_core_range_iter_IterRangeFrom_A.
     
@@ -2356,8 +2403,9 @@ Module range.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::IntoIterator"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item A));

@@ -16,7 +16,7 @@ Module FnOnce.
   Definition Run_call_once (Self Args : Set) {Output : Set}
       `{Link Self} `{Link Args} `{Link Output} : Set :=
     {call_once @
-      IsTraitMethod.t "core::ops::function::FnOnce" (Φ Self) [ Φ Args ] "call_once" call_once *
+      IsTraitMethod.t "core::ops::function::FnOnce" [] [ Φ Args ] (Φ Self) "call_once" call_once *
       forall (self : Self) (args : Args),
       {{ call_once [] [] [ φ self; φ args ] 🔽 Output }}
     }.

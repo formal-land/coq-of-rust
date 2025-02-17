@@ -175,8 +175,9 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
   Axiom Implements :
     M.IsTraitInstance
       "functions_order::SomeTrait"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [
         ("some_trait_foo", InstanceField.Method some_trait_foo);
@@ -210,8 +211,9 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
   Axiom Implements :
     M.IsTraitInstance
       "functions_order::SomeTrait"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [
         ("some_trait_foo", InstanceField.Method some_trait_foo);

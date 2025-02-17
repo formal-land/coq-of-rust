@@ -376,8 +376,9 @@ End Instance.
 Parameter IsTraitInstance :
   forall
     (trait_name : string)
+    (trait_consts : list Value.t)
+    (trait_tys : list Ty.t)
     (Self : Ty.t)
-    (generic_tys : list Ty.t)
     (instance : Instance.t),
   Prop.
 
@@ -421,28 +422,43 @@ Parameter IsDiscriminant :
 Module IsTraitMethod.
   Inductive t
       (trait_name : string)
-      (self_ty : Ty.t)
+      (trait_consts : list Value.t)
       (trait_tys : list Ty.t)
+      (self_ty : Ty.t)
       (method_name : string) :
       (PolymorphicFunction.t) -> Prop :=
   | Defined (instance : Instance.t) (method : PolymorphicFunction.t) :
     M.IsTraitInstance
       trait_name
-      self_ty
+      trait_consts
       trait_tys
+      self_ty
       instance ->
     List.assoc instance method_name = Some (InstanceField.Method method) ->
-    t trait_name self_ty trait_tys method_name method
+    t trait_name trait_consts trait_tys self_ty method_name method
   | Provided (instance : Instance.t) (method : Ty.t -> PolymorphicFunction.t) :
     M.IsTraitInstance
       trait_name
-      self_ty
+      trait_consts
       trait_tys
+      self_ty
       instance ->
     List.assoc instance method_name = None ->
     M.IsProvidedMethod trait_name method_name method ->
-    t trait_name self_ty trait_tys method_name (method self_ty).
+    t trait_name trait_consts trait_tys self_ty method_name (method self_ty).
 End IsTraitMethod.
+
+Definition IsTraitAssociatedType
+    (trait_name : string)
+    (trait_consts : list Value.t)
+    (trait_tys : list Ty.t)
+    (self_ty : Ty.t)
+    (associated_type_name : string)
+    (ty : Ty.t) :
+    Prop :=
+  exists instance,
+    M.IsTraitInstance trait_name trait_consts trait_tys self_ty instance /\
+    List.assoc instance associated_type_name = Some (InstanceField.Ty ty).
 
 Module Option.
   Definition map {A B : Set} (x : option A) (f : A -> B) : option B :=

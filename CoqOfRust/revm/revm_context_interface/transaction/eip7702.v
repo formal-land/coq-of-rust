@@ -89,7 +89,12 @@ Module transaction.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "revm_context_interface::transaction::eip7702::Eip7702Tx"
+                  []
+                  []
+                  T
+                  "{{synthetic}}",
                 M.get_trait_method (|
                   "revm_context_interface::transaction::eip7702::Eip7702Tx",
                   T,
@@ -113,8 +118,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip7702::Eip7702Tx"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("destination", InstanceField.Method (destination T));
@@ -205,7 +211,12 @@ Module transaction.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "revm_context_interface::transaction::eip7702::Eip7702Tx"
+                  []
+                  []
+                  T
+                  "{{synthetic}}",
                 M.get_trait_method (|
                   "revm_context_interface::transaction::eip7702::Eip7702Tx",
                   T,
@@ -229,8 +240,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip7702::Eip7702Tx"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("destination", InstanceField.Method (destination T));
@@ -355,7 +367,12 @@ Module transaction.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "revm_context_interface::transaction::eip7702::Eip7702Tx"
+                  []
+                  []
+                  T
+                  "{{synthetic}}",
                 M.get_trait_method (|
                   "revm_context_interface::transaction::eip7702::Eip7702Tx",
                   T,
@@ -396,8 +413,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip7702::Eip7702Tx"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("destination", InstanceField.Method (destination T));
@@ -522,7 +540,12 @@ Module transaction.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "revm_context_interface::transaction::eip7702::Eip7702Tx"
+                  []
+                  []
+                  T
+                  "{{synthetic}}",
                 M.get_trait_method (|
                   "revm_context_interface::transaction::eip7702::Eip7702Tx",
                   T,
@@ -563,8 +586,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip7702::Eip7702Tx"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("destination", InstanceField.Method (destination T));
@@ -727,8 +751,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip7702::Authorization"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("authority", InstanceField.Method (authority T));
@@ -979,8 +1004,9 @@ Module transaction.
           forall (T : Ty.t),
           M.IsTraitInstance
             "revm_context_interface::transaction::eip7702::Authorization"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("authority", InstanceField.Method (authority T));
@@ -1535,8 +1561,9 @@ Module transaction.
       Axiom Implements :
         M.IsTraitInstance
           "revm_context_interface::transaction::eip7702::Authorization"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("authority", InstanceField.Method authority);

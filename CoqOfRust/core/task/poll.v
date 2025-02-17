@@ -32,8 +32,9 @@ Module task.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Copy"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_task_poll_Poll_T.
     
@@ -96,8 +97,9 @@ Module task.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_task_poll_Poll_T.
     
@@ -186,8 +188,9 @@ Module task.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_task_poll_Poll_T.
     
@@ -219,8 +222,9 @@ Module task.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq T)) ].
     End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_task_poll_Poll_T.
@@ -232,8 +236,9 @@ Module task.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_task_poll_Poll_T.
     
@@ -333,8 +338,9 @@ Module task.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_task_poll_Poll_T.
     
@@ -469,8 +475,9 @@ Module task.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Ord"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
     End Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_core_task_poll_Poll_T.
     
@@ -593,8 +600,9 @@ Module task.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T)) ].
     End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_core_task_poll_Poll_T.
     
@@ -686,8 +694,9 @@ Module task.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_for_core_task_poll_Poll_T.
     
@@ -1324,8 +1333,9 @@ Module task.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_T_for_core_task_poll_Poll_T.
     
@@ -1456,8 +1466,9 @@ Module task.
         forall (T E : Ty.t),
         M.IsTraitInstance
           "core::ops::try_trait::Try"
-          (Self T E)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T E)
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output T E));
@@ -1538,12 +1549,11 @@ Module task.
         forall (T E F : Ty.t),
         M.IsTraitInstance
           "core::ops::try_trait::FromResidual"
-          (Self T E F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [
-            (* R *)
-            Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "core::convert::Infallible"; E ]
+          [ Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "core::convert::Infallible"; E ]
           ]
+          (Self T E F)
           (* Instance *) [ ("from_residual", InstanceField.Method (from_residual T E F)) ].
     End Impl_core_ops_try_trait_FromResidual_where_core_convert_From_F_E_core_result_Result_core_convert_Infallible_E_for_core_task_poll_Poll_core_result_Result_T_F.
     
@@ -1772,8 +1782,9 @@ Module task.
         forall (T E : Ty.t),
         M.IsTraitInstance
           "core::ops::try_trait::Try"
-          (Self T E)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T E)
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output T E));
@@ -1863,12 +1874,11 @@ Module task.
         forall (T E F : Ty.t),
         M.IsTraitInstance
           "core::ops::try_trait::FromResidual"
-          (Self T E F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [
-            (* R *)
-            Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "core::convert::Infallible"; E ]
+          [ Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "core::convert::Infallible"; E ]
           ]
+          (Self T E F)
           (* Instance *) [ ("from_residual", InstanceField.Method (from_residual T E F)) ].
     End Impl_core_ops_try_trait_FromResidual_where_core_convert_From_F_E_core_result_Result_core_convert_Infallible_E_for_core_task_poll_Poll_core_option_Option_core_result_Result_T_F.
   End poll.

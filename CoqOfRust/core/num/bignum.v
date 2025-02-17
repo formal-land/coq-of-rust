@@ -145,8 +145,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::bignum::FullOps"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("full_mul_add", InstanceField.Method full_mul_add);
@@ -295,8 +296,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::bignum::FullOps"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("full_mul_add", InstanceField.Method full_mul_add);
@@ -445,8 +447,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::bignum::FullOps"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("full_mul_add", InstanceField.Method full_mul_add);
@@ -5125,8 +5128,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_num_bignum_Big32x40.
     
@@ -5134,7 +5138,12 @@ Module num.
       Definition Self : Ty.t := Ty.path "core::num::bignum::Big32x40".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_core_num_bignum_Big32x40.
     
     Module Impl_core_cmp_PartialOrd_for_core_num_bignum_Big32x40.
@@ -5177,8 +5186,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_core_num_bignum_Big32x40.
     
@@ -5476,8 +5486,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_core_num_bignum_Big32x40.
     
@@ -5520,8 +5531,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_num_bignum_Big32x40.
     
@@ -6250,8 +6262,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_num_bignum_Big32x40.
     
@@ -11026,8 +11039,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::PartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_bignum_tests_Big8x3.
       
@@ -11035,7 +11049,12 @@ Module num.
         Definition Self : Ty.t := Ty.path "core::num::bignum::tests::Big8x3".
         
         Axiom Implements :
-          M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+          M.IsTraitInstance
+            "core::cmp::Eq"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) []
+            Self
+            (* Instance *) [].
       End Impl_core_cmp_Eq_for_core_num_bignum_tests_Big8x3.
       
       Module Impl_core_cmp_PartialOrd_for_core_num_bignum_tests_Big8x3.
@@ -11078,8 +11097,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::PartialOrd"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
       End Impl_core_cmp_PartialOrd_for_core_num_bignum_tests_Big8x3.
       
@@ -11377,8 +11397,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::Ord"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
       End Impl_core_cmp_Ord_for_core_num_bignum_tests_Big8x3.
       
@@ -11421,8 +11442,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_bignum_tests_Big8x3.
       
@@ -12166,8 +12188,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Debug"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_core_num_bignum_tests_Big8x3.
     End tests.

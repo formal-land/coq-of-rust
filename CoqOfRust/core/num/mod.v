@@ -89041,8 +89041,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_core_num_FpCategory.
   
@@ -89062,8 +89063,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_num_FpCategory.
   
@@ -89073,8 +89075,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_num_FpCategory.
   
@@ -89121,8 +89124,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_num_FpCategory.
   
@@ -89146,8 +89150,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_core_num_FpCategory.
@@ -89235,8 +89240,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_num_FpCategory.
   
@@ -89273,8 +89279,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_isize.
@@ -89312,8 +89319,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_i8.
@@ -89351,8 +89359,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_i16.
@@ -89390,8 +89399,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_i32.
@@ -89429,8 +89439,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_i64.
@@ -89468,8 +89479,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_i128.
@@ -89507,8 +89519,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_usize.
@@ -89546,8 +89559,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_u8.
@@ -89585,8 +89599,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_u16.
@@ -89624,8 +89639,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_u32.
@@ -89663,8 +89679,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_u64.
@@ -89702,8 +89719,9 @@ Module num.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_u128.

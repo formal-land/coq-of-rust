@@ -505,8 +505,9 @@ Module deserializer.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_deserializer_Table.
   
@@ -589,8 +590,9 @@ Module deserializer.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_deserializer_Table.
   
@@ -2039,19 +2041,51 @@ Module deserializer.
                     []
                     [ T; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.associated ],
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        T;
+                        Ty.associated_in_trait
+                          "core::convert::TryInto"
+                          []
+                          []
+                          (Ty.path "u64")
+                          "Error"
+                      ],
                     "map_err",
                     [],
                     [
                       Ty.path "move_binary_format::errors::PartialVMError";
                       Ty.function
-                        [ Ty.tuple [ Ty.associated ] ]
+                        [
+                          Ty.tuple
+                            [
+                              Ty.associated_in_trait
+                                "core::convert::TryInto"
+                                []
+                                []
+                                (Ty.path "u64")
+                                "Error"
+                            ]
+                        ]
                         (Ty.path "move_binary_format::errors::PartialVMError")
                     ]
                   |),
                   [
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          T;
+                          Ty.associated_in_trait
+                            "core::convert::TryInto"
+                            []
+                            []
+                            (Ty.path "u64")
+                            "Error"
+                        ],
                       M.get_trait_method (|
                         "core::convert::TryInto",
                         Ty.path "u64",
@@ -6734,8 +6768,9 @@ Module deserializer.
     Axiom Implements :
       M.IsTraitInstance
         "move_binary_format::deserializer::CommonTables"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("get_module_handles", InstanceField.Method get_module_handles);
@@ -25024,8 +25059,9 @@ Module deserializer.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_move_binary_format_deserializer_AbilitySetPosition.
   
@@ -25045,8 +25081,9 @@ Module deserializer.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_deserializer_AbilitySetPosition.
   
@@ -41644,8 +41681,9 @@ Module deserializer.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_deserializer_DeprecatedNominalResourceFlag.
   
@@ -41656,8 +41694,9 @@ Module deserializer.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_move_binary_format_deserializer_DeprecatedNominalResourceFlag.
   
@@ -41723,8 +41762,9 @@ Module deserializer.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_deserializer_DeprecatedNominalResourceFlag.
   
@@ -43612,8 +43652,9 @@ Module deserializer.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_deserializer_VersionedBinary.
   
@@ -43701,8 +43742,9 @@ Module deserializer.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_deserializer_VersionedCursor.
   
@@ -45501,8 +45543,9 @@ Module deserializer.
     Axiom Implements :
       M.IsTraitInstance
         "std::io::Read"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("read", InstanceField.Method read) ].
   End Impl_std_io_Read_for_move_binary_format_deserializer_VersionedCursor.
 End deserializer.

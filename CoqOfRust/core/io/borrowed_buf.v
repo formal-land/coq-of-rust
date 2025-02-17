@@ -203,8 +203,9 @@ Module io.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_io_borrowed_buf_BorrowedBuf.
     
@@ -351,10 +352,10 @@ Module io.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-          ]
+          [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_ref_mut_slice_u8_for_core_io_borrowed_buf_BorrowedBuf.
     
@@ -384,10 +385,9 @@ Module io.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
           [
-            (* T *)
             Ty.apply
               (Ty.path "&mut")
               []
@@ -398,6 +398,7 @@ Module io.
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ] ]
               ]
           ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_ref_mut_slice_core_mem_maybe_uninit_MaybeUninit_u8_for_core_io_borrowed_buf_BorrowedBuf.
     
@@ -974,8 +975,9 @@ Module io.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_io_borrowed_buf_BorrowedCursor.
     

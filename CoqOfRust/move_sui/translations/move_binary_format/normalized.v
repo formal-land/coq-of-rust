@@ -478,8 +478,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_normalized_Type.
   
@@ -955,8 +956,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_normalized_Type.
   
@@ -1439,8 +1441,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_Type.
   
@@ -1962,8 +1965,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Type.
   
@@ -2038,8 +2042,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_binary_format_normalized_Type.
@@ -2050,8 +2055,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_Type.
   
@@ -2526,8 +2532,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Type.
   
@@ -2560,7 +2567,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -2587,7 +2597,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -2617,7 +2630,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -2647,7 +2663,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -2677,7 +2696,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -2707,7 +2729,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -2755,7 +2780,13 @@ Module normalized.
                           let module := M.alloc (| γ0_1 |) in
                           let name := M.alloc (| γ0_2 |) in
                           let type_arguments := M.alloc (| γ0_3 |) in
-                          let~ __serde_state : Ty.associated :=
+                          let~ __serde_state :
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                __S
+                                "SerializeStructVariant" :=
                             M.copy (|
                               M.match_operator (|
                                 M.alloc (|
@@ -2763,7 +2794,20 @@ Module normalized.
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
-                                      [ Ty.associated; Ty.associated ],
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "SerializeStructVariant";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ],
                                     M.get_trait_method (|
                                       "serde::ser::Serializer",
                                       __S,
@@ -2835,10 +2879,23 @@ Module normalized.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.tuple []; Ty.associated ],
+                                    [
+                                      Ty.tuple [];
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error"
+                                    ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeStructVariant",
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStructVariant",
                                     [],
                                     [],
                                     "serialize_field",
@@ -2900,10 +2957,23 @@ Module normalized.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.tuple []; Ty.associated ],
+                                    [
+                                      Ty.tuple [];
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error"
+                                    ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeStructVariant",
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStructVariant",
                                     [],
                                     [],
                                     "serialize_field",
@@ -2965,10 +3035,23 @@ Module normalized.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.tuple []; Ty.associated ],
+                                    [
+                                      Ty.tuple [];
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error"
+                                    ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeStructVariant",
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStructVariant",
                                     [],
                                     [],
                                     "serialize_field",
@@ -3027,10 +3110,23 @@ Module normalized.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.tuple []; Ty.associated ],
+                                    [
+                                      Ty.tuple [];
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error"
+                                    ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeStructVariant",
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStructVariant",
                                     [],
                                     [],
                                     "serialize_field",
@@ -3098,10 +3194,18 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::SerializeStructVariant",
-                                Ty.associated,
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStructVariant",
                                 [],
                                 [],
                                 "end",
@@ -3125,7 +3229,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -3166,7 +3273,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -3199,7 +3309,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -3240,7 +3353,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -3279,7 +3395,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -3309,7 +3428,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -3339,7 +3461,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -3367,8 +3492,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_binary_format_normalized_Type.
     Module Impl_serde_de_Deserialize_for_move_binary_format_normalized_Type.
@@ -3384,7 +3510,10 @@ Module normalized.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_binary_format::normalized::Type"; Ty.associated ],
+                [
+                  Ty.path "move_binary_format::normalized::Type";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -3414,8 +3543,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_binary_format_normalized_Type.
     Module Impl_serde_ser_Serialize_for_move_binary_format_normalized_Field.
@@ -3431,7 +3561,8 @@ Module normalized.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -3439,7 +3570,15 @@ Module normalized.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -3503,10 +3642,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -3575,10 +3722,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -3642,10 +3797,16 @@ Module normalized.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -3663,8 +3824,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_binary_format_normalized_Field.
     Module Impl_serde_de_Deserialize_for_move_binary_format_normalized_Field.
@@ -3680,7 +3842,10 @@ Module normalized.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_binary_format::normalized::Field"; Ty.associated ],
+                [
+                  Ty.path "move_binary_format::normalized::Field";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -3710,8 +3875,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_binary_format_normalized_Field.
     Module Impl_serde_ser_Serialize_for_move_binary_format_normalized_Constant.
@@ -3727,7 +3893,8 @@ Module normalized.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -3735,7 +3902,15 @@ Module normalized.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -3799,10 +3974,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -3871,10 +4054,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -3943,10 +4134,16 @@ Module normalized.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -3964,8 +4161,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_binary_format_normalized_Constant.
     Module Impl_serde_de_Deserialize_for_move_binary_format_normalized_Constant.
@@ -3981,7 +4179,10 @@ Module normalized.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_binary_format::normalized::Constant"; Ty.associated ],
+                [
+                  Ty.path "move_binary_format::normalized::Constant";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -4011,8 +4212,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_binary_format_normalized_Constant.
     Module Impl_serde_ser_Serialize_for_move_binary_format_normalized_Struct.
@@ -4028,7 +4230,8 @@ Module normalized.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -4036,7 +4239,15 @@ Module normalized.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -4103,10 +4314,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -4175,10 +4394,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -4255,10 +4482,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -4330,10 +4565,16 @@ Module normalized.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -4351,8 +4592,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_binary_format_normalized_Struct.
     Module Impl_serde_de_Deserialize_for_move_binary_format_normalized_Struct.
@@ -4368,7 +4610,10 @@ Module normalized.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_binary_format::normalized::Struct"; Ty.associated ],
+                [
+                  Ty.path "move_binary_format::normalized::Struct";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -4398,8 +4643,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_binary_format_normalized_Struct.
     Module Impl_serde_ser_Serialize_for_move_binary_format_normalized_Function.
@@ -4415,7 +4661,8 @@ Module normalized.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -4423,7 +4670,15 @@ Module normalized.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -4499,10 +4754,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -4571,10 +4834,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -4643,10 +4914,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -4723,10 +5002,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -4803,10 +5090,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -4883,10 +5178,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -4958,10 +5261,16 @@ Module normalized.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -4979,8 +5288,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_binary_format_normalized_Function.
     Module Impl_serde_de_Deserialize_for_move_binary_format_normalized_Function.
@@ -4996,7 +5306,10 @@ Module normalized.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_binary_format::normalized::Function"; Ty.associated ],
+                [
+                  Ty.path "move_binary_format::normalized::Function";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -5026,8 +5339,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_binary_format_normalized_Function.
     Module Impl_serde_ser_Serialize_for_move_binary_format_normalized_FieldRef.
@@ -5043,7 +5357,8 @@ Module normalized.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -5051,7 +5366,15 @@ Module normalized.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -5115,10 +5438,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -5187,10 +5518,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -5254,10 +5593,16 @@ Module normalized.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -5275,8 +5620,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_binary_format_normalized_FieldRef.
     Module Impl_serde_de_Deserialize_for_move_binary_format_normalized_FieldRef.
@@ -5292,7 +5638,10 @@ Module normalized.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_binary_format::normalized::FieldRef"; Ty.associated ],
+                [
+                  Ty.path "move_binary_format::normalized::FieldRef";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -5322,8 +5671,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_binary_format_normalized_FieldRef.
     Module Impl_serde_ser_Serialize_for_move_binary_format_normalized_FunctionRef.
@@ -5339,7 +5689,8 @@ Module normalized.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -5347,7 +5698,15 @@ Module normalized.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -5411,10 +5770,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -5483,10 +5850,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -5550,10 +5925,16 @@ Module normalized.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -5571,8 +5952,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_binary_format_normalized_FunctionRef.
     Module Impl_serde_de_Deserialize_for_move_binary_format_normalized_FunctionRef.
@@ -5588,7 +5970,10 @@ Module normalized.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_binary_format::normalized::FunctionRef"; Ty.associated ],
+                [
+                  Ty.path "move_binary_format::normalized::FunctionRef";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -5618,8 +6003,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_binary_format_normalized_FunctionRef.
     Module Impl_serde_ser_Serialize_for_move_binary_format_normalized_Bytecode.
@@ -5650,7 +6036,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5680,7 +6069,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5712,7 +6104,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5745,7 +6140,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5778,7 +6176,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5811,7 +6212,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5844,7 +6248,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5877,7 +6284,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5908,7 +6318,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5938,7 +6351,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -5968,7 +6384,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6000,7 +6419,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6031,7 +6453,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6061,7 +6486,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6093,7 +6521,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6126,7 +6557,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6159,7 +6593,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6192,7 +6629,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6225,7 +6665,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6270,7 +6713,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6303,7 +6749,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6348,7 +6797,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6381,7 +6833,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6424,7 +6879,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6454,7 +6912,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6484,7 +6945,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6516,7 +6980,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6549,7 +7016,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6582,7 +7052,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6615,7 +7088,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6660,7 +7136,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6693,7 +7172,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6736,7 +7218,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6766,7 +7251,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6796,7 +7284,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6826,7 +7317,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6856,7 +7350,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6886,7 +7383,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6916,7 +7416,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6946,7 +7449,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -6976,7 +7482,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7006,7 +7515,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7036,7 +7548,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7066,7 +7581,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7096,7 +7614,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7126,7 +7647,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7156,7 +7680,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7186,7 +7713,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7216,7 +7746,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7246,7 +7779,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7276,7 +7812,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7306,7 +7845,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7336,7 +7878,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7370,7 +7915,13 @@ Module normalized.
                             |) in
                           let __field0 := M.alloc (| γ0_0 |) in
                           let __field1 := M.alloc (| γ0_1 |) in
-                          let~ __serde_state : Ty.associated :=
+                          let~ __serde_state :
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                __S
+                                "SerializeTupleVariant" :=
                             M.copy (|
                               M.match_operator (|
                                 M.alloc (|
@@ -7378,7 +7929,20 @@ Module normalized.
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
-                                      [ Ty.associated; Ty.associated ],
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "SerializeTupleVariant";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ],
                                     M.get_trait_method (|
                                       "serde::ser::Serializer",
                                       __S,
@@ -7444,10 +8008,23 @@ Module normalized.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.tuple []; Ty.associated ],
+                                    [
+                                      Ty.tuple [];
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error"
+                                    ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeTupleVariant",
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeTupleVariant",
                                     [],
                                     [],
                                     "serialize_field",
@@ -7508,10 +8085,23 @@ Module normalized.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.tuple []; Ty.associated ],
+                                    [
+                                      Ty.tuple [];
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error"
+                                    ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeTupleVariant",
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeTupleVariant",
                                     [],
                                     [],
                                     "serialize_field",
@@ -7570,10 +8160,18 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::SerializeTupleVariant",
-                                Ty.associated,
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeTupleVariant",
                                 [],
                                 [],
                                 "end",
@@ -7597,7 +8195,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7630,7 +8231,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7663,7 +8267,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7696,7 +8303,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7729,7 +8339,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -7764,7 +8377,13 @@ Module normalized.
                             |) in
                           let __field0 := M.alloc (| γ0_0 |) in
                           let __field1 := M.alloc (| γ0_1 |) in
-                          let~ __serde_state : Ty.associated :=
+                          let~ __serde_state :
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                __S
+                                "SerializeTupleVariant" :=
                             M.copy (|
                               M.match_operator (|
                                 M.alloc (|
@@ -7772,7 +8391,20 @@ Module normalized.
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
-                                      [ Ty.associated; Ty.associated ],
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "SerializeTupleVariant";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ],
                                     M.get_trait_method (|
                                       "serde::ser::Serializer",
                                       __S,
@@ -7838,10 +8470,23 @@ Module normalized.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.tuple []; Ty.associated ],
+                                    [
+                                      Ty.tuple [];
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error"
+                                    ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeTupleVariant",
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeTupleVariant",
                                     [],
                                     [],
                                     "serialize_field",
@@ -7902,10 +8547,23 @@ Module normalized.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.tuple []; Ty.associated ],
+                                    [
+                                      Ty.tuple [];
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error"
+                                    ],
                                   M.get_trait_method (|
                                     "serde::ser::SerializeTupleVariant",
-                                    Ty.associated,
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeTupleVariant",
                                     [],
                                     [],
                                     "serialize_field",
@@ -7964,10 +8622,18 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::SerializeTupleVariant",
-                                Ty.associated,
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeTupleVariant",
                                 [],
                                 [],
                                 "end",
@@ -7991,7 +8657,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8024,7 +8693,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8057,7 +8729,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8090,7 +8765,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8121,7 +8799,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8151,7 +8832,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8181,7 +8865,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8213,7 +8900,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8246,7 +8936,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8291,7 +8984,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8324,7 +9020,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8369,7 +9068,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8402,7 +9104,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8447,7 +9152,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8480,7 +9188,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8525,7 +9236,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8558,7 +9272,10 @@ Module normalized.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 __S,
@@ -8599,8 +9316,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_binary_format_normalized_Bytecode.
     Module Impl_serde_de_Deserialize_for_move_binary_format_normalized_Bytecode.
@@ -8616,7 +9334,10 @@ Module normalized.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_binary_format::normalized::Bytecode"; Ty.associated ],
+                [
+                  Ty.path "move_binary_format::normalized::Bytecode";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -8646,8 +9367,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_binary_format_normalized_Bytecode.
     Module Impl_serde_ser_Serialize_for_move_binary_format_normalized_Module.
@@ -8663,7 +9385,8 @@ Module normalized.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -8671,7 +9394,15 @@ Module normalized.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -8753,10 +9484,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -8825,10 +9564,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -8897,10 +9644,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -8969,10 +9724,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -9049,10 +9812,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -9129,10 +9900,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -9210,10 +9989,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -9291,10 +10078,18 @@ Module normalized.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -9366,10 +10161,16 @@ Module normalized.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -9387,8 +10188,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_binary_format_normalized_Module.
     Module Impl_serde_de_Deserialize_for_move_binary_format_normalized_Module.
@@ -9404,7 +10206,10 @@ Module normalized.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_binary_format::normalized::Module"; Ty.associated ],
+                [
+                  Ty.path "move_binary_format::normalized::Module";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -9434,8 +10239,9 @@ Module normalized.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_binary_format_normalized_Module.
   End underscore.
@@ -9528,8 +10334,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_normalized_Field.
   
@@ -9598,8 +10405,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_normalized_Field.
   
@@ -9635,8 +10443,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_binary_format_normalized_Field.
@@ -9647,8 +10456,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_Field.
   
@@ -9731,8 +10541,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Field.
   
@@ -9851,8 +10662,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_Field.
   
@@ -9978,8 +10790,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Field.
   
@@ -10080,8 +10893,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_normalized_Constant.
   
@@ -10150,8 +10964,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_normalized_Constant.
   
@@ -10187,8 +11002,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_binary_format_normalized_Constant.
@@ -10199,8 +11015,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_Constant.
   
@@ -10291,8 +11108,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Constant.
   
@@ -10414,8 +11232,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_Constant.
   
@@ -10549,8 +11368,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Constant.
   
@@ -10705,8 +11525,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_normalized_Struct.
   
@@ -10792,8 +11613,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_normalized_Struct.
   
@@ -10836,8 +11658,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_binary_format_normalized_Struct.
@@ -10848,8 +11671,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_Struct.
   
@@ -10993,8 +11817,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Struct.
   
@@ -11178,8 +12003,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_Struct.
   
@@ -11395,8 +12221,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Struct.
   
@@ -11667,8 +12494,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_normalized_Function.
   
@@ -11867,8 +12695,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_normalized_Function.
   
@@ -12232,8 +13061,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_Function.
   
@@ -12676,8 +13506,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Function.
   
@@ -12745,8 +13576,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_binary_format_normalized_Function.
@@ -12757,8 +13589,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_Function.
   
@@ -13015,8 +13848,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Function.
   
@@ -13109,8 +13943,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_normalized_FieldRef.
   
@@ -13185,8 +14020,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_normalized_FieldRef.
   
@@ -13303,8 +14139,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_FieldRef.
   
@@ -13430,8 +14267,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_FieldRef.
   
@@ -13467,8 +14305,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_binary_format_normalized_FieldRef.
@@ -13479,8 +14318,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_FieldRef.
   
@@ -13549,8 +14389,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_FieldRef.
   
@@ -13643,8 +14484,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_normalized_FunctionRef.
   
@@ -13719,8 +14561,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_normalized_FunctionRef.
   
@@ -13837,8 +14680,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_FunctionRef.
   
@@ -13964,8 +14808,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_FunctionRef.
   
@@ -14001,8 +14846,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_binary_format_normalized_FunctionRef.
@@ -14013,8 +14859,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_FunctionRef.
   
@@ -14097,8 +14944,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_FunctionRef.
   
@@ -16545,8 +17393,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_normalized_Bytecode.
   
@@ -19024,8 +19873,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_normalized_Bytecode.
   
@@ -21198,8 +22048,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_normalized_Bytecode.
   
@@ -23657,8 +24508,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Bytecode.
   
@@ -23861,8 +24713,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_binary_format_normalized_Bytecode.
@@ -23873,8 +24726,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_Bytecode.
   
@@ -26114,8 +26968,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Bytecode.
   
@@ -26564,8 +27419,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_binary_format_normalized_Module.
   
@@ -26795,8 +27651,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_normalized_Module.
   
@@ -26880,8 +27737,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_binary_format_normalized_Module.
@@ -26892,8 +27750,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_normalized_Module.
   
@@ -27234,8 +28093,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_binary_format_normalized_Module.
   
@@ -33318,9 +34178,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::language_storage::TypeTag" ]
         Self
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "move_core_types::language_storage::TypeTag" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_move_core_types_language_storage_TypeTag_for_move_binary_format_normalized_Type.
   
@@ -37719,8 +38579,9 @@ Module normalized.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_binary_format_normalized_Type.
   

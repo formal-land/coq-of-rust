@@ -2800,7 +2800,7 @@ Module signature.
                                                                           ],
                                                                         M.get_trait_method (|
                                                                           "core::iter::traits::iterator::Iterator",
-                                                                          Ty.associated,
+                                                                          Ty.associated_unknown,
                                                                           [],
                                                                           [],
                                                                           "collect",
@@ -2820,7 +2820,7 @@ Module signature.
                                                                         |),
                                                                         [
                                                                           M.call_closure (|
-                                                                            Ty.associated,
+                                                                            Ty.associated_unknown,
                                                                             M.get_associated_function (|
                                                                               Ty.path
                                                                                 "move_binary_format::file_format::StructHandle",
@@ -5685,7 +5685,7 @@ Module signature.
                                                                         "move_bytecode_verifier::signature::SignatureChecker",
                                                                       "check_generic_instance",
                                                                       [],
-                                                                      [ Ty.associated ]
+                                                                      [ Ty.associated_unknown ]
                                                                     |),
                                                                     [
                                                                       M.borrow (|
@@ -5742,7 +5742,7 @@ Module signature.
                                                                         |)
                                                                       |);
                                                                       M.call_closure (|
-                                                                        Ty.associated,
+                                                                        Ty.associated_unknown,
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::file_format::StructHandle",
@@ -6297,7 +6297,7 @@ Module signature.
                                                                         "move_bytecode_verifier::signature::SignatureChecker",
                                                                       "check_generic_instance",
                                                                       [],
-                                                                      [ Ty.associated ]
+                                                                      [ Ty.associated_unknown ]
                                                                     |),
                                                                     [
                                                                       M.borrow (|
@@ -6354,7 +6354,7 @@ Module signature.
                                                                         |)
                                                                       |);
                                                                       M.call_closure (|
-                                                                        Ty.associated,
+                                                                        Ty.associated_unknown,
                                                                         M.get_associated_function (|
                                                                           Ty.path
                                                                             "move_binary_format::file_format::StructHandle",
@@ -10947,7 +10947,7 @@ Module signature.
                                   Ty.path "move_bytecode_verifier::signature::SignatureChecker",
                                   "check_generic_instance",
                                   [],
-                                  [ Ty.associated ]
+                                  [ Ty.associated_unknown ]
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
@@ -10993,7 +10993,7 @@ Module signature.
                                     |)
                                   |);
                                   M.call_closure (|
-                                    Ty.associated,
+                                    Ty.associated_unknown,
                                     M.get_associated_function (|
                                       Ty.path "move_binary_format::file_format::StructHandle",
                                       "type_param_constraints",

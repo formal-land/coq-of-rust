@@ -67,8 +67,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)); ("ne", InstanceField.Method (ne T)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_T_.
   
@@ -77,7 +78,12 @@ Module tuple.
     
     Axiom Implements :
       forall (T : Ty.t),
-      M.IsTraitInstance "core::cmp::Eq" (Self T) (* Trait polymorphic types *) [] (* Instance *) [].
+      M.IsTraitInstance
+        "core::cmp::Eq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        (Self T)
+        (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_T_.
   
   Module Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__T_for_Tuple_T_.
@@ -87,8 +93,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__T_for_Tuple_T_.
   
@@ -99,8 +106,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_T_for_Tuple_T_.
   
@@ -111,8 +119,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_T_.
   
@@ -313,8 +322,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp T));
@@ -366,8 +376,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_T_.
   
@@ -413,8 +424,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_Tuple_T_.
   
@@ -452,9 +464,10 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ]
+        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_array_Usize_1_T_for_Tuple_T_.
   
@@ -493,8 +506,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ T ] ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T__for_array_Usize_1_T.
   
@@ -597,8 +611,9 @@ Module tuple.
       forall (U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U T)
         (* Instance *)
         [ ("eq", InstanceField.Method (eq U T)); ("ne", InstanceField.Method (ne U T)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_U_T_.
@@ -610,8 +625,9 @@ Module tuple.
       forall (U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U T)
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_U_T_.
   
@@ -622,8 +638,9 @@ Module tuple.
       forall (U T : Ty.t),
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        (Self U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U T)
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__U_where_core_marker_ConstParamTy__T_for_Tuple_U_T_.
   
@@ -634,8 +651,9 @@ Module tuple.
       forall (U T : Ty.t),
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        (Self U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U T)
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_U_where_core_marker_UnsizedConstParamTy_T_for_Tuple_U_T_.
   
@@ -646,8 +664,9 @@ Module tuple.
       forall (U T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_U_T_.
   
@@ -1440,8 +1459,9 @@ Module tuple.
       forall (U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp U T));
@@ -1532,8 +1552,9 @@ Module tuple.
       forall (U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp U T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_U_T_.
   
@@ -1598,8 +1619,9 @@ Module tuple.
       forall (U T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self U T)
         (* Instance *) [ ("default", InstanceField.Method (default U T)) ].
   End Impl_core_default_Default_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_U_T_.
   
@@ -1639,9 +1661,10 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ] ]
+        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_array_Usize_2_T_for_Tuple_T_T_.
   
@@ -1682,8 +1705,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ T; T ] ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T__for_array_Usize_2_T.
   
@@ -1820,8 +1844,9 @@ Module tuple.
       forall (V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self V U T)
         (* Instance *)
         [ ("eq", InstanceField.Method (eq V U T)); ("ne", InstanceField.Method (ne V U T)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_V_U_T_.
@@ -1833,8 +1858,9 @@ Module tuple.
       forall (V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self V U T)
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_V_U_T_.
   
@@ -1845,8 +1871,9 @@ Module tuple.
       forall (V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        (Self V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self V U T)
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__V_where_core_marker_ConstParamTy__U_where_core_marker_ConstParamTy__T_for_Tuple_V_U_T_.
   
@@ -1857,8 +1884,9 @@ Module tuple.
       forall (V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        (Self V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self V U T)
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_V_where_core_marker_UnsizedConstParamTy_U_where_core_marker_UnsizedConstParamTy_T_for_Tuple_V_U_T_.
   
@@ -1869,8 +1897,9 @@ Module tuple.
       forall (V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self V U T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_V_U_T_.
   
@@ -3231,8 +3260,9 @@ Module tuple.
       forall (V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self V U T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp V U T));
@@ -3361,8 +3391,9 @@ Module tuple.
       forall (V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self V U T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp V U T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_V_U_T_.
   
@@ -3446,8 +3477,9 @@ Module tuple.
       forall (V U T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self V U T)
         (* Instance *) [ ("default", InstanceField.Method (default V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_V_U_T_.
   
@@ -3492,9 +3524,10 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ T ] ]
+        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ T ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_array_Usize_3_T_for_Tuple_T_T_T_.
   
@@ -3540,8 +3573,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ T; T; T ] ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T__for_array_Usize_3_T.
   
@@ -3712,8 +3746,9 @@ Module tuple.
       forall (W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self W V U T)
         (* Instance *)
         [ ("eq", InstanceField.Method (eq W V U T)); ("ne", InstanceField.Method (ne W V U T)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_W_V_U_T_.
@@ -3725,8 +3760,9 @@ Module tuple.
       forall (W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self W V U T)
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_W_V_U_T_.
   
@@ -3737,8 +3773,9 @@ Module tuple.
       forall (W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        (Self W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self W V U T)
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__W_where_core_marker_ConstParamTy__V_where_core_marker_ConstParamTy__U_where_core_marker_ConstParamTy__T_for_Tuple_W_V_U_T_.
   
@@ -3749,8 +3786,9 @@ Module tuple.
       forall (W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        (Self W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self W V U T)
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_W_where_core_marker_UnsizedConstParamTy_V_where_core_marker_UnsizedConstParamTy_U_where_core_marker_UnsizedConstParamTy_T_for_Tuple_W_V_U_T_.
   
@@ -3761,8 +3799,9 @@ Module tuple.
       forall (W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self W V U T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_W_V_U_T_.
   
@@ -5723,8 +5762,9 @@ Module tuple.
       forall (W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self W V U T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp W V U T));
@@ -5908,8 +5948,9 @@ Module tuple.
       forall (W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self W V U T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp W V U T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_W_V_U_T_.
   
@@ -6012,8 +6053,9 @@ Module tuple.
       forall (W V U T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self W V U T)
         (* Instance *) [ ("default", InstanceField.Method (default W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_W_V_U_T_.
   
@@ -6065,9 +6107,10 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ T ] ]
+        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ T ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_array_Usize_4_T_for_Tuple_T_T_T_T_.
   
@@ -6120,8 +6163,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ T; T; T; T ] ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T__for_array_Usize_4_T.
   
@@ -6326,8 +6370,9 @@ Module tuple.
       forall (X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self X W V U T)
         (* Instance *)
         [ ("eq", InstanceField.Method (eq X W V U T)); ("ne", InstanceField.Method (ne X W V U T))
         ].
@@ -6340,8 +6385,9 @@ Module tuple.
       forall (X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self X W V U T)
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_X_W_V_U_T_.
   
@@ -6352,8 +6398,9 @@ Module tuple.
       forall (X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        (Self X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self X W V U T)
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__X_where_core_marker_ConstParamTy__W_where_core_marker_ConstParamTy__V_where_core_marker_ConstParamTy__U_where_core_marker_ConstParamTy__T_for_Tuple_X_W_V_U_T_.
   
@@ -6364,8 +6411,9 @@ Module tuple.
       forall (X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        (Self X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self X W V U T)
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_X_where_core_marker_UnsizedConstParamTy_W_where_core_marker_UnsizedConstParamTy_V_where_core_marker_UnsizedConstParamTy_U_where_core_marker_UnsizedConstParamTy_T_for_Tuple_X_W_V_U_T_.
   
@@ -6376,8 +6424,9 @@ Module tuple.
       forall (X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self X W V U T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_X_W_V_U_T_.
   
@@ -8949,8 +8998,9 @@ Module tuple.
       forall (X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self X W V U T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp X W V U T));
@@ -9184,8 +9234,9 @@ Module tuple.
       forall (X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self X W V U T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp X W V U T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_X_W_V_U_T_.
   
@@ -9312,8 +9363,9 @@ Module tuple.
       forall (X W V U T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self X W V U T)
         (* Instance *) [ ("default", InstanceField.Method (default X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_X_W_V_U_T_.
   
@@ -9368,9 +9420,10 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 5 ] [ T ] ]
+        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 5 ] [ T ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_array_Usize_5_T_for_Tuple_T_T_T_T_T_.
   
@@ -9426,8 +9479,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ T; T; T; T; T ] ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T_T__for_array_Usize_5_T.
   
@@ -9666,8 +9720,9 @@ Module tuple.
       forall (Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Y X W V U T)
         (* Instance *)
         [
           ("eq", InstanceField.Method (eq Y X W V U T));
@@ -9682,8 +9737,9 @@ Module tuple.
       forall (Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Y X W V U T)
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_Y_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_Y_X_W_V_U_T_.
   
@@ -9694,8 +9750,9 @@ Module tuple.
       forall (Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        (Self Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__Y_where_core_marker_ConstParamTy__X_where_core_marker_ConstParamTy__W_where_core_marker_ConstParamTy__V_where_core_marker_ConstParamTy__U_where_core_marker_ConstParamTy__T_for_Tuple_Y_X_W_V_U_T_.
   
@@ -9706,8 +9763,9 @@ Module tuple.
       forall (Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        (Self Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_Y_where_core_marker_UnsizedConstParamTy_X_where_core_marker_UnsizedConstParamTy_W_where_core_marker_UnsizedConstParamTy_V_where_core_marker_UnsizedConstParamTy_U_where_core_marker_UnsizedConstParamTy_T_for_Tuple_Y_X_W_V_U_T_.
   
@@ -9718,8 +9776,9 @@ Module tuple.
       forall (Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_Y_X_W_V_U_T_.
   
@@ -12902,8 +12961,9 @@ Module tuple.
       forall (Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Y X W V U T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp Y X W V U T));
@@ -13187,8 +13247,9 @@ Module tuple.
       forall (Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Y X W V U T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp Y X W V U T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_Y_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_Y_X_W_V_U_T_.
   
@@ -13334,8 +13395,9 @@ Module tuple.
       forall (Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Y X W V U T)
         (* Instance *) [ ("default", InstanceField.Method (default Y X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_Y_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_Y_X_W_V_U_T_.
   
@@ -13393,9 +13455,10 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 6 ] [ T ] ]
+        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 6 ] [ T ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_array_Usize_6_T_for_Tuple_T_T_T_T_T_T_.
   
@@ -13454,8 +13517,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ T; T; T; T; T; T ] ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T_T_T__for_array_Usize_6_T.
   
@@ -13754,8 +13818,9 @@ Module tuple.
       forall (Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Z Y X W V U T)
         (* Instance *)
         [
           ("eq", InstanceField.Method (eq Z Y X W V U T));
@@ -13770,8 +13835,9 @@ Module tuple.
       forall (Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_Z_where_core_cmp_Eq_Y_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_Z_Y_X_W_V_U_T_.
   
@@ -13782,8 +13848,9 @@ Module tuple.
       forall (Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        (Self Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__Z_where_core_marker_ConstParamTy__Y_where_core_marker_ConstParamTy__X_where_core_marker_ConstParamTy__W_where_core_marker_ConstParamTy__V_where_core_marker_ConstParamTy__U_where_core_marker_ConstParamTy__T_for_Tuple_Z_Y_X_W_V_U_T_.
   
@@ -13794,8 +13861,9 @@ Module tuple.
       forall (Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        (Self Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_Z_where_core_marker_UnsizedConstParamTy_Y_where_core_marker_UnsizedConstParamTy_X_where_core_marker_UnsizedConstParamTy_W_where_core_marker_UnsizedConstParamTy_V_where_core_marker_UnsizedConstParamTy_U_where_core_marker_UnsizedConstParamTy_T_for_Tuple_Z_Y_X_W_V_U_T_.
   
@@ -13806,8 +13874,9 @@ Module tuple.
       forall (Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_Z_Y_X_W_V_U_T_.
   
@@ -17727,8 +17796,9 @@ Module tuple.
       forall (Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Z Y X W V U T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp Z Y X W V U T));
@@ -18073,8 +18143,9 @@ Module tuple.
       forall (Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Z Y X W V U T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp Z Y X W V U T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_Z_where_core_cmp_Ord_Y_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_Z_Y_X_W_V_U_T_.
   
@@ -18239,8 +18310,9 @@ Module tuple.
       forall (Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Z Y X W V U T)
         (* Instance *) [ ("default", InstanceField.Method (default Z Y X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_Z_where_core_default_Default_Y_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_Z_Y_X_W_V_U_T_.
   
@@ -18301,9 +18373,10 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 7 ] [ T ] ]
+        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 7 ] [ T ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_array_Usize_7_T_for_Tuple_T_T_T_T_T_T_T_.
   
@@ -18365,8 +18438,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ T; T; T; T; T; T; T ] ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T__for_array_Usize_7_T.
   
@@ -18743,8 +18817,9 @@ Module tuple.
       forall (A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self A Z Y X W V U T)
         (* Instance *)
         [
           ("eq", InstanceField.Method (eq A Z Y X W V U T));
@@ -18759,8 +18834,9 @@ Module tuple.
       forall (A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_A_where_core_cmp_Eq_Z_where_core_cmp_Eq_Y_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_A_Z_Y_X_W_V_U_T_.
   
@@ -18771,8 +18847,9 @@ Module tuple.
       forall (A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        (Self A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__A_where_core_marker_ConstParamTy__Z_where_core_marker_ConstParamTy__Y_where_core_marker_ConstParamTy__X_where_core_marker_ConstParamTy__W_where_core_marker_ConstParamTy__V_where_core_marker_ConstParamTy__U_where_core_marker_ConstParamTy__T_for_Tuple_A_Z_Y_X_W_V_U_T_.
   
@@ -18783,8 +18860,9 @@ Module tuple.
       forall (A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        (Self A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_A_where_core_marker_UnsizedConstParamTy_Z_where_core_marker_UnsizedConstParamTy_Y_where_core_marker_UnsizedConstParamTy_X_where_core_marker_UnsizedConstParamTy_W_where_core_marker_UnsizedConstParamTy_V_where_core_marker_UnsizedConstParamTy_U_where_core_marker_UnsizedConstParamTy_T_for_Tuple_A_Z_Y_X_W_V_U_T_.
   
@@ -18795,8 +18873,9 @@ Module tuple.
       forall (A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_A_Z_Y_X_W_V_U_T_.
   
@@ -23467,8 +23546,9 @@ Module tuple.
       forall (A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self A Z Y X W V U T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp A Z Y X W V U T));
@@ -23871,8 +23951,9 @@ Module tuple.
       forall (A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self A Z Y X W V U T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp A Z Y X W V U T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_A_where_core_cmp_Ord_Z_where_core_cmp_Ord_Y_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_A_Z_Y_X_W_V_U_T_.
   
@@ -24056,8 +24137,9 @@ Module tuple.
       forall (A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self A Z Y X W V U T)
         (* Instance *) [ ("default", InstanceField.Method (default A Z Y X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_A_where_core_default_Default_Z_where_core_default_Default_Y_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_A_Z_Y_X_W_V_U_T_.
   
@@ -24121,9 +24203,10 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ T ] ]
+        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ T ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_array_Usize_8_T_for_Tuple_T_T_T_T_T_T_T_T_.
   
@@ -24188,8 +24271,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ T; T; T; T; T; T; T; T ] ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T__for_array_Usize_8_T.
   
@@ -24640,8 +24724,9 @@ Module tuple.
       forall (B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B A Z Y X W V U T)
         (* Instance *)
         [
           ("eq", InstanceField.Method (eq B A Z Y X W V U T));
@@ -24656,8 +24741,9 @@ Module tuple.
       forall (B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_B_where_core_cmp_Eq_A_where_core_cmp_Eq_Z_where_core_cmp_Eq_Y_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
   
@@ -24668,8 +24754,9 @@ Module tuple.
       forall (B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        (Self B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__B_where_core_marker_ConstParamTy__A_where_core_marker_ConstParamTy__Z_where_core_marker_ConstParamTy__Y_where_core_marker_ConstParamTy__X_where_core_marker_ConstParamTy__W_where_core_marker_ConstParamTy__V_where_core_marker_ConstParamTy__U_where_core_marker_ConstParamTy__T_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
   
@@ -24680,8 +24767,9 @@ Module tuple.
       forall (B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        (Self B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_B_where_core_marker_UnsizedConstParamTy_A_where_core_marker_UnsizedConstParamTy_Z_where_core_marker_UnsizedConstParamTy_Y_where_core_marker_UnsizedConstParamTy_X_where_core_marker_UnsizedConstParamTy_W_where_core_marker_UnsizedConstParamTy_V_where_core_marker_UnsizedConstParamTy_U_where_core_marker_UnsizedConstParamTy_T_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
   
@@ -24692,8 +24780,9 @@ Module tuple.
       forall (B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
   
@@ -30140,8 +30229,9 @@ Module tuple.
       forall (B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B A Z Y X W V U T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp B A Z Y X W V U T));
@@ -30604,8 +30694,9 @@ Module tuple.
       forall (B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B A Z Y X W V U T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp B A Z Y X W V U T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_B_where_core_cmp_Ord_A_where_core_cmp_Ord_Z_where_core_cmp_Ord_Y_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
   
@@ -30808,8 +30899,9 @@ Module tuple.
       forall (B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self B A Z Y X W V U T)
         (* Instance *) [ ("default", InstanceField.Method (default B A Z Y X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_B_where_core_default_Default_A_where_core_default_Default_Z_where_core_default_Default_Y_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
   
@@ -30876,9 +30968,10 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 9 ] [ T ] ]
+        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 9 ] [ T ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_array_Usize_9_T_for_Tuple_T_T_T_T_T_T_T_T_T_.
   
@@ -30946,8 +31039,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ T; T; T; T; T; T; T; T; T ] ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T__for_array_Usize_9_T.
   
@@ -31461,8 +31555,9 @@ Module tuple.
       forall (C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self C B A Z Y X W V U T)
         (* Instance *)
         [
           ("eq", InstanceField.Method (eq C B A Z Y X W V U T));
@@ -31478,8 +31573,9 @@ Module tuple.
       forall (C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self C B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_C_where_core_cmp_Eq_B_where_core_cmp_Eq_A_where_core_cmp_Eq_Z_where_core_cmp_Eq_Y_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -31491,8 +31587,9 @@ Module tuple.
       forall (C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        (Self C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self C B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__C_where_core_marker_ConstParamTy__B_where_core_marker_ConstParamTy__A_where_core_marker_ConstParamTy__Z_where_core_marker_ConstParamTy__Y_where_core_marker_ConstParamTy__X_where_core_marker_ConstParamTy__W_where_core_marker_ConstParamTy__V_where_core_marker_ConstParamTy__U_where_core_marker_ConstParamTy__T_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -31504,8 +31601,9 @@ Module tuple.
       forall (C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        (Self C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self C B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_C_where_core_marker_UnsizedConstParamTy_B_where_core_marker_UnsizedConstParamTy_A_where_core_marker_UnsizedConstParamTy_Z_where_core_marker_UnsizedConstParamTy_Y_where_core_marker_UnsizedConstParamTy_X_where_core_marker_UnsizedConstParamTy_W_where_core_marker_UnsizedConstParamTy_V_where_core_marker_UnsizedConstParamTy_U_where_core_marker_UnsizedConstParamTy_T_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -31517,8 +31615,9 @@ Module tuple.
       forall (C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self C B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -37776,8 +37875,9 @@ Module tuple.
       forall (C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self C B A Z Y X W V U T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp C B A Z Y X W V U T));
@@ -38303,8 +38403,9 @@ Module tuple.
       forall (C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self C B A Z Y X W V U T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp C B A Z Y X W V U T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_C_where_core_cmp_Ord_B_where_core_cmp_Ord_A_where_core_cmp_Ord_Z_where_core_cmp_Ord_Y_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -38527,8 +38628,9 @@ Module tuple.
       forall (C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self C B A Z Y X W V U T)
         (* Instance *) [ ("default", InstanceField.Method (default C B A Z Y X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_C_where_core_default_Default_B_where_core_default_Default_A_where_core_default_Default_Z_where_core_default_Default_Y_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -38598,9 +38700,10 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 10 ] [ T ] ]
+        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 10 ] [ T ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_array_Usize_10_T_for_Tuple_T_T_T_T_T_T_T_T_T_T_.
   
@@ -38671,8 +38774,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ T; T; T; T; T; T; T; T; T; T ] ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T; T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T__for_array_Usize_10_T.
   
@@ -39248,8 +39352,9 @@ Module tuple.
       forall (D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self D C B A Z Y X W V U T)
         (* Instance *)
         [
           ("eq", InstanceField.Method (eq D C B A Z Y X W V U T));
@@ -39265,8 +39370,9 @@ Module tuple.
       forall (D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self D C B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_D_where_core_cmp_Eq_C_where_core_cmp_Eq_B_where_core_cmp_Eq_A_where_core_cmp_Eq_Z_where_core_cmp_Eq_Y_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -39278,8 +39384,9 @@ Module tuple.
       forall (D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        (Self D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self D C B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__D_where_core_marker_ConstParamTy__C_where_core_marker_ConstParamTy__B_where_core_marker_ConstParamTy__A_where_core_marker_ConstParamTy__Z_where_core_marker_ConstParamTy__Y_where_core_marker_ConstParamTy__X_where_core_marker_ConstParamTy__W_where_core_marker_ConstParamTy__V_where_core_marker_ConstParamTy__U_where_core_marker_ConstParamTy__T_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -39291,8 +39398,9 @@ Module tuple.
       forall (D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        (Self D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self D C B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_D_where_core_marker_UnsizedConstParamTy_C_where_core_marker_UnsizedConstParamTy_B_where_core_marker_UnsizedConstParamTy_A_where_core_marker_UnsizedConstParamTy_Z_where_core_marker_UnsizedConstParamTy_Y_where_core_marker_UnsizedConstParamTy_X_where_core_marker_UnsizedConstParamTy_W_where_core_marker_UnsizedConstParamTy_V_where_core_marker_UnsizedConstParamTy_U_where_core_marker_UnsizedConstParamTy_T_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -39304,8 +39412,9 @@ Module tuple.
       forall (D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self D C B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -46389,8 +46498,9 @@ Module tuple.
       forall (D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self D C B A Z Y X W V U T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp D C B A Z Y X W V U T));
@@ -46980,8 +47090,9 @@ Module tuple.
       forall (D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self D C B A Z Y X W V U T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp D C B A Z Y X W V U T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_D_where_core_cmp_Ord_C_where_core_cmp_Ord_B_where_core_cmp_Ord_A_where_core_cmp_Ord_Z_where_core_cmp_Ord_Y_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -47223,8 +47334,9 @@ Module tuple.
       forall (D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self D C B A Z Y X W V U T)
         (* Instance *) [ ("default", InstanceField.Method (default D C B A Z Y X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_D_where_core_default_Default_C_where_core_default_Default_B_where_core_default_Default_A_where_core_default_Default_Z_where_core_default_Default_Y_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -47297,9 +47409,10 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 11 ] [ T ] ]
+        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 11 ] [ T ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_array_Usize_11_T_for_Tuple_T_T_T_T_T_T_T_T_T_T_T_.
   
@@ -47373,8 +47486,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T ] ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T_T__for_array_Usize_11_T.
   
@@ -48012,8 +48126,9 @@ Module tuple.
       forall (E D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self E D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self E D C B A Z Y X W V U T)
         (* Instance *)
         [
           ("eq", InstanceField.Method (eq E D C B A Z Y X W V U T));
@@ -48029,8 +48144,9 @@ Module tuple.
       forall (E D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self E D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self E D C B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_E_where_core_cmp_Eq_D_where_core_cmp_Eq_C_where_core_cmp_Eq_B_where_core_cmp_Eq_A_where_core_cmp_Eq_Z_where_core_cmp_Eq_Y_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -48042,8 +48158,9 @@ Module tuple.
       forall (E D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::ConstParamTy_"
-        (Self E D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self E D C B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_ConstParamTy__where_core_marker_ConstParamTy__E_where_core_marker_ConstParamTy__D_where_core_marker_ConstParamTy__C_where_core_marker_ConstParamTy__B_where_core_marker_ConstParamTy__A_where_core_marker_ConstParamTy__Z_where_core_marker_ConstParamTy__Y_where_core_marker_ConstParamTy__X_where_core_marker_ConstParamTy__W_where_core_marker_ConstParamTy__V_where_core_marker_ConstParamTy__U_where_core_marker_ConstParamTy__T_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -48055,8 +48172,9 @@ Module tuple.
       forall (E D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::UnsizedConstParamTy"
-        (Self E D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self E D C B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_UnsizedConstParamTy_where_core_marker_UnsizedConstParamTy_E_where_core_marker_UnsizedConstParamTy_D_where_core_marker_UnsizedConstParamTy_C_where_core_marker_UnsizedConstParamTy_B_where_core_marker_UnsizedConstParamTy_A_where_core_marker_UnsizedConstParamTy_Z_where_core_marker_UnsizedConstParamTy_Y_where_core_marker_UnsizedConstParamTy_X_where_core_marker_UnsizedConstParamTy_W_where_core_marker_UnsizedConstParamTy_V_where_core_marker_UnsizedConstParamTy_U_where_core_marker_UnsizedConstParamTy_T_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -48068,8 +48186,9 @@ Module tuple.
       forall (E D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self E D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self E D C B A Z Y X W V U T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -55998,8 +56117,9 @@ Module tuple.
       forall (E D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self E D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self E D C B A Z Y X W V U T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp E D C B A Z Y X W V U T));
@@ -56655,8 +56775,9 @@ Module tuple.
       forall (E D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self E D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self E D C B A Z Y X W V U T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp E D C B A Z Y X W V U T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_E_where_core_cmp_Ord_D_where_core_cmp_Ord_C_where_core_cmp_Ord_B_where_core_cmp_Ord_A_where_core_cmp_Ord_Z_where_core_cmp_Ord_Y_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -56917,8 +57038,9 @@ Module tuple.
       forall (E D C B A Z Y X W V U T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self E D C B A Z Y X W V U T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self E D C B A Z Y X W V U T)
         (* Instance *) [ ("default", InstanceField.Method (default E D C B A Z Y X W V U T)) ].
   End Impl_core_default_Default_where_core_default_Default_E_where_core_default_Default_D_where_core_default_Default_C_where_core_default_Default_B_where_core_default_Default_A_where_core_default_Default_Z_where_core_default_Default_Y_where_core_default_Default_X_where_core_default_Default_W_where_core_default_Default_V_where_core_default_Default_U_where_core_default_Default_T_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
   
@@ -56994,9 +57116,10 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 12 ] [ T ] ]
+        [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 12 ] [ T ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_array_Usize_12_T_for_Tuple_T_T_T_T_T_T_T_T_T_T_T_T_.
   
@@ -57073,8 +57196,9 @@ Module tuple.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T; T ] ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T; T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T_T_T__for_array_Usize_12_T.
 End tuple.

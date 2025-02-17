@@ -349,8 +349,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_linked_list_Iter_T.
     
@@ -377,8 +378,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_for_alloc_collections_linked_list_Iter_T.
     
@@ -655,8 +657,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_linked_list_IterMut_T.
     
@@ -720,8 +723,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("clone", InstanceField.Method (clone T A)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_clone_Clone_A_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_IntoIter_T_A.
     
@@ -812,8 +816,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_IntoIter_T_A.
     
@@ -6693,8 +6698,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_for_alloc_collections_linked_list_LinkedList_T_alloc_alloc_Global.
     
@@ -7219,8 +7225,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
     End Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
     
@@ -7510,8 +7517,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -7742,8 +7750,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_alloc_collections_linked_list_Iter_T.
     
@@ -7755,8 +7764,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_alloc_collections_linked_list_Iter_T.
     
@@ -7768,8 +7778,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_alloc_collections_linked_list_Iter_T.
     
@@ -7831,8 +7842,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_for_alloc_collections_linked_list_Iter_T.
     
@@ -8127,8 +8139,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -8364,8 +8377,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_alloc_collections_linked_list_IterMut_T.
     
@@ -8377,8 +8391,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_alloc_collections_linked_list_IterMut_T.
     
@@ -8390,8 +8405,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_alloc_collections_linked_list_IterMut_T.
     
@@ -8453,8 +8469,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_for_alloc_collections_linked_list_IterMut_T.
     
@@ -8547,8 +8564,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("clone", InstanceField.Method (clone T A)) ].
     End Impl_core_clone_Clone_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_Cursor_T_A.
     
@@ -8685,8 +8703,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_Cursor_T_A.
     
@@ -8849,8 +8868,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_CursorMut_T_A.
     
@@ -14786,8 +14806,9 @@ Module collections.
         forall (T F A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T F A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T F A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T F A));
@@ -14886,8 +14907,9 @@ Module collections.
         forall (T F : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T F)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T F)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_ops_function_FnMut_F_Tuple_ref_mut_T__for_alloc_collections_linked_list_ExtractIf_T_F_alloc_alloc_Global.
     
@@ -14978,8 +15000,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T A));
@@ -15029,8 +15052,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T A)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_IntoIter_T_A.
     
@@ -15042,8 +15066,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_IntoIter_T_A.
     
@@ -15055,8 +15080,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_IntoIter_T_A.
     
@@ -15120,8 +15146,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_for_alloc_collections_linked_list_IntoIter_T_alloc_alloc_Global.
     
@@ -15197,8 +15224,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::FromIterator"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* A *) T ]
           (* Instance *) [ ("from_iter", InstanceField.Method (from_iter T)) ].
     End Impl_core_iter_traits_collect_FromIterator_T_for_alloc_collections_linked_list_LinkedList_T_alloc_alloc_Global.
     
@@ -15234,8 +15262,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::IntoIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T A));
@@ -15286,8 +15315,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::IntoIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T A));
@@ -15338,8 +15368,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::IntoIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T A));
@@ -15432,8 +15463,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::Extend"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T A)
-          (* Trait polymorphic types *) [ (* A *) T ]
           (* Instance *)
           [
             ("extend", InstanceField.Method (extend T A));
@@ -15441,9 +15473,12 @@ Module collections.
           ].
     End Impl_core_iter_traits_collect_Extend_where_core_alloc_Allocator_A_T_for_alloc_collections_linked_list_LinkedList_T_A.
     
-    Module Impl_alloc_collections_SpecExtend_where_core_iter_traits_collect_IntoIterator_I_where_core_alloc_Allocator_A_I_for_alloc_collections_linked_list_LinkedList_associated_type_A.
+    Module Impl_alloc_collections_SpecExtend_where_core_iter_traits_collect_IntoIterator_I_where_core_alloc_Allocator_A_I_for_alloc_collections_linked_list_LinkedList_associated_in_trait_core_iter_traits_collect_IntoIterator___I_Item_A.
       Definition Self (I A : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ Ty.associated; A ].
+        Ty.apply
+          (Ty.path "alloc::collections::linked_list::LinkedList")
+          []
+          [ Ty.associated_in_trait "core::iter::traits::collect::IntoIterator" [] [] I "Item"; A ].
       
       (*
           default fn spec_extend(&mut self, iter: I) {
@@ -15469,16 +15504,40 @@ Module collections.
                     Ty.tuple [],
                     M.get_trait_method (|
                       "core::iter::traits::iterator::Iterator",
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        I
+                        "IntoIter",
                       [],
                       [],
                       "for_each",
                       [],
-                      [ Ty.function [ Ty.tuple [ Ty.associated ] ] (Ty.tuple []) ]
+                      [
+                        Ty.function
+                          [
+                            Ty.tuple
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::collect::IntoIterator"
+                                  []
+                                  []
+                                  I
+                                  "Item"
+                              ]
+                          ]
+                          (Ty.tuple [])
+                      ]
                     |),
                     [
                       M.call_closure (|
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "core::iter::traits::collect::IntoIterator"
+                          []
+                          []
+                          I
+                          "IntoIter",
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
                           I,
@@ -15509,7 +15568,15 @@ Module collections.
                                               (Ty.path
                                                 "alloc::collections::linked_list::LinkedList")
                                               []
-                                              [ Ty.associated; A ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::iter::traits::collect::IntoIterator"
+                                                  []
+                                                  []
+                                                  I
+                                                  "Item";
+                                                A
+                                              ],
                                             "push_back",
                                             [],
                                             []
@@ -15538,10 +15605,11 @@ Module collections.
         forall (I A : Ty.t),
         M.IsTraitInstance
           "alloc::collections::SpecExtend"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ I ]
           (Self I A)
-          (* Trait polymorphic types *) [ (* I *) I ]
           (* Instance *) [ ("spec_extend", InstanceField.Method (spec_extend I A)) ].
-    End Impl_alloc_collections_SpecExtend_where_core_iter_traits_collect_IntoIterator_I_where_core_alloc_Allocator_A_I_for_alloc_collections_linked_list_LinkedList_associated_type_A.
+    End Impl_alloc_collections_SpecExtend_where_core_iter_traits_collect_IntoIterator_I_where_core_alloc_Allocator_A_I_for_alloc_collections_linked_list_LinkedList_associated_in_trait_core_iter_traits_collect_IntoIterator___I_Item_A.
     
     Module Impl_alloc_collections_SpecExtend_alloc_collections_linked_list_LinkedList_T_alloc_alloc_Global_for_alloc_collections_linked_list_LinkedList_T_alloc_alloc_Global.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -15599,15 +15667,15 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "alloc::collections::SpecExtend"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
           [
-            (* I *)
             Ty.apply
               (Ty.path "alloc::collections::linked_list::LinkedList")
               []
               [ T; Ty.path "alloc::alloc::Global" ]
           ]
+          (Self T)
           (* Instance *) [ ("spec_extend", InstanceField.Method (spec_extend T)) ].
     End Impl_alloc_collections_SpecExtend_alloc_collections_linked_list_LinkedList_T_alloc_alloc_Global_for_alloc_collections_linked_list_LinkedList_T_alloc_alloc_Global.
     
@@ -15643,7 +15711,14 @@ Module collections.
                         Ty.apply
                           (Ty.path "core::iter::adapters::cloned::Cloned")
                           []
-                          [ Ty.associated ]
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              I
+                              "IntoIter"
+                          ]
                       ]
                     |),
                     [
@@ -15652,10 +15727,22 @@ Module collections.
                         Ty.apply
                           (Ty.path "core::iter::adapters::cloned::Cloned")
                           []
-                          [ Ty.associated ],
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              I
+                              "IntoIter"
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
-                          Ty.associated,
+                          Ty.associated_in_trait
+                            "core::iter::traits::collect::IntoIterator"
+                            []
+                            []
+                            I
+                            "IntoIter",
                           [],
                           [],
                           "cloned",
@@ -15664,7 +15751,12 @@ Module collections.
                         |),
                         [
                           M.call_closure (|
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              I
+                              "IntoIter",
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
                               I,
@@ -15741,8 +15833,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::Extend"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ T ] ]
           (Self T A)
-          (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ T ] ]
           (* Instance *)
           [
             ("extend", InstanceField.Method (extend T A));
@@ -15914,8 +16007,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [ ("eq", InstanceField.Method (eq T A)); ("ne", InstanceField.Method (ne T A)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
@@ -15928,8 +16022,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
     
@@ -15991,8 +16086,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T A)) ].
     End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
     
@@ -16049,8 +16145,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::cmp::Ord"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("cmp", InstanceField.Method (cmp T A)) ].
     End Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
     
@@ -16606,8 +16703,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("clone", InstanceField.Method (clone T A));
@@ -16695,8 +16793,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
     
@@ -16867,8 +16966,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("hash", InstanceField.Method (hash T A)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_alloc_Allocator_A_for_alloc_collections_linked_list_LinkedList_T_A.
     
@@ -16922,8 +17022,9 @@ Module collections.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
           (Self N T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ N ] [ T ] ]
           (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
     End Impl_core_convert_From_array_N_T_for_alloc_collections_linked_list_LinkedList_T_alloc_alloc_Global.
     
@@ -17011,8 +17112,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_marker_Send_T_where_core_alloc_Allocator_A_where_core_marker_Send_A_for_alloc_collections_linked_list_LinkedList_T_A.
     
@@ -17024,8 +17126,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sync_T_where_core_alloc_Allocator_A_where_core_marker_Sync_A_for_alloc_collections_linked_list_LinkedList_T_A.
     
@@ -17037,8 +17140,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_marker_Sync_T_for_alloc_collections_linked_list_Iter_T.
     
@@ -17050,8 +17154,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sync_T_for_alloc_collections_linked_list_Iter_T.
     
@@ -17063,8 +17168,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_marker_Send_T_for_alloc_collections_linked_list_IterMut_T.
     
@@ -17076,8 +17182,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sync_T_for_alloc_collections_linked_list_IterMut_T.
     
@@ -17089,8 +17196,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_marker_Sync_T_where_core_alloc_Allocator_A_where_core_marker_Sync_A_for_alloc_collections_linked_list_Cursor_T_A.
     
@@ -17102,8 +17210,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sync_T_where_core_alloc_Allocator_A_where_core_marker_Sync_A_for_alloc_collections_linked_list_Cursor_T_A.
     
@@ -17115,8 +17224,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_marker_Send_T_where_core_alloc_Allocator_A_where_core_marker_Send_A_for_alloc_collections_linked_list_CursorMut_T_A.
     
@@ -17128,8 +17238,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sync_T_where_core_alloc_Allocator_A_where_core_marker_Sync_A_for_alloc_collections_linked_list_CursorMut_T_A.
   End linked_list.

@@ -94,8 +94,9 @@ Module iter.
           forall (A B : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self A B)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self A B)
             (* Instance *) [ ("clone", InstanceField.Method (clone A B)) ].
       End Impl_core_clone_Clone_where_core_clone_Clone_A_where_core_clone_Clone_B_for_core_iter_adapters_chain_Chain_A_B.
       
@@ -167,8 +168,9 @@ Module iter.
           forall (A B : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self A B)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self A B)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt A B)) ].
       End Impl_core_fmt_Debug_where_core_fmt_Debug_A_where_core_fmt_Debug_B_for_core_iter_adapters_chain_Chain_A_B.
       
@@ -222,19 +224,50 @@ Module iter.
               Ty.apply
                 (Ty.path "core::iter::adapters::chain::Chain")
                 []
-                [ Ty.associated; Ty.associated ],
+                [
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    A
+                    "IntoIter";
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    B
+                    "IntoIter"
+                ],
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "core::iter::adapters::chain::Chain")
                   []
-                  [ Ty.associated; Ty.associated ],
+                  [
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      A
+                      "IntoIter";
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      B
+                      "IntoIter"
+                  ],
                 "new",
                 [],
                 []
               |),
               [
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    A
+                    "IntoIter",
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     A,
@@ -247,7 +280,12 @@ Module iter.
                   [ M.read (| a |) ]
                 |);
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    B
+                    "IntoIter",
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     B,
@@ -272,7 +310,8 @@ Module iter.
           Ty.apply (Ty.path "core::iter::adapters::chain::Chain") [] [ A; B ].
         
         (*     type Item = A::Item; *)
-        Definition _Item (A B : Ty.t) : Ty.t := Ty.associated.
+        Definition _Item (A B : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] A "Item".
         
         (*
             fn next(&mut self) -> Option<A::Item> {
@@ -286,29 +325,72 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] A "Item"
+                  ],
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] A "Item"
+                    ],
                   "or_else",
                   [],
                   [
                     Ty.function
                       [ Ty.tuple [] ]
-                      (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                      (Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            A
+                            "Item"
+                        ])
                   ]
                 |),
                 [
                   M.call_closure (|
-                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          A
+                          "Item"
+                      ],
                     M.get_function (|
                       "core::iter::adapters::chain::and_then_or_clear",
                       [],
                       [
                         A;
-                        Ty.associated;
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          A
+                          "Item";
                         Ty.function
                           [ Ty.apply (Ty.path "&mut") [] [ A ] ]
-                          (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                          (Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                A
+                                "Item"
+                            ])
                       ]
                     |),
                     [
@@ -351,7 +433,14 @@ Module iter.
                                       Ty.apply
                                         (Ty.path "core::option::Option")
                                         []
-                                        [ Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            A
+                                            "Item"
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         B,
@@ -439,13 +528,27 @@ Module iter.
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
                                                                   []
-                                                                  [ Ty.associated ],
+                                                                  [
+                                                                    Ty.associated_in_trait
+                                                                      "core::iter::traits::iterator::Iterator"
+                                                                      []
+                                                                      []
+                                                                      A
+                                                                      "Item"
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
                                                                     []
-                                                                    [ Ty.associated ],
+                                                                    [
+                                                                      Ty.associated_in_trait
+                                                                        "core::iter::traits::iterator::Iterator"
+                                                                        []
+                                                                        []
+                                                                        A
+                                                                        "Item"
+                                                                    ],
                                                                   [],
                                                                   [
                                                                     Ty.apply
@@ -662,7 +765,15 @@ Module iter.
                                             Ty.apply
                                               (Ty.path "core::ops::control_flow::ControlFlow")
                                               []
-                                              [ Ty.associated; Acc ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::ops::try_trait::Try"
+                                                  []
+                                                  []
+                                                  R
+                                                  "Residual";
+                                                Acc
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               R,
@@ -716,7 +827,14 @@ Module iter.
                                                           "core::ops::try_trait::FromResidual",
                                                           R,
                                                           [],
-                                                          [ Ty.associated ],
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "core::ops::try_trait::Try"
+                                                              []
+                                                              []
+                                                              R
+                                                              "Residual"
+                                                          ],
                                                           "from_residual",
                                                           [],
                                                           []
@@ -787,7 +905,15 @@ Module iter.
                                             Ty.apply
                                               (Ty.path "core::ops::control_flow::ControlFlow")
                                               []
-                                              [ Ty.associated; Acc ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::ops::try_trait::Try"
+                                                  []
+                                                  []
+                                                  R
+                                                  "Residual";
+                                                Acc
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               R,
@@ -841,7 +967,14 @@ Module iter.
                                                           "core::ops::try_trait::FromResidual",
                                                           R,
                                                           [],
-                                                          [ Ty.associated ],
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "core::ops::try_trait::Try"
+                                                              []
+                                                              []
+                                                              R
+                                                              "Residual"
+                                                          ],
                                                           "from_residual",
                                                           [],
                                                           []
@@ -1397,7 +1530,14 @@ Module iter.
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
                                                       []
-                                                      [ Ty.associated ],
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "core::iter::traits::iterator::Iterator"
+                                                          []
+                                                          []
+                                                          A
+                                                          "Item"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::iter::traits::iterator::Iterator",
                                                       A,
@@ -1484,7 +1624,17 @@ Module iter.
                       |) in
                     M.alloc (|
                       M.call_closure (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              A
+                              "Item"
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
                           B,
@@ -1568,13 +1718,27 @@ Module iter.
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
                                                     []
-                                                    [ Ty.associated ],
+                                                    [
+                                                      Ty.associated_in_trait
+                                                        "core::iter::traits::iterator::Iterator"
+                                                        []
+                                                        []
+                                                        A
+                                                        "Item"
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::FromResidual",
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
                                                       []
-                                                      [ Ty.associated ],
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "core::iter::traits::iterator::Iterator"
+                                                          []
+                                                          []
+                                                          A
+                                                          "Item"
+                                                      ],
                                                     [],
                                                     [
                                                       Ty.apply
@@ -1633,29 +1797,72 @@ Module iter.
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] A "Item"
+                  ],
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] A "Item"
+                    ],
                   "or_else",
                   [],
                   [
                     Ty.function
                       [ Ty.tuple [] ]
-                      (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                      (Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            A
+                            "Item"
+                        ])
                   ]
                 |),
                 [
                   M.call_closure (|
-                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          A
+                          "Item"
+                      ],
                     M.get_function (|
                       "core::iter::adapters::chain::and_then_or_clear",
                       [],
                       [
                         A;
-                        Ty.associated;
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          A
+                          "Item";
                         Ty.function
                           [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ A ] ] ]
-                          (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                          (Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                A
+                                "Item"
+                            ])
                       ]
                     |),
                     [
@@ -1688,7 +1895,14 @@ Module iter.
                                           Ty.apply
                                             (Ty.path "core::option::Option")
                                             []
-                                            [ Ty.associated ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                A
+                                                "Item"
+                                            ],
                                           M.get_trait_method (|
                                             "core::iter::traits::iterator::Iterator",
                                             A,
@@ -1727,7 +1941,14 @@ Module iter.
                                       Ty.apply
                                         (Ty.path "core::option::Option")
                                         []
-                                        [ Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            A
+                                            "Item"
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::iterator::Iterator",
                                         B,
@@ -1815,13 +2036,27 @@ Module iter.
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
                                                                   []
-                                                                  [ Ty.associated ],
+                                                                  [
+                                                                    Ty.associated_in_trait
+                                                                      "core::iter::traits::iterator::Iterator"
+                                                                      []
+                                                                      []
+                                                                      A
+                                                                      "Item"
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
                                                                     []
-                                                                    [ Ty.associated ],
+                                                                    [
+                                                                      Ty.associated_in_trait
+                                                                        "core::iter::traits::iterator::Iterator"
+                                                                        []
+                                                                        []
+                                                                        A
+                                                                        "Item"
+                                                                    ],
                                                                   [],
                                                                   [
                                                                     Ty.apply
@@ -1885,19 +2120,55 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ a_last : Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] :=
+                let~ a_last :
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          A
+                          "Item"
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            A
+                            "Item"
+                        ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ A ],
                         "and_then",
                         [],
                         [
-                          Ty.associated;
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            A
+                            "Item";
                           Ty.function
                             [ A ]
-                            (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                            (Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  A
+                                  "Item"
+                              ])
                         ]
                       |),
                       [
@@ -1920,19 +2191,55 @@ Module iter.
                       ]
                     |)
                   |) in
-                let~ b_last : Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] :=
+                let~ b_last :
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          A
+                          "Item"
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            A
+                            "Item"
+                        ],
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::option::Option") [] [ B ],
                         "and_then",
                         [],
                         [
-                          Ty.associated;
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            A
+                            "Item";
                           Ty.function
                             [ B ]
-                            (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                            (Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  B
+                                  "Item"
+                              ])
                         ]
                       |),
                       [
@@ -1957,9 +2264,29 @@ Module iter.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          A
+                          "Item"
+                      ],
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            A
+                            "Item"
+                        ],
                       "or",
                       [],
                       []
@@ -2296,8 +2623,9 @@ Module iter.
           forall (A B : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self A B)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self A B)
             (* Instance *)
             [
               ("Item", InstanceField.Ty (_Item A B));
@@ -2334,29 +2662,72 @@ Module iter.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] A "Item"
+                  ],
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] A "Item"
+                    ],
                   "or_else",
                   [],
                   [
                     Ty.function
                       [ Ty.tuple [] ]
-                      (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                      (Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            A
+                            "Item"
+                        ])
                   ]
                 |),
                 [
                   M.call_closure (|
-                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          A
+                          "Item"
+                      ],
                     M.get_function (|
                       "core::iter::adapters::chain::and_then_or_clear",
                       [],
                       [
                         B;
-                        Ty.associated;
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          A
+                          "Item";
                         Ty.function
                           [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ B ] ] ]
-                          (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                          (Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                A
+                                "Item"
+                            ])
                       ]
                     |),
                     [
@@ -2389,7 +2760,14 @@ Module iter.
                                           Ty.apply
                                             (Ty.path "core::option::Option")
                                             []
-                                            [ Ty.associated ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                A
+                                                "Item"
+                                            ],
                                           M.get_trait_method (|
                                             "core::iter::traits::double_ended::DoubleEndedIterator",
                                             B,
@@ -2427,7 +2805,14 @@ Module iter.
                                       Ty.apply
                                         (Ty.path "core::option::Option")
                                         []
-                                        [ Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            A
+                                            "Item"
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::double_ended::DoubleEndedIterator",
                                         A,
@@ -2515,13 +2900,27 @@ Module iter.
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
                                                                   []
-                                                                  [ Ty.associated ],
+                                                                  [
+                                                                    Ty.associated_in_trait
+                                                                      "core::iter::traits::iterator::Iterator"
+                                                                      []
+                                                                      []
+                                                                      A
+                                                                      "Item"
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
                                                                     []
-                                                                    [ Ty.associated ],
+                                                                    [
+                                                                      Ty.associated_in_trait
+                                                                        "core::iter::traits::iterator::Iterator"
+                                                                        []
+                                                                        []
+                                                                        A
+                                                                        "Item"
+                                                                    ],
                                                                   [],
                                                                   [
                                                                     Ty.apply
@@ -2964,7 +3363,14 @@ Module iter.
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
                                                       []
-                                                      [ Ty.associated ],
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "core::iter::traits::iterator::Iterator"
+                                                          []
+                                                          []
+                                                          A
+                                                          "Item"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::iter::traits::double_ended::DoubleEndedIterator",
                                                       B,
@@ -3051,7 +3457,17 @@ Module iter.
                       |) in
                     M.alloc (|
                       M.call_closure (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::iterator::Iterator"
+                              []
+                              []
+                              A
+                              "Item"
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::double_ended::DoubleEndedIterator",
                           A,
@@ -3135,13 +3551,27 @@ Module iter.
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
                                                     []
-                                                    [ Ty.associated ],
+                                                    [
+                                                      Ty.associated_in_trait
+                                                        "core::iter::traits::iterator::Iterator"
+                                                        []
+                                                        []
+                                                        A
+                                                        "Item"
+                                                    ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::FromResidual",
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
                                                       []
-                                                      [ Ty.associated ],
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "core::iter::traits::iterator::Iterator"
+                                                          []
+                                                          []
+                                                          A
+                                                          "Item"
+                                                      ],
                                                     [],
                                                     [
                                                       Ty.apply
@@ -3200,29 +3630,72 @@ Module iter.
               (let self := M.alloc (| self |) in
               let predicate := M.alloc (| predicate |) in
               M.call_closure (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] A "Item"
+                  ],
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] A "Item"
+                    ],
                   "or_else",
                   [],
                   [
                     Ty.function
                       [ Ty.tuple [] ]
-                      (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                      (Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::iterator::Iterator"
+                            []
+                            []
+                            A
+                            "Item"
+                        ])
                   ]
                 |),
                 [
                   M.call_closure (|
-                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          A
+                          "Item"
+                      ],
                     M.get_function (|
                       "core::iter::adapters::chain::and_then_or_clear",
                       [],
                       [
                         B;
-                        Ty.associated;
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          A
+                          "Item";
                         Ty.function
                           [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ B ] ] ]
-                          (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                          (Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                A
+                                "Item"
+                            ])
                       ]
                     |),
                     [
@@ -3255,7 +3728,14 @@ Module iter.
                                           Ty.apply
                                             (Ty.path "core::option::Option")
                                             []
-                                            [ Ty.associated ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                A
+                                                "Item"
+                                            ],
                                           M.get_trait_method (|
                                             "core::iter::traits::double_ended::DoubleEndedIterator",
                                             B,
@@ -3294,7 +3774,14 @@ Module iter.
                                       Ty.apply
                                         (Ty.path "core::option::Option")
                                         []
-                                        [ Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            A
+                                            "Item"
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::double_ended::DoubleEndedIterator",
                                         A,
@@ -3382,13 +3869,27 @@ Module iter.
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
                                                                   []
-                                                                  [ Ty.associated ],
+                                                                  [
+                                                                    Ty.associated_in_trait
+                                                                      "core::iter::traits::iterator::Iterator"
+                                                                      []
+                                                                      []
+                                                                      A
+                                                                      "Item"
+                                                                  ],
                                                                 M.get_trait_method (|
                                                                   "core::ops::try_trait::FromResidual",
                                                                   Ty.apply
                                                                     (Ty.path "core::option::Option")
                                                                     []
-                                                                    [ Ty.associated ],
+                                                                    [
+                                                                      Ty.associated_in_trait
+                                                                        "core::iter::traits::iterator::Iterator"
+                                                                        []
+                                                                        []
+                                                                        A
+                                                                        "Item"
+                                                                    ],
                                                                   [],
                                                                   [
                                                                     Ty.apply
@@ -3501,7 +4002,15 @@ Module iter.
                                             Ty.apply
                                               (Ty.path "core::ops::control_flow::ControlFlow")
                                               []
-                                              [ Ty.associated; Acc ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::ops::try_trait::Try"
+                                                  []
+                                                  []
+                                                  R
+                                                  "Residual";
+                                                Acc
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               R,
@@ -3555,7 +4064,14 @@ Module iter.
                                                           "core::ops::try_trait::FromResidual",
                                                           R,
                                                           [],
-                                                          [ Ty.associated ],
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "core::ops::try_trait::Try"
+                                                              []
+                                                              []
+                                                              R
+                                                              "Residual"
+                                                          ],
                                                           "from_residual",
                                                           [],
                                                           []
@@ -3626,7 +4142,15 @@ Module iter.
                                             Ty.apply
                                               (Ty.path "core::ops::control_flow::ControlFlow")
                                               []
-                                              [ Ty.associated; Acc ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::ops::try_trait::Try"
+                                                  []
+                                                  []
+                                                  R
+                                                  "Residual";
+                                                Acc
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::Try",
                                               R,
@@ -3680,7 +4204,14 @@ Module iter.
                                                           "core::ops::try_trait::FromResidual",
                                                           R,
                                                           [],
-                                                          [ Ty.associated ],
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "core::ops::try_trait::Try"
+                                                              []
+                                                              []
+                                                              R
+                                                              "Residual"
+                                                          ],
                                                           "from_residual",
                                                           [],
                                                           []
@@ -3850,8 +4381,9 @@ Module iter.
           forall (A B : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::double_ended::DoubleEndedIterator"
-            (Self A B)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self A B)
             (* Instance *)
             [
               ("next_back", InstanceField.Method (next_back A B));
@@ -3871,8 +4403,9 @@ Module iter.
           forall (A B : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::FusedIterator"
-            (Self A B)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self A B)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_A_where_core_iter_traits_marker_FusedIterator_B_for_core_iter_adapters_chain_Chain_A_B.
       
@@ -3884,8 +4417,9 @@ Module iter.
           forall (A B : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::TrustedLen"
-            (Self A B)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self A B)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_TrustedLen_where_core_iter_traits_marker_TrustedLen_A_where_core_iter_traits_marker_TrustedLen_B_for_core_iter_adapters_chain_Chain_A_B.
       
@@ -3931,8 +4465,9 @@ Module iter.
           forall (A B : Ty.t),
           M.IsTraitInstance
             "core::default::Default"
-            (Self A B)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self A B)
             (* Instance *) [ ("default", InstanceField.Method (default A B)) ].
       End Impl_core_default_Default_where_core_default_Default_A_where_core_default_Default_B_for_core_iter_adapters_chain_Chain_A_B.
       

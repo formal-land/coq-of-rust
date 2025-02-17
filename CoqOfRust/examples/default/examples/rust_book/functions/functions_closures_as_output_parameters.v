@@ -395,26 +395,26 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ fn_plain : Ty.associated :=
+        let~ fn_plain : Ty.associated_unknown :=
           M.alloc (|
             M.call_closure (|
-              Ty.associated,
+              Ty.associated_unknown,
               M.get_function (| "functions_closures_as_output_parameters::create_fn", [], [] |),
               []
             |)
           |) in
-        let~ fn_mut : Ty.associated :=
+        let~ fn_mut : Ty.associated_unknown :=
           M.alloc (|
             M.call_closure (|
-              Ty.associated,
+              Ty.associated_unknown,
               M.get_function (| "functions_closures_as_output_parameters::create_fnmut", [], [] |),
               []
             |)
           |) in
-        let~ fn_once : Ty.associated :=
+        let~ fn_once : Ty.associated_unknown :=
           M.alloc (|
             M.call_closure (|
-              Ty.associated,
+              Ty.associated_unknown,
               M.get_function (| "functions_closures_as_output_parameters::create_fnonce", [], [] |),
               []
             |)
@@ -425,7 +425,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               Ty.tuple [],
               M.get_trait_method (|
                 "core::ops::function::Fn",
-                Ty.associated,
+                Ty.associated_unknown,
                 [],
                 [ Ty.tuple [] ],
                 "call",
@@ -441,7 +441,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               Ty.tuple [],
               M.get_trait_method (|
                 "core::ops::function::FnMut",
-                Ty.associated,
+                Ty.associated_unknown,
                 [],
                 [ Ty.tuple [] ],
                 "call_mut",
@@ -457,7 +457,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               Ty.tuple [],
               M.get_trait_method (|
                 "core::ops::function::FnOnce",
-                Ty.associated,
+                Ty.associated_unknown,
                 [],
                 [ Ty.tuple [] ],
                 "call_once",

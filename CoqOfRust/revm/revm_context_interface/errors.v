@@ -10,7 +10,8 @@ Module errors.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Error (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::errors::ErrorGetter" [] [] T "Error".
       
       (* #[auto_impl(&mut, Box)] *)
       Definition take_error (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -20,7 +21,18 @@ Module errors.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.associated ],
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.tuple [];
+                  Ty.associated_in_trait
+                    "revm_context_interface::errors::ErrorGetter"
+                    []
+                    []
+                    T
+                    "Error"
+                ],
               M.get_trait_method (|
                 "revm_context_interface::errors::ErrorGetter",
                 T,
@@ -44,8 +56,9 @@ Module errors.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::errors::ErrorGetter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Error", InstanceField.Ty (_Error T));
@@ -57,7 +70,8 @@ Module errors.
         Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&mut, Box)] *)
-      Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Error (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::errors::ErrorGetter" [] [] T "Error".
       
       (* #[auto_impl(&mut, Box)] *)
       Definition take_error (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -67,7 +81,18 @@ Module errors.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.associated ],
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [
+                  Ty.tuple [];
+                  Ty.associated_in_trait
+                    "revm_context_interface::errors::ErrorGetter"
+                    []
+                    []
+                    T
+                    "Error"
+                ],
               M.get_trait_method (|
                 "revm_context_interface::errors::ErrorGetter",
                 T,
@@ -91,8 +116,9 @@ Module errors.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::errors::ErrorGetter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Error", InstanceField.Ty (_Error T));

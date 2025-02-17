@@ -40,9 +40,10 @@ Module Ty.
       list of type parameters, excluding `Self`. *)
   Parameter dyn : list (string * list Ty.t) -> Ty.t.
 
-  (** This primitive is for associated types; it will require additional
-      parameters. *)
-  Parameter associated : Ty.t.
+  Parameter associated_in_trait : string -> list Value.t -> list Ty.t -> Ty.t -> string -> Ty.t.
+
+  (** This primitive is for associated types that we do not handle (yet). *)
+  Parameter associated_unknown : Ty.t.
 End Ty.
 
 Definition assign (target : Value.t) (source : Value.t) : M :=
@@ -263,8 +264,9 @@ Module FunctionTraitAutomaticImpl.
     forall (Args : list Ty.t) (Output : Ty.t),
     M.IsTraitInstance
       "core::ops::function::Fn"
-      (Ty.function Args Output)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) [Ty.tuple Args]
+      (Ty.function Args Output)
       (* Instance *) [ ("call", InstanceField.Method (fun ε τ α =>
         match ε, τ, α with
         | [], [], [self; Value.Tuple args] =>
@@ -278,8 +280,9 @@ Module FunctionTraitAutomaticImpl.
     forall (Args : list Ty.t) (Output : Ty.t),
     M.IsTraitInstance
       "core::ops::function::FnMut"
-      (Ty.function Args Output)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) [Ty.tuple Args]
+      (Ty.function Args Output)
       (* Instance *) [ ("call_mut", InstanceField.Method (fun ε τ α =>
         match ε, τ, α with
         | [], [], [self; Value.Tuple args] =>
@@ -293,8 +296,9 @@ Module FunctionTraitAutomaticImpl.
     forall (Args : list Ty.t) (Output : Ty.t),
     M.IsTraitInstance
       "core::ops::function::FnOnce"
-      (Ty.function Args Output)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) [Ty.tuple Args]
+      (Ty.function Args Output)
       (* Instance *) [ ("call_once", InstanceField.Method (fun ε τ α =>
         match ε, τ, α with
         | [], [], [self; Value.Tuple args] =>

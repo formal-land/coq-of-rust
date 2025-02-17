@@ -207,8 +207,9 @@ Module collections.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
       End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
       
@@ -265,8 +266,9 @@ Module collections.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::default::Default"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [ ("default", InstanceField.Method (default T)) ].
       End Impl_core_default_Default_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
       
@@ -731,7 +733,15 @@ Module collections.
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
                                 []
-                                [ Ty.associated; B ],
+                                [
+                                  Ty.associated_in_trait
+                                    "core::ops::try_trait::Try"
+                                    []
+                                    []
+                                    R
+                                    "Residual";
+                                  B
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 R,
@@ -789,7 +799,14 @@ Module collections.
                                             "core::ops::try_trait::FromResidual",
                                             R,
                                             [],
-                                            [ Ty.associated ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::ops::try_trait::Try"
+                                                []
+                                                []
+                                                R
+                                                "Residual"
+                                            ],
                                             "from_residual",
                                             [],
                                             []
@@ -1043,8 +1060,9 @@ Module collections.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("Item", InstanceField.Ty (_Item T));
@@ -1473,7 +1491,15 @@ Module collections.
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
                                 []
-                                [ Ty.associated; B ],
+                                [
+                                  Ty.associated_in_trait
+                                    "core::ops::try_trait::Try"
+                                    []
+                                    []
+                                    R
+                                    "Residual";
+                                  B
+                                ],
                               M.get_trait_method (|
                                 "core::ops::try_trait::Try",
                                 R,
@@ -1531,7 +1557,14 @@ Module collections.
                                             "core::ops::try_trait::FromResidual",
                                             R,
                                             [],
-                                            [ Ty.associated ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::ops::try_trait::Try"
+                                                []
+                                                []
+                                                R
+                                                "Residual"
+                                            ],
                                             "from_residual",
                                             [],
                                             []
@@ -1590,8 +1623,9 @@ Module collections.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::double_ended::DoubleEndedIterator"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [
               ("next_back", InstanceField.Method (next_back T));
@@ -1730,8 +1764,9 @@ Module collections.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::exact_size::ExactSizeIterator"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [ ("len", InstanceField.Method (len T)); ("is_empty", InstanceField.Method (is_empty T))
             ].
@@ -1745,8 +1780,9 @@ Module collections.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::FusedIterator"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_FusedIterator_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
       
@@ -1758,8 +1794,9 @@ Module collections.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::TrustedLen"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_TrustedLen_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
       
@@ -1771,8 +1808,9 @@ Module collections.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::zip::TrustedRandomAccess"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *) [].
       End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
       
@@ -1790,8 +1828,9 @@ Module collections.
           forall (T : Ty.t),
           M.IsTraitInstance
             "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-            (Self T)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T)
             (* Instance *)
             [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T))
             ].

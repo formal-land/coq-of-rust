@@ -53,8 +53,9 @@ Module Impl_core_clone_Clone_for_move_bytecode_verifier_meter_Scope.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_move_bytecode_verifier_meter_Scope.
 
@@ -62,7 +63,12 @@ Module Impl_core_marker_Copy_for_move_bytecode_verifier_meter_Scope.
   Definition Self : Ty.t := Ty.path "move_bytecode_verifier_meter::Scope".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_move_bytecode_verifier_meter_Scope.
 
 Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
@@ -145,8 +151,9 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
 
@@ -156,8 +163,9 @@ Module Impl_core_marker_StructuralPartialEq_for_move_bytecode_verifier_meter_Sco
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_move_bytecode_verifier_meter_Scope.
 
@@ -204,8 +212,9 @@ Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
 
@@ -229,8 +238,9 @@ Module Impl_core_cmp_Eq_for_move_bytecode_verifier_meter_Scope.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_move_bytecode_verifier_meter_Scope.
@@ -301,8 +311,9 @@ Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialOrd"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
 End Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
 
@@ -364,8 +375,9 @@ Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Ord"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
 End Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
 
@@ -855,8 +867,9 @@ Module Impl_move_bytecode_verifier_meter_Meter_for_ref_mut_Dyn_move_bytecode_ver
   Axiom Implements :
     M.IsTraitInstance
       "move_bytecode_verifier_meter::Meter"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [
         ("enter_scope", InstanceField.Method enter_scope);

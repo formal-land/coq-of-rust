@@ -60,8 +60,9 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "alloc::vec::spec_from_elem::SpecFromElem"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("from_elem", InstanceField.Method (from_elem T)) ].
     End Impl_alloc_vec_spec_from_elem_SpecFromElem_where_core_clone_Clone_T_for_T.
     
@@ -180,8 +181,9 @@ Module vec.
         forall (T : Ty.t),
         M.IsTraitInstance
           "alloc::vec::spec_from_elem::SpecFromElem"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("from_elem", InstanceField.Method (from_elem T)) ].
     End Impl_alloc_vec_spec_from_elem_SpecFromElem_where_core_clone_Clone_T_where_alloc_vec_is_zero_IsZero_T_for_T.
     
@@ -319,8 +321,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::spec_from_elem::SpecFromElem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("from_elem", InstanceField.Method from_elem) ].
     End Impl_alloc_vec_spec_from_elem_SpecFromElem_for_i8.
     
@@ -458,8 +461,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::spec_from_elem::SpecFromElem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("from_elem", InstanceField.Method from_elem) ].
     End Impl_alloc_vec_spec_from_elem_SpecFromElem_for_u8.
     
@@ -521,8 +525,9 @@ Module vec.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::vec::spec_from_elem::SpecFromElem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("from_elem", InstanceField.Method from_elem) ].
     End Impl_alloc_vec_spec_from_elem_SpecFromElem_for_Tuple_.
   End spec_from_elem.

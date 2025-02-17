@@ -6375,18 +6375,42 @@ Module check_duplication.
                     Ty.apply
                       (Ty.path "std::collections::hash::set::HashSet")
                       []
-                      [ Ty.associated; Ty.path "std::hash::random::RandomState" ] :=
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::collect::IntoIterator"
+                          []
+                          []
+                          T
+                          "Item";
+                        Ty.path "std::hash::random::RandomState"
+                      ] :=
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "std::collections::hash::set::HashSet")
                         []
-                        [ Ty.associated; Ty.path "std::hash::random::RandomState" ],
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::collect::IntoIterator"
+                            []
+                            []
+                            T
+                            "Item";
+                          Ty.path "std::hash::random::RandomState"
+                        ],
                       M.get_associated_function (|
                         Ty.apply
                           (Ty.path "std::collections::hash::set::HashSet")
                           []
-                          [ Ty.associated; Ty.path "std::hash::random::RandomState" ],
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              T
+                              "Item";
+                            Ty.path "std::hash::random::RandomState"
+                          ],
                         "new",
                         [],
                         []
@@ -6402,13 +6426,27 @@ Module check_duplication.
                           Ty.apply
                             (Ty.path "core::iter::adapters::enumerate::Enumerate")
                             []
-                            [ Ty.associated ],
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::collect::IntoIterator"
+                                []
+                                []
+                                T
+                                "IntoIter"
+                            ],
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             Ty.apply
                               (Ty.path "core::iter::adapters::enumerate::Enumerate")
                               []
-                              [ Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::collect::IntoIterator"
+                                  []
+                                  []
+                                  T
+                                  "IntoIter"
+                              ],
                             [],
                             [],
                             "into_iter",
@@ -6420,10 +6458,22 @@ Module check_duplication.
                               Ty.apply
                                 (Ty.path "core::iter::adapters::enumerate::Enumerate")
                                 []
-                                [ Ty.associated ],
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::collect::IntoIterator"
+                                    []
+                                    []
+                                    T
+                                    "IntoIter"
+                                ],
                               M.get_trait_method (|
                                 "core::iter::traits::iterator::Iterator",
-                                Ty.associated,
+                                Ty.associated_in_trait
+                                  "core::iter::traits::collect::IntoIterator"
+                                  []
+                                  []
+                                  T
+                                  "IntoIter",
                                 [],
                                 [],
                                 "enumerate",
@@ -6432,7 +6482,12 @@ Module check_duplication.
                               |),
                               [
                                 M.call_closure (|
-                                  Ty.associated,
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::collect::IntoIterator"
+                                    []
+                                    []
+                                    T
+                                    "IntoIter",
                                   M.get_trait_method (|
                                     "core::iter::traits::collect::IntoIterator",
                                     T,
@@ -6462,13 +6517,31 @@ Module check_duplication.
                                         Ty.apply
                                           (Ty.path "core::option::Option")
                                           []
-                                          [ Ty.tuple [ Ty.path "usize"; Ty.associated ] ],
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.associated_in_trait
+                                                  "core::iter::traits::collect::IntoIterator"
+                                                  []
+                                                  []
+                                                  T
+                                                  "Item"
+                                              ]
+                                          ],
                                         M.get_trait_method (|
                                           "core::iter::traits::iterator::Iterator",
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::enumerate::Enumerate")
                                             []
-                                            [ Ty.associated ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::collect::IntoIterator"
+                                                []
+                                                []
+                                                T
+                                                "IntoIter"
+                                            ],
                                           [],
                                           [],
                                           "next",
@@ -6523,7 +6596,12 @@ Module check_duplication.
                                                                   "std::collections::hash::set::HashSet")
                                                                 []
                                                                 [
-                                                                  Ty.associated;
+                                                                  Ty.associated_in_trait
+                                                                    "core::iter::traits::collect::IntoIterator"
+                                                                    []
+                                                                    []
+                                                                    T
+                                                                    "Item";
                                                                   Ty.path
                                                                     "std::hash::random::RandomState"
                                                                 ],

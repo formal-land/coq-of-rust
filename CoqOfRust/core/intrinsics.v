@@ -2017,14 +2017,16 @@ Module intrinsics.
     Definition Self (P T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ P ].
     
     (*     type Metadata = <P as ptr::Pointee>::Metadata; *)
-    Definition _Metadata (P T : Ty.t) : Ty.t := Ty.associated.
+    Definition _Metadata (P T : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] P "Metadata".
     
     Axiom Implements :
       forall (P T : Ty.t),
       M.IsTraitInstance
         "core::intrinsics::AggregateRawPtr"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "*const") [] [ T ] ]
         (Self P T)
-        (* Trait polymorphic types *) [ (* D *) Ty.apply (Ty.path "*const") [] [ T ] ]
         (* Instance *) [ ("Metadata", InstanceField.Ty (_Metadata P T)) ].
   End Impl_core_intrinsics_AggregateRawPtr_where_core_marker_Sized_P_where_core_ptr_metadata_Thin_T_pointer_const_T_for_pointer_const_P.
   
@@ -2032,14 +2034,16 @@ Module intrinsics.
     Definition Self (P T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ P ].
     
     (*     type Metadata = <P as ptr::Pointee>::Metadata; *)
-    Definition _Metadata (P T : Ty.t) : Ty.t := Ty.associated.
+    Definition _Metadata (P T : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] P "Metadata".
     
     Axiom Implements :
       forall (P T : Ty.t),
       M.IsTraitInstance
         "core::intrinsics::AggregateRawPtr"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "*mut") [] [ T ] ]
         (Self P T)
-        (* Trait polymorphic types *) [ (* D *) Ty.apply (Ty.path "*mut") [] [ T ] ]
         (* Instance *) [ ("Metadata", InstanceField.Ty (_Metadata P T)) ].
   End Impl_core_intrinsics_AggregateRawPtr_where_core_marker_Sized_P_where_core_ptr_metadata_Thin_T_pointer_mut_T_for_pointer_mut_P.
   

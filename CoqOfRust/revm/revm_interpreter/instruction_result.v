@@ -310,8 +310,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -321,8 +322,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -933,8 +935,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -955,8 +958,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -966,8 +970,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -1014,8 +1019,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -1039,8 +1045,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_interpreter_instruction_result_InstructionResult.
@@ -1096,8 +1103,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -1167,9 +1175,10 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_context_interface::journaled_state::TransferError" ]
+        [ Ty.path "revm_context_interface::journaled_state::TransferError" ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_revm_context_interface_journaled_state_TransferError_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -1870,9 +1879,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::result::SuccessReason" ]
         Self
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_context_interface::result::SuccessReason" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_revm_context_interface_result_SuccessReason_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -2283,9 +2292,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::result::HaltReason" ]
         Self
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_context_interface::result::HaltReason" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_revm_context_interface_result_HaltReason_for_revm_interpreter_instruction_result_InstructionResult.
   
@@ -2419,8 +2428,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_interpreter_instruction_result_InternalResult.
   
@@ -2430,8 +2440,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_interpreter_instruction_result_InternalResult.
   
@@ -2451,8 +2462,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_interpreter_instruction_result_InternalResult.
   
@@ -2462,8 +2474,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_instruction_result_InternalResult.
   
@@ -2510,8 +2523,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_instruction_result_InternalResult.
   
@@ -2535,8 +2549,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_interpreter_instruction_result_InternalResult.
@@ -2592,8 +2607,9 @@ Module instruction_result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_interpreter_instruction_result_InternalResult.
   
@@ -2647,8 +2663,9 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [].
   End Impl_core_marker_Copy_where_core_marker_Copy_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
@@ -2795,8 +2812,9 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("clone", InstanceField.Method (clone HaltReasonT)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
@@ -2989,8 +3007,9 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt HaltReasonT)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
@@ -3002,8 +3021,9 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
@@ -3210,8 +3230,9 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("eq", InstanceField.Method (eq HaltReasonT)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
@@ -3258,8 +3279,9 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *)
         [
           ("assert_receiver_is_total_eq",
@@ -3422,8 +3444,9 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("hash", InstanceField.Method (hash HaltReasonT)) ].
   End Impl_core_hash_Hash_where_core_hash_Hash_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
@@ -3689,9 +3712,9 @@ Module instruction_result.
       forall (HALT : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::result::HaltReason" ]
         (Self HALT)
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_context_interface::result::HaltReason" ]
         (* Instance *) [ ("from", InstanceField.Method (from HALT)) ].
   End Impl_core_convert_From_where_revm_context_interface_result_HaltReasonTrait_HALT_revm_context_interface_result_HaltReason_for_revm_interpreter_instruction_result_SuccessOrHalt_HALT.
   
@@ -4872,9 +4895,10 @@ Module instruction_result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_interpreter::instruction_result::InstructionResult" ]
+        [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ]
+        (Self HaltReasonT)
         (* Instance *) [ ("from", InstanceField.Method (from HaltReasonT)) ].
   End Impl_core_convert_From_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_revm_interpreter_instruction_result_InstructionResult_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
 End instruction_result.

@@ -401,8 +401,9 @@ Module net.
         forall (SIZE : Value.t),
         M.IsTraitInstance
           "core::fmt::Write"
-          (Self SIZE)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self SIZE)
           (* Instance *) [ ("write_str", InstanceField.Method (write_str SIZE)) ].
     End Impl_core_fmt_Write_for_core_net_display_buffer_DisplayBuffer_SIZE.
   End display_buffer.

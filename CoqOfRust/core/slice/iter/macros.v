@@ -782,8 +782,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("len", InstanceField.Method (len T)); ("is_empty", InstanceField.Method (is_empty T))
           ].
@@ -3202,7 +3203,14 @@ Module slice.
                                       Ty.apply
                                         (Ty.path "core::option::Option")
                                         []
-                                        [ Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            (Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ])
+                                            "Item"
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::double_ended::DoubleEndedIterator",
                                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
@@ -3252,7 +3260,20 @@ Module slice.
                                                   "core::ops::function::FnMut",
                                                   P,
                                                   [],
-                                                  [ Ty.tuple [ Ty.associated ] ],
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "core::iter::traits::iterator::Iterator"
+                                                          []
+                                                          []
+                                                          (Ty.apply
+                                                            (Ty.path "core::slice::iter::Iter")
+                                                            []
+                                                            [ T ])
+                                                          "Item"
+                                                      ]
+                                                  ],
                                                   "call_mut",
                                                   [],
                                                   []
@@ -3508,8 +3529,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -4264,8 +4286,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back T));
@@ -4281,8 +4304,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_Iter_T.
     
@@ -4293,8 +4317,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_Iter_T.
     
@@ -4361,8 +4386,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::unchecked_iterator::UncheckedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("next_unchecked", InstanceField.Method (next_unchecked T)) ].
     End Impl_core_iter_traits_unchecked_iterator_UncheckedIterator_for_core_slice_iter_Iter_T.
     
@@ -4407,8 +4433,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_for_core_slice_iter_Iter_T.
     
@@ -5204,8 +5231,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("len", InstanceField.Method (len T)); ("is_empty", InstanceField.Method (is_empty T))
           ].
@@ -7638,7 +7666,17 @@ Module slice.
                                       Ty.apply
                                         (Ty.path "core::option::Option")
                                         []
-                                        [ Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "core::iter::traits::iterator::Iterator"
+                                            []
+                                            []
+                                            (Ty.apply
+                                              (Ty.path "core::slice::iter::IterMut")
+                                              []
+                                              [ T ])
+                                            "Item"
+                                        ],
                                       M.get_trait_method (|
                                         "core::iter::traits::double_ended::DoubleEndedIterator",
                                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -7688,7 +7726,20 @@ Module slice.
                                                   "core::ops::function::FnMut",
                                                   P,
                                                   [],
-                                                  [ Ty.tuple [ Ty.associated ] ],
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "core::iter::traits::iterator::Iterator"
+                                                          []
+                                                          []
+                                                          (Ty.apply
+                                                            (Ty.path "core::slice::iter::IterMut")
+                                                            []
+                                                            [ T ])
+                                                          "Item"
+                                                      ]
+                                                  ],
                                                   "call_mut",
                                                   [],
                                                   []
@@ -7837,8 +7888,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -8592,8 +8644,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back T));
@@ -8609,8 +8662,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_iter_IterMut_T.
     
@@ -8621,8 +8675,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_slice_iter_IterMut_T.
     
@@ -8702,8 +8757,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::unchecked_iterator::UncheckedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("next_unchecked", InstanceField.Method (next_unchecked T)) ].
     End Impl_core_iter_traits_unchecked_iterator_UncheckedIterator_for_core_slice_iter_IterMut_T.
     
@@ -8748,8 +8804,9 @@ Module slice.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_for_core_slice_iter_IterMut_T.
     
@@ -8848,8 +8905,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T P));
@@ -8866,8 +8924,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitN_T_P.
     
@@ -8966,8 +9025,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T P));
@@ -8984,8 +9044,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplitN_T_P.
     
@@ -9084,8 +9145,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T P));
@@ -9102,8 +9164,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_SplitNMut_T_P.
     
@@ -9202,8 +9265,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T P));
@@ -9220,8 +9284,9 @@ Module slice.
         forall (T P : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T P)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T__for_core_slice_iter_RSplitNMut_T_P.
   End iter.

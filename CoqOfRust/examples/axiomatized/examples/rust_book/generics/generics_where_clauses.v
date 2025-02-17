@@ -15,8 +15,9 @@ Module Impl_generics_where_clauses_PrintInOption_where_core_fmt_Debug_core_optio
     forall (T : Ty.t),
     M.IsTraitInstance
       "generics_where_clauses::PrintInOption"
-      (Self T)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self T)
       (* Instance *) [ ("print_in_option", InstanceField.Method (print_in_option T)) ].
 End Impl_generics_where_clauses_PrintInOption_where_core_fmt_Debug_core_option_Option_T_for_T.
 

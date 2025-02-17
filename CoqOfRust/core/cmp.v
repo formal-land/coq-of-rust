@@ -99,8 +99,9 @@ Module cmp.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_cmp_Ordering.
   
@@ -110,8 +111,9 @@ Module cmp.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_core_cmp_Ordering.
   
@@ -121,8 +123,9 @@ Module cmp.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_cmp_Ordering.
   
@@ -169,8 +172,9 @@ Module cmp.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_cmp_Ordering.
   
@@ -194,8 +198,9 @@ Module cmp.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_core_cmp_Ordering.
@@ -266,8 +271,9 @@ Module cmp.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_core_cmp_Ordering.
   
@@ -329,8 +335,9 @@ Module cmp.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_core_cmp_Ordering.
   
@@ -397,8 +404,9 @@ Module cmp.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_cmp_Ordering.
   
@@ -453,8 +461,9 @@ Module cmp.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_core_cmp_Ordering.
   
@@ -768,8 +777,9 @@ Module cmp.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_cmp_Reverse_T.
   
@@ -813,8 +823,9 @@ Module cmp.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_cmp_Reverse_T.
   
@@ -846,8 +857,9 @@ Module cmp.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq T)) ].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_cmp_Reverse_T.
@@ -904,8 +916,9 @@ Module cmp.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_cmp_Reverse_T.
   
@@ -916,8 +929,9 @@ Module cmp.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_cmp_Reverse_T.
   
@@ -946,8 +960,9 @@ Module cmp.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_core_cmp_Reverse_T.
   
@@ -989,8 +1004,9 @@ Module cmp.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
   End Impl_core_hash_Hash_where_core_hash_Hash_T_for_core_cmp_Reverse_T.
   
@@ -1191,8 +1207,9 @@ Module cmp.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp T));
@@ -1252,8 +1269,9 @@ Module cmp.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
   End Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_core_cmp_Reverse_T.
   
@@ -1338,8 +1356,9 @@ Module cmp.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("clone", InstanceField.Method (clone T));
@@ -2525,8 +2544,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_Tuple_.
     
@@ -2564,8 +2584,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_bool.
     
@@ -2603,8 +2624,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_char.
     
@@ -2642,8 +2664,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_usize.
     
@@ -2681,8 +2704,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_u8.
     
@@ -2720,8 +2744,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_u16.
     
@@ -2759,8 +2784,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_u32.
     
@@ -2798,8 +2824,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_u64.
     
@@ -2837,8 +2864,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_u128.
     
@@ -2876,8 +2904,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_isize.
     
@@ -2915,8 +2944,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_i8.
     
@@ -2954,8 +2984,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_i16.
     
@@ -2993,8 +3024,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_i32.
     
@@ -3032,8 +3064,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_i64.
     
@@ -3071,8 +3104,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_i128.
     
@@ -3110,8 +3144,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_f16.
     
@@ -3149,8 +3184,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_f32.
     
@@ -3188,8 +3224,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_f64.
     
@@ -3227,8 +3264,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
     End Impl_core_cmp_PartialEq_for_f128.
     
@@ -3236,105 +3274,180 @@ Module cmp.
       Definition Self : Ty.t := Ty.tuple [].
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_Tuple_.
     
     Module Impl_core_cmp_Eq_for_bool.
       Definition Self : Ty.t := Ty.path "bool".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_bool.
     
     Module Impl_core_cmp_Eq_for_char.
       Definition Self : Ty.t := Ty.path "char".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_char.
     
     Module Impl_core_cmp_Eq_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_usize.
     
     Module Impl_core_cmp_Eq_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_u8.
     
     Module Impl_core_cmp_Eq_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_u16.
     
     Module Impl_core_cmp_Eq_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_u32.
     
     Module Impl_core_cmp_Eq_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_u64.
     
     Module Impl_core_cmp_Eq_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_u128.
     
     Module Impl_core_cmp_Eq_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_isize.
     
     Module Impl_core_cmp_Eq_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_i8.
     
     Module Impl_core_cmp_Eq_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_i16.
     
     Module Impl_core_cmp_Eq_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_i32.
     
     Module Impl_core_cmp_Eq_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_i64.
     
     Module Impl_core_cmp_Eq_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_i128.
     
     Module Impl_core_cmp_PartialOrd_for_Tuple_.
@@ -3367,8 +3480,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_Tuple_.
     
@@ -3404,8 +3518,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_bool.
     
@@ -3557,8 +3672,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -3717,8 +3833,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -3877,8 +3994,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -4037,8 +4155,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -4070,8 +4189,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_Tuple_.
     
@@ -4246,8 +4366,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("cmp", InstanceField.Method cmp);
@@ -4349,8 +4470,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -4389,8 +4511,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_char.
     
@@ -4486,8 +4609,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -4526,8 +4650,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_usize.
     
@@ -4619,8 +4744,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -4659,8 +4785,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_u8.
     
@@ -4752,8 +4879,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -4792,8 +4920,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_u16.
     
@@ -4885,8 +5014,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -4925,8 +5055,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_u32.
     
@@ -5018,8 +5149,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -5058,8 +5190,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_u64.
     
@@ -5155,8 +5288,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -5195,8 +5329,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_u128.
     
@@ -5292,8 +5427,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -5332,8 +5468,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_isize.
     
@@ -5425,8 +5562,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -5465,8 +5603,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_i8.
     
@@ -5558,8 +5697,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -5598,8 +5738,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_i16.
     
@@ -5691,8 +5832,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -5731,8 +5873,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_i32.
     
@@ -5824,8 +5967,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -5864,8 +6008,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_i64.
     
@@ -5961,8 +6106,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method partial_cmp);
@@ -6001,8 +6147,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_i128.
     
@@ -6034,8 +6181,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_never.
     
@@ -6043,7 +6191,12 @@ Module cmp.
       Definition Self : Ty.t := Ty.path "never".
       
       Axiom Implements :
-        M.IsTraitInstance "core::cmp::Eq" Self (* Trait polymorphic types *) [] (* Instance *) [].
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
     End Impl_core_cmp_Eq_for_never.
     
     Module Impl_core_cmp_PartialOrd_for_never.
@@ -6074,8 +6227,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_never.
     
@@ -6107,8 +6261,9 @@ Module cmp.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_never.
     
@@ -6177,8 +6332,9 @@ Module cmp.
         forall (A B : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ B ] ]
           (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [] [ B ] ]
           (* Instance *)
           [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
     End Impl_core_cmp_PartialEq_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialEq_A_B_ref__B_for_ref__A.
@@ -6340,8 +6496,9 @@ Module cmp.
         forall (A B : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialOrd"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ B ] ]
           (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [] [ B ] ]
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method (partial_cmp A B));
@@ -6388,8 +6545,9 @@ Module cmp.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::cmp::Ord"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [ ("cmp", InstanceField.Method (cmp A)) ].
     End Impl_core_cmp_Ord_where_core_marker_Sized_A_where_core_cmp_Ord_A_for_ref__A.
     
@@ -6400,8 +6558,9 @@ Module cmp.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_marker_Sized_A_where_core_cmp_Eq_A_for_ref__A.
     
@@ -6470,8 +6629,9 @@ Module cmp.
         forall (A B : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&mut") [] [ B ] ]
           (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&mut") [] [ B ] ]
           (* Instance *)
           [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
     End Impl_core_cmp_PartialEq_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialEq_A_B_ref_mut_B_for_ref_mut_A.
@@ -6633,8 +6793,9 @@ Module cmp.
         forall (A B : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialOrd"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&mut") [] [ B ] ]
           (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&mut") [] [ B ] ]
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method (partial_cmp A B));
@@ -6681,8 +6842,9 @@ Module cmp.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::cmp::Ord"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [ ("cmp", InstanceField.Method (cmp A)) ].
     End Impl_core_cmp_Ord_where_core_marker_Sized_A_where_core_cmp_Ord_A_for_ref_mut_A.
     
@@ -6693,8 +6855,9 @@ Module cmp.
         forall (A : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self A)
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_marker_Sized_A_where_core_cmp_Eq_A_for_ref_mut_A.
     
@@ -6763,8 +6926,9 @@ Module cmp.
         forall (A B : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&mut") [] [ B ] ]
           (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&mut") [] [ B ] ]
           (* Instance *)
           [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
     End Impl_core_cmp_PartialEq_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialEq_A_B_ref_mut_B_for_ref__A.
@@ -6834,8 +6998,9 @@ Module cmp.
         forall (A B : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ B ] ]
           (Self A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [] [ B ] ]
           (* Instance *)
           [ ("eq", InstanceField.Method (eq A B)); ("ne", InstanceField.Method (ne A B)) ].
     End Impl_core_cmp_PartialEq_where_core_marker_Sized_A_where_core_marker_Sized_B_where_core_cmp_PartialEq_A_B_ref__B_for_ref_mut_A.

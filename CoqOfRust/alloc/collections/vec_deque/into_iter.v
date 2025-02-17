@@ -63,8 +63,9 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T A)
             (* Instance *) [ ("clone", InstanceField.Method (clone T A)) ].
       End Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_clone_Clone_A_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_into_iter_IntoIter_T_A.
       
@@ -213,8 +214,9 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T A)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
       End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_into_iter_IntoIter_T_A.
       
@@ -655,7 +657,15 @@ Module collections.
                                           Ty.apply
                                             (Ty.path "core::ops::control_flow::ControlFlow")
                                             []
-                                            [ Ty.associated; B ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::ops::try_trait::Try"
+                                                []
+                                                []
+                                                R
+                                                "Residual";
+                                              B
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             R,
@@ -838,7 +848,14 @@ Module collections.
                                                         "core::ops::try_trait::FromResidual",
                                                         R,
                                                         [],
-                                                        [ Ty.associated ],
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "core::ops::try_trait::Try"
+                                                            []
+                                                            []
+                                                            R
+                                                            "Residual"
+                                                        ],
                                                         "from_residual",
                                                         [],
                                                         []
@@ -1916,8 +1933,9 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T A)
             (* Instance *)
             [
               ("Item", InstanceField.Ty (_Item T A));
@@ -2278,7 +2296,15 @@ Module collections.
                                           Ty.apply
                                             (Ty.path "core::ops::control_flow::ControlFlow")
                                             []
-                                            [ Ty.associated; B ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::ops::try_trait::Try"
+                                                []
+                                                []
+                                                R
+                                                "Residual";
+                                              B
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::Try",
                                             R,
@@ -2461,7 +2487,14 @@ Module collections.
                                                         "core::ops::try_trait::FromResidual",
                                                         R,
                                                         [],
-                                                        [ Ty.associated ],
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "core::ops::try_trait::Try"
+                                                            []
+                                                            []
+                                                            R
+                                                            "Residual"
+                                                        ],
                                                         "from_residual",
                                                         [],
                                                         []
@@ -2732,8 +2765,9 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::double_ended::DoubleEndedIterator"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T A)
             (* Instance *)
             [
               ("next_back", InstanceField.Method (next_back T A));
@@ -2789,8 +2823,9 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::exact_size::ExactSizeIterator"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T A)
             (* Instance *) [ ("is_empty", InstanceField.Method (is_empty T A)) ].
       End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_into_iter_IntoIter_T_A.
       
@@ -2802,8 +2837,9 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::FusedIterator"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T A)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_FusedIterator_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_into_iter_IntoIter_T_A.
       
@@ -2815,8 +2851,9 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::TrustedLen"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T A)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_TrustedLen_where_core_alloc_Allocator_A_for_alloc_collections_vec_deque_into_iter_IntoIter_T_A.
     End into_iter.
