@@ -76,6 +76,12 @@ Module OfValue.
   Proof.
     reflexivity.
   Qed.
+
+  Ltac rewrite_get_value_of_value_eq :=
+    match goal with
+    | |- context [ get_value (of_value _) ] =>
+      rewrite get_value_of_value_eq
+    end.
 End OfValue.
 
 (** Implementation of the primitive Rust operator for equality check *)
@@ -369,17 +375,35 @@ Module Ref.
     reflexivity.
   Qed.
 
+  Ltac rewrite_deref_eq :=
+    match goal with
+    | |- context [ M.deref (φ _) ] =>
+      rewrite deref_eq
+    end.
+
   Lemma borrow_eq {A : Set} `{Link A} (kind : Pointer.Kind.t) (ref : t Pointer.Kind.Raw A) :
     M.borrow kind (φ ref) = M.pure (φ (cast_to kind ref)).
   Proof.
     reflexivity.
   Qed.
 
+  Ltac rewrite_borrow_eq :=
+    match goal with
+    | |- context [ M.borrow _ (φ _) ] =>
+      rewrite borrow_eq
+    end.
+
   Lemma cast_cast_eq {A : Set} `{Link A} (kind1 kind2 kind3 : Pointer.Kind.t) (ref : t kind1 A) :
     cast_to kind3 (cast_to kind2 ref) = cast_to kind3 ref.
   Proof.
     reflexivity.
   Qed.
+
+  Ltac rewrite_cast_cast_eq :=
+    match goal with
+    | |- context [ cast_to _ (cast_to _ _) ] =>
+      rewrite cast_cast_eq
+    end.
 
   Definition of_ty_ref ty' :
     OfTy.t ty' ->
@@ -1036,14 +1060,20 @@ Proof.
   now destruct condition.
 Qed.
 
+Ltac rewrite_if_then_else_bool_eq :=
+  match goal with
+  | |- context [ M.if_then_else_bool (φ ?condition) ?then_ ?else_ ] =>
+    rewrite (if_then_else_bool_eq condition then_ else_)
+  end.
+
 Ltac run_main_rewrites :=
   eapply Run.Rewrite; [
     (repeat (
-      rewrite OfValue.get_value_of_value_eq ||
-      rewrite Ref.deref_eq ||
-      rewrite Ref.borrow_eq ||
-      rewrite Ref.cast_cast_eq ||
-      rewrite if_then_else_bool_eq
+      OfValue.rewrite_get_value_of_value_eq ||
+      Ref.rewrite_deref_eq ||
+      Ref.rewrite_borrow_eq ||
+      Ref.rewrite_cast_cast_eq ||
+      rewrite_if_then_else_bool_eq
     ));
     reflexivity
   |].
@@ -1058,7 +1088,6 @@ Ltac run_symbolic_one_step_immediate :=
   match goal with
   | |- {{ _ 🔽 _, _ }} =>
     cbn ||
-    run_main_rewrites ||
     run_symbolic_pure ||
     run_symbolic_state_alloc_immediate ||
     run_symbolic_state_read_immediate ||
@@ -1069,6 +1098,7 @@ Ltac run_symbolic_one_step_immediate :=
     run_symbolic_get_trait_method ||
     run_symbolic_closure_auto ||
     run_sub_pointer ||
+    run_main_rewrites ||
     run_rewrites ||
     fold @LowM.let_
   end.

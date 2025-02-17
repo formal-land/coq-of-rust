@@ -383,4 +383,13 @@ Module Impl_SpecId.
     run_symbolic.
   Defined.
   Smpl Add simple apply run_try_from_u8 : run_closure.
+
+  Definition run_is_enabled_in (self other : Self) :
+    {{
+      hardfork.Impl_revm_specification_hardfork_SpecId.is_enabled_in [] [] [ φ self; φ other ] 🔽
+      bool
+    }}.
+  Proof.
+    run_symbolic.
+  Admitted.
 End Impl_SpecId.
