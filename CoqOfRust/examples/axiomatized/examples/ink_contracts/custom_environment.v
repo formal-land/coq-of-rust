@@ -111,11 +111,13 @@ Enum Event
       {
         name := "EventWithTopics";
         item := StructTuple [ Ty.path "custom_environment::EventWithTopics" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Event_EventWithTopics :
+  M.IsDiscriminant "custom_environment::Event::EventWithTopics" 0.
 
 Module Impl_custom_environment_Env.
   Definition Self : Ty.t := Ty.path "custom_environment::Env".

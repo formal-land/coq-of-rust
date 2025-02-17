@@ -297,16 +297,19 @@ Module num.
           {
             name := "Empty";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Invalid";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_FloatErrorKind_Empty :
+      M.IsDiscriminant "core::num::dec2flt::FloatErrorKind::Empty" 0.
+    Axiom IsDiscriminant_FloatErrorKind_Invalid :
+      M.IsDiscriminant "core::num::dec2flt::FloatErrorKind::Invalid" 1.
     
     Module Impl_core_fmt_Debug_for_core_num_dec2flt_FloatErrorKind.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::FloatErrorKind".

@@ -13,16 +13,19 @@ Module ops.
           {
             name := "Continue";
             item := StructTuple [ C ];
-            discriminant := None;
           };
           {
             name := "Break";
             item := StructTuple [ B ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_ControlFlow_Continue :
+      M.IsDiscriminant "core::ops::control_flow::ControlFlow::Continue" 0.
+    Axiom IsDiscriminant_ControlFlow_Break :
+      M.IsDiscriminant "core::ops::control_flow::ControlFlow::Break" 1.
     
     Module Impl_core_fmt_Debug_where_core_fmt_Debug_B_where_core_fmt_Debug_C_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=

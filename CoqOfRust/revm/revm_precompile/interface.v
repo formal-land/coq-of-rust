@@ -423,16 +423,19 @@ Module interface.
         {
           name := "Error";
           item := StructTuple [ Ty.path "revm_precompile::interface::PrecompileError" ];
-          discriminant := None;
         };
         {
           name := "Fatal";
           item := StructRecord [ ("msg", Ty.path "alloc::string::String") ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_PrecompileErrors_Error :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileErrors::Error" 0.
+  Axiom IsDiscriminant_PrecompileErrors_Fatal :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileErrors::Fatal" 1.
   
   Module Impl_core_clone_Clone_for_revm_precompile_interface_PrecompileErrors.
     Definition Self : Ty.t := Ty.path "revm_precompile::interface::PrecompileErrors".
@@ -1122,71 +1125,85 @@ Module interface.
         {
           name := "OutOfGas";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Blake2WrongLength";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Blake2WrongFinalIndicatorFlag";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ModexpExpOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ModexpBaseOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ModexpModOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Bn128FieldPointNotAMember";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Bn128AffineGFailedToCreate";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Bn128PairLength";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BlobInvalidInputLength";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BlobMismatchedVersion";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BlobVerifyKzgProofFailed";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Other";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_PrecompileError_OutOfGas :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::OutOfGas" 0.
+  Axiom IsDiscriminant_PrecompileError_Blake2WrongLength :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::Blake2WrongLength" 1.
+  Axiom IsDiscriminant_PrecompileError_Blake2WrongFinalIndicatorFlag :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::Blake2WrongFinalIndicatorFlag" 2.
+  Axiom IsDiscriminant_PrecompileError_ModexpExpOverflow :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::ModexpExpOverflow" 3.
+  Axiom IsDiscriminant_PrecompileError_ModexpBaseOverflow :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::ModexpBaseOverflow" 4.
+  Axiom IsDiscriminant_PrecompileError_ModexpModOverflow :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::ModexpModOverflow" 5.
+  Axiom IsDiscriminant_PrecompileError_Bn128FieldPointNotAMember :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::Bn128FieldPointNotAMember" 6.
+  Axiom IsDiscriminant_PrecompileError_Bn128AffineGFailedToCreate :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::Bn128AffineGFailedToCreate" 7.
+  Axiom IsDiscriminant_PrecompileError_Bn128PairLength :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::Bn128PairLength" 8.
+  Axiom IsDiscriminant_PrecompileError_BlobInvalidInputLength :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::BlobInvalidInputLength" 9.
+  Axiom IsDiscriminant_PrecompileError_BlobMismatchedVersion :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::BlobMismatchedVersion" 10.
+  Axiom IsDiscriminant_PrecompileError_BlobVerifyKzgProofFailed :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::BlobVerifyKzgProofFailed" 11.
+  Axiom IsDiscriminant_PrecompileError_Other :
+    M.IsDiscriminant "revm_precompile::interface::PrecompileError::Other" 12.
   
   Module Impl_core_clone_Clone_for_revm_precompile_interface_PrecompileError.
     Definition Self : Ty.t := Ty.path "revm_precompile::interface::PrecompileError".

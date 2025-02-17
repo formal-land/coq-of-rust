@@ -405,16 +405,17 @@ Module slice.
         {
           name := "Front";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Back";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Direction_Front : M.IsDiscriminant "core::slice::Direction::Front" 0.
+  Axiom IsDiscriminant_Direction_Back : M.IsDiscriminant "core::slice::Direction::Back" 1.
   
   Module Impl_slice_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].

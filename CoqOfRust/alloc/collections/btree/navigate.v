@@ -2725,7 +2725,6 @@ Module collections.
                         Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                       ]
                   ];
-              discriminant := None;
             };
             {
               name := "Edge";
@@ -2748,11 +2747,15 @@ Module collections.
                         Ty.path "alloc::collections::btree::node::marker::Edge"
                       ]
                   ];
-              discriminant := None;
             }
           ];
       }
       *)
+      
+      Axiom IsDiscriminant_LazyLeafHandle_Root :
+        M.IsDiscriminant "alloc::collections::btree::navigate::LazyLeafHandle::Root" 0.
+      Axiom IsDiscriminant_LazyLeafHandle_Edge :
+        M.IsDiscriminant "alloc::collections::btree::navigate::LazyLeafHandle::Edge" 1.
       
       Module Impl_core_clone_Clone_for_alloc_collections_btree_navigate_LazyLeafHandle_alloc_collections_btree_node_marker_Immut_K_V.
         Definition Self (K V : Ty.t) : Ty.t :=
@@ -13661,7 +13664,6 @@ Module collections.
                       []
                       [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::Leaf" ]
                   ];
-              discriminant := None;
             };
             {
               name := "Internal";
@@ -13678,16 +13680,21 @@ Module collections.
                         Ty.path "alloc::collections::btree::node::marker::Internal"
                       ]
                   ];
-              discriminant := None;
             };
             {
               name := "InternalKV";
               item := StructTuple [];
-              discriminant := None;
             }
           ];
       }
       *)
+      
+      Axiom IsDiscriminant_Position_Leaf :
+        M.IsDiscriminant "alloc::collections::btree::navigate::Position::Leaf" 0.
+      Axiom IsDiscriminant_Position_Internal :
+        M.IsDiscriminant "alloc::collections::btree::navigate::Position::Internal" 1.
+      Axiom IsDiscriminant_Position_InternalKV :
+        M.IsDiscriminant "alloc::collections::btree::navigate::Position::InternalKV" 2.
       
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_LeafOrInternal_alloc_collections_btree_node_marker_KV.

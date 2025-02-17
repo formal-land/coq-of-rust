@@ -49,16 +49,18 @@ Module raw_vec.
         {
           name := "Uninitialized";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Zeroed";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_AllocInit_Uninitialized :
+    M.IsDiscriminant "alloc::raw_vec::AllocInit::Uninitialized" 0.
+  Axiom IsDiscriminant_AllocInit_Zeroed : M.IsDiscriminant "alloc::raw_vec::AllocInit::Zeroed" 1.
   
   (* StructTuple
     {

@@ -801,21 +801,25 @@ Module str.
           {
             name := "Match";
             item := StructTuple [ Ty.path "usize"; Ty.path "usize" ];
-            discriminant := None;
           };
           {
             name := "Reject";
             item := StructTuple [ Ty.path "usize"; Ty.path "usize" ];
-            discriminant := None;
           };
           {
             name := "Done";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_SearchStep_Match :
+      M.IsDiscriminant "core::str::pattern::SearchStep::Match" 0.
+    Axiom IsDiscriminant_SearchStep_Reject :
+      M.IsDiscriminant "core::str::pattern::SearchStep::Reject" 1.
+    Axiom IsDiscriminant_SearchStep_Done :
+      M.IsDiscriminant "core::str::pattern::SearchStep::Done" 2.
     
     Module Impl_core_marker_Copy_for_core_str_pattern_SearchStep.
       Definition Self : Ty.t := Ty.path "core::str::pattern::SearchStep".
@@ -10462,16 +10466,19 @@ Module str.
           {
             name := "Empty";
             item := StructTuple [ Ty.path "core::str::pattern::EmptyNeedle" ];
-            discriminant := None;
           };
           {
             name := "TwoWay";
             item := StructTuple [ Ty.path "core::str::pattern::TwoWaySearcher" ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_StrSearcherImpl_Empty :
+      M.IsDiscriminant "core::str::pattern::StrSearcherImpl::Empty" 0.
+    Axiom IsDiscriminant_StrSearcherImpl_TwoWay :
+      M.IsDiscriminant "core::str::pattern::StrSearcherImpl::TwoWay" 1.
     
     Module Impl_core_clone_Clone_for_core_str_pattern_StrSearcherImpl.
       Definition Self : Ty.t := Ty.path "core::str::pattern::StrSearcherImpl".
@@ -17278,6 +17285,7 @@ Module str.
     }
     *)
     
+    
     Module Impl_core_str_pattern_TwoWayStrategy_for_core_str_pattern_MatchOnly.
       Definition Self : Ty.t := Ty.path "core::str::pattern::MatchOnly".
       
@@ -17353,6 +17361,7 @@ Module str.
       variants := [];
     }
     *)
+    
     
     Module Impl_core_str_pattern_TwoWayStrategy_for_core_str_pattern_RejectAndMatch.
       Definition Self : Ty.t := Ty.path "core::str::pattern::RejectAndMatch".

@@ -12,16 +12,19 @@ Module decode_errors.
         {
           name := "Eof";
           item := StructTuple [ Ty.path "revm_bytecode::eof::EofDecodeError" ];
-          discriminant := None;
         };
         {
           name := "Eip7702";
           item := StructTuple [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_BytecodeDecodeError_Eof :
+    M.IsDiscriminant "revm_bytecode::decode_errors::BytecodeDecodeError::Eof" 0.
+  Axiom IsDiscriminant_BytecodeDecodeError_Eip7702 :
+    M.IsDiscriminant "revm_bytecode::decode_errors::BytecodeDecodeError::Eip7702" 1.
   
   Module Impl_core_clone_Clone_for_revm_bytecode_decode_errors_BytecodeDecodeError.
     Definition Self : Ty.t := Ty.path "revm_bytecode::decode_errors::BytecodeDecodeError".

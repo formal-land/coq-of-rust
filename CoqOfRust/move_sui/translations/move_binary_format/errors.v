@@ -36,16 +36,19 @@ Module errors.
         {
           name := "Undefined";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Module";
           item := StructTuple [ Ty.path "move_core_types::language_storage::ModuleId" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Location_Undefined :
+    M.IsDiscriminant "move_binary_format::errors::Location::Undefined" 0.
+  Axiom IsDiscriminant_Location_Module :
+    M.IsDiscriminant "move_binary_format::errors::Location::Module" 1.
   
   Module Impl_core_clone_Clone_for_move_binary_format_errors_Location.
     Definition Self : Ty.t := Ty.path "move_binary_format::errors::Location".

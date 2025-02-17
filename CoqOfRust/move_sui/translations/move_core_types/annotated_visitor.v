@@ -1075,21 +1075,25 @@ Module annotated_visitor.
         {
           name := "UnexpectedEof";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "UnexpectedByte";
           item := StructTuple [ Ty.path "u8" ];
-          discriminant := None;
         };
         {
           name := "TrailingBytes";
           item := StructTuple [ Ty.path "usize" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Error_UnexpectedEof :
+    M.IsDiscriminant "move_core_types::annotated_visitor::Error::UnexpectedEof" 0.
+  Axiom IsDiscriminant_Error_UnexpectedByte :
+    M.IsDiscriminant "move_core_types::annotated_visitor::Error::UnexpectedByte" 1.
+  Axiom IsDiscriminant_Error_TrailingBytes :
+    M.IsDiscriminant "move_core_types::annotated_visitor::Error::TrailingBytes" 2.
   
   Module Impl_core_error_Error_for_move_core_types_annotated_visitor_Error.
     Definition Self : Ty.t := Ty.path "move_core_types::annotated_visitor::Error".

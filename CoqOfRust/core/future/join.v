@@ -13,21 +13,24 @@ Module future.
           {
             name := "Future";
             item := StructTuple [ F ];
-            discriminant := None;
           };
           {
             name := "Done";
             item := StructTuple [ Ty.associated ];
-            discriminant := None;
           };
           {
             name := "Taken";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_MaybeDone_Future :
+      M.IsDiscriminant "core::future::join::MaybeDone::Future" 0.
+    Axiom IsDiscriminant_MaybeDone_Done : M.IsDiscriminant "core::future::join::MaybeDone::Done" 1.
+    Axiom IsDiscriminant_MaybeDone_Taken :
+      M.IsDiscriminant "core::future::join::MaybeDone::Taken" 2.
     
     Module Impl_core_future_join_MaybeDone_F.
       Definition Self (F : Ty.t) : Ty.t :=

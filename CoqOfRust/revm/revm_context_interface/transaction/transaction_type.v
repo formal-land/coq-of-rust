@@ -13,36 +13,55 @@ Module transaction.
           {
             name := "Legacy";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Eip2930";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Eip1559";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Eip4844";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Eip7702";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Custom";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_TransactionType_Legacy :
+      M.IsDiscriminant
+        "revm_context_interface::transaction::transaction_type::TransactionType::Legacy"
+        0.
+    Axiom IsDiscriminant_TransactionType_Eip2930 :
+      M.IsDiscriminant
+        "revm_context_interface::transaction::transaction_type::TransactionType::Eip2930"
+        1.
+    Axiom IsDiscriminant_TransactionType_Eip1559 :
+      M.IsDiscriminant
+        "revm_context_interface::transaction::transaction_type::TransactionType::Eip1559"
+        2.
+    Axiom IsDiscriminant_TransactionType_Eip4844 :
+      M.IsDiscriminant
+        "revm_context_interface::transaction::transaction_type::TransactionType::Eip4844"
+        3.
+    Axiom IsDiscriminant_TransactionType_Eip7702 :
+      M.IsDiscriminant
+        "revm_context_interface::transaction::transaction_type::TransactionType::Eip7702"
+        4.
+    Axiom IsDiscriminant_TransactionType_Custom :
+      M.IsDiscriminant
+        "revm_context_interface::transaction::transaction_type::TransactionType::Custom"
+        5.
     
     Module Impl_core_clone_Clone_for_revm_context_interface_transaction_transaction_type_TransactionType.
       Definition Self : Ty.t :=

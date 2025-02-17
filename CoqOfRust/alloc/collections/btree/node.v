@@ -9207,16 +9207,19 @@ Module collections.
             {
               name := "Left";
               item := StructTuple [ T ];
-              discriminant := None;
             };
             {
               name := "Right";
               item := StructTuple [ T ];
-              discriminant := None;
             }
           ];
       }
       *)
+      
+      Axiom IsDiscriminant_LeftOrRight_Left :
+        M.IsDiscriminant "alloc::collections::btree::node::LeftOrRight::Left" 0.
+      Axiom IsDiscriminant_LeftOrRight_Right :
+        M.IsDiscriminant "alloc::collections::btree::node::LeftOrRight::Right" 1.
       
       (*
       fn splitpoint(edge_idx: usize) -> (usize, LeftOrRight<usize>) {
@@ -24233,16 +24236,19 @@ Module collections.
             {
               name := "Leaf";
               item := StructTuple [ Leaf ];
-              discriminant := None;
             };
             {
               name := "Internal";
               item := StructTuple [ Internal ];
-              discriminant := None;
             }
           ];
       }
       *)
+      
+      Axiom IsDiscriminant_ForceResult_Leaf :
+        M.IsDiscriminant "alloc::collections::btree::node::ForceResult::Leaf" 0.
+      Axiom IsDiscriminant_ForceResult_Internal :
+        M.IsDiscriminant "alloc::collections::btree::node::ForceResult::Internal" 1.
       
       (* StructRecord
         {
@@ -24503,6 +24509,7 @@ Module collections.
         }
         *)
         
+        
         (*
         Enum Internal
         {
@@ -24511,6 +24518,7 @@ Module collections.
           variants := [];
         }
         *)
+        
         
         (*
         Enum LeafOrInternal
@@ -24521,6 +24529,7 @@ Module collections.
         }
         *)
         
+        
         (*
         Enum Owned
         {
@@ -24529,6 +24538,7 @@ Module collections.
           variants := [];
         }
         *)
+        
         
         (*
         Enum Dying
@@ -24539,6 +24549,7 @@ Module collections.
         }
         *)
         
+        
         (*
         Enum DormantMut
         {
@@ -24547,6 +24558,7 @@ Module collections.
           variants := [];
         }
         *)
+        
         
         (* StructTuple
           {
@@ -24674,6 +24686,7 @@ Module collections.
         }
         *)
         
+        
         (*
         Enum Edge
         {
@@ -24682,6 +24695,7 @@ Module collections.
           variants := [];
         }
         *)
+        
       End marker.
       
       (*

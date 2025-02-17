@@ -558,31 +558,37 @@ Module num.
           {
             name := "Empty";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "InvalidDigit";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "PosOverflow";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "NegOverflow";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "Zero";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_IntErrorKind_Empty :
+      M.IsDiscriminant "core::num::error::IntErrorKind::Empty" 0.
+    Axiom IsDiscriminant_IntErrorKind_InvalidDigit :
+      M.IsDiscriminant "core::num::error::IntErrorKind::InvalidDigit" 1.
+    Axiom IsDiscriminant_IntErrorKind_PosOverflow :
+      M.IsDiscriminant "core::num::error::IntErrorKind::PosOverflow" 2.
+    Axiom IsDiscriminant_IntErrorKind_NegOverflow :
+      M.IsDiscriminant "core::num::error::IntErrorKind::NegOverflow" 3.
+    Axiom IsDiscriminant_IntErrorKind_Zero :
+      M.IsDiscriminant "core::num::error::IntErrorKind::Zero" 4.
     
     Module Impl_core_fmt_Debug_for_core_num_error_IntErrorKind.
       Definition Self : Ty.t := Ty.path "core::num::error::IntErrorKind".

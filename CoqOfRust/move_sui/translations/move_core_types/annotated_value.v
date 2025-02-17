@@ -382,27 +382,22 @@ Module annotated_value.
         {
           name := "U8";
           item := StructTuple [ Ty.path "u8" ];
-          discriminant := None;
         };
         {
           name := "U64";
           item := StructTuple [ Ty.path "u64" ];
-          discriminant := None;
         };
         {
           name := "U128";
           item := StructTuple [ Ty.path "u128" ];
-          discriminant := None;
         };
         {
           name := "Bool";
           item := StructTuple [ Ty.path "bool" ];
-          discriminant := None;
         };
         {
           name := "Address";
           item := StructTuple [ Ty.path "move_core_types::account_address::AccountAddress" ];
-          discriminant := None;
         };
         {
           name := "Vector";
@@ -417,36 +412,53 @@ Module annotated_value.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         };
         {
           name := "Struct";
           item := StructTuple [ Ty.path "move_core_types::annotated_value::MoveStruct" ];
-          discriminant := None;
         };
         {
           name := "Signer";
           item := StructTuple [ Ty.path "move_core_types::account_address::AccountAddress" ];
-          discriminant := None;
         };
         {
           name := "U16";
           item := StructTuple [ Ty.path "u16" ];
-          discriminant := None;
         };
         {
           name := "U32";
           item := StructTuple [ Ty.path "u32" ];
-          discriminant := None;
         };
         {
           name := "U256";
           item := StructTuple [ Ty.path "move_core_types::u256::U256" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_MoveValue_U8 :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveValue::U8" 0.
+  Axiom IsDiscriminant_MoveValue_U64 :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveValue::U64" 1.
+  Axiom IsDiscriminant_MoveValue_U128 :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveValue::U128" 2.
+  Axiom IsDiscriminant_MoveValue_Bool :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveValue::Bool" 3.
+  Axiom IsDiscriminant_MoveValue_Address :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveValue::Address" 4.
+  Axiom IsDiscriminant_MoveValue_Vector :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveValue::Vector" 5.
+  Axiom IsDiscriminant_MoveValue_Struct :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveValue::Struct" 6.
+  Axiom IsDiscriminant_MoveValue_Signer :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveValue::Signer" 7.
+  Axiom IsDiscriminant_MoveValue_U16 :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveValue::U16" 8.
+  Axiom IsDiscriminant_MoveValue_U32 :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveValue::U32" 9.
+  Axiom IsDiscriminant_MoveValue_U256 :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveValue::U256" 10.
   
   Module Impl_core_fmt_Debug_for_move_core_types_annotated_value_MoveValue.
     Definition Self : Ty.t := Ty.path "move_core_types::annotated_value::MoveValue".
@@ -3283,27 +3295,22 @@ Module annotated_value.
         {
           name := "Bool";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U8";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U64";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U128";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Address";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Vector";
@@ -3318,36 +3325,53 @@ Module annotated_value.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         };
         {
           name := "Struct";
           item := StructTuple [ Ty.path "move_core_types::annotated_value::MoveStructLayout" ];
-          discriminant := None;
         };
         {
           name := "Signer";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U16";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U32";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U256";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_MoveTypeLayout_Bool :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveTypeLayout::Bool" 0.
+  Axiom IsDiscriminant_MoveTypeLayout_U8 :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveTypeLayout::U8" 1.
+  Axiom IsDiscriminant_MoveTypeLayout_U64 :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveTypeLayout::U64" 2.
+  Axiom IsDiscriminant_MoveTypeLayout_U128 :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveTypeLayout::U128" 3.
+  Axiom IsDiscriminant_MoveTypeLayout_Address :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveTypeLayout::Address" 4.
+  Axiom IsDiscriminant_MoveTypeLayout_Vector :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveTypeLayout::Vector" 5.
+  Axiom IsDiscriminant_MoveTypeLayout_Struct :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveTypeLayout::Struct" 6.
+  Axiom IsDiscriminant_MoveTypeLayout_Signer :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveTypeLayout::Signer" 7.
+  Axiom IsDiscriminant_MoveTypeLayout_U16 :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveTypeLayout::U16" 8.
+  Axiom IsDiscriminant_MoveTypeLayout_U32 :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveTypeLayout::U32" 9.
+  Axiom IsDiscriminant_MoveTypeLayout_U256 :
+    M.IsDiscriminant "move_core_types::annotated_value::MoveTypeLayout::U256" 10.
   
   Module Impl_core_fmt_Debug_for_move_core_types_annotated_value_MoveTypeLayout.
     Definition Self : Ty.t := Ty.path "move_core_types::annotated_value::MoveTypeLayout".

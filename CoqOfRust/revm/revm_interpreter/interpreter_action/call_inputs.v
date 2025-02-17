@@ -1649,41 +1649,57 @@ Module interpreter_action.
           {
             name := "Call";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "CallCode";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "DelegateCall";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "StaticCall";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "ExtCall";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "ExtStaticCall";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "ExtDelegateCall";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_CallScheme_Call :
+      M.IsDiscriminant "revm_interpreter::interpreter_action::call_inputs::CallScheme::Call" 0.
+    Axiom IsDiscriminant_CallScheme_CallCode :
+      M.IsDiscriminant "revm_interpreter::interpreter_action::call_inputs::CallScheme::CallCode" 1.
+    Axiom IsDiscriminant_CallScheme_DelegateCall :
+      M.IsDiscriminant
+        "revm_interpreter::interpreter_action::call_inputs::CallScheme::DelegateCall"
+        2.
+    Axiom IsDiscriminant_CallScheme_StaticCall :
+      M.IsDiscriminant
+        "revm_interpreter::interpreter_action::call_inputs::CallScheme::StaticCall"
+        3.
+    Axiom IsDiscriminant_CallScheme_ExtCall :
+      M.IsDiscriminant "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtCall" 4.
+    Axiom IsDiscriminant_CallScheme_ExtStaticCall :
+      M.IsDiscriminant
+        "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtStaticCall"
+        5.
+    Axiom IsDiscriminant_CallScheme_ExtDelegateCall :
+      M.IsDiscriminant
+        "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtDelegateCall"
+        6.
     
     Module Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
       Definition Self : Ty.t :=
@@ -2124,7 +2140,6 @@ Module interpreter_action.
                     [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                     []
                 ];
-            discriminant := None;
           };
           {
             name := "Apparent";
@@ -2136,11 +2151,15 @@ Module interpreter_action.
                     [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                     []
                 ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_CallValue_Transfer :
+      M.IsDiscriminant "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer" 0.
+    Axiom IsDiscriminant_CallValue_Apparent :
+      M.IsDiscriminant "revm_interpreter::interpreter_action::call_inputs::CallValue::Apparent" 1.
     
     Module Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
       Definition Self : Ty.t :=

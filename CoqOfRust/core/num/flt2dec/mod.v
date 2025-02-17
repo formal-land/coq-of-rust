@@ -2653,16 +2653,17 @@ Module num.
           {
             name := "Minus";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "MinusPlus";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_Sign_Minus : M.IsDiscriminant "core::num::flt2dec::Sign::Minus" 0.
+    Axiom IsDiscriminant_Sign_MinusPlus : M.IsDiscriminant "core::num::flt2dec::Sign::MinusPlus" 1.
     
     Module Impl_core_marker_Copy_for_core_num_flt2dec_Sign.
       Definition Self : Ty.t := Ty.path "core::num::flt2dec::Sign".

@@ -21,16 +21,23 @@ Module reference_safety.
           {
             name := "Reference";
             item := StructTuple [ Ty.path "move_borrow_graph::references::RefID" ];
-            discriminant := None;
           };
           {
             name := "NonReference";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_AbstractValue_Reference :
+      M.IsDiscriminant
+        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::Reference"
+        0.
+    Axiom IsDiscriminant_AbstractValue_NonReference :
+      M.IsDiscriminant
+        "move_bytecode_verifier::reference_safety::abstract_state::AbstractValue::NonReference"
+        1.
     
     Module Impl_core_clone_Clone_for_move_bytecode_verifier_reference_safety_abstract_state_AbstractValue.
       Definition Self : Ty.t :=
@@ -461,22 +468,26 @@ Module reference_safety.
           {
             name := "Local";
             item := StructTuple [ Ty.path "u8" ];
-            discriminant := None;
           };
           {
             name := "Global";
             item :=
               StructTuple [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ];
-            discriminant := None;
           };
           {
             name := "Field";
             item := StructTuple [ Ty.path "move_binary_format::file_format::FieldHandleIndex" ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_Label_Local :
+      M.IsDiscriminant "move_bytecode_verifier::reference_safety::abstract_state::Label::Local" 0.
+    Axiom IsDiscriminant_Label_Global :
+      M.IsDiscriminant "move_bytecode_verifier::reference_safety::abstract_state::Label::Global" 1.
+    Axiom IsDiscriminant_Label_Field :
+      M.IsDiscriminant "move_bytecode_verifier::reference_safety::abstract_state::Label::Field" 2.
     
     Module Impl_core_clone_Clone_for_move_bytecode_verifier_reference_safety_abstract_state_Label.
       Definition Self : Ty.t :=

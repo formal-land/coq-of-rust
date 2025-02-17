@@ -11,16 +11,19 @@ Enum VeryVerboseEnumOfThingsToDoWithNumbers
       {
         name := "Add";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Subtract";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_VeryVerboseEnumOfThingsToDoWithNumbers_Add :
+  M.IsDiscriminant "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers::Add" 0.
+Axiom IsDiscriminant_VeryVerboseEnumOfThingsToDoWithNumbers_Subtract :
+  M.IsDiscriminant "enums_type_aliases_v1::VeryVerboseEnumOfThingsToDoWithNumbers::Subtract" 1.
 
 Axiom Operations :
   (Ty.path "enums_type_aliases_v1::Operations") =

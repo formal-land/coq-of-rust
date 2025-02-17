@@ -11,31 +11,37 @@ Enum Fruit
       {
         name := "Apple";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Orange";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Banana";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Kiwi";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "Lemon";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Fruit_Apple :
+  M.IsDiscriminant "unpacking_options_and_defaults_via_or_else::Fruit::Apple" 0.
+Axiom IsDiscriminant_Fruit_Orange :
+  M.IsDiscriminant "unpacking_options_and_defaults_via_or_else::Fruit::Orange" 1.
+Axiom IsDiscriminant_Fruit_Banana :
+  M.IsDiscriminant "unpacking_options_and_defaults_via_or_else::Fruit::Banana" 2.
+Axiom IsDiscriminant_Fruit_Kiwi :
+  M.IsDiscriminant "unpacking_options_and_defaults_via_or_else::Fruit::Kiwi" 3.
+Axiom IsDiscriminant_Fruit_Lemon :
+  M.IsDiscriminant "unpacking_options_and_defaults_via_or_else::Fruit::Lemon" 4.
 
 Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_or_else_Fruit.
   Definition Self : Ty.t := Ty.path "unpacking_options_and_defaults_via_or_else::Fruit".

@@ -1436,16 +1436,19 @@ Module char.
                   [ Value.Integer IntegerKind.Usize 10 ]
                   []
               ];
-          discriminant := None;
         };
         {
           name := "Char";
           item := StructTuple [ Ty.path "char" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_EscapeDebugInner_Bytes :
+    M.IsDiscriminant "core::char::EscapeDebugInner::Bytes" 0.
+  Axiom IsDiscriminant_EscapeDebugInner_Char :
+    M.IsDiscriminant "core::char::EscapeDebugInner::Char" 1.
   
   Module Impl_core_clone_Clone_for_core_char_EscapeDebugInner.
     Definition Self : Ty.t := Ty.path "core::char::EscapeDebugInner".

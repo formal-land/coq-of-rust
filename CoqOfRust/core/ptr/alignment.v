@@ -1112,326 +1112,391 @@ Module ptr.
           {
             name := "_Align1Shl0";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl1";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl2";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl3";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl4";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl5";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl6";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl7";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl8";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl9";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl10";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl11";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl12";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl13";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl14";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl15";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl16";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl17";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl18";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl19";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl20";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl21";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl22";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl23";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl24";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl25";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl26";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl27";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl28";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl29";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl30";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl31";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl32";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl33";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl34";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl35";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl36";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl37";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl38";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl39";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl40";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl41";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl42";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl43";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl44";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl45";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl46";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl47";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl48";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl49";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl50";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl51";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl52";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl53";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl54";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl55";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl56";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl57";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl58";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl59";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl60";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl61";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl62";
             item := StructTuple [];
-            discriminant := None;
           };
           {
             name := "_Align1Shl63";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl0 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl0" 0.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl1 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl1" 1.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl2 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl2" 2.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl3 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl3" 3.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl4 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl4" 4.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl5 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl5" 5.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl6 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl6" 6.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl7 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl7" 7.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl8 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl8" 8.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl9 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl9" 9.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl10 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl10" 10.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl11 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl11" 11.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl12 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl12" 12.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl13 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl13" 13.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl14 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl14" 14.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl15 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl15" 15.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl16 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl16" 16.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl17 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl17" 17.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl18 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl18" 18.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl19 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl19" 19.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl20 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl20" 20.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl21 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl21" 21.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl22 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl22" 22.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl23 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl23" 23.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl24 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl24" 24.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl25 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl25" 25.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl26 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl26" 26.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl27 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl27" 27.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl28 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl28" 28.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl29 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl29" 29.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl30 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl30" 30.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl31 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl31" 31.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl32 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl32" 32.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl33 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl33" 33.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl34 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl34" 34.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl35 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl35" 35.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl36 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl36" 36.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl37 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl37" 37.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl38 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl38" 38.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl39 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl39" 39.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl40 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl40" 40.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl41 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl41" 41.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl42 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl42" 42.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl43 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl43" 43.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl44 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl44" 44.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl45 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl45" 45.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl46 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl46" 46.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl47 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl47" 47.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl48 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl48" 48.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl49 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl49" 49.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl50 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl50" 50.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl51 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl51" 51.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl52 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl52" 52.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl53 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl53" 53.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl54 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl54" 54.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl55 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl55" 55.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl56 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl56" 56.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl57 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl57" 57.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl58 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl58" 58.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl59 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl59" 59.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl60 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl60" 60.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl61 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl61" 61.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl62 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl62" 62.
+    Axiom IsDiscriminant_AlignmentEnum__Align1Shl63 :
+      M.IsDiscriminant "core::ptr::alignment::AlignmentEnum::_Align1Shl63" 63.
     
     Module Impl_core_marker_Copy_for_core_ptr_alignment_AlignmentEnum.
       Definition Self : Ty.t := Ty.path "core::ptr::alignment::AlignmentEnum".

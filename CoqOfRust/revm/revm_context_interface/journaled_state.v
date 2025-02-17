@@ -72,21 +72,25 @@ Module journaled_state.
         {
           name := "OutOfFunds";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OverflowPayment";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateCollision";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_TransferError_OutOfFunds :
+    M.IsDiscriminant "revm_context_interface::journaled_state::TransferError::OutOfFunds" 0.
+  Axiom IsDiscriminant_TransferError_OverflowPayment :
+    M.IsDiscriminant "revm_context_interface::journaled_state::TransferError::OverflowPayment" 1.
+  Axiom IsDiscriminant_TransferError_CreateCollision :
+    M.IsDiscriminant "revm_context_interface::journaled_state::TransferError::CreateCollision" 2.
   
   Module Impl_core_marker_Copy_for_revm_context_interface_journaled_state_TransferError.
     Definition Self : Ty.t := Ty.path "revm_context_interface::journaled_state::TransferError".

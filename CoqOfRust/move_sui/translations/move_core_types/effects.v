@@ -12,21 +12,22 @@ Module effects.
         {
           name := "New";
           item := StructTuple [ T ];
-          discriminant := None;
         };
         {
           name := "Modify";
           item := StructTuple [ T ];
-          discriminant := None;
         };
         {
           name := "Delete";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Op_New : M.IsDiscriminant "move_core_types::effects::Op::New" 0.
+  Axiom IsDiscriminant_Op_Modify : M.IsDiscriminant "move_core_types::effects::Op::Modify" 1.
+  Axiom IsDiscriminant_Op_Delete : M.IsDiscriminant "move_core_types::effects::Op::Delete" 2.
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_move_core_types_effects_Op_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ].

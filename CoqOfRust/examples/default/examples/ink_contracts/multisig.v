@@ -508,16 +508,19 @@ Enum ConfirmationStatus
       {
         name := "Confirmed";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "ConfirmationsNeeded";
         item := StructTuple [ Ty.path "u32" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_ConfirmationStatus_Confirmed :
+  M.IsDiscriminant "multisig::ConfirmationStatus::Confirmed" 0.
+Axiom IsDiscriminant_ConfirmationStatus_ConfirmationsNeeded :
+  M.IsDiscriminant "multisig::ConfirmationStatus::ConfirmationsNeeded" 1.
 
 Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
   Definition Self : Ty.t := Ty.path "multisig::ConfirmationStatus".
@@ -693,11 +696,13 @@ Enum Error
       {
         name := "TransactionFailed";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Error_TransactionFailed :
+  M.IsDiscriminant "multisig::Error::TransactionFailed" 0.
 
 Module Impl_core_clone_Clone_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".
@@ -957,46 +962,48 @@ Enum Event
       {
         name := "Confirmation";
         item := StructTuple [ Ty.path "multisig::Confirmation" ];
-        discriminant := None;
       };
       {
         name := "Revocation";
         item := StructTuple [ Ty.path "multisig::Revocation" ];
-        discriminant := None;
       };
       {
         name := "Submission";
         item := StructTuple [ Ty.path "multisig::Submission" ];
-        discriminant := None;
       };
       {
         name := "Cancellation";
         item := StructTuple [ Ty.path "multisig::Cancellation" ];
-        discriminant := None;
       };
       {
         name := "Execution";
         item := StructTuple [ Ty.path "multisig::Execution" ];
-        discriminant := None;
       };
       {
         name := "OwnerAddition";
         item := StructTuple [ Ty.path "multisig::OwnerAddition" ];
-        discriminant := None;
       };
       {
         name := "OwnerRemoval";
         item := StructTuple [ Ty.path "multisig::OwnerRemoval" ];
-        discriminant := None;
       };
       {
         name := "RequirementChange";
         item := StructTuple [ Ty.path "multisig::RequirementChange" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Event_Confirmation : M.IsDiscriminant "multisig::Event::Confirmation" 0.
+Axiom IsDiscriminant_Event_Revocation : M.IsDiscriminant "multisig::Event::Revocation" 1.
+Axiom IsDiscriminant_Event_Submission : M.IsDiscriminant "multisig::Event::Submission" 2.
+Axiom IsDiscriminant_Event_Cancellation : M.IsDiscriminant "multisig::Event::Cancellation" 3.
+Axiom IsDiscriminant_Event_Execution : M.IsDiscriminant "multisig::Event::Execution" 4.
+Axiom IsDiscriminant_Event_OwnerAddition : M.IsDiscriminant "multisig::Event::OwnerAddition" 5.
+Axiom IsDiscriminant_Event_OwnerRemoval : M.IsDiscriminant "multisig::Event::OwnerRemoval" 6.
+Axiom IsDiscriminant_Event_RequirementChange :
+  M.IsDiscriminant "multisig::Event::RequirementChange" 7.
 
 Module Impl_multisig_Env.
   Definition Self : Ty.t := Ty.path "multisig::Env".

@@ -166,16 +166,17 @@ Module borrow.
         {
           name := "Borrowed";
           item := StructTuple [ Ty.apply (Ty.path "&") [] [ B ] ];
-          discriminant := None;
         };
         {
           name := "Owned";
           item := StructTuple [ Ty.associated ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Cow_Borrowed : M.IsDiscriminant "alloc::borrow::Cow::Borrowed" 0.
+  Axiom IsDiscriminant_Cow_Owned : M.IsDiscriminant "alloc::borrow::Cow::Owned" 1.
   
   Module Impl_core_clone_Clone_where_core_marker_Sized_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
     Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].

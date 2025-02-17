@@ -102,8 +102,6 @@ Module Impl_Gas.
   Definition limit (self : Self) : U64.t :=
     self.(Gas.limit).
 
-  Eval cbn [M.evaluate Impl_Gas.run_limit] in fun self => M.evaluate (Impl_Gas.run_limit self).
-
   (* Lemma run_limit (self : Self) :
     {{
       M.evaluate (Impl_Gas.run_limit self) 🌲

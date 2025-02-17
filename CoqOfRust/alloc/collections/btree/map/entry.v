@@ -22,7 +22,6 @@ Module collections.
                         []
                         [ K; V; A ]
                     ];
-                discriminant := None;
               };
               {
                 name := "Occupied";
@@ -34,11 +33,15 @@ Module collections.
                         []
                         [ K; V; A ]
                     ];
-                discriminant := None;
               }
             ];
         }
         *)
+        
+        Axiom IsDiscriminant_Entry_Vacant :
+          M.IsDiscriminant "alloc::collections::btree::map::entry::Entry::Vacant" 0.
+        Axiom IsDiscriminant_Entry_Occupied :
+          M.IsDiscriminant "alloc::collections::btree::map::entry::Entry::Occupied" 1.
         
         Module Impl_core_fmt_Debug_where_core_fmt_Debug_K_where_core_cmp_Ord_K_where_core_fmt_Debug_V_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_btree_map_entry_Entry_K_V_A.
           Definition Self (K V A : Ty.t) : Ty.t :=

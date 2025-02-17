@@ -15,11 +15,13 @@ Enum LangError
       {
         name := "CouldNotReadInput";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_LangError_CouldNotReadInput :
+  M.IsDiscriminant "call_builder_delegate::LangError::CouldNotReadInput" 0.
 
 (* StructRecord
   {

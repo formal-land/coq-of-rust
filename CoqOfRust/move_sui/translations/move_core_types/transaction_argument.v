@@ -12,22 +12,18 @@ Module transaction_argument.
         {
           name := "U8";
           item := StructTuple [ Ty.path "u8" ];
-          discriminant := None;
         };
         {
           name := "U64";
           item := StructTuple [ Ty.path "u64" ];
-          discriminant := None;
         };
         {
           name := "U128";
           item := StructTuple [ Ty.path "u128" ];
-          discriminant := None;
         };
         {
           name := "Address";
           item := StructTuple [ Ty.path "move_core_types::account_address::AccountAddress" ];
-          discriminant := None;
         };
         {
           name := "U8Vector";
@@ -39,31 +35,45 @@ Module transaction_argument.
                   []
                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
               ];
-          discriminant := None;
         };
         {
           name := "Bool";
           item := StructTuple [ Ty.path "bool" ];
-          discriminant := None;
         };
         {
           name := "U16";
           item := StructTuple [ Ty.path "u16" ];
-          discriminant := None;
         };
         {
           name := "U32";
           item := StructTuple [ Ty.path "u32" ];
-          discriminant := None;
         };
         {
           name := "U256";
           item := StructTuple [ Ty.path "move_core_types::u256::U256" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_TransactionArgument_U8 :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::U8" 0.
+  Axiom IsDiscriminant_TransactionArgument_U64 :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::U64" 1.
+  Axiom IsDiscriminant_TransactionArgument_U128 :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::U128" 2.
+  Axiom IsDiscriminant_TransactionArgument_Address :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::Address" 3.
+  Axiom IsDiscriminant_TransactionArgument_U8Vector :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::U8Vector" 4.
+  Axiom IsDiscriminant_TransactionArgument_Bool :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::Bool" 5.
+  Axiom IsDiscriminant_TransactionArgument_U16 :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::U16" 6.
+  Axiom IsDiscriminant_TransactionArgument_U32 :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::U32" 7.
+  Axiom IsDiscriminant_TransactionArgument_U256 :
+    M.IsDiscriminant "move_core_types::transaction_argument::TransactionArgument::U256" 8.
   
   Module Impl_core_clone_Clone_for_move_core_types_transaction_argument_TransactionArgument.
     Definition Self : Ty.t := Ty.path "move_core_types::transaction_argument::TransactionArgument".

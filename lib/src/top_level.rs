@@ -128,7 +128,7 @@ struct TraitImplItem {
 struct TypeEnumVariant {
     name: String,
     item: Rc<VariantItem>,
-    discriminant: Option<u128>,
+    discriminant: u128,
 }
 
 /// Representation of top-level hir [Item]s in coq-of-rust
@@ -155,6 +155,7 @@ enum TopLevelItem {
     },
     TypeEnum {
         name: String,
+        path: Rc<Path>,
         const_params: Vec<String>,
         ty_params: Vec<String>,
         variants: Vec<Rc<TypeEnumVariant>>,
@@ -456,9 +457,11 @@ fn compile_top_level_item_without_local_items<'a>(
         ItemKind::Enum(enum_def, generics) => {
             let const_params = get_const_params(env, generics);
             let ty_params = get_ty_params(env, generics);
+            let mut discriminant: u128 = 0;
 
             vec![Rc::new(TopLevelItem::TypeEnum {
                 name,
+                path,
                 const_params,
                 ty_params,
                 variants: enum_def
@@ -491,27 +494,31 @@ fn compile_top_level_item_without_local_items<'a>(
                             }
                             VariantData::Unit(_, _) => VariantItem::Tuple { tys: vec![] },
                         };
-                        let discriminant = match &variant.disr_expr {
-                            None => None,
-                            Some(annon_const) => {
-                                let body = env.tcx.hir().body(annon_const.body);
-                                let value = body.value;
-
-                                match value.kind {
-                                    rustc_hir::ExprKind::Lit(rustc_span::source_map::Spanned {
-                                        node: rustc_ast::ast::LitKind::Int(discriminant, _),
-                                        ..
-                                    }) => Some(discriminant.get()),
-                                    _ => None,
+                        if let Some(annon_const) = &variant.disr_expr {
+                            let body = env.tcx.hir().body(annon_const.body);
+                            let value = body.value;
+                            match value.kind {
+                                rustc_hir::ExprKind::Lit(rustc_span::source_map::Spanned {
+                                    node: rustc_ast::ast::LitKind::Int(explicit_discriminant, _),
+                                    ..
+                                }) => discriminant = explicit_discriminant.get(),
+                                _ => {
+                                    let span = &item.span;
+                                    let warning_msg = "Only explicit discriminants are supported.";
+                                    let note_msg = "Replace it by a computed value.";
+                                    emit_warning_with_note(env, span, warning_msg, Some(note_msg));
                                 }
                             }
-                        };
-
-                        Rc::new(TypeEnumVariant {
+                        }
+                        let result = Rc::new(TypeEnumVariant {
                             name,
                             item: Rc::new(fields),
                             discriminant,
-                        })
+                        });
+
+                        discriminant += 1;
+
+                        result
                     })
                     .collect(),
             })]
@@ -1658,7 +1665,7 @@ impl TypeEnumVariant {
         let Self {
             name,
             item,
-            discriminant,
+            discriminant: _,
         } = self;
 
         Rc::new(coq::Expression::Record {
@@ -1672,13 +1679,6 @@ impl TypeEnumVariant {
                     name: "item".to_string(),
                     args: vec![],
                     body: item.to_coq(),
-                }),
-                Rc::new(coq::Field {
-                    name: "discriminant".to_string(),
-                    args: vec![],
-                    body: coq::Expression::of_option(discriminant, |discriminant| {
-                        Rc::new(coq::Expression::U128(*discriminant))
-                    }),
                 }),
             ],
         })
@@ -1845,43 +1845,74 @@ impl TopLevelItem {
             ))],
             TopLevelItem::TypeEnum {
                 name,
+                path,
                 const_params,
                 ty_params,
                 variants,
-            } => vec![Rc::new(coq::TopLevelItem::Comment(vec![
-                Rc::new(coq::Expression::Message(format!("Enum {name}"))),
-                Rc::new(coq::Expression::Record {
-                    fields: vec![
-                        Rc::new(coq::Field {
-                            name: "const_params".to_string(),
-                            args: vec![],
-                            body: Rc::new(coq::Expression::List {
-                                exprs: const_params
-                                    .iter()
-                                    .map(|name| Rc::new(coq::Expression::String(name.to_string())))
-                                    .collect(),
-                            }),
+            } => [
+                vec![
+                    Rc::new(coq::TopLevelItem::Comment(vec![
+                        Rc::new(coq::Expression::Message(format!("Enum {name}"))),
+                        Rc::new(coq::Expression::Record {
+                            fields: vec![
+                                Rc::new(coq::Field {
+                                    name: "const_params".to_string(),
+                                    args: vec![],
+                                    body: Rc::new(coq::Expression::List {
+                                        exprs: const_params
+                                            .iter()
+                                            .map(|name| {
+                                                Rc::new(coq::Expression::String(name.to_string()))
+                                            })
+                                            .collect(),
+                                    }),
+                                }),
+                                Rc::new(coq::Field {
+                                    name: "ty_params".to_string(),
+                                    args: vec![],
+                                    body: Rc::new(coq::Expression::List {
+                                        exprs: ty_params
+                                            .iter()
+                                            .map(|name| {
+                                                Rc::new(coq::Expression::String(name.to_string()))
+                                            })
+                                            .collect(),
+                                    }),
+                                }),
+                                Rc::new(coq::Field {
+                                    name: "variants".to_string(),
+                                    args: vec![],
+                                    body: Rc::new(coq::Expression::List {
+                                        exprs: variants
+                                            .iter()
+                                            .map(|variant| variant.to_coq())
+                                            .collect(),
+                                    }),
+                                }),
+                            ],
                         }),
-                        Rc::new(coq::Field {
-                            name: "ty_params".to_string(),
-                            args: vec![],
-                            body: Rc::new(coq::Expression::List {
-                                exprs: ty_params
-                                    .iter()
-                                    .map(|name| Rc::new(coq::Expression::String(name.to_string())))
-                                    .collect(),
+                    ])),
+                    Rc::new(coq::TopLevelItem::Line),
+                ],
+                variants
+                    .iter()
+                    .map(|variant| {
+                        Rc::new(coq::TopLevelItem::Definition(coq::Definition::new(
+                            &format!("IsDiscriminant_{name}_{}", variant.name),
+                            Rc::new(coq::DefinitionKind::Axiom {
+                                ty: coq::Expression::just_name("M.IsDiscriminant").apply_many(&[
+                                    Rc::new(coq::Expression::String(format!(
+                                        "{path}::{}",
+                                        variant.name
+                                    ))),
+                                    Rc::new(coq::Expression::U128(variant.discriminant)),
+                                ]),
                             }),
-                        }),
-                        Rc::new(coq::Field {
-                            name: "variants".to_string(),
-                            args: vec![],
-                            body: Rc::new(coq::Expression::List {
-                                exprs: variants.iter().map(|variant| variant.to_coq()).collect(),
-                            }),
-                        }),
-                    ],
-                }),
-            ]))],
+                        )))
+                    })
+                    .collect(),
+            ]
+            .concat(),
             TopLevelItem::TypeStructStruct(tss) => {
                 vec![Rc::new(coq::TopLevelItem::Comment(vec![tss.to_coq()]))]
             }

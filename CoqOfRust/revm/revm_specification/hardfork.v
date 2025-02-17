@@ -12,111 +12,133 @@ Module hardfork.
         {
           name := "FRONTIER";
           item := StructTuple [];
-          discriminant := Some 0;
         };
         {
           name := "FRONTIER_THAWING";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "HOMESTEAD";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "DAO_FORK";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "TANGERINE";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "SPURIOUS_DRAGON";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BYZANTIUM";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CONSTANTINOPLE";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "PETERSBURG";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ISTANBUL";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "MUIR_GLACIER";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BERLIN";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "LONDON";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ARROW_GLACIER";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "GRAY_GLACIER";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "MERGE";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "SHANGHAI";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CANCUN";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "PRAGUE";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OSAKA";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "LATEST";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_SpecId_FRONTIER :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::FRONTIER" 0.
+  Axiom IsDiscriminant_SpecId_FRONTIER_THAWING :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::FRONTIER_THAWING" 1.
+  Axiom IsDiscriminant_SpecId_HOMESTEAD :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::HOMESTEAD" 2.
+  Axiom IsDiscriminant_SpecId_DAO_FORK :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::DAO_FORK" 3.
+  Axiom IsDiscriminant_SpecId_TANGERINE :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::TANGERINE" 4.
+  Axiom IsDiscriminant_SpecId_SPURIOUS_DRAGON :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON" 5.
+  Axiom IsDiscriminant_SpecId_BYZANTIUM :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::BYZANTIUM" 6.
+  Axiom IsDiscriminant_SpecId_CONSTANTINOPLE :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::CONSTANTINOPLE" 7.
+  Axiom IsDiscriminant_SpecId_PETERSBURG :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::PETERSBURG" 8.
+  Axiom IsDiscriminant_SpecId_ISTANBUL :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::ISTANBUL" 9.
+  Axiom IsDiscriminant_SpecId_MUIR_GLACIER :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::MUIR_GLACIER" 10.
+  Axiom IsDiscriminant_SpecId_BERLIN :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::BERLIN" 11.
+  Axiom IsDiscriminant_SpecId_LONDON :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::LONDON" 12.
+  Axiom IsDiscriminant_SpecId_ARROW_GLACIER :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::ARROW_GLACIER" 13.
+  Axiom IsDiscriminant_SpecId_GRAY_GLACIER :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::GRAY_GLACIER" 14.
+  Axiom IsDiscriminant_SpecId_MERGE :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::MERGE" 15.
+  Axiom IsDiscriminant_SpecId_SHANGHAI :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::SHANGHAI" 16.
+  Axiom IsDiscriminant_SpecId_CANCUN :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::CANCUN" 17.
+  Axiom IsDiscriminant_SpecId_PRAGUE :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::PRAGUE" 18.
+  Axiom IsDiscriminant_SpecId_OSAKA :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::OSAKA" 19.
+  Axiom IsDiscriminant_SpecId_LATEST :
+    M.IsDiscriminant "revm_specification::hardfork::SpecId::LATEST" 20.
   
   Module Impl_core_clone_Clone_for_revm_specification_hardfork_SpecId.
     Definition Self : Ty.t := Ty.path "revm_specification::hardfork::SpecId".

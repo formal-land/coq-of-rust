@@ -11,31 +11,32 @@ Enum WebEvent
       {
         name := "PageLoad";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "PageUnload";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "KeyPress";
         item := StructTuple [ Ty.path "char" ];
-        discriminant := None;
       };
       {
         name := "Paste";
         item := StructTuple [ Ty.path "alloc::string::String" ];
-        discriminant := None;
       };
       {
         name := "Click";
         item := StructRecord [ ("x", Ty.path "i64"); ("y", Ty.path "i64") ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_WebEvent_PageLoad : M.IsDiscriminant "enums::WebEvent::PageLoad" 0.
+Axiom IsDiscriminant_WebEvent_PageUnload : M.IsDiscriminant "enums::WebEvent::PageUnload" 1.
+Axiom IsDiscriminant_WebEvent_KeyPress : M.IsDiscriminant "enums::WebEvent::KeyPress" 2.
+Axiom IsDiscriminant_WebEvent_Paste : M.IsDiscriminant "enums::WebEvent::Paste" 3.
+Axiom IsDiscriminant_WebEvent_Click : M.IsDiscriminant "enums::WebEvent::Click" 4.
 
 Parameter inspect : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 

@@ -427,7 +427,6 @@ Module result.
                     ]);
                 ("output", Ty.path "revm_context_interface::result::Output")
               ];
-          discriminant := None;
         };
         {
           name := "Revert";
@@ -435,16 +434,21 @@ Module result.
             StructRecord
               [ ("gas_used", Ty.path "u64"); ("output", Ty.path "alloy_primitives::bytes_::Bytes")
               ];
-          discriminant := None;
         };
         {
           name := "Halt";
           item := StructRecord [ ("reason", HaltReasonT); ("gas_used", Ty.path "u64") ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_ExecutionResult_Success :
+    M.IsDiscriminant "revm_context_interface::result::ExecutionResult::Success" 0.
+  Axiom IsDiscriminant_ExecutionResult_Revert :
+    M.IsDiscriminant "revm_context_interface::result::ExecutionResult::Revert" 1.
+  Axiom IsDiscriminant_ExecutionResult_Halt :
+    M.IsDiscriminant "revm_context_interface::result::ExecutionResult::Halt" 2.
   
   Module Impl_core_clone_Clone_where_core_clone_Clone_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
     Definition Self (HaltReasonT : Ty.t) : Ty.t :=
@@ -2412,7 +2416,6 @@ Module result.
         {
           name := "Call";
           item := StructTuple [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-          discriminant := None;
         };
         {
           name := "Create";
@@ -2425,11 +2428,15 @@ Module result.
                   []
                   [ Ty.path "alloy_primitives::bits::address::Address" ]
               ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Output_Call :
+    M.IsDiscriminant "revm_context_interface::result::Output::Call" 0.
+  Axiom IsDiscriminant_Output_Create :
+    M.IsDiscriminant "revm_context_interface::result::Output::Create" 1.
   
   Module Impl_core_fmt_Debug_for_revm_context_interface_result_Output.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::Output".
@@ -3262,31 +3269,37 @@ Module result.
         {
           name := "Transaction";
           item := StructTuple [ TransactionError ];
-          discriminant := None;
         };
         {
           name := "Header";
           item := StructTuple [ Ty.path "revm_context_interface::result::InvalidHeader" ];
-          discriminant := None;
         };
         {
           name := "Database";
           item := StructTuple [ DBError ];
-          discriminant := None;
         };
         {
           name := "Custom";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         };
         {
           name := "Precompile";
           item := StructTuple [ Ty.path "alloc::string::String" ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_EVMError_Transaction :
+    M.IsDiscriminant "revm_context_interface::result::EVMError::Transaction" 0.
+  Axiom IsDiscriminant_EVMError_Header :
+    M.IsDiscriminant "revm_context_interface::result::EVMError::Header" 1.
+  Axiom IsDiscriminant_EVMError_Database :
+    M.IsDiscriminant "revm_context_interface::result::EVMError::Database" 2.
+  Axiom IsDiscriminant_EVMError_Custom :
+    M.IsDiscriminant "revm_context_interface::result::EVMError::Custom" 3.
+  Axiom IsDiscriminant_EVMError_Precompile :
+    M.IsDiscriminant "revm_context_interface::result::EVMError::Precompile" 4.
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_DBError_where_core_fmt_Debug_TransactionError_for_revm_context_interface_result_EVMError_DBError_TransactionError.
     Definition Self (DBError TransactionError : Ty.t) : Ty.t :=
@@ -4843,27 +4856,22 @@ Module result.
         {
           name := "PriorityFeeGreaterThanMaxFee";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "GasPriceLessThanBasefee";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CallerGasLimitMoreThanBlock";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CallGasCostMoreThanGasLimit";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "RejectCallerWithCode";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "LackOfFundForMaxFee";
@@ -4893,128 +4901,197 @@ Module result.
                       Ty.path "alloc::alloc::Global"
                     ])
               ];
-          discriminant := None;
         };
         {
           name := "OverflowPaymentInTransaction";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "NonceOverflowInTransaction";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "NonceTooHigh";
           item := StructRecord [ ("tx", Ty.path "u64"); ("state", Ty.path "u64") ];
-          discriminant := None;
         };
         {
           name := "NonceTooLow";
           item := StructRecord [ ("tx", Ty.path "u64"); ("state", Ty.path "u64") ];
-          discriminant := None;
         };
         {
           name := "CreateInitCodeSizeLimit";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidChainId";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "AccessListNotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "MaxFeePerBlobGasNotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BlobVersionedHashesNotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BlobGasPriceGreaterThanMax";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EmptyBlobs";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "BlobCreateTransaction";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "TooManyBlobs";
           item := StructRecord [ ("max", Ty.path "usize"); ("have", Ty.path "usize") ];
-          discriminant := None;
         };
         {
           name := "BlobVersionNotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EofCrateShouldHaveToAddress";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "AuthorizationListNotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "AuthorizationListInvalidFields";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EmptyAuthorizationList";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidAuthorizationList";
           item :=
             StructTuple
               [ Ty.path "revm_specification::eip7702::authorization_list::InvalidAuthorization" ];
-          discriminant := None;
         };
         {
           name := "Eip2930NotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Eip1559NotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Eip4844NotSupported";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Eip7702NotSupported";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_InvalidTransaction_PriorityFeeGreaterThanMaxFee :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::PriorityFeeGreaterThanMaxFee"
+      0.
+  Axiom IsDiscriminant_InvalidTransaction_GasPriceLessThanBasefee :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::GasPriceLessThanBasefee"
+      1.
+  Axiom IsDiscriminant_InvalidTransaction_CallerGasLimitMoreThanBlock :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::CallerGasLimitMoreThanBlock"
+      2.
+  Axiom IsDiscriminant_InvalidTransaction_CallGasCostMoreThanGasLimit :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::CallGasCostMoreThanGasLimit"
+      3.
+  Axiom IsDiscriminant_InvalidTransaction_RejectCallerWithCode :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::RejectCallerWithCode" 4.
+  Axiom IsDiscriminant_InvalidTransaction_LackOfFundForMaxFee :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee" 5.
+  Axiom IsDiscriminant_InvalidTransaction_OverflowPaymentInTransaction :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::OverflowPaymentInTransaction"
+      6.
+  Axiom IsDiscriminant_InvalidTransaction_NonceOverflowInTransaction :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::NonceOverflowInTransaction"
+      7.
+  Axiom IsDiscriminant_InvalidTransaction_NonceTooHigh :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::NonceTooHigh" 8.
+  Axiom IsDiscriminant_InvalidTransaction_NonceTooLow :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::NonceTooLow" 9.
+  Axiom IsDiscriminant_InvalidTransaction_CreateInitCodeSizeLimit :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::CreateInitCodeSizeLimit"
+      10.
+  Axiom IsDiscriminant_InvalidTransaction_InvalidChainId :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::InvalidChainId" 11.
+  Axiom IsDiscriminant_InvalidTransaction_AccessListNotSupported :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
+      12.
+  Axiom IsDiscriminant_InvalidTransaction_MaxFeePerBlobGasNotSupported :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::MaxFeePerBlobGasNotSupported"
+      13.
+  Axiom IsDiscriminant_InvalidTransaction_BlobVersionedHashesNotSupported :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::BlobVersionedHashesNotSupported"
+      14.
+  Axiom IsDiscriminant_InvalidTransaction_BlobGasPriceGreaterThanMax :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::BlobGasPriceGreaterThanMax"
+      15.
+  Axiom IsDiscriminant_InvalidTransaction_EmptyBlobs :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::EmptyBlobs" 16.
+  Axiom IsDiscriminant_InvalidTransaction_BlobCreateTransaction :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction" 17.
+  Axiom IsDiscriminant_InvalidTransaction_TooManyBlobs :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::TooManyBlobs" 18.
+  Axiom IsDiscriminant_InvalidTransaction_BlobVersionNotSupported :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::BlobVersionNotSupported"
+      19.
+  Axiom IsDiscriminant_InvalidTransaction_EofCrateShouldHaveToAddress :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::EofCrateShouldHaveToAddress"
+      20.
+  Axiom IsDiscriminant_InvalidTransaction_AuthorizationListNotSupported :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::AuthorizationListNotSupported"
+      21.
+  Axiom IsDiscriminant_InvalidTransaction_AuthorizationListInvalidFields :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::AuthorizationListInvalidFields"
+      22.
+  Axiom IsDiscriminant_InvalidTransaction_EmptyAuthorizationList :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::EmptyAuthorizationList"
+      23.
+  Axiom IsDiscriminant_InvalidTransaction_InvalidAuthorizationList :
+    M.IsDiscriminant
+      "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList"
+      24.
+  Axiom IsDiscriminant_InvalidTransaction_Eip2930NotSupported :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::Eip2930NotSupported" 25.
+  Axiom IsDiscriminant_InvalidTransaction_Eip1559NotSupported :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::Eip1559NotSupported" 26.
+  Axiom IsDiscriminant_InvalidTransaction_Eip4844NotSupported :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::Eip4844NotSupported" 27.
+  Axiom IsDiscriminant_InvalidTransaction_Eip7702NotSupported :
+    M.IsDiscriminant "revm_context_interface::result::InvalidTransaction::Eip7702NotSupported" 28.
   
   Module Impl_core_fmt_Debug_for_revm_context_interface_result_InvalidTransaction.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::InvalidTransaction".
@@ -9323,16 +9400,19 @@ Module result.
         {
           name := "PrevrandaoNotSet";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ExcessBlobGasNotSet";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_InvalidHeader_PrevrandaoNotSet :
+    M.IsDiscriminant "revm_context_interface::result::InvalidHeader::PrevrandaoNotSet" 0.
+  Axiom IsDiscriminant_InvalidHeader_ExcessBlobGasNotSet :
+    M.IsDiscriminant "revm_context_interface::result::InvalidHeader::ExcessBlobGasNotSet" 1.
   
   Module Impl_core_fmt_Debug_for_revm_context_interface_result_InvalidHeader.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::InvalidHeader".
@@ -9725,26 +9805,31 @@ Module result.
         {
           name := "Stop";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Return";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "SelfDestruct";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EofReturnContract";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_SuccessReason_Stop :
+    M.IsDiscriminant "revm_context_interface::result::SuccessReason::Stop" 0.
+  Axiom IsDiscriminant_SuccessReason_Return :
+    M.IsDiscriminant "revm_context_interface::result::SuccessReason::Return" 1.
+  Axiom IsDiscriminant_SuccessReason_SelfDestruct :
+    M.IsDiscriminant "revm_context_interface::result::SuccessReason::SelfDestruct" 2.
+  Axiom IsDiscriminant_SuccessReason_EofReturnContract :
+    M.IsDiscriminant "revm_context_interface::result::SuccessReason::EofReturnContract" 3.
   
   Module Impl_core_fmt_Debug_for_revm_context_interface_result_SuccessReason.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::SuccessReason".
@@ -10023,121 +10108,145 @@ Module result.
         {
           name := "OutOfGas";
           item := StructTuple [ Ty.path "revm_context_interface::result::OutOfGasError" ];
-          discriminant := None;
         };
         {
           name := "OpcodeNotFound";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidFEOpcode";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidJump";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "NotActivated";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "StackUnderflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "StackOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OutOfOffset";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateCollision";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "PrecompileError";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "NonceOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateContractSizeLimit";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateContractStartingWithEF";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CreateInitCodeSizeLimit";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OverflowPayment";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "StateChangeDuringStaticCall";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CallNotAllowedInsideStatic";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OutOfFunds";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "CallTooDeep";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EofAuxDataOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "EofAuxDataTooSmall";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "SubRoutineStackOverflow";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidEXTCALLTarget";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_HaltReason_OutOfGas :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::OutOfGas" 0.
+  Axiom IsDiscriminant_HaltReason_OpcodeNotFound :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::OpcodeNotFound" 1.
+  Axiom IsDiscriminant_HaltReason_InvalidFEOpcode :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::InvalidFEOpcode" 2.
+  Axiom IsDiscriminant_HaltReason_InvalidJump :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::InvalidJump" 3.
+  Axiom IsDiscriminant_HaltReason_NotActivated :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::NotActivated" 4.
+  Axiom IsDiscriminant_HaltReason_StackUnderflow :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::StackUnderflow" 5.
+  Axiom IsDiscriminant_HaltReason_StackOverflow :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::StackOverflow" 6.
+  Axiom IsDiscriminant_HaltReason_OutOfOffset :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::OutOfOffset" 7.
+  Axiom IsDiscriminant_HaltReason_CreateCollision :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::CreateCollision" 8.
+  Axiom IsDiscriminant_HaltReason_PrecompileError :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::PrecompileError" 9.
+  Axiom IsDiscriminant_HaltReason_NonceOverflow :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::NonceOverflow" 10.
+  Axiom IsDiscriminant_HaltReason_CreateContractSizeLimit :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::CreateContractSizeLimit" 11.
+  Axiom IsDiscriminant_HaltReason_CreateContractStartingWithEF :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::CreateContractStartingWithEF" 12.
+  Axiom IsDiscriminant_HaltReason_CreateInitCodeSizeLimit :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::CreateInitCodeSizeLimit" 13.
+  Axiom IsDiscriminant_HaltReason_OverflowPayment :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::OverflowPayment" 14.
+  Axiom IsDiscriminant_HaltReason_StateChangeDuringStaticCall :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::StateChangeDuringStaticCall" 15.
+  Axiom IsDiscriminant_HaltReason_CallNotAllowedInsideStatic :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::CallNotAllowedInsideStatic" 16.
+  Axiom IsDiscriminant_HaltReason_OutOfFunds :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::OutOfFunds" 17.
+  Axiom IsDiscriminant_HaltReason_CallTooDeep :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::CallTooDeep" 18.
+  Axiom IsDiscriminant_HaltReason_EofAuxDataOverflow :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::EofAuxDataOverflow" 19.
+  Axiom IsDiscriminant_HaltReason_EofAuxDataTooSmall :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::EofAuxDataTooSmall" 20.
+  Axiom IsDiscriminant_HaltReason_SubRoutineStackOverflow :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::SubRoutineStackOverflow" 21.
+  Axiom IsDiscriminant_HaltReason_InvalidEXTCALLTarget :
+    M.IsDiscriminant "revm_context_interface::result::HaltReason::InvalidEXTCALLTarget" 22.
   
   Module Impl_core_fmt_Debug_for_revm_context_interface_result_HaltReason.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::HaltReason".
@@ -11127,36 +11236,43 @@ Module result.
         {
           name := "Basic";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "MemoryLimit";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Memory";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Precompile";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidOperand";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "ReentrancySentry";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_OutOfGasError_Basic :
+    M.IsDiscriminant "revm_context_interface::result::OutOfGasError::Basic" 0.
+  Axiom IsDiscriminant_OutOfGasError_MemoryLimit :
+    M.IsDiscriminant "revm_context_interface::result::OutOfGasError::MemoryLimit" 1.
+  Axiom IsDiscriminant_OutOfGasError_Memory :
+    M.IsDiscriminant "revm_context_interface::result::OutOfGasError::Memory" 2.
+  Axiom IsDiscriminant_OutOfGasError_Precompile :
+    M.IsDiscriminant "revm_context_interface::result::OutOfGasError::Precompile" 3.
+  Axiom IsDiscriminant_OutOfGasError_InvalidOperand :
+    M.IsDiscriminant "revm_context_interface::result::OutOfGasError::InvalidOperand" 4.
+  Axiom IsDiscriminant_OutOfGasError_ReentrancySentry :
+    M.IsDiscriminant "revm_context_interface::result::OutOfGasError::ReentrancySentry" 5.
   
   Module Impl_core_fmt_Debug_for_revm_context_interface_result_OutOfGasError.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::OutOfGasError".

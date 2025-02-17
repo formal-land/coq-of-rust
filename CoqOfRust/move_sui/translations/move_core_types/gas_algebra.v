@@ -11,6 +11,7 @@ Module gas_algebra.
   }
   *)
   
+  
   (*
   Enum Byte
   {
@@ -19,6 +20,7 @@ Module gas_algebra.
     variants := [];
   }
   *)
+  
   
   (*
   Enum KibiByte
@@ -29,6 +31,7 @@ Module gas_algebra.
   }
   *)
   
+  
   (*
   Enum MebiByte
   {
@@ -37,6 +40,7 @@ Module gas_algebra.
     variants := [];
   }
   *)
+  
   
   (*
   Enum GibiByte
@@ -47,6 +51,7 @@ Module gas_algebra.
   }
   *)
   
+  
   (*
   Enum AbstractMemoryUnit
   {
@@ -56,6 +61,7 @@ Module gas_algebra.
   }
   *)
   
+  
   (*
   Enum Arg
   {
@@ -64,6 +70,7 @@ Module gas_algebra.
     variants := [];
   }
   *)
+  
   
   (* StructRecord
     {

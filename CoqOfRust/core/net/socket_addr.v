@@ -13,16 +13,19 @@ Module net.
           {
             name := "V4";
             item := StructTuple [ Ty.path "core::net::socket_addr::SocketAddrV4" ];
-            discriminant := None;
           };
           {
             name := "V6";
             item := StructTuple [ Ty.path "core::net::socket_addr::SocketAddrV6" ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_SocketAddr_V4 :
+      M.IsDiscriminant "core::net::socket_addr::SocketAddr::V4" 0.
+    Axiom IsDiscriminant_SocketAddr_V6 :
+      M.IsDiscriminant "core::net::socket_addr::SocketAddr::V6" 1.
     
     Module Impl_core_marker_Copy_for_core_net_socket_addr_SocketAddr.
       Definition Self : Ty.t := Ty.path "core::net::socket_addr::SocketAddr".

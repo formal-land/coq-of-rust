@@ -1208,21 +1208,25 @@ Module gas.
         {
           name := "Extended";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Same";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OutOfGas";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_MemoryExtensionResult_Extended :
+    M.IsDiscriminant "revm_interpreter::gas::MemoryExtensionResult::Extended" 0.
+  Axiom IsDiscriminant_MemoryExtensionResult_Same :
+    M.IsDiscriminant "revm_interpreter::gas::MemoryExtensionResult::Same" 1.
+  Axiom IsDiscriminant_MemoryExtensionResult_OutOfGas :
+    M.IsDiscriminant "revm_interpreter::gas::MemoryExtensionResult::OutOfGas" 2.
   
   (* StructRecord
     {

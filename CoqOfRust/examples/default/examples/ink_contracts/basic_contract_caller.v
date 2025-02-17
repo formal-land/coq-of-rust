@@ -91,6 +91,7 @@ Enum Error
 }
 *)
 
+
 (* StructRecord
   {
     name := "OtherContract";

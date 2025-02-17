@@ -1606,21 +1606,25 @@ Module eip7702.
         {
           name := "InvalidLength";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "InvalidMagic";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "UnsupportedVersion";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Eip7702DecodeError_InvalidLength :
+    M.IsDiscriminant "revm_bytecode::eip7702::Eip7702DecodeError::InvalidLength" 0.
+  Axiom IsDiscriminant_Eip7702DecodeError_InvalidMagic :
+    M.IsDiscriminant "revm_bytecode::eip7702::Eip7702DecodeError::InvalidMagic" 1.
+  Axiom IsDiscriminant_Eip7702DecodeError_UnsupportedVersion :
+    M.IsDiscriminant "revm_bytecode::eip7702::Eip7702DecodeError::UnsupportedVersion" 2.
   
   Module Impl_core_clone_Clone_for_revm_bytecode_eip7702_Eip7702DecodeError.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eip7702::Eip7702DecodeError".

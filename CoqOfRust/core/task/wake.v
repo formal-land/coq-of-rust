@@ -571,16 +571,17 @@ Module task.
             item :=
               StructTuple
                 [ Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::any::Any::Trait", []) ] ] ];
-            discriminant := None;
           };
           {
             name := "None";
             item := StructTuple [ Ty.tuple [] ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_ExtData_Some : M.IsDiscriminant "core::task::wake::ExtData::Some" 0.
+    Axiom IsDiscriminant_ExtData_None : M.IsDiscriminant "core::task::wake::ExtData::None" 1.
     
     Module Impl_core_fmt_Debug_for_core_task_wake_ExtData.
       Definition Self : Ty.t := Ty.path "core::task::wake::ExtData".

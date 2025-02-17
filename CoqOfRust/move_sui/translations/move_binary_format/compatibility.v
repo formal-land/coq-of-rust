@@ -3446,16 +3446,19 @@ Module compatibility.
         {
           name := "Subset";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Equal";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_InclusionCheck_Subset :
+    M.IsDiscriminant "move_binary_format::compatibility::InclusionCheck::Subset" 0.
+  Axiom IsDiscriminant_InclusionCheck_Equal :
+    M.IsDiscriminant "move_binary_format::compatibility::InclusionCheck::Equal" 1.
   
   Module Impl_core_clone_Clone_for_move_binary_format_compatibility_InclusionCheck.
     Definition Self : Ty.t := Ty.path "move_binary_format::compatibility::InclusionCheck".

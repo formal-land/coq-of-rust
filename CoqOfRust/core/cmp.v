@@ -66,21 +66,22 @@ Module cmp.
         {
           name := "Less";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Equal";
           item := StructTuple [];
-          discriminant := Some 0;
         };
         {
           name := "Greater";
           item := StructTuple [];
-          discriminant := Some 1;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Ordering_Less : M.IsDiscriminant "core::cmp::Ordering::Less" 0.
+  Axiom IsDiscriminant_Ordering_Equal : M.IsDiscriminant "core::cmp::Ordering::Equal" 0.
+  Axiom IsDiscriminant_Ordering_Greater : M.IsDiscriminant "core::cmp::Ordering::Greater" 1.
   
   Module Impl_core_clone_Clone_for_core_cmp_Ordering.
     Definition Self : Ty.t := Ty.path "core::cmp::Ordering".

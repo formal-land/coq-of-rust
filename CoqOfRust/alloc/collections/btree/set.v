@@ -744,7 +744,6 @@ Module collections.
                         []
                         [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ])
                   ];
-              discriminant := None;
             };
             {
               name := "Search";
@@ -760,17 +759,22 @@ Module collections.
                         [ Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ]
                         ])
                   ];
-              discriminant := None;
             };
             {
               name := "Iterate";
               item :=
                 StructTuple [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ];
-              discriminant := None;
             }
           ];
       }
       *)
+      
+      Axiom IsDiscriminant_DifferenceInner_Stitch :
+        M.IsDiscriminant "alloc::collections::btree::set::DifferenceInner::Stitch" 0.
+      Axiom IsDiscriminant_DifferenceInner_Search :
+        M.IsDiscriminant "alloc::collections::btree::set::DifferenceInner::Search" 1.
+      Axiom IsDiscriminant_DifferenceInner_Iterate :
+        M.IsDiscriminant "alloc::collections::btree::set::DifferenceInner::Iterate" 2.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_btree_set_DifferenceInner_T_A.
         Definition Self (T A : Ty.t) : Ty.t :=
@@ -1340,7 +1344,6 @@ Module collections.
                     ("a", Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ]);
                     ("b", Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ])
                   ];
-              discriminant := None;
             };
             {
               name := "Search";
@@ -1356,7 +1359,6 @@ Module collections.
                         [ Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ]
                         ])
                   ];
-              discriminant := None;
             };
             {
               name := "Answer";
@@ -1364,11 +1366,17 @@ Module collections.
                 StructTuple
                   [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ]
                   ];
-              discriminant := None;
             }
           ];
       }
       *)
+      
+      Axiom IsDiscriminant_IntersectionInner_Stitch :
+        M.IsDiscriminant "alloc::collections::btree::set::IntersectionInner::Stitch" 0.
+      Axiom IsDiscriminant_IntersectionInner_Search :
+        M.IsDiscriminant "alloc::collections::btree::set::IntersectionInner::Search" 1.
+      Axiom IsDiscriminant_IntersectionInner_Answer :
+        M.IsDiscriminant "alloc::collections::btree::set::IntersectionInner::Answer" 2.
       
       Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_where_core_clone_Clone_A_for_alloc_collections_btree_set_IntersectionInner_T_A.
         Definition Self (T A : Ty.t) : Ty.t :=

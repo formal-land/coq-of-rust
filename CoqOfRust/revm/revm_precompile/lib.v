@@ -2906,41 +2906,49 @@ Enum PrecompileSpecId
       {
         name := "HOMESTEAD";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "BYZANTIUM";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "ISTANBUL";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "BERLIN";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "CANCUN";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "PRAGUE";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "LATEST";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_PrecompileSpecId_HOMESTEAD :
+  M.IsDiscriminant "revm_precompile::PrecompileSpecId::HOMESTEAD" 0.
+Axiom IsDiscriminant_PrecompileSpecId_BYZANTIUM :
+  M.IsDiscriminant "revm_precompile::PrecompileSpecId::BYZANTIUM" 1.
+Axiom IsDiscriminant_PrecompileSpecId_ISTANBUL :
+  M.IsDiscriminant "revm_precompile::PrecompileSpecId::ISTANBUL" 2.
+Axiom IsDiscriminant_PrecompileSpecId_BERLIN :
+  M.IsDiscriminant "revm_precompile::PrecompileSpecId::BERLIN" 3.
+Axiom IsDiscriminant_PrecompileSpecId_CANCUN :
+  M.IsDiscriminant "revm_precompile::PrecompileSpecId::CANCUN" 4.
+Axiom IsDiscriminant_PrecompileSpecId_PRAGUE :
+  M.IsDiscriminant "revm_precompile::PrecompileSpecId::PRAGUE" 5.
+Axiom IsDiscriminant_PrecompileSpecId_LATEST :
+  M.IsDiscriminant "revm_precompile::PrecompileSpecId::LATEST" 6.
 
 Module Impl_core_marker_Copy_for_revm_precompile_PrecompileSpecId.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".

@@ -19,16 +19,17 @@ Enum List
                 []
                 [ Ty.path "enums_testcase_linked_list::List"; Ty.path "alloc::alloc::Global" ]
             ];
-        discriminant := None;
       };
       {
         name := "Nil";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_List_Cons : M.IsDiscriminant "enums_testcase_linked_list::List::Cons" 0.
+Axiom IsDiscriminant_List_Nil : M.IsDiscriminant "enums_testcase_linked_list::List::Nil" 1.
 
 Module Impl_enums_testcase_linked_list_List.
   Definition Self : Ty.t := Ty.path "enums_testcase_linked_list::List".

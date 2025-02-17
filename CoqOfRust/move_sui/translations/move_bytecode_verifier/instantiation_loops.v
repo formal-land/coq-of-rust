@@ -268,7 +268,6 @@ Module instantiation_loops.
         {
           name := "Identity";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "TyConApp";
@@ -280,11 +279,15 @@ Module instantiation_loops.
                   []
                   [ Ty.path "move_binary_format::file_format::SignatureToken" ]
               ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_Edge_Identity :
+    M.IsDiscriminant "move_bytecode_verifier::instantiation_loops::Edge::Identity" 0.
+  Axiom IsDiscriminant_Edge_TyConApp :
+    M.IsDiscriminant "move_bytecode_verifier::instantiation_loops::Edge::TyConApp" 1.
   
   (* StructRecord
     {

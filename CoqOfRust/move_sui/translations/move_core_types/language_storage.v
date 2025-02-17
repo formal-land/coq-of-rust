@@ -143,32 +143,26 @@ Module language_storage.
         {
           name := "Bool";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U8";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U64";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U128";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Address";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Signer";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Vector";
@@ -183,7 +177,6 @@ Module language_storage.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         };
         {
           name := "Struct";
@@ -198,26 +191,45 @@ Module language_storage.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         };
         {
           name := "U16";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U32";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "U256";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_TypeTag_Bool :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::Bool" 0.
+  Axiom IsDiscriminant_TypeTag_U8 :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::U8" 1.
+  Axiom IsDiscriminant_TypeTag_U64 :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::U64" 2.
+  Axiom IsDiscriminant_TypeTag_U128 :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::U128" 3.
+  Axiom IsDiscriminant_TypeTag_Address :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::Address" 4.
+  Axiom IsDiscriminant_TypeTag_Signer :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::Signer" 5.
+  Axiom IsDiscriminant_TypeTag_Vector :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::Vector" 6.
+  Axiom IsDiscriminant_TypeTag_Struct :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::Struct" 7.
+  Axiom IsDiscriminant_TypeTag_U16 :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::U16" 8.
+  Axiom IsDiscriminant_TypeTag_U32 :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::U32" 9.
+  Axiom IsDiscriminant_TypeTag_U256 :
+    M.IsDiscriminant "move_core_types::language_storage::TypeTag::U256" 10.
   
   Module underscore.
     Module Impl_serde_ser_Serialize_for_move_core_types_language_storage_TypeTag.

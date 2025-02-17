@@ -365,21 +365,22 @@ Enum Event
       {
         name := "Register";
         item := StructTuple [ Ty.path "dns::Register" ];
-        discriminant := None;
       };
       {
         name := "SetAddress";
         item := StructTuple [ Ty.path "dns::SetAddress" ];
-        discriminant := None;
       };
       {
         name := "Transfer";
         item := StructTuple [ Ty.path "dns::Transfer" ];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Event_Register : M.IsDiscriminant "dns::Event::Register" 0.
+Axiom IsDiscriminant_Event_SetAddress : M.IsDiscriminant "dns::Event::SetAddress" 1.
+Axiom IsDiscriminant_Event_Transfer : M.IsDiscriminant "dns::Event::Transfer" 2.
 
 Module Impl_dns_Env.
   Definition Self : Ty.t := Ty.path "dns::Env".
@@ -709,16 +710,17 @@ Enum Error
       {
         name := "NameAlreadyExists";
         item := StructTuple [];
-        discriminant := None;
       };
       {
         name := "CallerIsNotOwner";
         item := StructTuple [];
-        discriminant := None;
       }
     ];
 }
 *)
+
+Axiom IsDiscriminant_Error_NameAlreadyExists : M.IsDiscriminant "dns::Error::NameAlreadyExists" 0.
+Axiom IsDiscriminant_Error_CallerIsNotOwner : M.IsDiscriminant "dns::Error::CallerIsNotOwner" 1.
 
 Module Impl_core_marker_StructuralPartialEq_for_dns_Error.
   Definition Self : Ty.t := Ty.path "dns::Error".

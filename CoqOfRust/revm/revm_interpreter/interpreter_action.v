@@ -22,7 +22,6 @@ Module interpreter_action.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         };
         {
           name := "Create";
@@ -37,7 +36,6 @@ Module interpreter_action.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         };
         {
           name := "EOFCreate";
@@ -53,11 +51,17 @@ Module interpreter_action.
                     Ty.path "alloc::alloc::Global"
                   ]
               ];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_FrameInput_Call :
+    M.IsDiscriminant "revm_interpreter::interpreter_action::FrameInput::Call" 0.
+  Axiom IsDiscriminant_FrameInput_Create :
+    M.IsDiscriminant "revm_interpreter::interpreter_action::FrameInput::Create" 1.
+  Axiom IsDiscriminant_FrameInput_EOFCreate :
+    M.IsDiscriminant "revm_interpreter::interpreter_action::FrameInput::EOFCreate" 2.
   
   Module Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_FrameInput.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::FrameInput".
@@ -706,22 +710,26 @@ Module interpreter_action.
         {
           name := "NewFrame";
           item := StructTuple [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ];
-          discriminant := None;
         };
         {
           name := "Return";
           item :=
             StructRecord [ ("result", Ty.path "revm_interpreter::interpreter::InterpreterResult") ];
-          discriminant := None;
         };
         {
           name := "None";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_InterpreterAction_NewFrame :
+    M.IsDiscriminant "revm_interpreter::interpreter_action::InterpreterAction::NewFrame" 0.
+  Axiom IsDiscriminant_InterpreterAction_Return :
+    M.IsDiscriminant "revm_interpreter::interpreter_action::InterpreterAction::Return" 1.
+  Axiom IsDiscriminant_InterpreterAction_None :
+    M.IsDiscriminant "revm_interpreter::interpreter_action::InterpreterAction::None" 2.
   
   Module Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_InterpreterAction.
     Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::InterpreterAction".

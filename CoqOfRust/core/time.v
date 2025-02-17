@@ -7247,16 +7247,19 @@ Module time.
         {
           name := "Negative";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "OverflowOrNan";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_TryFromFloatSecsErrorKind_Negative :
+    M.IsDiscriminant "core::time::TryFromFloatSecsErrorKind::Negative" 0.
+  Axiom IsDiscriminant_TryFromFloatSecsErrorKind_OverflowOrNan :
+    M.IsDiscriminant "core::time::TryFromFloatSecsErrorKind::OverflowOrNan" 1.
   
   Module Impl_core_fmt_Debug_for_core_time_TryFromFloatSecsErrorKind.
     Definition Self : Ty.t := Ty.path "core::time::TryFromFloatSecsErrorKind".

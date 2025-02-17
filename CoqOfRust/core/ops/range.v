@@ -3767,21 +3767,22 @@ Module ops.
           {
             name := "Included";
             item := StructTuple [ T ];
-            discriminant := None;
           };
           {
             name := "Excluded";
             item := StructTuple [ T ];
-            discriminant := None;
           };
           {
             name := "Unbounded";
             item := StructTuple [];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_Bound_Included : M.IsDiscriminant "core::ops::range::Bound::Included" 0.
+    Axiom IsDiscriminant_Bound_Excluded : M.IsDiscriminant "core::ops::range::Bound::Excluded" 1.
+    Axiom IsDiscriminant_Bound_Unbounded : M.IsDiscriminant "core::ops::range::Bound::Unbounded" 2.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_ops_range_Bound_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].

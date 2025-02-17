@@ -49,16 +49,19 @@ Module absint.
         {
           name := "Changed";
           item := StructTuple [];
-          discriminant := None;
         };
         {
           name := "Unchanged";
           item := StructTuple [];
-          discriminant := None;
         }
       ];
   }
   *)
+  
+  Axiom IsDiscriminant_JoinResult_Changed :
+    M.IsDiscriminant "move_bytecode_verifier::absint::JoinResult::Changed" 0.
+  Axiom IsDiscriminant_JoinResult_Unchanged :
+    M.IsDiscriminant "move_bytecode_verifier::absint::JoinResult::Unchanged" 1.
   
   Module Impl_core_fmt_Debug_for_move_bytecode_verifier_absint_JoinResult.
     Definition Self : Ty.t := Ty.path "move_bytecode_verifier::absint::JoinResult".

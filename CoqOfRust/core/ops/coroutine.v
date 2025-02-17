@@ -13,16 +13,19 @@ Module ops.
           {
             name := "Yielded";
             item := StructTuple [ Y ];
-            discriminant := None;
           };
           {
             name := "Complete";
             item := StructTuple [ R ];
-            discriminant := None;
           }
         ];
     }
     *)
+    
+    Axiom IsDiscriminant_CoroutineState_Yielded :
+      M.IsDiscriminant "core::ops::coroutine::CoroutineState::Yielded" 0.
+    Axiom IsDiscriminant_CoroutineState_Complete :
+      M.IsDiscriminant "core::ops::coroutine::CoroutineState::Complete" 1.
     
     Module Impl_core_clone_Clone_where_core_clone_Clone_Y_where_core_clone_Clone_R_for_core_ops_coroutine_CoroutineState_Y_R.
       Definition Self (Y R : Ty.t) : Ty.t :=
