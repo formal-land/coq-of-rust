@@ -15,3 +15,13 @@ Proof.
   repeat (autorewrite with constant_rewrites || cbn).
   reflexivity.
 Defined.
+
+Definition IDENTITY_PER_WORD_eq : M.get_constant "revm_precompile::identity::IDENTITY_PER_WORD" =
+  φ (Ref.immediate Pointer.Kind.Raw (Integer.Build_t IntegerKind.U64 3)).
+Proof.
+  repeat (autorewrite with constant_rewrites || cbn).
+  reflexivity.
+Defined.
+
+
+
