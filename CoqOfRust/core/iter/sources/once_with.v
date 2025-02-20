@@ -81,8 +81,9 @@ Module iter.
           forall (F : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self F)
             (* Instance *) [ ("clone", InstanceField.Method (clone F)) ].
       End Impl_core_clone_Clone_where_core_clone_Clone_F_for_core_iter_sources_once_with_OnceWith_F.
       
@@ -191,8 +192,9 @@ Module iter.
           forall (F : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self F)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt F)) ].
       End Impl_core_fmt_Debug_for_core_iter_sources_once_with_OnceWith_F.
       
@@ -403,8 +405,9 @@ Module iter.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self A F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self A F)
             (* Instance *)
             [
               ("Item", InstanceField.Ty (_Item A F));
@@ -453,8 +456,9 @@ Module iter.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::double_ended::DoubleEndedIterator"
-            (Self A F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self A F)
             (* Instance *) [ ("next_back", InstanceField.Method (next_back A F)) ].
       End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnOnce_F_Tuple__for_core_iter_sources_once_with_OnceWith_F.
       
@@ -518,8 +522,9 @@ Module iter.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::exact_size::ExactSizeIterator"
-            (Self A F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self A F)
             (* Instance *) [ ("len", InstanceField.Method (len A F)) ].
       End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_ops_function_FnOnce_F_Tuple__for_core_iter_sources_once_with_OnceWith_F.
       
@@ -531,8 +536,9 @@ Module iter.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::FusedIterator"
-            (Self A F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self A F)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnOnce_F_Tuple__for_core_iter_sources_once_with_OnceWith_F.
       
@@ -544,8 +550,9 @@ Module iter.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::TrustedLen"
-            (Self A F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self A F)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_TrustedLen_where_core_ops_function_FnOnce_F_Tuple__for_core_iter_sources_once_with_OnceWith_F.
     End once_with.

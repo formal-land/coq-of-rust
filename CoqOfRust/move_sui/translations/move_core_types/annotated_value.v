@@ -112,8 +112,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_annotated_value_MoveStruct.
   
@@ -123,8 +124,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_annotated_value_MoveStruct.
   
@@ -229,8 +231,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_annotated_value_MoveStruct.
   
@@ -266,8 +269,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_annotated_value_MoveStruct.
@@ -367,8 +371,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_annotated_value_MoveStruct.
   
@@ -868,8 +873,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_annotated_value_MoveValue.
   
@@ -879,8 +885,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_annotated_value_MoveValue.
   
@@ -1424,8 +1431,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_annotated_value_MoveValue.
   
@@ -1524,8 +1532,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_annotated_value_MoveValue.
@@ -1883,8 +1892,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_annotated_value_MoveValue.
   
@@ -1968,8 +1978,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_annotated_value_MoveFieldLayout.
   
@@ -2048,8 +2059,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_annotated_value_MoveFieldLayout.
   
@@ -2067,7 +2079,8 @@ Module annotated_value.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -2075,7 +2088,15 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -2139,10 +2160,18 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -2211,10 +2240,18 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -2278,10 +2315,16 @@ Module annotated_value.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -2299,8 +2342,9 @@ Module annotated_value.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_core_types_annotated_value_MoveFieldLayout.
     Module Impl_serde_de_Deserialize_for_move_core_types_annotated_value_MoveFieldLayout.
@@ -2316,7 +2360,10 @@ Module annotated_value.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_core_types::annotated_value::MoveFieldLayout"; Ty.associated ],
+                [
+                  Ty.path "move_core_types::annotated_value::MoveFieldLayout";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -2346,8 +2393,9 @@ Module annotated_value.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_annotated_value_MoveFieldLayout.
     Module Impl_serde_ser_Serialize_for_move_core_types_annotated_value_MoveStructLayout.
@@ -2363,7 +2411,8 @@ Module annotated_value.
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ __serde_state : Ty.associated :=
+                  let~ __serde_state :
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
                     M.copy (|
                       M.match_operator (|
                         M.alloc (|
@@ -2371,7 +2420,15 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  __S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               __S,
@@ -2435,10 +2492,18 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -2507,10 +2572,18 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::SerializeStruct",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              __S
+                              "SerializeStruct",
                             [],
                             [],
                             "serialize_field",
@@ -2582,10 +2655,16 @@ Module annotated_value.
                     |) in
                   M.alloc (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.get_trait_method (|
                         "serde::ser::SerializeStruct",
-                        Ty.associated,
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct",
                         [],
                         [],
                         "end",
@@ -2603,8 +2682,9 @@ Module annotated_value.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_core_types_annotated_value_MoveStructLayout.
     Module Impl_serde_de_Deserialize_for_move_core_types_annotated_value_MoveStructLayout.
@@ -2620,7 +2700,10 @@ Module annotated_value.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_core_types::annotated_value::MoveStructLayout"; Ty.associated ],
+                [
+                  Ty.path "move_core_types::annotated_value::MoveStructLayout";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -2650,8 +2733,9 @@ Module annotated_value.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_annotated_value_MoveStructLayout.
     Module Impl_serde_ser_Serialize_for_move_core_types_annotated_value_MoveTypeLayout.
@@ -2680,7 +2764,10 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -2710,7 +2797,10 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -2740,7 +2830,10 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -2770,7 +2863,10 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -2800,7 +2896,10 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -2832,7 +2931,10 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -2873,7 +2975,10 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -2904,7 +3009,10 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -2934,7 +3042,10 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -2964,7 +3075,10 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -2994,7 +3108,10 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.get_trait_method (|
                             "serde::ser::Serializer",
                             __S,
@@ -3021,8 +3138,9 @@ Module annotated_value.
       Axiom Implements :
         M.IsTraitInstance
           "serde::ser::Serialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
     End Impl_serde_ser_Serialize_for_move_core_types_annotated_value_MoveTypeLayout.
     Module Impl_serde_de_Deserialize_for_move_core_types_annotated_value_MoveTypeLayout.
@@ -3038,7 +3156,10 @@ Module annotated_value.
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
-                [ Ty.path "move_core_types::annotated_value::MoveTypeLayout"; Ty.associated ],
+                [
+                  Ty.path "move_core_types::annotated_value::MoveTypeLayout";
+                  Ty.associated_in_trait "serde::de::Deserializer" [] [] __D "Error"
+                ],
               M.get_trait_method (|
                 "serde::de::Deserializer",
                 __D,
@@ -3068,8 +3189,9 @@ Module annotated_value.
       Axiom Implements :
         M.IsTraitInstance
           "serde::de::Deserialize"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
     End Impl_serde_de_Deserialize_for_move_core_types_annotated_value_MoveTypeLayout.
   End underscore.
@@ -3186,8 +3308,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_annotated_value_MoveStructLayout.
   
@@ -3278,8 +3401,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_annotated_value_MoveStructLayout.
   
@@ -3727,8 +3851,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_annotated_value_MoveTypeLayout.
   
@@ -3927,8 +4052,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_annotated_value_MoveTypeLayout.
   
@@ -4110,7 +4236,13 @@ Module annotated_value.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ res : Ty.associated :=
+                let~ res :
+                    Ty.associated_in_trait
+                      "move_core_types::annotated_visitor::Visitor"
+                      []
+                      []
+                      V
+                      "Value" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
@@ -4122,15 +4254,41 @@ Module annotated_value.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.path "core::convert::Infallible"; Ty.associated ];
-                              Ty.associated
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Error"
+                                ];
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value"
                             ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "move_core_types::annotated_visitor::Visitor"
+                                  []
+                                  []
+                                  V
+                                  "Value";
+                                Ty.associated_in_trait
+                                  "move_core_types::annotated_visitor::Visitor"
+                                  []
+                                  []
+                                  V
+                                  "Error"
+                              ],
                             [],
                             [],
                             "branch",
@@ -4142,7 +4300,20 @@ Module annotated_value.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Value";
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Error"
+                                ],
                               M.get_function (|
                                 "move_core_types::annotated_visitor::visit_value",
                                 [],
@@ -4181,19 +4352,43 @@ Module annotated_value.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.associated; Ty.path "anyhow::Error" ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "move_core_types::annotated_visitor::Visitor"
+                                            []
+                                            []
+                                            V
+                                            "Value";
+                                          Ty.path "anyhow::Error"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [ Ty.associated; Ty.path "anyhow::Error" ],
+                                          [
+                                            Ty.associated_in_trait
+                                              "move_core_types::annotated_visitor::Visitor"
+                                              []
+                                              []
+                                              V
+                                              "Value";
+                                            Ty.path "anyhow::Error"
+                                          ],
                                         [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
-                                            [ Ty.path "core::convert::Infallible"; Ty.associated ]
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.associated_in_trait
+                                                "move_core_types::annotated_visitor::Visitor"
+                                                []
+                                                []
+                                                V
+                                                "Error"
+                                            ]
                                         ],
                                         "from_residual",
                                         [],
@@ -4708,7 +4903,12 @@ Module annotated_value.
               (Ty.path "core::iter::adapters::map::Map")
               []
               [
-                Ty.associated;
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter";
                 Ty.function
                   [
                     Ty.tuple
@@ -4747,7 +4947,12 @@ Module annotated_value.
                 (Ty.path "core::iter::adapters::map::Map")
                 []
                 [
-                  Ty.associated;
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    I
+                    "IntoIter";
                   Ty.function
                     [
                       Ty.tuple
@@ -4765,7 +4970,12 @@ Module annotated_value.
                 ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.associated,
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter",
                 [],
                 [],
                 "map",
@@ -4793,7 +5003,12 @@ Module annotated_value.
               |),
               [
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    I
+                    "IntoIter",
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     I,
@@ -5079,7 +5294,13 @@ Module annotated_value.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ res : Ty.associated :=
+                let~ res :
+                    Ty.associated_in_trait
+                      "move_core_types::annotated_visitor::Visitor"
+                      []
+                      []
+                      V
+                      "Value" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
@@ -5091,15 +5312,41 @@ Module annotated_value.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.path "core::convert::Infallible"; Ty.associated ];
-                              Ty.associated
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Error"
+                                ];
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value"
                             ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "move_core_types::annotated_visitor::Visitor"
+                                  []
+                                  []
+                                  V
+                                  "Value";
+                                Ty.associated_in_trait
+                                  "move_core_types::annotated_visitor::Visitor"
+                                  []
+                                  []
+                                  V
+                                  "Error"
+                              ],
                             [],
                             [],
                             "branch",
@@ -5111,7 +5358,20 @@ Module annotated_value.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Value";
+                                  Ty.associated_in_trait
+                                    "move_core_types::annotated_visitor::Visitor"
+                                    []
+                                    []
+                                    V
+                                    "Error"
+                                ],
                               M.get_function (|
                                 "move_core_types::annotated_visitor::visit_struct",
                                 [],
@@ -5150,19 +5410,43 @@ Module annotated_value.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.associated; Ty.path "anyhow::Error" ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "move_core_types::annotated_visitor::Visitor"
+                                            []
+                                            []
+                                            V
+                                            "Value";
+                                          Ty.path "anyhow::Error"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [ Ty.associated; Ty.path "anyhow::Error" ],
+                                          [
+                                            Ty.associated_in_trait
+                                              "move_core_types::annotated_visitor::Visitor"
+                                              []
+                                              []
+                                              V
+                                              "Value";
+                                            Ty.path "anyhow::Error"
+                                          ],
                                         [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
-                                            [ Ty.path "core::convert::Infallible"; Ty.associated ]
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.associated_in_trait
+                                                "move_core_types::annotated_visitor::Visitor"
+                                                []
+                                                []
+                                                V
+                                                "Error"
+                                            ]
                                         ],
                                         "from_residual",
                                         [],
@@ -5849,13 +6133,18 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.path "move_core_types::annotated_value::MoveValue"; Ty.associated
+                              [
+                                Ty.path "move_core_types::annotated_value::MoveValue";
+                                Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                               ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.path "bool"; Ty.associated ],
+                                [
+                                  Ty.path "bool";
+                                  Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                                ],
                               "map",
                               [],
                               [
@@ -5870,7 +6159,10 @@ Module annotated_value.
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
-                                  [ Ty.path "bool"; Ty.associated ],
+                                  [
+                                    Ty.path "bool";
+                                    Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                                  ],
                                 M.get_trait_method (|
                                   "serde::de::Deserialize",
                                   Ty.path "bool",
@@ -5900,13 +6192,18 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.path "move_core_types::annotated_value::MoveValue"; Ty.associated
+                              [
+                                Ty.path "move_core_types::annotated_value::MoveValue";
+                                Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                               ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.path "u8"; Ty.associated ],
+                                [
+                                  Ty.path "u8";
+                                  Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                                ],
                               "map",
                               [],
                               [
@@ -5921,7 +6218,10 @@ Module annotated_value.
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
-                                  [ Ty.path "u8"; Ty.associated ],
+                                  [
+                                    Ty.path "u8";
+                                    Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                                  ],
                                 M.get_trait_method (|
                                   "serde::de::Deserialize",
                                   Ty.path "u8",
@@ -5951,13 +6251,18 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.path "move_core_types::annotated_value::MoveValue"; Ty.associated
+                              [
+                                Ty.path "move_core_types::annotated_value::MoveValue";
+                                Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                               ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.path "u16"; Ty.associated ],
+                                [
+                                  Ty.path "u16";
+                                  Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                                ],
                               "map",
                               [],
                               [
@@ -5972,7 +6277,10 @@ Module annotated_value.
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
-                                  [ Ty.path "u16"; Ty.associated ],
+                                  [
+                                    Ty.path "u16";
+                                    Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                                  ],
                                 M.get_trait_method (|
                                   "serde::de::Deserialize",
                                   Ty.path "u16",
@@ -6002,13 +6310,18 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.path "move_core_types::annotated_value::MoveValue"; Ty.associated
+                              [
+                                Ty.path "move_core_types::annotated_value::MoveValue";
+                                Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                               ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.path "u32"; Ty.associated ],
+                                [
+                                  Ty.path "u32";
+                                  Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                                ],
                               "map",
                               [],
                               [
@@ -6023,7 +6336,10 @@ Module annotated_value.
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
-                                  [ Ty.path "u32"; Ty.associated ],
+                                  [
+                                    Ty.path "u32";
+                                    Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                                  ],
                                 M.get_trait_method (|
                                   "serde::de::Deserialize",
                                   Ty.path "u32",
@@ -6053,13 +6369,18 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.path "move_core_types::annotated_value::MoveValue"; Ty.associated
+                              [
+                                Ty.path "move_core_types::annotated_value::MoveValue";
+                                Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                               ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.path "u64"; Ty.associated ],
+                                [
+                                  Ty.path "u64";
+                                  Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                                ],
                               "map",
                               [],
                               [
@@ -6074,7 +6395,10 @@ Module annotated_value.
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
-                                  [ Ty.path "u64"; Ty.associated ],
+                                  [
+                                    Ty.path "u64";
+                                    Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                                  ],
                                 M.get_trait_method (|
                                   "serde::de::Deserialize",
                                   Ty.path "u64",
@@ -6104,13 +6428,18 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.path "move_core_types::annotated_value::MoveValue"; Ty.associated
+                              [
+                                Ty.path "move_core_types::annotated_value::MoveValue";
+                                Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                               ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.path "u128"; Ty.associated ],
+                                [
+                                  Ty.path "u128";
+                                  Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                                ],
                               "map",
                               [],
                               [
@@ -6125,7 +6454,10 @@ Module annotated_value.
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
-                                  [ Ty.path "u128"; Ty.associated ],
+                                  [
+                                    Ty.path "u128";
+                                    Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                                  ],
                                 M.get_trait_method (|
                                   "serde::de::Deserialize",
                                   Ty.path "u128",
@@ -6155,13 +6487,18 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.path "move_core_types::annotated_value::MoveValue"; Ty.associated
+                              [
+                                Ty.path "move_core_types::annotated_value::MoveValue";
+                                Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                               ],
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.path "move_core_types::u256::U256"; Ty.associated ],
+                                [
+                                  Ty.path "move_core_types::u256::U256";
+                                  Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                                ],
                               "map",
                               [],
                               [
@@ -6176,7 +6513,10 @@ Module annotated_value.
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
-                                  [ Ty.path "move_core_types::u256::U256"; Ty.associated ],
+                                  [
+                                    Ty.path "move_core_types::u256::U256";
+                                    Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                                  ],
                                 M.get_trait_method (|
                                   "serde::de::Deserialize",
                                   Ty.path "move_core_types::u256::U256",
@@ -6206,7 +6546,9 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.path "move_core_types::annotated_value::MoveValue"; Ty.associated
+                              [
+                                Ty.path "move_core_types::annotated_value::MoveValue";
+                                Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                               ],
                             M.get_associated_function (|
                               Ty.apply
@@ -6214,7 +6556,7 @@ Module annotated_value.
                                 []
                                 [
                                   Ty.path "move_core_types::account_address::AccountAddress";
-                                  Ty.associated
+                                  Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                                 ],
                               "map",
                               [],
@@ -6232,7 +6574,7 @@ Module annotated_value.
                                   []
                                   [
                                     Ty.path "move_core_types::account_address::AccountAddress";
-                                    Ty.associated
+                                    Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                                   ],
                                 M.get_trait_method (|
                                   "serde::de::Deserialize",
@@ -6263,7 +6605,9 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.path "move_core_types::annotated_value::MoveValue"; Ty.associated
+                              [
+                                Ty.path "move_core_types::annotated_value::MoveValue";
+                                Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                               ],
                             M.get_associated_function (|
                               Ty.apply
@@ -6271,7 +6615,7 @@ Module annotated_value.
                                 []
                                 [
                                   Ty.path "move_core_types::account_address::AccountAddress";
-                                  Ty.associated
+                                  Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                                 ],
                               "map",
                               [],
@@ -6289,7 +6633,7 @@ Module annotated_value.
                                   []
                                   [
                                     Ty.path "move_core_types::account_address::AccountAddress";
-                                    Ty.associated
+                                    Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                                   ],
                                 M.get_trait_method (|
                                   "serde::de::Deserialize",
@@ -6335,7 +6679,14 @@ Module annotated_value.
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
-                                                [ Ty.path "core::convert::Infallible"; Ty.associated
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.associated_in_trait
+                                                    "serde::de::Deserializer"
+                                                    []
+                                                    []
+                                                    D
+                                                    "Error"
                                                 ];
                                               Ty.path "move_core_types::annotated_value::MoveStruct"
                                             ],
@@ -6347,7 +6698,12 @@ Module annotated_value.
                                               [
                                                 Ty.path
                                                   "move_core_types::annotated_value::MoveStruct";
-                                                Ty.associated
+                                                Ty.associated_in_trait
+                                                  "serde::de::Deserializer"
+                                                  []
+                                                  []
+                                                  D
+                                                  "Error"
                                               ],
                                             [],
                                             [],
@@ -6363,7 +6719,12 @@ Module annotated_value.
                                                 [
                                                   Ty.path
                                                     "move_core_types::annotated_value::MoveStruct";
-                                                  Ty.associated
+                                                  Ty.associated_in_trait
+                                                    "serde::de::Deserializer"
+                                                    []
+                                                    []
+                                                    D
+                                                    "Error"
                                                 ],
                                               M.get_trait_method (|
                                                 "serde::de::DeserializeSeed",
@@ -6412,7 +6773,12 @@ Module annotated_value.
                                                         [
                                                           Ty.path
                                                             "move_core_types::annotated_value::MoveValue";
-                                                          Ty.associated
+                                                          Ty.associated_in_trait
+                                                            "serde::de::Deserializer"
+                                                            []
+                                                            []
+                                                            D
+                                                            "Error"
                                                         ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
@@ -6422,7 +6788,12 @@ Module annotated_value.
                                                           [
                                                             Ty.path
                                                               "move_core_types::annotated_value::MoveValue";
-                                                            Ty.associated
+                                                            Ty.associated_in_trait
+                                                              "serde::de::Deserializer"
+                                                              []
+                                                              []
+                                                              D
+                                                              "Error"
                                                           ],
                                                         [],
                                                         [
@@ -6431,7 +6802,12 @@ Module annotated_value.
                                                             []
                                                             [
                                                               Ty.path "core::convert::Infallible";
-                                                              Ty.associated
+                                                              Ty.associated_in_trait
+                                                                "serde::de::Deserializer"
+                                                                []
+                                                                []
+                                                                D
+                                                                "Error"
                                                             ]
                                                         ],
                                                         "from_residual",
@@ -6488,7 +6864,14 @@ Module annotated_value.
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
-                                                [ Ty.path "core::convert::Infallible"; Ty.associated
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.associated_in_trait
+                                                    "serde::de::Deserializer"
+                                                    []
+                                                    []
+                                                    D
+                                                    "Error"
                                                 ];
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -6513,7 +6896,12 @@ Module annotated_value.
                                                       "move_core_types::annotated_value::MoveValue";
                                                     Ty.path "alloc::alloc::Global"
                                                   ];
-                                                Ty.associated
+                                                Ty.associated_in_trait
+                                                  "serde::de::Deserializer"
+                                                  []
+                                                  []
+                                                  D
+                                                  "Error"
                                               ],
                                             [],
                                             [],
@@ -6535,7 +6923,12 @@ Module annotated_value.
                                                         "move_core_types::annotated_value::MoveValue";
                                                       Ty.path "alloc::alloc::Global"
                                                     ];
-                                                  Ty.associated
+                                                  Ty.associated_in_trait
+                                                    "serde::de::Deserializer"
+                                                    []
+                                                    []
+                                                    D
+                                                    "Error"
                                                 ],
                                               M.get_trait_method (|
                                                 "serde::de::Deserializer",
@@ -6589,7 +6982,12 @@ Module annotated_value.
                                                         [
                                                           Ty.path
                                                             "move_core_types::annotated_value::MoveValue";
-                                                          Ty.associated
+                                                          Ty.associated_in_trait
+                                                            "serde::de::Deserializer"
+                                                            []
+                                                            []
+                                                            D
+                                                            "Error"
                                                         ],
                                                       M.get_trait_method (|
                                                         "core::ops::try_trait::FromResidual",
@@ -6599,7 +6997,12 @@ Module annotated_value.
                                                           [
                                                             Ty.path
                                                               "move_core_types::annotated_value::MoveValue";
-                                                            Ty.associated
+                                                            Ty.associated_in_trait
+                                                              "serde::de::Deserializer"
+                                                              []
+                                                              []
+                                                              D
+                                                              "Error"
                                                           ],
                                                         [],
                                                         [
@@ -6608,7 +7011,12 @@ Module annotated_value.
                                                             []
                                                             [
                                                               Ty.path "core::convert::Infallible";
-                                                              Ty.associated
+                                                              Ty.associated_in_trait
+                                                                "serde::de::Deserializer"
+                                                                []
+                                                                []
+                                                                D
+                                                                "Error"
                                                             ]
                                                         ],
                                                         "from_residual",
@@ -6647,8 +7055,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "serde::de::DeserializeSeed"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Value", InstanceField.Ty _Value); ("deserialize", InstanceField.Method deserialize) ].
   End Impl_serde_de_DeserializeSeed_for_ref__move_core_types_annotated_value_MoveTypeLayout.
@@ -6770,7 +7179,15 @@ Module annotated_value.
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
-                                            [ Ty.path "core::convert::Infallible"; Ty.associated ];
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.associated_in_trait
+                                                "serde::de::SeqAccess"
+                                                []
+                                                []
+                                                A
+                                                "Error"
+                                            ];
                                           Ty.apply
                                             (Ty.path "core::option::Option")
                                             []
@@ -6790,7 +7207,12 @@ Module annotated_value.
                                                 Ty.path
                                                   "move_core_types::annotated_value::MoveValue"
                                               ];
-                                            Ty.associated
+                                            Ty.associated_in_trait
+                                              "serde::de::SeqAccess"
+                                              []
+                                              []
+                                              A
+                                              "Error"
                                           ],
                                         [],
                                         [],
@@ -6811,7 +7233,12 @@ Module annotated_value.
                                                   Ty.path
                                                     "move_core_types::annotated_value::MoveValue"
                                                 ];
-                                              Ty.associated
+                                              Ty.associated_in_trait
+                                                "serde::de::SeqAccess"
+                                                []
+                                                []
+                                                A
+                                                "Error"
                                             ],
                                           M.get_trait_method (|
                                             "serde::de::SeqAccess",
@@ -6871,7 +7298,12 @@ Module annotated_value.
                                                             "move_core_types::annotated_value::MoveValue";
                                                           Ty.path "alloc::alloc::Global"
                                                         ];
-                                                      Ty.associated
+                                                      Ty.associated_in_trait
+                                                        "serde::de::SeqAccess"
+                                                        []
+                                                        []
+                                                        A
+                                                        "Error"
                                                     ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::FromResidual",
@@ -6887,7 +7319,12 @@ Module annotated_value.
                                                               "move_core_types::annotated_value::MoveValue";
                                                             Ty.path "alloc::alloc::Global"
                                                           ];
-                                                        Ty.associated
+                                                        Ty.associated_in_trait
+                                                          "serde::de::SeqAccess"
+                                                          []
+                                                          []
+                                                          A
+                                                          "Error"
                                                       ],
                                                     [],
                                                     [
@@ -6896,7 +7333,12 @@ Module annotated_value.
                                                         []
                                                         [
                                                           Ty.path "core::convert::Infallible";
-                                                          Ty.associated
+                                                          Ty.associated_in_trait
+                                                            "serde::de::SeqAccess"
+                                                            []
+                                                            []
+                                                            A
+                                                            "Error"
                                                         ]
                                                     ],
                                                     "from_residual",
@@ -6971,8 +7413,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "serde::de::Visitor"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("Value", InstanceField.Ty _Value);
@@ -7291,7 +7734,12 @@ Module annotated_value.
                                                         []
                                                         [
                                                           Ty.path "core::convert::Infallible";
-                                                          Ty.associated
+                                                          Ty.associated_in_trait
+                                                            "serde::de::SeqAccess"
+                                                            []
+                                                            []
+                                                            A
+                                                            "Error"
                                                         ];
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
@@ -7324,7 +7772,12 @@ Module annotated_value.
                                                                   "move_core_types::annotated_value::MoveValue"
                                                               ]
                                                           ];
-                                                        Ty.associated
+                                                        Ty.associated_in_trait
+                                                          "serde::de::SeqAccess"
+                                                          []
+                                                          []
+                                                          A
+                                                          "Error"
                                                       ],
                                                     [],
                                                     [],
@@ -7350,7 +7803,12 @@ Module annotated_value.
                                                                     "move_core_types::annotated_value::MoveValue"
                                                                 ]
                                                             ];
-                                                          Ty.associated
+                                                          Ty.associated_in_trait
+                                                            "serde::de::SeqAccess"
+                                                            []
+                                                            []
+                                                            A
+                                                            "Error"
                                                         ],
                                                       M.get_trait_method (|
                                                         "serde::de::SeqAccess",
@@ -7409,7 +7867,12 @@ Module annotated_value.
                                                                         ];
                                                                       Ty.path "alloc::alloc::Global"
                                                                     ];
-                                                                  Ty.associated
+                                                                  Ty.associated_in_trait
+                                                                    "serde::de::SeqAccess"
+                                                                    []
+                                                                    []
+                                                                    A
+                                                                    "Error"
                                                                 ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
@@ -7431,7 +7894,12 @@ Module annotated_value.
                                                                         Ty.path
                                                                           "alloc::alloc::Global"
                                                                       ];
-                                                                    Ty.associated
+                                                                    Ty.associated_in_trait
+                                                                      "serde::de::SeqAccess"
+                                                                      []
+                                                                      []
+                                                                      A
+                                                                      "Error"
                                                                   ],
                                                                 [],
                                                                 [
@@ -7441,7 +7909,12 @@ Module annotated_value.
                                                                     [
                                                                       Ty.path
                                                                         "core::convert::Infallible";
-                                                                      Ty.associated
+                                                                      Ty.associated_in_trait
+                                                                        "serde::de::SeqAccess"
+                                                                        []
+                                                                        []
+                                                                        A
+                                                                        "Error"
                                                                     ]
                                                                 ],
                                                                 "from_residual",
@@ -7518,10 +7991,20 @@ Module annotated_value.
                                                             "core::result::Result::Err"
                                                             [
                                                               M.call_closure (|
-                                                                Ty.associated,
+                                                                Ty.associated_in_trait
+                                                                  "serde::de::SeqAccess"
+                                                                  []
+                                                                  []
+                                                                  A
+                                                                  "Error",
                                                                 M.get_trait_method (|
                                                                   "serde::de::Error",
-                                                                  Ty.associated,
+                                                                  Ty.associated_in_trait
+                                                                    "serde::de::SeqAccess"
+                                                                    []
+                                                                    []
+                                                                    A
+                                                                    "Error",
                                                                   [],
                                                                   [],
                                                                   "invalid_length",
@@ -7563,8 +8046,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "serde::de::Visitor"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("Value", InstanceField.Ty _Value);
@@ -7639,7 +8123,15 @@ Module annotated_value.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.path "core::convert::Infallible"; Ty.associated ];
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.associated_in_trait
+                                        "serde::de::Deserializer"
+                                        []
+                                        []
+                                        D
+                                        "Error"
+                                    ];
                                   Ty.path "move_core_types::annotated_value::MoveValue"
                                 ],
                               M.get_trait_method (|
@@ -7649,7 +8141,7 @@ Module annotated_value.
                                   []
                                   [
                                     Ty.path "move_core_types::annotated_value::MoveValue";
-                                    Ty.associated
+                                    Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                                   ],
                                 [],
                                 [],
@@ -7664,7 +8156,12 @@ Module annotated_value.
                                     []
                                     [
                                       Ty.path "move_core_types::annotated_value::MoveValue";
-                                      Ty.associated
+                                      Ty.associated_in_trait
+                                        "serde::de::Deserializer"
+                                        []
+                                        []
+                                        D
+                                        "Error"
                                     ],
                                   M.get_trait_method (|
                                     "serde::de::DeserializeSeed",
@@ -7719,7 +8216,12 @@ Module annotated_value.
                                                   Ty.path
                                                     "move_core_types::annotated_value::MoveValue"
                                                 ];
-                                              Ty.associated
+                                              Ty.associated_in_trait
+                                                "serde::de::Deserializer"
+                                                []
+                                                []
+                                                D
+                                                "Error"
                                             ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
@@ -7734,14 +8236,26 @@ Module annotated_value.
                                                     Ty.path
                                                       "move_core_types::annotated_value::MoveValue"
                                                   ];
-                                                Ty.associated
+                                                Ty.associated_in_trait
+                                                  "serde::de::Deserializer"
+                                                  []
+                                                  []
+                                                  D
+                                                  "Error"
                                               ],
                                             [],
                                             [
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
-                                                [ Ty.path "core::convert::Infallible"; Ty.associated
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.associated_in_trait
+                                                    "serde::de::Deserializer"
+                                                    []
+                                                    []
+                                                    D
+                                                    "Error"
                                                 ]
                                             ],
                                             "from_residual",
@@ -7776,8 +8290,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "serde::de::DeserializeSeed"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Value", InstanceField.Ty _Value); ("deserialize", InstanceField.Method deserialize) ].
   End Impl_serde_de_DeserializeSeed_for_ref__move_core_types_annotated_value_MoveFieldLayout.
@@ -7834,7 +8349,10 @@ Module annotated_value.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.path "core::convert::Infallible"; Ty.associated ];
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                                ];
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
                                 []
@@ -7864,7 +8382,7 @@ Module annotated_value.
                                       ];
                                     Ty.path "alloc::alloc::Global"
                                   ];
-                                Ty.associated
+                                Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                               ],
                             [],
                             [],
@@ -7889,7 +8407,7 @@ Module annotated_value.
                                         ];
                                       Ty.path "alloc::alloc::Global"
                                     ];
-                                  Ty.associated
+                                  Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                                 ],
                               M.get_trait_method (|
                                 "serde::de::Deserializer",
@@ -8009,7 +8527,12 @@ Module annotated_value.
                                         []
                                         [
                                           Ty.path "move_core_types::annotated_value::MoveStruct";
-                                          Ty.associated
+                                          Ty.associated_in_trait
+                                            "serde::de::Deserializer"
+                                            []
+                                            []
+                                            D
+                                            "Error"
                                         ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
@@ -8018,14 +8541,27 @@ Module annotated_value.
                                           []
                                           [
                                             Ty.path "move_core_types::annotated_value::MoveStruct";
-                                            Ty.associated
+                                            Ty.associated_in_trait
+                                              "serde::de::Deserializer"
+                                              []
+                                              []
+                                              D
+                                              "Error"
                                           ],
                                         [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
-                                            [ Ty.path "core::convert::Infallible"; Ty.associated ]
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.associated_in_trait
+                                                "serde::de::Deserializer"
+                                                []
+                                                []
+                                                D
+                                                "Error"
+                                            ]
                                         ],
                                         "from_residual",
                                         [],
@@ -8092,8 +8628,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "serde::de::DeserializeSeed"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Value", InstanceField.Ty _Value); ("deserialize", InstanceField.Method deserialize) ].
   End Impl_serde_de_DeserializeSeed_for_ref__move_core_types_annotated_value_MoveStructLayout.
@@ -8151,7 +8688,10 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::annotated_value::MoveStruct",
@@ -8182,7 +8722,10 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               S,
@@ -8210,7 +8753,10 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               S,
@@ -8238,7 +8784,10 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               S,
@@ -8266,7 +8815,10 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               S,
@@ -8294,7 +8846,10 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               S,
@@ -8322,7 +8877,10 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serializer",
                               S,
@@ -8350,7 +8908,10 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::u256::U256",
@@ -8381,7 +8942,10 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::account_address::AccountAddress",
@@ -8412,7 +8976,10 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::Serialize",
                               Ty.path "move_core_types::account_address::AccountAddress",
@@ -8438,7 +9005,13 @@ Module annotated_value.
                             0
                           |) in
                         let v := M.alloc (| γ1_0 |) in
-                        let~ t : Ty.associated :=
+                        let~ t :
+                            Ty.associated_in_trait
+                              "serde::ser::Serializer"
+                              []
+                              []
+                              S
+                              "SerializeSeq" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
@@ -8450,15 +9023,41 @@ Module annotated_value.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.path "core::convert::Infallible"; Ty.associated ];
-                                      Ty.associated
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            S
+                                            "Error"
+                                        ];
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        S
+                                        "SerializeSeq"
                                     ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
-                                      [ Ty.associated; Ty.associated ],
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          S
+                                          "SerializeSeq";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          S
+                                          "Error"
+                                      ],
                                     [],
                                     [],
                                     "branch",
@@ -8470,7 +9069,20 @@ Module annotated_value.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.associated; Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            S
+                                            "SerializeSeq";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            S
+                                            "Error"
+                                        ],
                                       M.get_trait_method (|
                                         "serde::ser::Serializer",
                                         S,
@@ -8531,13 +9143,39 @@ Module annotated_value.
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
-                                                [ Ty.associated; Ty.associated ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "serde::ser::Serializer"
+                                                    []
+                                                    []
+                                                    S
+                                                    "Ok";
+                                                  Ty.associated_in_trait
+                                                    "serde::ser::Serializer"
+                                                    []
+                                                    []
+                                                    S
+                                                    "Error"
+                                                ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::FromResidual",
                                                 Ty.apply
                                                   (Ty.path "core::result::Result")
                                                   []
-                                                  [ Ty.associated; Ty.associated ],
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "serde::ser::Serializer"
+                                                      []
+                                                      []
+                                                      S
+                                                      "Ok";
+                                                    Ty.associated_in_trait
+                                                      "serde::ser::Serializer"
+                                                      []
+                                                      []
+                                                      S
+                                                      "Error"
+                                                  ],
                                                 [],
                                                 [
                                                   Ty.apply
@@ -8545,7 +9183,12 @@ Module annotated_value.
                                                     []
                                                     [
                                                       Ty.path "core::convert::Infallible";
-                                                      Ty.associated
+                                                      Ty.associated_in_trait
+                                                        "serde::ser::Serializer"
+                                                        []
+                                                        []
+                                                        S
+                                                        "Error"
                                                     ]
                                                 ],
                                                 "from_residual",
@@ -8685,7 +9328,12 @@ Module annotated_value.
                                                                 [
                                                                   Ty.path
                                                                     "core::convert::Infallible";
-                                                                  Ty.associated
+                                                                  Ty.associated_in_trait
+                                                                    "serde::ser::Serializer"
+                                                                    []
+                                                                    []
+                                                                    S
+                                                                    "Error"
                                                                 ];
                                                               Ty.tuple []
                                                             ],
@@ -8694,7 +9342,15 @@ Module annotated_value.
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
                                                               []
-                                                              [ Ty.tuple []; Ty.associated ],
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.associated_in_trait
+                                                                  "serde::ser::Serializer"
+                                                                  []
+                                                                  []
+                                                                  S
+                                                                  "Error"
+                                                              ],
                                                             [],
                                                             [],
                                                             "branch",
@@ -8706,10 +9362,23 @@ Module annotated_value.
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
                                                                 []
-                                                                [ Ty.tuple []; Ty.associated ],
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.associated_in_trait
+                                                                    "serde::ser::Serializer"
+                                                                    []
+                                                                    []
+                                                                    S
+                                                                    "Error"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "serde::ser::SerializeSeq",
-                                                                Ty.associated,
+                                                                Ty.associated_in_trait
+                                                                  "serde::ser::Serializer"
+                                                                  []
+                                                                  []
+                                                                  S
+                                                                  "SerializeSeq",
                                                                 [],
                                                                 [],
                                                                 "serialize_element",
@@ -8753,8 +9422,18 @@ Module annotated_value.
                                                                           "core::result::Result")
                                                                         []
                                                                         [
-                                                                          Ty.associated;
-                                                                          Ty.associated
+                                                                          Ty.associated_in_trait
+                                                                            "serde::ser::Serializer"
+                                                                            []
+                                                                            []
+                                                                            S
+                                                                            "Ok";
+                                                                          Ty.associated_in_trait
+                                                                            "serde::ser::Serializer"
+                                                                            []
+                                                                            []
+                                                                            S
+                                                                            "Error"
                                                                         ],
                                                                       M.get_trait_method (|
                                                                         "core::ops::try_trait::FromResidual",
@@ -8763,8 +9442,18 @@ Module annotated_value.
                                                                             "core::result::Result")
                                                                           []
                                                                           [
-                                                                            Ty.associated;
-                                                                            Ty.associated
+                                                                            Ty.associated_in_trait
+                                                                              "serde::ser::Serializer"
+                                                                              []
+                                                                              []
+                                                                              S
+                                                                              "Ok";
+                                                                            Ty.associated_in_trait
+                                                                              "serde::ser::Serializer"
+                                                                              []
+                                                                              []
+                                                                              S
+                                                                              "Error"
                                                                           ],
                                                                         [],
                                                                         [
@@ -8775,7 +9464,12 @@ Module annotated_value.
                                                                             [
                                                                               Ty.path
                                                                                 "core::convert::Infallible";
-                                                                              Ty.associated
+                                                                              Ty.associated_in_trait
+                                                                                "serde::ser::Serializer"
+                                                                                []
+                                                                                []
+                                                                                S
+                                                                                "Error"
                                                                             ]
                                                                         ],
                                                                         "from_residual",
@@ -8812,10 +9506,18 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::SerializeSeq",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                S
+                                "SerializeSeq",
                               [],
                               [],
                               "end",
@@ -8835,8 +9537,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "serde::ser::Serialize"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
   End Impl_serde_ser_Serialize_for_move_core_types_annotated_value_MoveValue.
   
@@ -8886,7 +9589,7 @@ Module annotated_value.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ t : Ty.associated :=
+                let~ t : Ty.associated_in_trait "serde::ser::Serializer" [] [] S "SerializeMap" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
@@ -8898,15 +9601,26 @@ Module annotated_value.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.path "core::convert::Infallible"; Ty.associated ];
-                              Ty.associated
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                                ];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] S "SerializeMap"
                             ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  S
+                                  "SerializeMap";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ],
                             [],
                             [],
                             "branch",
@@ -8918,7 +9632,15 @@ Module annotated_value.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    S
+                                    "SerializeMap";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 S,
@@ -8990,19 +9712,53 @@ Module annotated_value.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.associated; Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            S
+                                            "Error"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [ Ty.associated; Ty.associated ],
+                                          [
+                                            Ty.associated_in_trait
+                                              "serde::ser::Serializer"
+                                              []
+                                              []
+                                              S
+                                              "Ok";
+                                            Ty.associated_in_trait
+                                              "serde::ser::Serializer"
+                                              []
+                                              []
+                                              S
+                                              "Error"
+                                          ],
                                         [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
-                                            [ Ty.path "core::convert::Infallible"; Ty.associated ]
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                S
+                                                "Error"
+                                            ]
                                         ],
                                         "from_residual",
                                         [],
@@ -9196,7 +9952,12 @@ Module annotated_value.
                                                         []
                                                         [
                                                           Ty.path "core::convert::Infallible";
-                                                          Ty.associated
+                                                          Ty.associated_in_trait
+                                                            "serde::ser::Serializer"
+                                                            []
+                                                            []
+                                                            S
+                                                            "Error"
                                                         ];
                                                       Ty.tuple []
                                                     ],
@@ -9205,7 +9966,15 @@ Module annotated_value.
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
                                                       []
-                                                      [ Ty.tuple []; Ty.associated ],
+                                                      [
+                                                        Ty.tuple [];
+                                                        Ty.associated_in_trait
+                                                          "serde::ser::Serializer"
+                                                          []
+                                                          []
+                                                          S
+                                                          "Error"
+                                                      ],
                                                     [],
                                                     [],
                                                     "branch",
@@ -9217,10 +9986,23 @@ Module annotated_value.
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
                                                         []
-                                                        [ Ty.tuple []; Ty.associated ],
+                                                        [
+                                                          Ty.tuple [];
+                                                          Ty.associated_in_trait
+                                                            "serde::ser::Serializer"
+                                                            []
+                                                            []
+                                                            S
+                                                            "Error"
+                                                        ],
                                                       M.get_trait_method (|
                                                         "serde::ser::SerializeMap",
-                                                        Ty.associated,
+                                                        Ty.associated_in_trait
+                                                          "serde::ser::Serializer"
+                                                          []
+                                                          []
+                                                          S
+                                                          "SerializeMap",
                                                         [],
                                                         [],
                                                         "serialize_entry",
@@ -9265,13 +10047,39 @@ Module annotated_value.
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
                                                                 []
-                                                                [ Ty.associated; Ty.associated ],
+                                                                [
+                                                                  Ty.associated_in_trait
+                                                                    "serde::ser::Serializer"
+                                                                    []
+                                                                    []
+                                                                    S
+                                                                    "Ok";
+                                                                  Ty.associated_in_trait
+                                                                    "serde::ser::Serializer"
+                                                                    []
+                                                                    []
+                                                                    S
+                                                                    "Error"
+                                                                ],
                                                               M.get_trait_method (|
                                                                 "core::ops::try_trait::FromResidual",
                                                                 Ty.apply
                                                                   (Ty.path "core::result::Result")
                                                                   []
-                                                                  [ Ty.associated; Ty.associated ],
+                                                                  [
+                                                                    Ty.associated_in_trait
+                                                                      "serde::ser::Serializer"
+                                                                      []
+                                                                      []
+                                                                      S
+                                                                      "Ok";
+                                                                    Ty.associated_in_trait
+                                                                      "serde::ser::Serializer"
+                                                                      []
+                                                                      []
+                                                                      S
+                                                                      "Error"
+                                                                  ],
                                                                 [],
                                                                 [
                                                                   Ty.apply
@@ -9280,7 +10088,12 @@ Module annotated_value.
                                                                     [
                                                                       Ty.path
                                                                         "core::convert::Infallible";
-                                                                      Ty.associated
+                                                                      Ty.associated_in_trait
+                                                                        "serde::ser::Serializer"
+                                                                        []
+                                                                        []
+                                                                        S
+                                                                        "Error"
                                                                     ]
                                                                 ],
                                                                 "from_residual",
@@ -9314,10 +10127,16 @@ Module annotated_value.
                     |)) in
                 M.alloc (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                      ],
                     M.get_trait_method (|
                       "serde::ser::SerializeMap",
-                      Ty.associated,
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] S "SerializeMap",
                       [],
                       [],
                       "end",
@@ -9335,8 +10154,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "serde::ser::Serialize"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
   End Impl_serde_ser_Serialize_for_move_core_types_annotated_value_MoveFields.
   
@@ -9366,7 +10186,8 @@ Module annotated_value.
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ t : Ty.associated :=
+                let~ t :
+                    Ty.associated_in_trait "serde::ser::Serializer" [] [] S "SerializeStruct" :=
                   M.copy (|
                     M.match_operator (|
                       M.alloc (|
@@ -9378,15 +10199,31 @@ Module annotated_value.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.path "core::convert::Infallible"; Ty.associated ];
-                              Ty.associated
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                                ];
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                S
+                                "SerializeStruct"
                             ],
                           M.get_trait_method (|
                             "core::ops::try_trait::Try",
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  S
+                                  "SerializeStruct";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ],
                             [],
                             [],
                             "branch",
@@ -9398,7 +10235,15 @@ Module annotated_value.
                               Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.associated; Ty.associated ],
+                                [
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    S
+                                    "SerializeStruct";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                                ],
                               M.get_trait_method (|
                                 "serde::ser::Serializer",
                                 S,
@@ -9438,19 +10283,53 @@ Module annotated_value.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.associated; Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            S
+                                            "Error"
+                                        ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::FromResidual",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [ Ty.associated; Ty.associated ],
+                                          [
+                                            Ty.associated_in_trait
+                                              "serde::ser::Serializer"
+                                              []
+                                              []
+                                              S
+                                              "Ok";
+                                            Ty.associated_in_trait
+                                              "serde::ser::Serializer"
+                                              []
+                                              []
+                                              S
+                                              "Error"
+                                          ],
                                         [],
                                         [
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
-                                            [ Ty.path "core::convert::Infallible"; Ty.associated ]
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.associated_in_trait
+                                                "serde::ser::Serializer"
+                                                []
+                                                []
+                                                S
+                                                "Error"
+                                            ]
                                         ],
                                         "from_residual",
                                         [],
@@ -9486,7 +10365,10 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.path "core::convert::Infallible"; Ty.associated ];
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ];
                             Ty.tuple []
                           ],
                         M.get_trait_method (|
@@ -9494,7 +10376,10 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                            ],
                           [],
                           [],
                           "branch",
@@ -9506,10 +10391,18 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.tuple []; Ty.associated ],
+                              [
+                                Ty.tuple [];
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::SerializeStruct",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                S
+                                "SerializeStruct",
                               [],
                               [],
                               "serialize_field",
@@ -9576,19 +10469,53 @@ Module annotated_value.
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
-                                      [ Ty.associated; Ty.associated ],
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          S
+                                          "Error"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.associated; Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            S
+                                            "Error"
+                                        ],
                                       [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [ Ty.path "core::convert::Infallible"; Ty.associated ]
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.associated_in_trait
+                                              "serde::ser::Serializer"
+                                              []
+                                              []
+                                              S
+                                              "Error"
+                                          ]
                                       ],
                                       "from_residual",
                                       [],
@@ -9623,7 +10550,10 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.path "core::convert::Infallible"; Ty.associated ];
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ];
                             Ty.tuple []
                           ],
                         M.get_trait_method (|
@@ -9631,7 +10561,10 @@ Module annotated_value.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.tuple []; Ty.associated ],
+                            [
+                              Ty.tuple [];
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                            ],
                           [],
                           [],
                           "branch",
@@ -9643,10 +10576,18 @@ Module annotated_value.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.tuple []; Ty.associated ],
+                              [
+                                Ty.tuple [];
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                              ],
                             M.get_trait_method (|
                               "serde::ser::SerializeStruct",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                S
+                                "SerializeStruct",
                               [],
                               [],
                               "serialize_field",
@@ -9756,19 +10697,53 @@ Module annotated_value.
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
-                                      [ Ty.associated; Ty.associated ],
+                                      [
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          S
+                                          "Ok";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          S
+                                          "Error"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.associated; Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            S
+                                            "Ok";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            S
+                                            "Error"
+                                        ],
                                       [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [ Ty.path "core::convert::Infallible"; Ty.associated ]
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.associated_in_trait
+                                              "serde::ser::Serializer"
+                                              []
+                                              []
+                                              S
+                                              "Error"
+                                          ]
                                       ],
                                       "from_residual",
                                       [],
@@ -9794,10 +10769,16 @@ Module annotated_value.
                   |) in
                 M.alloc (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                      ],
                     M.get_trait_method (|
                       "serde::ser::SerializeStruct",
-                      Ty.associated,
+                      Ty.associated_in_trait "serde::ser::Serializer" [] [] S "SerializeStruct",
                       [],
                       [],
                       "end",
@@ -9815,8 +10796,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "serde::ser::Serialize"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
   End Impl_serde_ser_Serialize_for_move_core_types_annotated_value_MoveStruct.
   
@@ -10737,8 +11719,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_annotated_value_MoveTypeLayout.
   
@@ -10993,8 +11976,9 @@ Module annotated_value.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Display_T_for_move_core_types_annotated_value_DebugAsDisplay_T.
   
@@ -11543,8 +12527,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_annotated_value_MoveStructLayout.
   
@@ -11815,12 +12800,10 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [
-          (* T *)
-          Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::annotated_value::MoveTypeLayout" ]
-        ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::annotated_value::MoveTypeLayout" ] ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__move_core_types_annotated_value_MoveTypeLayout_for_move_core_types_language_storage_TypeTag.
   
@@ -11865,12 +12848,11 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [
-          (* T *)
-          Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::annotated_value::MoveStructLayout" ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::annotated_value::MoveStructLayout" ]
         ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__move_core_types_annotated_value_MoveStructLayout_for_move_core_types_language_storage_StructTag.
   
@@ -13065,8 +14047,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_annotated_value_MoveValue.
   
@@ -13564,8 +14547,9 @@ Module annotated_value.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_annotated_value_MoveStruct.
 End annotated_value.

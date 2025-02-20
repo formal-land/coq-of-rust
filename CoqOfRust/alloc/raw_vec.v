@@ -1572,8 +1572,9 @@ Module raw_vec.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::drop::Drop"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
   End Impl_core_ops_drop_Drop_where_core_alloc_Allocator_A_for_alloc_raw_vec_RawVec_T_A.
   

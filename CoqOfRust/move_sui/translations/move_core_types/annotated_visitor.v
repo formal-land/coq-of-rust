@@ -235,7 +235,12 @@ Module annotated_visitor.
                                                       []
                                                       [
                                                         Ty.path "core::convert::Infallible";
-                                                        Ty.associated
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Traversal"
+                                                          []
+                                                          []
+                                                          Self
+                                                          "Error"
                                                       ];
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -252,7 +257,12 @@ Module annotated_visitor.
                                                         (Ty.path "core::option::Option")
                                                         []
                                                         [ Ty.tuple [] ];
-                                                      Ty.associated
+                                                      Ty.associated_in_trait
+                                                        "move_core_types::annotated_visitor::Traversal"
+                                                        []
+                                                        []
+                                                        Self
+                                                        "Error"
                                                     ],
                                                   [],
                                                   [],
@@ -270,7 +280,12 @@ Module annotated_visitor.
                                                           (Ty.path "core::option::Option")
                                                           []
                                                           [ Ty.tuple [] ];
-                                                        Ty.associated
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Traversal"
+                                                          []
+                                                          []
+                                                          Self
+                                                          "Error"
                                                       ],
                                                     M.get_associated_function (|
                                                       Ty.path
@@ -311,13 +326,29 @@ Module annotated_visitor.
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
                                                               []
-                                                              [ Ty.tuple []; Ty.associated ],
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.associated_in_trait
+                                                                  "move_core_types::annotated_visitor::Traversal"
+                                                                  []
+                                                                  []
+                                                                  Self
+                                                                  "Error"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
                                                                 []
-                                                                [ Ty.tuple []; Ty.associated ],
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.associated_in_trait
+                                                                    "move_core_types::annotated_visitor::Traversal"
+                                                                    []
+                                                                    []
+                                                                    Self
+                                                                    "Error"
+                                                                ],
                                                               [],
                                                               [
                                                                 Ty.apply
@@ -326,7 +357,12 @@ Module annotated_visitor.
                                                                   [
                                                                     Ty.path
                                                                       "core::convert::Infallible";
-                                                                    Ty.associated
+                                                                    Ty.associated_in_trait
+                                                                      "move_core_types::annotated_visitor::Traversal"
+                                                                      []
+                                                                      []
+                                                                      Self
+                                                                      "Error"
                                                                   ]
                                                               ],
                                                               "from_residual",
@@ -451,7 +487,12 @@ Module annotated_visitor.
                                                       []
                                                       [
                                                         Ty.path "core::convert::Infallible";
-                                                        Ty.associated
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Traversal"
+                                                          []
+                                                          []
+                                                          Self
+                                                          "Error"
                                                       ];
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -492,7 +533,12 @@ Module annotated_visitor.
                                                               Ty.tuple []
                                                             ]
                                                         ];
-                                                      Ty.associated
+                                                      Ty.associated_in_trait
+                                                        "move_core_types::annotated_visitor::Traversal"
+                                                        []
+                                                        []
+                                                        Self
+                                                        "Error"
                                                     ],
                                                   [],
                                                   [],
@@ -522,7 +568,12 @@ Module annotated_visitor.
                                                                 Ty.tuple []
                                                               ]
                                                           ];
-                                                        Ty.associated
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Traversal"
+                                                          []
+                                                          []
+                                                          Self
+                                                          "Error"
                                                       ],
                                                     M.get_associated_function (|
                                                       Ty.path
@@ -563,13 +614,29 @@ Module annotated_visitor.
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
                                                               []
-                                                              [ Ty.tuple []; Ty.associated ],
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.associated_in_trait
+                                                                  "move_core_types::annotated_visitor::Traversal"
+                                                                  []
+                                                                  []
+                                                                  Self
+                                                                  "Error"
+                                                              ],
                                                             M.get_trait_method (|
                                                               "core::ops::try_trait::FromResidual",
                                                               Ty.apply
                                                                 (Ty.path "core::result::Result")
                                                                 []
-                                                                [ Ty.tuple []; Ty.associated ],
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.associated_in_trait
+                                                                    "move_core_types::annotated_visitor::Traversal"
+                                                                    []
+                                                                    []
+                                                                    Self
+                                                                    "Error"
+                                                                ],
                                                               [],
                                                               [
                                                                 Ty.apply
@@ -578,7 +645,12 @@ Module annotated_visitor.
                                                                   [
                                                                     Ty.path
                                                                       "core::convert::Infallible";
-                                                                    Ty.associated
+                                                                    Ty.associated_in_trait
+                                                                      "move_core_types::annotated_visitor::Traversal"
+                                                                      []
+                                                                      []
+                                                                      Self
+                                                                      "Error"
                                                                   ]
                                                               ],
                                                               "from_residual",
@@ -649,7 +721,8 @@ Module annotated_visitor.
     Definition _Value (T : Ty.t) : Ty.t := Ty.tuple [].
     
     (*     type Error = T::Error; *)
-    Definition _Error (T : Ty.t) : Ty.t := Ty.associated.
+    Definition _Error (T : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "move_core_types::annotated_visitor::Traversal" [] [] T "Error".
     
     (*
         fn visit_u8(&mut self, value: u8) -> Result<Self::Value, Self::Error> {
@@ -664,7 +737,18 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.associated ],
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.tuple [];
+                Ty.associated_in_trait
+                  "move_core_types::annotated_visitor::Traversal"
+                  []
+                  []
+                  T
+                  "Error"
+              ],
             M.get_trait_method (|
               "move_core_types::annotated_visitor::Traversal",
               T,
@@ -695,7 +779,18 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.associated ],
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.tuple [];
+                Ty.associated_in_trait
+                  "move_core_types::annotated_visitor::Traversal"
+                  []
+                  []
+                  T
+                  "Error"
+              ],
             M.get_trait_method (|
               "move_core_types::annotated_visitor::Traversal",
               T,
@@ -726,7 +821,18 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.associated ],
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.tuple [];
+                Ty.associated_in_trait
+                  "move_core_types::annotated_visitor::Traversal"
+                  []
+                  []
+                  T
+                  "Error"
+              ],
             M.get_trait_method (|
               "move_core_types::annotated_visitor::Traversal",
               T,
@@ -757,7 +863,18 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.associated ],
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.tuple [];
+                Ty.associated_in_trait
+                  "move_core_types::annotated_visitor::Traversal"
+                  []
+                  []
+                  T
+                  "Error"
+              ],
             M.get_trait_method (|
               "move_core_types::annotated_visitor::Traversal",
               T,
@@ -788,7 +905,18 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.associated ],
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.tuple [];
+                Ty.associated_in_trait
+                  "move_core_types::annotated_visitor::Traversal"
+                  []
+                  []
+                  T
+                  "Error"
+              ],
             M.get_trait_method (|
               "move_core_types::annotated_visitor::Traversal",
               T,
@@ -819,7 +947,18 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.associated ],
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.tuple [];
+                Ty.associated_in_trait
+                  "move_core_types::annotated_visitor::Traversal"
+                  []
+                  []
+                  T
+                  "Error"
+              ],
             M.get_trait_method (|
               "move_core_types::annotated_visitor::Traversal",
               T,
@@ -850,7 +989,18 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.associated ],
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.tuple [];
+                Ty.associated_in_trait
+                  "move_core_types::annotated_visitor::Traversal"
+                  []
+                  []
+                  T
+                  "Error"
+              ],
             M.get_trait_method (|
               "move_core_types::annotated_visitor::Traversal",
               T,
@@ -881,7 +1031,18 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.associated ],
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.tuple [];
+                Ty.associated_in_trait
+                  "move_core_types::annotated_visitor::Traversal"
+                  []
+                  []
+                  T
+                  "Error"
+              ],
             M.get_trait_method (|
               "move_core_types::annotated_visitor::Traversal",
               T,
@@ -912,7 +1073,18 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.associated ],
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.tuple [];
+                Ty.associated_in_trait
+                  "move_core_types::annotated_visitor::Traversal"
+                  []
+                  []
+                  T
+                  "Error"
+              ],
             M.get_trait_method (|
               "move_core_types::annotated_visitor::Traversal",
               T,
@@ -946,7 +1118,18 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let driver := M.alloc (| driver |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.associated ],
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.tuple [];
+                Ty.associated_in_trait
+                  "move_core_types::annotated_visitor::Traversal"
+                  []
+                  []
+                  T
+                  "Error"
+              ],
             M.get_trait_method (|
               "move_core_types::annotated_visitor::Traversal",
               T,
@@ -980,7 +1163,18 @@ Module annotated_visitor.
           (let self := M.alloc (| self |) in
           let driver := M.alloc (| driver |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.associated ],
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.tuple [];
+                Ty.associated_in_trait
+                  "move_core_types::annotated_visitor::Traversal"
+                  []
+                  []
+                  T
+                  "Error"
+              ],
             M.get_trait_method (|
               "move_core_types::annotated_visitor::Traversal",
               T,
@@ -1002,8 +1196,9 @@ Module annotated_visitor.
       forall (T : Ty.t),
       M.IsTraitInstance
         "move_core_types::annotated_visitor::Visitor"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("Value", InstanceField.Ty (_Value T));
@@ -1101,8 +1296,9 @@ Module annotated_visitor.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_move_core_types_annotated_visitor_Error.
   
@@ -1391,8 +1587,9 @@ Module annotated_visitor.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_annotated_visitor_Error.
   
@@ -1518,8 +1715,9 @@ Module annotated_visitor.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_annotated_visitor_Error.
   
@@ -1540,8 +1738,9 @@ Module annotated_visitor.
     Axiom Implements :
       M.IsTraitInstance
         "move_core_types::annotated_visitor::Traversal"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("Error", InstanceField.Ty _Error) ].
   End Impl_move_core_types_annotated_visitor_Traversal_for_move_core_types_annotated_visitor_NullTraversal.
   
@@ -1714,7 +1913,13 @@ Module annotated_visitor.
                             M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ res : Ty.associated :=
+                            (let~ res :
+                                Ty.associated_in_trait
+                                  "move_core_types::annotated_visitor::Visitor"
+                                  []
+                                  []
+                                  V
+                                  "Value" :=
                               M.copy (|
                                 M.match_operator (|
                                   M.alloc (|
@@ -1726,15 +1931,41 @@ Module annotated_visitor.
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
-                                            [ Ty.path "core::convert::Infallible"; Ty.associated ];
-                                          Ty.associated
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.associated_in_trait
+                                                "move_core_types::annotated_visitor::Visitor"
+                                                []
+                                                []
+                                                V
+                                                "Error"
+                                            ];
+                                          Ty.associated_in_trait
+                                            "move_core_types::annotated_visitor::Visitor"
+                                            []
+                                            []
+                                            V
+                                            "Value"
                                         ],
                                       M.get_trait_method (|
                                         "core::ops::try_trait::Try",
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [ Ty.associated; Ty.associated ],
+                                          [
+                                            Ty.associated_in_trait
+                                              "move_core_types::annotated_visitor::Visitor"
+                                              []
+                                              []
+                                              V
+                                              "Value";
+                                            Ty.associated_in_trait
+                                              "move_core_types::annotated_visitor::Visitor"
+                                              []
+                                              []
+                                              V
+                                              "Error"
+                                          ],
                                         [],
                                         [],
                                         "branch",
@@ -1746,7 +1977,20 @@ Module annotated_visitor.
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
-                                            [ Ty.associated; Ty.associated ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "move_core_types::annotated_visitor::Visitor"
+                                                []
+                                                []
+                                                V
+                                                "Value";
+                                              Ty.associated_in_trait
+                                                "move_core_types::annotated_visitor::Visitor"
+                                                []
+                                                []
+                                                V
+                                                "Error"
+                                            ],
                                           M.get_function (|
                                             "move_core_types::annotated_visitor::visit_value",
                                             [],
@@ -1808,8 +2052,20 @@ Module annotated_visitor.
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
                                                         []
-                                                        [ Ty.associated ];
-                                                      Ty.associated
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Value"
+                                                        ];
+                                                      Ty.associated_in_trait
+                                                        "move_core_types::annotated_visitor::Visitor"
+                                                        []
+                                                        []
+                                                        V
+                                                        "Error"
                                                     ],
                                                   M.get_trait_method (|
                                                     "core::ops::try_trait::FromResidual",
@@ -1820,8 +2076,20 @@ Module annotated_visitor.
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
                                                           []
-                                                          [ Ty.associated ];
-                                                        Ty.associated
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "move_core_types::annotated_visitor::Visitor"
+                                                              []
+                                                              []
+                                                              V
+                                                              "Value"
+                                                          ];
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Error"
                                                       ],
                                                     [],
                                                     [
@@ -1830,7 +2098,12 @@ Module annotated_visitor.
                                                         []
                                                         [
                                                           Ty.path "core::convert::Infallible";
-                                                          Ty.associated
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Error"
                                                         ]
                                                     ],
                                                     "from_residual",
@@ -2186,7 +2459,13 @@ Module annotated_visitor.
                             0
                           |) in
                         let field := M.copy (| γ0_0 |) in
-                        let~ res : Ty.associated :=
+                        let~ res :
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Value" :=
                           M.copy (|
                             M.match_operator (|
                               M.alloc (|
@@ -2198,15 +2477,41 @@ Module annotated_visitor.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.path "core::convert::Infallible"; Ty.associated ];
-                                      Ty.associated
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.associated_in_trait
+                                            "move_core_types::annotated_visitor::Visitor"
+                                            []
+                                            []
+                                            V
+                                            "Error"
+                                        ];
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Value"
                                     ],
                                   M.get_trait_method (|
                                     "core::ops::try_trait::Try",
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
-                                      [ Ty.associated; Ty.associated ],
+                                      [
+                                        Ty.associated_in_trait
+                                          "move_core_types::annotated_visitor::Visitor"
+                                          []
+                                          []
+                                          V
+                                          "Value";
+                                        Ty.associated_in_trait
+                                          "move_core_types::annotated_visitor::Visitor"
+                                          []
+                                          []
+                                          V
+                                          "Error"
+                                      ],
                                     [],
                                     [],
                                     "branch",
@@ -2218,7 +2523,20 @@ Module annotated_visitor.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.associated; Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "move_core_types::annotated_visitor::Visitor"
+                                            []
+                                            []
+                                            V
+                                            "Value";
+                                          Ty.associated_in_trait
+                                            "move_core_types::annotated_visitor::Visitor"
+                                            []
+                                            []
+                                            V
+                                            "Error"
+                                        ],
                                       M.get_function (|
                                         "move_core_types::annotated_visitor::visit_value",
                                         [],
@@ -2291,10 +2609,20 @@ Module annotated_visitor.
                                                               Ty.path
                                                                 "move_core_types::annotated_value::MoveFieldLayout"
                                                             ];
-                                                          Ty.associated
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Value"
                                                         ]
                                                     ];
-                                                  Ty.associated
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Error"
                                                 ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::FromResidual",
@@ -2315,10 +2643,20 @@ Module annotated_visitor.
                                                                 Ty.path
                                                                   "move_core_types::annotated_value::MoveFieldLayout"
                                                               ];
-                                                            Ty.associated
+                                                            Ty.associated_in_trait
+                                                              "move_core_types::annotated_visitor::Visitor"
+                                                              []
+                                                              []
+                                                              V
+                                                              "Value"
                                                           ]
                                                       ];
-                                                    Ty.associated
+                                                    Ty.associated_in_trait
+                                                      "move_core_types::annotated_visitor::Visitor"
+                                                      []
+                                                      []
+                                                      V
+                                                      "Error"
                                                   ],
                                                 [],
                                                 [
@@ -2327,7 +2665,12 @@ Module annotated_visitor.
                                                     []
                                                     [
                                                       Ty.path "core::convert::Infallible";
-                                                      Ty.associated
+                                                      Ty.associated_in_trait
+                                                        "move_core_types::annotated_visitor::Visitor"
+                                                        []
+                                                        []
+                                                        V
+                                                        "Error"
                                                     ]
                                                 ],
                                                 "from_residual",
@@ -2781,13 +3124,39 @@ Module annotated_visitor.
                                           Ty.apply
                                             (Ty.path "core::result::Result")
                                             []
-                                            [ Ty.associated; Ty.associated ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "move_core_types::annotated_visitor::Visitor"
+                                                []
+                                                []
+                                                V
+                                                "Value";
+                                              Ty.associated_in_trait
+                                                "move_core_types::annotated_visitor::Visitor"
+                                                []
+                                                []
+                                                V
+                                                "Error"
+                                            ],
                                           M.get_trait_method (|
                                             "core::ops::try_trait::FromResidual",
                                             Ty.apply
                                               (Ty.path "core::result::Result")
                                               []
-                                              [ Ty.associated; Ty.associated ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Value";
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Error"
+                                              ],
                                             [],
                                             [
                                               Ty.apply
@@ -2835,7 +3204,20 @@ Module annotated_visitor.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.associated; Ty.associated ],
+                                    [
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Value";
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Error"
+                                    ],
                                   M.get_trait_method (|
                                     "move_core_types::annotated_visitor::Visitor",
                                     V,
@@ -2867,7 +3249,20 @@ Module annotated_visitor.
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.associated; Ty.associated ],
+                                    [
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Value";
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Error"
+                                    ],
                                   M.get_trait_method (|
                                     "move_core_types::annotated_visitor::Visitor",
                                     V,
@@ -2895,12 +3290,24 @@ Module annotated_visitor.
                                   "core::result::Result::Err"
                                   [
                                     M.call_closure (|
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Error",
                                       M.get_trait_method (|
                                         "core::convert::Into",
                                         Ty.path "move_core_types::annotated_visitor::Error",
                                         [],
-                                        [ Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "move_core_types::annotated_visitor::Visitor"
+                                            []
+                                            []
+                                            V
+                                            "Error"
+                                        ],
                                         "into",
                                         [],
                                         []
@@ -2928,7 +3335,20 @@ Module annotated_visitor.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value";
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Error"
+                            ],
                           M.get_trait_method (|
                             "move_core_types::annotated_visitor::Visitor",
                             V,
@@ -3027,13 +3447,39 @@ Module annotated_visitor.
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
                                                       []
-                                                      [ Ty.associated; Ty.associated ],
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Value";
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Error"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::FromResidual",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
                                                         []
-                                                        [ Ty.associated; Ty.associated ],
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Value";
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Error"
+                                                        ],
                                                       [],
                                                       [
                                                         Ty.apply
@@ -3086,7 +3532,20 @@ Module annotated_visitor.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value";
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Error"
+                            ],
                           M.get_trait_method (|
                             "move_core_types::annotated_visitor::Visitor",
                             V,
@@ -3190,13 +3649,39 @@ Module annotated_visitor.
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
                                                       []
-                                                      [ Ty.associated; Ty.associated ],
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Value";
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Error"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::FromResidual",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
                                                         []
-                                                        [ Ty.associated; Ty.associated ],
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Value";
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Error"
+                                                        ],
                                                       [],
                                                       [
                                                         Ty.apply
@@ -3249,7 +3734,20 @@ Module annotated_visitor.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value";
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Error"
+                            ],
                           M.get_trait_method (|
                             "move_core_types::annotated_visitor::Visitor",
                             V,
@@ -3353,13 +3851,39 @@ Module annotated_visitor.
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
                                                       []
-                                                      [ Ty.associated; Ty.associated ],
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Value";
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Error"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::FromResidual",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
                                                         []
-                                                        [ Ty.associated; Ty.associated ],
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Value";
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Error"
+                                                        ],
                                                       [],
                                                       [
                                                         Ty.apply
@@ -3412,7 +3936,20 @@ Module annotated_visitor.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value";
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Error"
+                            ],
                           M.get_trait_method (|
                             "move_core_types::annotated_visitor::Visitor",
                             V,
@@ -3516,13 +4053,39 @@ Module annotated_visitor.
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
                                                       []
-                                                      [ Ty.associated; Ty.associated ],
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Value";
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Error"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::FromResidual",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
                                                         []
-                                                        [ Ty.associated; Ty.associated ],
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Value";
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Error"
+                                                        ],
                                                       [],
                                                       [
                                                         Ty.apply
@@ -3575,7 +4138,20 @@ Module annotated_visitor.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value";
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Error"
+                            ],
                           M.get_trait_method (|
                             "move_core_types::annotated_visitor::Visitor",
                             V,
@@ -3679,13 +4255,39 @@ Module annotated_visitor.
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
                                                       []
-                                                      [ Ty.associated; Ty.associated ],
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Value";
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Error"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::FromResidual",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
                                                         []
-                                                        [ Ty.associated; Ty.associated ],
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Value";
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Error"
+                                                        ],
                                                       [],
                                                       [
                                                         Ty.apply
@@ -3738,7 +4340,20 @@ Module annotated_visitor.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value";
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Error"
+                            ],
                           M.get_trait_method (|
                             "move_core_types::annotated_visitor::Visitor",
                             V,
@@ -3849,13 +4464,39 @@ Module annotated_visitor.
                                                         Ty.apply
                                                           (Ty.path "core::result::Result")
                                                           []
-                                                          [ Ty.associated; Ty.associated ],
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "move_core_types::annotated_visitor::Visitor"
+                                                              []
+                                                              []
+                                                              V
+                                                              "Value";
+                                                            Ty.associated_in_trait
+                                                              "move_core_types::annotated_visitor::Visitor"
+                                                              []
+                                                              []
+                                                              V
+                                                              "Error"
+                                                          ],
                                                         M.get_trait_method (|
                                                           "core::ops::try_trait::FromResidual",
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
                                                             []
-                                                            [ Ty.associated; Ty.associated ],
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "move_core_types::annotated_visitor::Visitor"
+                                                                []
+                                                                []
+                                                                V
+                                                                "Value";
+                                                              Ty.associated_in_trait
+                                                                "move_core_types::annotated_visitor::Visitor"
+                                                                []
+                                                                []
+                                                                V
+                                                                "Error"
+                                                            ],
                                                           [],
                                                           [
                                                             Ty.apply
@@ -3910,7 +4551,20 @@ Module annotated_visitor.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value";
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Error"
+                            ],
                           M.get_trait_method (|
                             "move_core_types::annotated_visitor::Visitor",
                             V,
@@ -4014,13 +4668,39 @@ Module annotated_visitor.
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
                                                       []
-                                                      [ Ty.associated; Ty.associated ],
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Value";
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Error"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::FromResidual",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
                                                         []
-                                                        [ Ty.associated; Ty.associated ],
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Value";
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Error"
+                                                        ],
                                                       [],
                                                       [
                                                         Ty.apply
@@ -4073,7 +4753,20 @@ Module annotated_visitor.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value";
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Error"
+                            ],
                           M.get_trait_method (|
                             "move_core_types::annotated_visitor::Visitor",
                             V,
@@ -4177,13 +4870,39 @@ Module annotated_visitor.
                                                     Ty.apply
                                                       (Ty.path "core::result::Result")
                                                       []
-                                                      [ Ty.associated; Ty.associated ],
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Value";
+                                                        Ty.associated_in_trait
+                                                          "move_core_types::annotated_visitor::Visitor"
+                                                          []
+                                                          []
+                                                          V
+                                                          "Error"
+                                                      ],
                                                     M.get_trait_method (|
                                                       "core::ops::try_trait::FromResidual",
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
                                                         []
-                                                        [ Ty.associated; Ty.associated ],
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Value";
+                                                          Ty.associated_in_trait
+                                                            "move_core_types::annotated_visitor::Visitor"
+                                                            []
+                                                            []
+                                                            V
+                                                            "Error"
+                                                        ],
                                                       [],
                                                       [
                                                         Ty.apply
@@ -4353,13 +5072,39 @@ Module annotated_visitor.
                                             Ty.apply
                                               (Ty.path "core::result::Result")
                                               []
-                                              [ Ty.associated; Ty.associated ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Value";
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Error"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
-                                                [ Ty.associated; Ty.associated ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Value";
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Error"
+                                                ],
                                               [],
                                               [
                                                 Ty.apply
@@ -4441,7 +5186,13 @@ Module annotated_visitor.
                             ]
                           |)
                         |) in
-                      let~ res : Ty.associated :=
+                      let~ res :
+                          Ty.associated_in_trait
+                            "move_core_types::annotated_visitor::Visitor"
+                            []
+                            []
+                            V
+                            "Value" :=
                         M.copy (|
                           M.match_operator (|
                             M.alloc (|
@@ -4453,15 +5204,41 @@ Module annotated_visitor.
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
-                                      [ Ty.path "core::convert::Infallible"; Ty.associated ];
-                                    Ty.associated
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.associated_in_trait
+                                          "move_core_types::annotated_visitor::Visitor"
+                                          []
+                                          []
+                                          V
+                                          "Error"
+                                      ];
+                                    Ty.associated_in_trait
+                                      "move_core_types::annotated_visitor::Visitor"
+                                      []
+                                      []
+                                      V
+                                      "Value"
                                   ],
                                 M.get_trait_method (|
                                   "core::ops::try_trait::Try",
                                   Ty.apply
                                     (Ty.path "core::result::Result")
                                     []
-                                    [ Ty.associated; Ty.associated ],
+                                    [
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Value";
+                                      Ty.associated_in_trait
+                                        "move_core_types::annotated_visitor::Visitor"
+                                        []
+                                        []
+                                        V
+                                        "Error"
+                                    ],
                                   [],
                                   [],
                                   "branch",
@@ -4473,7 +5250,20 @@ Module annotated_visitor.
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
-                                      [ Ty.associated; Ty.associated ],
+                                      [
+                                        Ty.associated_in_trait
+                                          "move_core_types::annotated_visitor::Visitor"
+                                          []
+                                          []
+                                          V
+                                          "Value";
+                                        Ty.associated_in_trait
+                                          "move_core_types::annotated_visitor::Visitor"
+                                          []
+                                          []
+                                          V
+                                          "Error"
+                                      ],
                                     M.get_trait_method (|
                                       "move_core_types::annotated_visitor::Visitor",
                                       V,
@@ -4515,13 +5305,39 @@ Module annotated_visitor.
                                             Ty.apply
                                               (Ty.path "core::result::Result")
                                               []
-                                              [ Ty.associated; Ty.associated ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Value";
+                                                Ty.associated_in_trait
+                                                  "move_core_types::annotated_visitor::Visitor"
+                                                  []
+                                                  []
+                                                  V
+                                                  "Error"
+                                              ],
                                             M.get_trait_method (|
                                               "core::ops::try_trait::FromResidual",
                                               Ty.apply
                                                 (Ty.path "core::result::Result")
                                                 []
-                                                [ Ty.associated; Ty.associated ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Value";
+                                                  Ty.associated_in_trait
+                                                    "move_core_types::annotated_visitor::Visitor"
+                                                    []
+                                                    []
+                                                    V
+                                                    "Error"
+                                                ],
                                               [],
                                               [
                                                 Ty.apply
@@ -4529,7 +5345,12 @@ Module annotated_visitor.
                                                   []
                                                   [
                                                     Ty.path "core::convert::Infallible";
-                                                    Ty.associated
+                                                    Ty.associated_in_trait
+                                                      "move_core_types::annotated_visitor::Visitor"
+                                                      []
+                                                      []
+                                                      V
+                                                      "Error"
                                                   ]
                                               ],
                                               "from_residual",
@@ -4638,13 +5459,39 @@ Module annotated_visitor.
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
                                                             []
-                                                            [ Ty.associated; Ty.associated ],
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "move_core_types::annotated_visitor::Visitor"
+                                                                []
+                                                                []
+                                                                V
+                                                                "Value";
+                                                              Ty.associated_in_trait
+                                                                "move_core_types::annotated_visitor::Visitor"
+                                                                []
+                                                                []
+                                                                V
+                                                                "Error"
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::FromResidual",
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
                                                               []
-                                                              [ Ty.associated; Ty.associated ],
+                                                              [
+                                                                Ty.associated_in_trait
+                                                                  "move_core_types::annotated_visitor::Visitor"
+                                                                  []
+                                                                  []
+                                                                  V
+                                                                  "Value";
+                                                                Ty.associated_in_trait
+                                                                  "move_core_types::annotated_visitor::Visitor"
+                                                                  []
+                                                                  []
+                                                                  V
+                                                                  "Error"
+                                                              ],
                                                             [],
                                                             [
                                                               Ty.apply
@@ -4719,7 +5566,20 @@ Module annotated_visitor.
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value";
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Error"
+                            ],
                           M.get_function (|
                             "move_core_types::annotated_visitor::visit_struct",
                             [],
@@ -4781,7 +5641,13 @@ Module annotated_visitor.
                     ]
                   |)
                 |) in
-              let~ res : Ty.associated :=
+              let~ res :
+                  Ty.associated_in_trait
+                    "move_core_types::annotated_visitor::Visitor"
+                    []
+                    []
+                    V
+                    "Value" :=
                 M.copy (|
                   M.match_operator (|
                     M.alloc (|
@@ -4793,15 +5659,41 @@ Module annotated_visitor.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.path "core::convert::Infallible"; Ty.associated ];
-                            Ty.associated
+                              [
+                                Ty.path "core::convert::Infallible";
+                                Ty.associated_in_trait
+                                  "move_core_types::annotated_visitor::Visitor"
+                                  []
+                                  []
+                                  V
+                                  "Error"
+                              ];
+                            Ty.associated_in_trait
+                              "move_core_types::annotated_visitor::Visitor"
+                              []
+                              []
+                              V
+                              "Value"
                           ],
                         M.get_trait_method (|
                           "core::ops::try_trait::Try",
                           Ty.apply
                             (Ty.path "core::result::Result")
                             []
-                            [ Ty.associated; Ty.associated ],
+                            [
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Value";
+                              Ty.associated_in_trait
+                                "move_core_types::annotated_visitor::Visitor"
+                                []
+                                []
+                                V
+                                "Error"
+                            ],
                           [],
                           [],
                           "branch",
@@ -4813,7 +5705,20 @@ Module annotated_visitor.
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.associated; Ty.associated ],
+                              [
+                                Ty.associated_in_trait
+                                  "move_core_types::annotated_visitor::Visitor"
+                                  []
+                                  []
+                                  V
+                                  "Value";
+                                Ty.associated_in_trait
+                                  "move_core_types::annotated_visitor::Visitor"
+                                  []
+                                  []
+                                  V
+                                  "Error"
+                              ],
                             M.get_trait_method (|
                               "move_core_types::annotated_visitor::Visitor",
                               V,
@@ -4855,19 +5760,53 @@ Module annotated_visitor.
                                     Ty.apply
                                       (Ty.path "core::result::Result")
                                       []
-                                      [ Ty.associated; Ty.associated ],
+                                      [
+                                        Ty.associated_in_trait
+                                          "move_core_types::annotated_visitor::Visitor"
+                                          []
+                                          []
+                                          V
+                                          "Value";
+                                        Ty.associated_in_trait
+                                          "move_core_types::annotated_visitor::Visitor"
+                                          []
+                                          []
+                                          V
+                                          "Error"
+                                      ],
                                     M.get_trait_method (|
                                       "core::ops::try_trait::FromResidual",
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.associated; Ty.associated ],
+                                        [
+                                          Ty.associated_in_trait
+                                            "move_core_types::annotated_visitor::Visitor"
+                                            []
+                                            []
+                                            V
+                                            "Value";
+                                          Ty.associated_in_trait
+                                            "move_core_types::annotated_visitor::Visitor"
+                                            []
+                                            []
+                                            V
+                                            "Error"
+                                        ],
                                       [],
                                       [
                                         Ty.apply
                                           (Ty.path "core::result::Result")
                                           []
-                                          [ Ty.path "core::convert::Infallible"; Ty.associated ]
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.associated_in_trait
+                                              "move_core_types::annotated_visitor::Visitor"
+                                              []
+                                              []
+                                              V
+                                              "Error"
+                                          ]
                                       ],
                                       "from_residual",
                                       [],
@@ -5031,13 +5970,39 @@ Module annotated_visitor.
                                                           Ty.apply
                                                             (Ty.path "core::result::Result")
                                                             []
-                                                            [ Ty.associated; Ty.associated ],
+                                                            [
+                                                              Ty.associated_in_trait
+                                                                "move_core_types::annotated_visitor::Visitor"
+                                                                []
+                                                                []
+                                                                V
+                                                                "Value";
+                                                              Ty.associated_in_trait
+                                                                "move_core_types::annotated_visitor::Visitor"
+                                                                []
+                                                                []
+                                                                V
+                                                                "Error"
+                                                            ],
                                                           M.get_trait_method (|
                                                             "core::ops::try_trait::FromResidual",
                                                             Ty.apply
                                                               (Ty.path "core::result::Result")
                                                               []
-                                                              [ Ty.associated; Ty.associated ],
+                                                              [
+                                                                Ty.associated_in_trait
+                                                                  "move_core_types::annotated_visitor::Visitor"
+                                                                  []
+                                                                  []
+                                                                  V
+                                                                  "Value";
+                                                                Ty.associated_in_trait
+                                                                  "move_core_types::annotated_visitor::Visitor"
+                                                                  []
+                                                                  []
+                                                                  V
+                                                                  "Error"
+                                                              ],
                                                             [],
                                                             [
                                                               Ty.apply

@@ -10,7 +10,8 @@ Module future.
       Definition Self (F : Ty.t) : Ty.t := F.
       
       (*     type Output = F::Output; *)
-      Definition _Output (F : Ty.t) : Ty.t := Ty.associated.
+      Definition _Output (F : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::future::future::Future" [] [] F "Output".
       
       (*     type IntoFuture = F; *)
       Definition _IntoFuture (F : Ty.t) : Ty.t := F.
@@ -34,8 +35,9 @@ Module future.
         forall (F : Ty.t),
         M.IsTraitInstance
           "core::future::into_future::IntoFuture"
-          (Self F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F)
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output F));

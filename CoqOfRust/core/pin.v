@@ -17,8 +17,9 @@ Module pin.
       forall (Ptr : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self Ptr)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Ptr)
         (* Instance *) [].
   End Impl_core_marker_Copy_where_core_marker_Copy_Ptr_for_core_pin_Pin_Ptr.
   
@@ -63,12 +64,13 @@ Module pin.
       forall (Ptr : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self Ptr)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Ptr)
         (* Instance *) [ ("clone", InstanceField.Method (clone Ptr)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_Ptr_for_core_pin_Pin_Ptr.
   
-  Module Impl_core_cmp_PartialEq_where_core_ops_deref_Deref_Ptr_where_core_ops_deref_Deref_Q_where_core_cmp_PartialEq_associated_type_associated_type_core_pin_Pin_Q_for_core_pin_Pin_Ptr.
+  Module Impl_core_cmp_PartialEq_where_core_ops_deref_Deref_Ptr_where_core_ops_deref_Deref_Q_where_core_cmp_PartialEq_associated_in_trait_core_ops_deref_Deref___Ptr_Target_associated_in_trait_core_ops_deref_Deref___Q_Target_core_pin_Pin_Q_for_core_pin_Pin_Ptr.
     Definition Self (Ptr Q : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ].
     
     (*
@@ -87,9 +89,9 @@ Module pin.
             Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
-              Ty.associated,
+              Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target",
               [],
-              [ Ty.associated ],
+              [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Q "Target" ],
               "eq",
               [],
               []
@@ -99,7 +101,10 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -117,7 +122,10 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Q "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
@@ -152,9 +160,9 @@ Module pin.
             Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
-              Ty.associated,
+              Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target",
               [],
-              [ Ty.associated ],
+              [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Q "Target" ],
               "ne",
               [],
               []
@@ -164,7 +172,10 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -182,7 +193,10 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Q "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
@@ -205,11 +219,12 @@ Module pin.
       forall (Ptr Q : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::pin::Pin") [] [ Q ] ]
         (Self Ptr Q)
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "core::pin::Pin") [] [ Q ] ]
         (* Instance *)
         [ ("eq", InstanceField.Method (eq Ptr Q)); ("ne", InstanceField.Method (ne Ptr Q)) ].
-  End Impl_core_cmp_PartialEq_where_core_ops_deref_Deref_Ptr_where_core_ops_deref_Deref_Q_where_core_cmp_PartialEq_associated_type_associated_type_core_pin_Pin_Q_for_core_pin_Pin_Ptr.
+  End Impl_core_cmp_PartialEq_where_core_ops_deref_Deref_Ptr_where_core_ops_deref_Deref_Q_where_core_cmp_PartialEq_associated_in_trait_core_ops_deref_Deref___Ptr_Target_associated_in_trait_core_ops_deref_Deref___Q_Target_core_pin_Pin_Q_for_core_pin_Pin_Ptr.
   
   Module Impl_core_cmp_Eq_where_core_ops_deref_Deref_Ptr_for_core_pin_Pin_Ptr.
     Definition Self (Ptr : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ].
@@ -218,12 +233,13 @@ Module pin.
       forall (Ptr : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self Ptr)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Ptr)
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_ops_deref_Deref_Ptr_for_core_pin_Pin_Ptr.
   
-  Module Impl_core_cmp_PartialOrd_where_core_ops_deref_Deref_Ptr_where_core_ops_deref_Deref_Q_where_core_cmp_PartialOrd_associated_type_associated_type_core_pin_Pin_Q_for_core_pin_Pin_Ptr.
+  Module Impl_core_cmp_PartialOrd_where_core_ops_deref_Deref_Ptr_where_core_ops_deref_Deref_Q_where_core_cmp_PartialOrd_associated_in_trait_core_ops_deref_Deref___Ptr_Target_associated_in_trait_core_ops_deref_Deref___Q_Target_core_pin_Pin_Q_for_core_pin_Pin_Ptr.
     Definition Self (Ptr Q : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ].
     
     (*
@@ -247,9 +263,9 @@ Module pin.
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (|
               "core::cmp::PartialOrd",
-              Ty.associated,
+              Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target",
               [],
-              [ Ty.associated ],
+              [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Q "Target" ],
               "partial_cmp",
               [],
               []
@@ -259,7 +275,10 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -277,7 +296,10 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Q "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
@@ -312,9 +334,9 @@ Module pin.
             Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialOrd",
-              Ty.associated,
+              Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target",
               [],
-              [ Ty.associated ],
+              [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Q "Target" ],
               "lt",
               [],
               []
@@ -324,7 +346,10 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -342,7 +367,10 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Q "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
@@ -377,9 +405,9 @@ Module pin.
             Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialOrd",
-              Ty.associated,
+              Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target",
               [],
-              [ Ty.associated ],
+              [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Q "Target" ],
               "le",
               [],
               []
@@ -389,7 +417,10 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -407,7 +438,10 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Q "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
@@ -442,9 +476,9 @@ Module pin.
             Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialOrd",
-              Ty.associated,
+              Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target",
               [],
-              [ Ty.associated ],
+              [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Q "Target" ],
               "gt",
               [],
               []
@@ -454,7 +488,10 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -472,7 +509,10 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Q "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
@@ -507,9 +547,9 @@ Module pin.
             Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialOrd",
-              Ty.associated,
+              Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target",
               [],
-              [ Ty.associated ],
+              [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Q "Target" ],
               "ge",
               [],
               []
@@ -519,7 +559,10 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -537,7 +580,10 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Q "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Q ],
@@ -560,8 +606,9 @@ Module pin.
       forall (Ptr Q : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::pin::Pin") [] [ Q ] ]
         (Self Ptr Q)
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "core::pin::Pin") [] [ Q ] ]
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp Ptr Q));
@@ -570,7 +617,7 @@ Module pin.
           ("gt", InstanceField.Method (gt Ptr Q));
           ("ge", InstanceField.Method (ge Ptr Q))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_ops_deref_Deref_Ptr_where_core_ops_deref_Deref_Q_where_core_cmp_PartialOrd_associated_type_associated_type_core_pin_Pin_Q_for_core_pin_Pin_Ptr.
+  End Impl_core_cmp_PartialOrd_where_core_ops_deref_Deref_Ptr_where_core_ops_deref_Deref_Q_where_core_cmp_PartialOrd_associated_in_trait_core_ops_deref_Deref___Ptr_Target_associated_in_trait_core_ops_deref_Deref___Q_Target_core_pin_Pin_Q_for_core_pin_Pin_Ptr.
   
   Module Impl_core_cmp_Ord_where_core_ops_deref_Deref_Ptr_for_core_pin_Pin_Ptr.
     Definition Self (Ptr : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ].
@@ -589,13 +636,24 @@ Module pin.
           let other := M.alloc (| other |) in
           M.call_closure (|
             Ty.path "core::cmp::Ordering",
-            M.get_trait_method (| "core::cmp::Ord", Ty.associated, [], [], "cmp", [], [] |),
+            M.get_trait_method (|
+              "core::cmp::Ord",
+              Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target",
+              [],
+              [],
+              "cmp",
+              [],
+              []
+            |),
             [
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -613,7 +671,10 @@ Module pin.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
                     M.get_trait_method (|
                       "core::ops::deref::Deref",
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -636,8 +697,9 @@ Module pin.
       forall (Ptr : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self Ptr)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Ptr)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp Ptr)) ].
   End Impl_core_cmp_Ord_where_core_ops_deref_Deref_Ptr_for_core_pin_Pin_Ptr.
   
@@ -663,7 +725,7 @@ Module pin.
                   Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.associated,
+                    Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target",
                     [],
                     [],
                     "hash",
@@ -675,7 +737,10 @@ Module pin.
                       Pointer.Kind.Ref,
                       M.deref (|
                         M.call_closure (|
-                          Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
                           M.get_trait_method (|
                             "core::ops::deref::Deref",
                             Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
@@ -702,8 +767,9 @@ Module pin.
       forall (Ptr : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self Ptr)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Ptr)
         (* Instance *) [ ("hash", InstanceField.Method (hash Ptr)) ].
   End Impl_core_hash_Hash_where_core_ops_deref_Deref_Ptr_for_core_pin_Pin_Ptr.
   
@@ -800,12 +866,25 @@ Module pin.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
+            Ty.apply
+              (Ty.path "core::pin::Pin")
+              []
+              [
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ]
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::pin::Pin")
                 []
-                [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ]
+                ],
               "new_unchecked",
               [],
               []
@@ -818,7 +897,10 @@ Module pin.
                     Pointer.Kind.Ref,
                     M.deref (|
                       M.call_closure (|
-                        Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
                           Ptr,
@@ -868,12 +950,22 @@ Module pin.
             Ty.apply
               (Ty.path "core::pin::Pin")
               []
-              [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
+              [
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ]
+              ],
             M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::pin::Pin")
                 []
-                [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
+                [
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ]
+                ],
               "new_unchecked",
               [],
               []
@@ -886,7 +978,10 @@ Module pin.
                     Pointer.Kind.MutRef,
                     M.deref (|
                       M.call_closure (|
-                        Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
                         M.get_trait_method (|
                           "core::ops::deref::DerefMut",
                           Ptr,
@@ -965,7 +1060,12 @@ Module pin.
             Ty.apply
               (Ty.path "core::pin::Pin")
               []
-              [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
+              [
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ]
+              ],
             M.get_associated_function (|
               Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
               "as_mut",
@@ -1027,7 +1127,10 @@ Module pin.
                 M.write (|
                   M.deref (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
                       M.get_trait_method (|
                         "core::ops::deref::DerefMut",
                         Ptr,
@@ -1458,7 +1561,8 @@ Module pin.
     Definition Self (Ptr : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ].
     
     (*     type Target = Ptr::Target; *)
-    Definition _Target (Ptr : Ty.t) : Ty.t := Ty.associated.
+    Definition _Target (Ptr : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target".
     
     (*
         fn deref(&self) -> &Ptr::Target {
@@ -1475,12 +1579,20 @@ Module pin.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
-                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
                 M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::pin::Pin")
                     []
-                    [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ]
+                    ],
                   "get_ref",
                   [],
                   []
@@ -1490,7 +1602,12 @@ Module pin.
                     Ty.apply
                       (Ty.path "core::pin::Pin")
                       []
-                      [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ]
+                      ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                       "as_ref",
@@ -1510,8 +1627,9 @@ Module pin.
       forall (Ptr : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::Deref"
-        (Self Ptr)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Ptr)
         (* Instance *)
         [ ("Target", InstanceField.Ty (_Target Ptr)); ("deref", InstanceField.Method (deref Ptr)) ].
   End Impl_core_ops_deref_Deref_where_core_ops_deref_Deref_Ptr_for_core_pin_Pin_Ptr.
@@ -1537,12 +1655,20 @@ Module pin.
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ],
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "core::pin::Pin")
                         []
-                        [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target" ]
+                        ],
                       "get_mut",
                       [],
                       []
@@ -1552,7 +1678,13 @@ Module pin.
                         Ty.apply
                           (Ty.path "core::pin::Pin")
                           []
-                          [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target"
+                              ]
+                          ],
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
                           "as_mut",
@@ -1574,8 +1706,9 @@ Module pin.
       forall (Ptr : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::DerefMut"
-        (Self Ptr)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Ptr)
         (* Instance *) [ ("deref_mut", InstanceField.Method (deref_mut Ptr)) ].
   End Impl_core_ops_deref_DerefMut_where_core_ops_deref_DerefMut_Ptr_for_core_pin_Pin_Ptr.
   
@@ -1586,8 +1719,9 @@ Module pin.
       forall (Ptr : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::DerefPure"
-        (Self Ptr)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Ptr)
         (* Instance *) [].
   End Impl_core_ops_deref_DerefPure_where_core_ops_deref_DerefPure_Ptr_for_core_pin_Pin_Ptr.
   
@@ -1598,8 +1732,9 @@ Module pin.
       forall (Ptr : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::Receiver"
-        (Self Ptr)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Ptr)
         (* Instance *) [].
   End Impl_core_ops_deref_Receiver_where_core_ops_deref_Receiver_Ptr_for_core_pin_Pin_Ptr.
   
@@ -1648,8 +1783,9 @@ Module pin.
       forall (Ptr : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self Ptr)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Ptr)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt Ptr)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_Ptr_for_core_pin_Pin_Ptr.
   
@@ -1698,8 +1834,9 @@ Module pin.
       forall (Ptr : Ty.t),
       M.IsTraitInstance
         "core::fmt::Display"
-        (Self Ptr)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Ptr)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt Ptr)) ].
   End Impl_core_fmt_Display_where_core_fmt_Display_Ptr_for_core_pin_Pin_Ptr.
   
@@ -1748,8 +1885,9 @@ Module pin.
       forall (Ptr : Ty.t),
       M.IsTraitInstance
         "core::fmt::Pointer"
-        (Self Ptr)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self Ptr)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt Ptr)) ].
   End Impl_core_fmt_Pointer_where_core_fmt_Pointer_Ptr_for_core_pin_Pin_Ptr.
   
@@ -1760,8 +1898,9 @@ Module pin.
       forall (Ptr U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::CoerceUnsized"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::pin::Pin") [] [ U ] ]
         (Self Ptr U)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "core::pin::Pin") [] [ U ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_CoerceUnsized_where_core_ops_unsize_CoerceUnsized_Ptr_U_where_core_pin_PinCoerceUnsized_Ptr_where_core_pin_PinCoerceUnsized_U_core_pin_Pin_U_for_core_pin_Pin_Ptr.
   
@@ -1772,8 +1911,9 @@ Module pin.
       forall (Ptr U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::DispatchFromDyn"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::pin::Pin") [] [ U ] ]
         (Self Ptr U)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "core::pin::Pin") [] [ U ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_DispatchFromDyn_where_core_ops_unsize_DispatchFromDyn_Ptr_U_where_core_pin_PinCoerceUnsized_Ptr_where_core_pin_PinCoerceUnsized_U_core_pin_Pin_U_for_core_pin_Pin_Ptr.
   
@@ -1787,8 +1927,9 @@ Module pin.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::pin::PinCoerceUnsized"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_for_ref__T.
   
@@ -1799,8 +1940,9 @@ Module pin.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::pin::PinCoerceUnsized"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_for_ref_mut_T.
   
@@ -1811,8 +1953,9 @@ Module pin.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::pin::PinCoerceUnsized"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_pin_PinCoerceUnsized_where_core_pin_PinCoerceUnsized_T_for_core_pin_Pin_T.
   
@@ -1823,8 +1966,9 @@ Module pin.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::pin::PinCoerceUnsized"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_for_pointer_const_T.
   
@@ -1835,8 +1979,9 @@ Module pin.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::pin::PinCoerceUnsized"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_for_pointer_mut_T.
 End pin.

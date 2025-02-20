@@ -29,7 +29,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
                 M.get_trait_method (| "core::ops::function::Fn", F, [], [ A ], "call", [], [] |),
                 [
                   M.borrow (|
@@ -46,8 +46,9 @@ Module ops.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::ops::function::Fn"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ A ]
             (Self A F)
-            (* Trait polymorphic types *) [ (* Args *) A ]
             (* Instance *) [ ("call", InstanceField.Method (call A F)) ].
       End Impl_core_ops_function_Fn_where_core_marker_Tuple_A_where_core_marker_Sized_F_where_core_ops_function_Fn_F_A_A_for_ref__F.
       
@@ -72,7 +73,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
                 M.get_trait_method (| "core::ops::function::Fn", F, [], [ A ], "call", [], [] |),
                 [
                   M.borrow (|
@@ -89,8 +90,9 @@ Module ops.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::ops::function::FnMut"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ A ]
             (Self A F)
-            (* Trait polymorphic types *) [ (* Args *) A ]
             (* Instance *) [ ("call_mut", InstanceField.Method (call_mut A F)) ].
       End Impl_core_ops_function_FnMut_where_core_marker_Tuple_A_where_core_marker_Sized_F_where_core_ops_function_Fn_F_A_A_for_ref__F.
       
@@ -98,7 +100,8 @@ Module ops.
         Definition Self (A F : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ F ].
         
         (*         type Output = F::Output; *)
-        Definition _Output (A F : Ty.t) : Ty.t := Ty.associated.
+        Definition _Output (A F : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output".
         
         (*
                 extern "rust-call" fn call_once(self, args: A) -> F::Output {
@@ -118,7 +121,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
                 M.get_trait_method (| "core::ops::function::Fn", F, [], [ A ], "call", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
@@ -132,8 +135,9 @@ Module ops.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::ops::function::FnOnce"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ A ]
             (Self A F)
-            (* Trait polymorphic types *) [ (* Args *) A ]
             (* Instance *)
             [
               ("Output", InstanceField.Ty (_Output A F));
@@ -162,7 +166,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
                 M.get_trait_method (|
                   "core::ops::function::FnMut",
                   F,
@@ -187,8 +191,9 @@ Module ops.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::ops::function::FnMut"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ A ]
             (Self A F)
-            (* Trait polymorphic types *) [ (* Args *) A ]
             (* Instance *) [ ("call_mut", InstanceField.Method (call_mut A F)) ].
       End Impl_core_ops_function_FnMut_where_core_marker_Tuple_A_where_core_marker_Sized_F_where_core_ops_function_FnMut_F_A_A_for_ref_mut_F.
       
@@ -196,7 +201,8 @@ Module ops.
         Definition Self (A F : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ F ].
         
         (*         type Output = F::Output; *)
-        Definition _Output (A F : Ty.t) : Ty.t := Ty.associated.
+        Definition _Output (A F : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output".
         
         (*
                 extern "rust-call" fn call_once(self, args: A) -> F::Output {
@@ -216,7 +222,7 @@ Module ops.
               (let self := M.alloc (| self |) in
               let args := M.alloc (| args |) in
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
                 M.get_trait_method (|
                   "core::ops::function::FnMut",
                   F,
@@ -238,8 +244,9 @@ Module ops.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::ops::function::FnOnce"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ A ]
             (Self A F)
-            (* Trait polymorphic types *) [ (* Args *) A ]
             (* Instance *)
             [
               ("Output", InstanceField.Ty (_Output A F));

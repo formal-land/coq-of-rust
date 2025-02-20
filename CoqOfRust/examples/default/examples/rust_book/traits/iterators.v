@@ -86,8 +86,9 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
   Axiom Implements :
     M.IsTraitInstance
       "core::iter::traits::iterator::Iterator"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("Item", InstanceField.Ty _Item); ("next", InstanceField.Method next) ].
 End Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
 

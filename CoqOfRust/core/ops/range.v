@@ -17,8 +17,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_ops_range_RangeFull.
     
@@ -38,8 +39,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_ops_range_RangeFull.
     
@@ -56,8 +58,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_ops_range_RangeFull.
     
@@ -67,8 +70,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_RangeFull.
     
@@ -89,8 +93,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_ops_range_RangeFull.
     
@@ -114,8 +119,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_ops_range_RangeFull.
@@ -137,8 +143,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_ops_range_RangeFull.
     
@@ -192,8 +199,9 @@ Module ops.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_ops_range_RangeFull.
     
@@ -267,8 +275,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("clone", InstanceField.Method (clone Idx)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_Idx_for_core_ops_range_Range_Idx.
     
@@ -321,8 +330,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("default", InstanceField.Method (default Idx)) ].
     End Impl_core_default_Default_where_core_default_Default_Idx_for_core_ops_range_Range_Idx.
     
@@ -334,8 +344,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_Range_Idx.
     
@@ -405,8 +416,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_Range_Idx.
     
@@ -439,8 +451,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq Idx))
           ].
@@ -512,8 +525,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("hash", InstanceField.Method (hash Idx)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_Idx_for_core_ops_range_Range_Idx.
     
@@ -899,8 +913,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt Idx)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_ops_range_Range_Idx.
     
@@ -1042,8 +1057,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("clone", InstanceField.Method (clone Idx)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_Idx_for_core_ops_range_RangeFrom_Idx.
     
@@ -1055,8 +1071,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_RangeFrom_Idx.
     
@@ -1101,8 +1118,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeFrom_Idx.
     
@@ -1135,8 +1153,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq Idx))
           ].
@@ -1181,8 +1200,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("hash", InstanceField.Method (hash Idx)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_Idx_for_core_ops_range_RangeFrom_Idx.
     
@@ -1454,8 +1474,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt Idx)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_ops_range_RangeFrom_Idx.
     
@@ -1520,8 +1541,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::marker::Copy"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [].
     End Impl_core_marker_Copy_where_core_marker_Copy_Idx_for_core_ops_range_RangeTo_Idx.
     
@@ -1567,8 +1589,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("clone", InstanceField.Method (clone Idx)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_Idx_for_core_ops_range_RangeTo_Idx.
     
@@ -1580,8 +1603,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_RangeTo_Idx.
     
@@ -1626,8 +1650,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeTo_Idx.
     
@@ -1660,8 +1685,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq Idx))
           ].
@@ -1706,8 +1732,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("hash", InstanceField.Method (hash Idx)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_Idx_for_core_ops_range_RangeTo_Idx.
     
@@ -1979,8 +2006,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt Idx)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_ops_range_RangeTo_Idx.
     
@@ -2127,8 +2155,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("clone", InstanceField.Method (clone Idx)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_Idx_for_core_ops_range_RangeInclusive_Idx.
     
@@ -2140,8 +2169,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_RangeInclusive_Idx.
     
@@ -2230,8 +2260,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeInclusive_Idx.
     
@@ -2271,8 +2302,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq Idx))
           ].
@@ -2375,8 +2407,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("hash", InstanceField.Method (hash Idx)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_Idx_for_core_ops_range_RangeInclusive_Idx.
     
@@ -3226,8 +3259,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt Idx)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_ops_range_RangeInclusive_Idx.
     
@@ -3248,8 +3282,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::marker::Copy"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [].
     End Impl_core_marker_Copy_where_core_marker_Copy_Idx_for_core_ops_range_RangeToInclusive_Idx.
     
@@ -3295,8 +3330,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("clone", InstanceField.Method (clone Idx)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_Idx_for_core_ops_range_RangeToInclusive_Idx.
     
@@ -3308,8 +3344,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_RangeToInclusive_Idx.
     
@@ -3354,8 +3391,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeToInclusive_Idx.
     
@@ -3388,8 +3426,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq Idx))
           ].
@@ -3434,8 +3473,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("hash", InstanceField.Method (hash Idx)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_Idx_for_core_ops_range_RangeToInclusive_Idx.
     
@@ -3707,8 +3747,9 @@ Module ops.
         forall (Idx : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self Idx)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Idx)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt Idx)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_Idx_for_core_ops_range_RangeToInclusive_Idx.
     
@@ -3873,8 +3914,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_ops_range_Bound_T.
     
@@ -3885,8 +3927,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Copy"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_ops_range_Bound_T.
     
@@ -4010,8 +4053,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_ops_range_Bound_T.
     
@@ -4131,8 +4175,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_for_core_ops_range_Bound_T.
     
@@ -4143,8 +4188,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_Bound_T.
     
@@ -4282,8 +4328,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_ops_range_Bound_T.
     
@@ -4315,8 +4362,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq T)) ].
     End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_ops_range_Bound_T.
@@ -4881,8 +4929,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::RangeBounds"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *)
           [
             ("start_bound", InstanceField.Method (start_bound T));
@@ -4944,8 +4993,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::RangeBounds"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *)
           [
             ("start_bound", InstanceField.Method (start_bound T));
@@ -5006,8 +5056,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::RangeBounds"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *)
           [
             ("start_bound", InstanceField.Method (start_bound T));
@@ -5084,8 +5135,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::RangeBounds"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *)
           [
             ("start_bound", InstanceField.Method (start_bound T));
@@ -5209,8 +5261,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::RangeBounds"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *)
           [
             ("start_bound", InstanceField.Method (start_bound T));
@@ -5272,8 +5325,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::RangeBounds"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *)
           [
             ("start_bound", InstanceField.Method (start_bound T));
@@ -5419,8 +5473,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::RangeBounds"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *)
           [
             ("start_bound", InstanceField.Method (start_bound T));
@@ -5470,8 +5525,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::RangeBounds"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *)
           [
             ("start_bound", InstanceField.Method (start_bound T));
@@ -5532,8 +5588,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::RangeBounds"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *)
           [
             ("start_bound", InstanceField.Method (start_bound T));
@@ -5594,8 +5651,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::RangeBounds"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *)
           [
             ("start_bound", InstanceField.Method (start_bound T));
@@ -5671,8 +5729,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::RangeBounds"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *)
           [
             ("start_bound", InstanceField.Method (start_bound T));
@@ -5751,8 +5810,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::RangeBounds"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *)
           [
             ("start_bound", InstanceField.Method (start_bound T));
@@ -5816,8 +5876,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::RangeBounds"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *)
           [
             ("start_bound", InstanceField.Method (start_bound T));
@@ -5835,8 +5896,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::OneSidedRange"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *) [].
     End Impl_core_ops_range_OneSidedRange_where_core_ops_range_RangeBounds_core_ops_range_RangeTo_T_T_T_for_core_ops_range_RangeTo_T.
     
@@ -5848,8 +5910,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::OneSidedRange"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *) [].
     End Impl_core_ops_range_OneSidedRange_where_core_ops_range_RangeBounds_core_ops_range_RangeFrom_T_T_T_for_core_ops_range_RangeFrom_T.
     
@@ -5861,8 +5924,9 @@ Module ops.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::range::OneSidedRange"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *) [].
     End Impl_core_ops_range_OneSidedRange_where_core_ops_range_RangeBounds_core_ops_range_RangeToInclusive_T_T_T_for_core_ops_range_RangeToInclusive_T.
   End range.

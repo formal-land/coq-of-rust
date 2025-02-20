@@ -306,8 +306,9 @@ Module collections.
           forall (T I A : Ty.t),
           M.IsTraitInstance
             "alloc::collections::vec_deque::spec_extend::SpecExtend"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ T; I ]
             (Self T I A)
-            (* Trait polymorphic types *) [ (* T *) T; (* I *) I ]
             (* Instance *) [ ("spec_extend", InstanceField.Method (spec_extend T I A)) ].
       End Impl_alloc_collections_vec_deque_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_iter_traits_iterator_Iterator_I_T_I_for_alloc_collections_vec_deque_VecDeque_T_A.
       
@@ -898,8 +899,9 @@ Module collections.
           forall (T I A : Ty.t),
           M.IsTraitInstance
             "alloc::collections::vec_deque::spec_extend::SpecExtend"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ T; I ]
             (Self T I A)
-            (* Trait polymorphic types *) [ (* T *) T; (* I *) I ]
             (* Instance *) [ ("spec_extend", InstanceField.Method (spec_extend T I A)) ].
       End Impl_alloc_collections_vec_deque_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_iter_traits_marker_TrustedLen_I_T_I_for_alloc_collections_vec_deque_VecDeque_T_A.
       
@@ -1063,16 +1065,16 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "alloc::collections::vec_deque::spec_extend::SpecExtend"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* T *) T;
-              (* I *)
+              T;
               Ty.apply
                 (Ty.path "alloc::vec::into_iter::IntoIter")
                 []
                 [ T; Ty.path "alloc::alloc::Global" ]
             ]
+            (Self T A)
             (* Instance *) [ ("spec_extend", InstanceField.Method (spec_extend T A)) ].
       End Impl_alloc_collections_vec_deque_spec_extend_SpecExtend_where_core_alloc_Allocator_A_T_alloc_vec_into_iter_IntoIter_T_alloc_alloc_Global_for_alloc_collections_vec_deque_VecDeque_T_A.
       
@@ -1132,8 +1134,9 @@ Module collections.
           forall (T I A : Ty.t),
           M.IsTraitInstance
             "alloc::collections::vec_deque::spec_extend::SpecExtend"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ T ]; I ]
             (Self T I A)
-            (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ T ]; (* I *) I ]
             (* Instance *) [ ("spec_extend", InstanceField.Method (spec_extend T I A)) ].
       End Impl_alloc_collections_vec_deque_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Copy_T_ref__T_I_for_alloc_collections_vec_deque_VecDeque_T_A.
       
@@ -1275,12 +1278,11 @@ Module collections.
           forall (T A : Ty.t),
           M.IsTraitInstance
             "alloc::collections::vec_deque::spec_extend::SpecExtend"
-            (Self T A)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
-            [
-              (* T *) Ty.apply (Ty.path "&") [] [ T ];
-              (* I *) Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
+            [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
             ]
+            (Self T A)
             (* Instance *) [ ("spec_extend", InstanceField.Method (spec_extend T A)) ].
       End Impl_alloc_collections_vec_deque_spec_extend_SpecExtend_where_core_alloc_Allocator_A_where_core_marker_Copy_T_ref__T_core_slice_iter_Iter_T_for_alloc_collections_vec_deque_VecDeque_T_A.
     End spec_extend.

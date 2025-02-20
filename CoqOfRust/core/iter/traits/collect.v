@@ -71,8 +71,9 @@ Module iter.
           forall (A B AE BE : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::collect::FromIterator"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.tuple [ AE; BE ] ]
             (Self A B AE BE)
-            (* Trait polymorphic types *) [ (* A *) Ty.tuple [ AE; BE ] ]
             (* Instance *) [ ("from_iter", InstanceField.Method (from_iter A B AE BE)) ].
       End Impl_core_iter_traits_collect_FromIterator_where_core_default_Default_A_where_core_iter_traits_collect_Extend_A_AE_where_core_default_Default_B_where_core_iter_traits_collect_Extend_B_BE_Tuple_AE_BE__for_Tuple_A_B_.
       
@@ -83,7 +84,8 @@ Module iter.
         Definition Self (I : Ty.t) : Ty.t := I.
         
         (*     type Item = I::Item; *)
-        Definition _Item (I : Ty.t) : Ty.t := Ty.associated.
+        Definition _Item (I : Ty.t) : Ty.t :=
+          Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item".
         
         (*     type IntoIter = I; *)
         Definition _IntoIter (I : Ty.t) : Ty.t := I.
@@ -107,8 +109,9 @@ Module iter.
           forall (I : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::collect::IntoIterator"
-            (Self I)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self I)
             (* Instance *)
             [
               ("Item", InstanceField.Ty (_Item I));
@@ -246,7 +249,12 @@ Module iter.
                 Ty.tuple [],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    T
+                    "IntoIter",
                   [],
                   [],
                   "for_each",
@@ -255,7 +263,12 @@ Module iter.
                 |),
                 [
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      T
+                      "IntoIter",
                     M.get_trait_method (|
                       "core::iter::traits::collect::IntoIterator",
                       T,
@@ -287,8 +300,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::collect::Extend"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.tuple [] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.tuple [] ]
             (* Instance *)
             [
               ("extend", InstanceField.Method extend);
@@ -329,10 +343,21 @@ Module iter.
                         let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let a := M.alloc (| γ1_0 |) in
                         let b := M.alloc (| γ1_1 |) in
-                        let~ iter : Ty.associated :=
+                        let~ iter :
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              T
+                              "IntoIter" :=
                           M.alloc (|
                             M.call_closure (|
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "core::iter::traits::collect::IntoIterator"
+                                []
+                                []
+                                T
+                                "IntoIter",
                               M.get_trait_method (|
                                 "core::iter::traits::collect::IntoIterator",
                                 T,
@@ -351,7 +376,12 @@ Module iter.
                               Ty.tuple [],
                               M.get_trait_method (|
                                 "core::iter::traits::collect::SpecTupleExtend",
-                                Ty.associated,
+                                Ty.associated_in_trait
+                                  "core::iter::traits::collect::IntoIterator"
+                                  []
+                                  []
+                                  T
+                                  "IntoIter",
                                 [],
                                 [ ExtendA; ExtendB ],
                                 "extend",
@@ -583,8 +613,9 @@ Module iter.
           forall (A B ExtendA ExtendB : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::collect::Extend"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.tuple [ A; B ] ]
             (Self A B ExtendA ExtendB)
-            (* Trait polymorphic types *) [ (* A *) Ty.tuple [ A; B ] ]
             (* Instance *)
             [
               ("extend", InstanceField.Method (extend A B ExtendA ExtendB));
@@ -735,13 +766,13 @@ Module iter.
                               [],
                               "fold",
                               [],
-                              [ Ty.tuple []; Ty.associated ]
+                              [ Ty.tuple []; Ty.associated_unknown ]
                             |),
                             [
                               M.read (| iter |);
                               Value.Tuple [];
                               M.call_closure (|
-                                Ty.associated,
+                                Ty.associated_unknown,
                                 M.get_function (|
                                   "core::iter::traits::collect::default_extend_tuple.extend",
                                   [],
@@ -919,8 +950,9 @@ Module iter.
           forall (A B ExtendA ExtendB Iter : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::collect::SpecTupleExtend"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ ExtendA; ExtendB ]
             (Self A B ExtendA ExtendB Iter)
-            (* Trait polymorphic types *) [ (* A *) ExtendA; (* B *) ExtendB ]
             (* Instance *) [ ("extend", InstanceField.Method (extend A B ExtendA ExtendB Iter)) ].
       End Impl_core_iter_traits_collect_SpecTupleExtend_where_core_iter_traits_collect_Extend_ExtendA_A_where_core_iter_traits_collect_Extend_ExtendB_B_where_core_iter_traits_iterator_Iterator_Iter_ExtendA_ExtendB_for_Iter.
       
@@ -1138,13 +1170,13 @@ Module iter.
                                     [],
                                     "fold",
                                     [],
-                                    [ Ty.tuple []; Ty.associated ]
+                                    [ Ty.tuple []; Ty.associated_unknown ]
                                   |),
                                   [
                                     M.read (| self |);
                                     Value.Tuple [];
                                     M.call_closure (|
-                                      Ty.associated,
+                                      Ty.associated_unknown,
                                       M.get_associated_function (| Self, "extend.extend", [], [] |),
                                       [
                                         M.borrow (|
@@ -1172,8 +1204,9 @@ Module iter.
           forall (A B ExtendA ExtendB Iter : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::collect::SpecTupleExtend"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ ExtendA; ExtendB ]
             (Self A B ExtendA ExtendB Iter)
-            (* Trait polymorphic types *) [ (* A *) ExtendA; (* B *) ExtendB ]
             (* Instance *) [ ("extend", InstanceField.Method (extend A B ExtendA ExtendB Iter)) ].
       End Impl_core_iter_traits_collect_SpecTupleExtend_where_core_iter_traits_collect_Extend_ExtendA_A_where_core_iter_traits_collect_Extend_ExtendB_B_where_core_iter_traits_marker_TrustedLen_Iter_ExtendA_ExtendB_for_Iter.
     End collect.

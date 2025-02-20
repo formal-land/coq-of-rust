@@ -475,8 +475,9 @@ Module block.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::block::Block"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("number", InstanceField.Method (number T));
@@ -807,8 +808,9 @@ Module block.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::block::Block"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("number", InstanceField.Method (number T));
@@ -1140,8 +1142,9 @@ Module block.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::block::Block"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("number", InstanceField.Method (number T));
@@ -1643,8 +1646,9 @@ Module block.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::block::Block"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("number", InstanceField.Method (number T));
@@ -1663,7 +1667,8 @@ Module block.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Block (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Block (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::block::BlockGetter" [] [] T "Block".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition block (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1676,7 +1681,17 @@ Module block.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::block::BlockGetter"
+                        []
+                        []
+                        T
+                        "Block"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::block::BlockGetter",
                     T,
@@ -1702,8 +1717,9 @@ Module block.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::block::BlockGetter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Block", InstanceField.Ty (_Block T)); ("block", InstanceField.Method (block T)) ].
     End Impl_revm_context_interface_block_BlockGetter_where_revm_context_interface_block_BlockGetter_T_where_core_marker_Sized_T_for_ref__T.
@@ -1711,7 +1727,8 @@ Module block.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Block (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Block (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::block::BlockGetter" [] [] T "Block".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition block (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1724,7 +1741,17 @@ Module block.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::block::BlockGetter"
+                        []
+                        []
+                        T
+                        "Block"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::block::BlockGetter",
                     T,
@@ -1750,8 +1777,9 @@ Module block.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::block::BlockGetter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Block", InstanceField.Ty (_Block T)); ("block", InstanceField.Method (block T)) ].
     End Impl_revm_context_interface_block_BlockGetter_where_revm_context_interface_block_BlockGetter_T_where_core_marker_Sized_T_for_ref_mut_T.
@@ -1760,7 +1788,8 @@ Module block.
         Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Block (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Block (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::block::BlockGetter" [] [] T "Block".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition block (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1773,7 +1802,17 @@ Module block.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::block::BlockGetter"
+                        []
+                        []
+                        T
+                        "Block"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::block::BlockGetter",
                     T,
@@ -1799,8 +1838,9 @@ Module block.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::block::BlockGetter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Block", InstanceField.Ty (_Block T)); ("block", InstanceField.Method (block T)) ].
     End Impl_revm_context_interface_block_BlockGetter_where_revm_context_interface_block_BlockGetter_T_where_core_marker_Sized_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
@@ -1809,7 +1849,8 @@ Module block.
         Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ].
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
-      Definition _Block (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Block (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "revm_context_interface::block::BlockGetter" [] [] T "Block".
       
       (* #[auto_impl(&, &mut, Box, Arc)] *)
       Definition block (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1822,7 +1863,17 @@ Module block.
               Pointer.Kind.Ref,
               M.deref (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_context_interface::block::BlockGetter"
+                        []
+                        []
+                        T
+                        "Block"
+                    ],
                   M.get_trait_method (|
                     "revm_context_interface::block::BlockGetter",
                     T,
@@ -1865,8 +1916,9 @@ Module block.
         forall (T : Ty.t),
         M.IsTraitInstance
           "revm_context_interface::block::BlockGetter"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Block", InstanceField.Ty (_Block T)); ("block", InstanceField.Method (block T)) ].
     End Impl_revm_context_interface_block_BlockGetter_where_revm_context_interface_block_BlockGetter_T_where_core_marker_Sized_T_for_alloc_sync_Arc_T_alloc_alloc_Global.
@@ -1926,8 +1978,9 @@ Module block.
       forall (T : Ty.t),
       M.IsTraitInstance
         "revm_context_interface::block::BlockSetter"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("set_block", InstanceField.Method (set_block T)) ].
   End Impl_revm_context_interface_block_BlockSetter_where_revm_context_interface_block_BlockSetter_T_for_ref_mut_T.
   
@@ -1973,8 +2026,9 @@ Module block.
       forall (T : Ty.t),
       M.IsTraitInstance
         "revm_context_interface::block::BlockSetter"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("set_block", InstanceField.Method (set_block T)) ].
   End Impl_revm_context_interface_block_BlockSetter_where_revm_context_interface_block_BlockSetter_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
 End block.

@@ -371,8 +371,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::num::dec2flt::common::ByteSlice"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *)
             [
               ("read_u64", InstanceField.Method read_u64);
@@ -502,8 +503,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Debug"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_core_num_dec2flt_common_BiasedFp.
       
@@ -513,8 +515,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::Copy"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_Copy_for_core_num_dec2flt_common_BiasedFp.
       
@@ -546,8 +549,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_dec2flt_common_BiasedFp.
       
@@ -557,8 +561,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::StructuralPartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_dec2flt_common_BiasedFp.
       
@@ -613,8 +618,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::PartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_dec2flt_common_BiasedFp.
       
@@ -650,8 +656,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::Eq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *)
             [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
       End Impl_core_cmp_Eq_for_core_num_dec2flt_common_BiasedFp.
@@ -702,8 +709,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::default::Default"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("default", InstanceField.Method default) ].
       End Impl_core_default_Default_for_core_num_dec2flt_common_BiasedFp.
       

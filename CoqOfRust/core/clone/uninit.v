@@ -428,8 +428,9 @@ Module clone.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::uninit::CopySpec"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("clone_one", InstanceField.Method (clone_one T));
@@ -701,8 +702,9 @@ Module clone.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::uninit::CopySpec"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("clone_one", InstanceField.Method (clone_one T));
@@ -929,8 +931,9 @@ Module clone.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("drop", InstanceField.Method (drop T)) ].
     End Impl_core_ops_drop_Drop_for_core_clone_uninit_InitializingSlice_T.
   End uninit.

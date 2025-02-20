@@ -21,8 +21,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_task_wake_RawWaker.
     
@@ -91,8 +92,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_task_wake_RawWaker.
     
@@ -161,8 +163,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_task_wake_RawWaker.
     
@@ -259,8 +262,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_task_wake_RawWakerVTable.
     
@@ -353,8 +357,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_task_wake_RawWakerVTable.
     
@@ -364,8 +369,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_task_wake_RawWakerVTable.
     
@@ -414,8 +420,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_task_wake_RawWakerVTable.
     
@@ -518,8 +525,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_task_wake_RawWakerVTable.
     
@@ -676,8 +684,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_task_wake_ExtData.
     
@@ -987,8 +996,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_task_wake_Context.
     
@@ -1132,8 +1142,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_task_wake_ContextBuilder.
     
@@ -1467,8 +1478,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Unpin"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Unpin_for_core_task_wake_Waker.
     
@@ -1478,8 +1490,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Send"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Send_for_core_task_wake_Waker.
     
@@ -1489,8 +1502,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Sync"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_task_wake_Waker.
     
@@ -2015,8 +2029,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("clone", InstanceField.Method clone); ("clone_from", InstanceField.Method clone_from)
           ].
@@ -2079,8 +2094,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("drop", InstanceField.Method drop) ].
     End Impl_core_ops_drop_Drop_for_core_task_wake_Waker.
     
@@ -2240,8 +2256,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_task_wake_Waker.
     
@@ -2259,8 +2276,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Unpin"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Unpin_for_core_task_wake_LocalWaker.
     
@@ -2791,8 +2809,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("clone", InstanceField.Method clone); ("clone_from", InstanceField.Method clone_from)
           ].
@@ -2830,8 +2849,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::AsRef"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::task::wake::LocalWaker" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::task::wake::LocalWaker" ]
           (* Instance *) [ ("as_ref", InstanceField.Method as_ref) ].
     End Impl_core_convert_AsRef_core_task_wake_LocalWaker_for_core_task_wake_Waker.
     
@@ -2892,8 +2912,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("drop", InstanceField.Method drop) ].
     End Impl_core_ops_drop_Drop_for_core_task_wake_LocalWaker.
     
@@ -3053,8 +3074,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_task_wake_LocalWaker.
     
@@ -3064,8 +3086,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Send"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Send_for_core_task_wake_LocalWaker.
     
@@ -3075,8 +3098,9 @@ Module task.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Sync"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Sync_for_core_task_wake_LocalWaker.
   End wake.

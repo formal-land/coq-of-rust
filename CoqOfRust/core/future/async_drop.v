@@ -111,8 +111,9 @@ Module future.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_for_core_future_async_drop_AsyncDropOwning_T.
     
@@ -338,8 +339,9 @@ Module future.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::future::future::Future"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output T)); ("poll", InstanceField.Method (poll T)) ].
     End Impl_core_future_future_Future_for_core_future_async_drop_AsyncDropOwning_T.
@@ -361,7 +363,12 @@ Module future.
         ltac:(M.monadic
           (let to_drop := M.alloc (| to_drop |) in
           M.call_closure (|
-            Ty.associated,
+            Ty.associated_in_trait
+              "core::future::async_drop::AsyncDestruct"
+              []
+              []
+              T
+              "AsyncDestructor",
             M.get_function (| "core::future::async_drop::async_drop_in_place_raw", [], [ T ] |),
             [ M.read (| to_drop |) ]
           |)))
@@ -387,7 +394,12 @@ Module future.
             "core::future::async_drop::AsyncDropInPlace"
             [
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "core::future::async_drop::AsyncDestruct"
+                  []
+                  []
+                  T
+                  "AsyncDestructor",
                 M.get_function (| "core::future::async_drop::async_drop_in_place_raw", [], [ T ] |),
                 [ M.read (| to_drop |) ]
               |)
@@ -404,7 +416,15 @@ Module future.
         name := "AsyncDropInPlace";
         const_params := [];
         ty_params := [ "T" ];
-        fields := [ Ty.associated ];
+        fields :=
+          [
+            Ty.associated_in_trait
+              "core::future::async_drop::AsyncDestruct"
+              []
+              []
+              T
+              "AsyncDestructor"
+          ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_marker_Sized_T_for_core_future_async_drop_AsyncDropInPlace_T.
@@ -465,8 +485,9 @@ Module future.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_marker_Sized_T_for_core_future_async_drop_AsyncDropInPlace_T.
     
@@ -494,7 +515,12 @@ Module future.
               Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.tuple [] ],
               M.get_trait_method (|
                 "core::future::future::Future",
-                Ty.associated,
+                Ty.associated_in_trait
+                  "core::future::async_drop::AsyncDestruct"
+                  []
+                  []
+                  T
+                  "AsyncDestructor",
                 [],
                 [],
                 "poll",
@@ -506,12 +532,36 @@ Module future.
                   Ty.apply
                     (Ty.path "core::pin::Pin")
                     []
-                    [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "core::future::async_drop::AsyncDestruct"
+                            []
+                            []
+                            T
+                            "AsyncDestructor"
+                        ]
+                    ],
                   M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::pin::Pin")
                       []
-                      [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "core::future::async_drop::AsyncDestruct"
+                              []
+                              []
+                              T
+                              "AsyncDestructor"
+                          ]
+                      ],
                     "new_unchecked",
                     [],
                     []
@@ -569,8 +619,9 @@ Module future.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::future::future::Future"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output T)); ("poll", InstanceField.Method (poll T)) ].
     End Impl_core_future_future_Future_where_core_marker_Sized_T_for_core_future_async_drop_AsyncDropInPlace_T.
@@ -615,10 +666,20 @@ Module future.
                                 (M.match_operator (|
                                   M.alloc (|
                                     M.call_closure (|
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "core::future::async_drop::AsyncDrop"
+                                        []
+                                        []
+                                        T
+                                        "Dropper",
                                       M.get_trait_method (|
                                         "core::future::into_future::IntoFuture",
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "core::future::async_drop::AsyncDrop"
+                                          []
+                                          []
+                                          T
+                                          "Dropper",
                                         [],
                                         [],
                                         "into_future",
@@ -627,7 +688,12 @@ Module future.
                                       |),
                                       [
                                         M.call_closure (|
-                                          Ty.associated,
+                                          Ty.associated_in_trait
+                                            "core::future::async_drop::AsyncDrop"
+                                            []
+                                            []
+                                            T
+                                            "Dropper",
                                           M.get_trait_method (|
                                             "core::future::async_drop::AsyncDrop",
                                             T,
@@ -685,7 +751,12 @@ Module future.
                                                       [ Ty.tuple [] ],
                                                     M.get_trait_method (|
                                                       "core::future::future::Future",
-                                                      Ty.associated,
+                                                      Ty.associated_in_trait
+                                                        "core::future::async_drop::AsyncDrop"
+                                                        []
+                                                        []
+                                                        T
+                                                        "Dropper",
                                                       [],
                                                       [],
                                                       "poll",
@@ -701,7 +772,14 @@ Module future.
                                                             Ty.apply
                                                               (Ty.path "&mut")
                                                               []
-                                                              [ Ty.associated ]
+                                                              [
+                                                                Ty.associated_in_trait
+                                                                  "core::future::async_drop::AsyncDrop"
+                                                                  []
+                                                                  []
+                                                                  T
+                                                                  "Dropper"
+                                                              ]
                                                           ],
                                                         M.get_associated_function (|
                                                           Ty.apply
@@ -711,7 +789,14 @@ Module future.
                                                               Ty.apply
                                                                 (Ty.path "&mut")
                                                                 []
-                                                                [ Ty.associated ]
+                                                                [
+                                                                  Ty.associated_in_trait
+                                                                    "core::future::async_drop::AsyncDrop"
+                                                                    []
+                                                                    []
+                                                                    T
+                                                                    "Dropper"
+                                                                ]
                                                             ],
                                                           "new_unchecked",
                                                           [],
@@ -1072,8 +1157,9 @@ Module future.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::future::future::Future"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output T)); ("poll", InstanceField.Method (poll T)) ].
     End Impl_core_future_future_Future_where_core_future_future_Future_T_for_core_future_async_drop_Fuse_T.
@@ -1236,10 +1322,20 @@ Module future.
                                                         M.match_operator (|
                                                           M.alloc (|
                                                             M.call_closure (|
-                                                              Ty.associated,
+                                                              Ty.associated_in_trait
+                                                                "core::future::async_drop::AsyncDestruct"
+                                                                []
+                                                                []
+                                                                T
+                                                                "AsyncDestructor",
                                                               M.get_trait_method (|
                                                                 "core::future::into_future::IntoFuture",
-                                                                Ty.associated,
+                                                                Ty.associated_in_trait
+                                                                  "core::future::async_drop::AsyncDestruct"
+                                                                  []
+                                                                  []
+                                                                  T
+                                                                  "AsyncDestructor",
                                                                 [],
                                                                 [],
                                                                 "into_future",
@@ -1248,7 +1344,12 @@ Module future.
                                                               |),
                                                               [
                                                                 M.call_closure (|
-                                                                  Ty.associated,
+                                                                  Ty.associated_in_trait
+                                                                    "core::future::async_drop::AsyncDestruct"
+                                                                    []
+                                                                    []
+                                                                    T
+                                                                    "AsyncDestructor",
                                                                   M.get_function (|
                                                                     "core::future::async_drop::async_drop_in_place_raw",
                                                                     [],
@@ -1296,7 +1397,12 @@ Module future.
                                                                               [ Ty.tuple [] ],
                                                                             M.get_trait_method (|
                                                                               "core::future::future::Future",
-                                                                              Ty.associated,
+                                                                              Ty.associated_in_trait
+                                                                                "core::future::async_drop::AsyncDestruct"
+                                                                                []
+                                                                                []
+                                                                                T
+                                                                                "AsyncDestructor",
                                                                               [],
                                                                               [],
                                                                               "poll",
@@ -1315,7 +1421,12 @@ Module future.
                                                                                         "&mut")
                                                                                       []
                                                                                       [
-                                                                                        Ty.associated
+                                                                                        Ty.associated_in_trait
+                                                                                          "core::future::async_drop::AsyncDestruct"
+                                                                                          []
+                                                                                          []
+                                                                                          T
+                                                                                          "AsyncDestructor"
                                                                                       ]
                                                                                   ],
                                                                                 M.get_associated_function (|
@@ -1329,7 +1440,12 @@ Module future.
                                                                                           "&mut")
                                                                                         []
                                                                                         [
-                                                                                          Ty.associated
+                                                                                          Ty.associated_in_trait
+                                                                                            "core::future::async_drop::AsyncDestruct"
+                                                                                            []
+                                                                                            []
+                                                                                            T
+                                                                                            "AsyncDestructor"
                                                                                         ]
                                                                                     ],
                                                                                   "new_unchecked",
@@ -1480,7 +1596,12 @@ Module future.
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "core::future::into_future::IntoFuture"
+                                          []
+                                          []
+                                          F
+                                          "IntoFuture",
                                         M.get_trait_method (|
                                           "core::future::into_future::IntoFuture",
                                           F,
@@ -1509,7 +1630,12 @@ Module future.
                                                         [ Ty.tuple [] ],
                                                       M.get_trait_method (|
                                                         "core::future::future::Future",
-                                                        Ty.associated,
+                                                        Ty.associated_in_trait
+                                                          "core::future::into_future::IntoFuture"
+                                                          []
+                                                          []
+                                                          F
+                                                          "IntoFuture",
                                                         [],
                                                         [],
                                                         "poll",
@@ -1525,7 +1651,14 @@ Module future.
                                                               Ty.apply
                                                                 (Ty.path "&mut")
                                                                 []
-                                                                [ Ty.associated ]
+                                                                [
+                                                                  Ty.associated_in_trait
+                                                                    "core::future::into_future::IntoFuture"
+                                                                    []
+                                                                    []
+                                                                    F
+                                                                    "IntoFuture"
+                                                                ]
                                                             ],
                                                           M.get_associated_function (|
                                                             Ty.apply
@@ -1535,7 +1668,14 @@ Module future.
                                                                 Ty.apply
                                                                   (Ty.path "&mut")
                                                                   []
-                                                                  [ Ty.associated ]
+                                                                  [
+                                                                    Ty.associated_in_trait
+                                                                      "core::future::into_future::IntoFuture"
+                                                                      []
+                                                                      []
+                                                                      F
+                                                                      "IntoFuture"
+                                                                  ]
                                                               ],
                                                             "new_unchecked",
                                                             [],
@@ -1618,7 +1758,12 @@ Module future.
                                   M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
-                                        Ty.associated,
+                                        Ty.associated_in_trait
+                                          "core::future::into_future::IntoFuture"
+                                          []
+                                          []
+                                          G
+                                          "IntoFuture",
                                         M.get_trait_method (|
                                           "core::future::into_future::IntoFuture",
                                           G,
@@ -1647,7 +1792,12 @@ Module future.
                                                         [ Ty.tuple [] ],
                                                       M.get_trait_method (|
                                                         "core::future::future::Future",
-                                                        Ty.associated,
+                                                        Ty.associated_in_trait
+                                                          "core::future::into_future::IntoFuture"
+                                                          []
+                                                          []
+                                                          G
+                                                          "IntoFuture",
                                                         [],
                                                         [],
                                                         "poll",
@@ -1663,7 +1813,14 @@ Module future.
                                                               Ty.apply
                                                                 (Ty.path "&mut")
                                                                 []
-                                                                [ Ty.associated ]
+                                                                [
+                                                                  Ty.associated_in_trait
+                                                                    "core::future::into_future::IntoFuture"
+                                                                    []
+                                                                    []
+                                                                    G
+                                                                    "IntoFuture"
+                                                                ]
                                                             ],
                                                           M.get_associated_function (|
                                                             Ty.apply
@@ -1673,7 +1830,14 @@ Module future.
                                                                 Ty.apply
                                                                   (Ty.path "&mut")
                                                                   []
-                                                                  [ Ty.associated ]
+                                                                  [
+                                                                    Ty.associated_in_trait
+                                                                      "core::future::into_future::IntoFuture"
+                                                                      []
+                                                                      []
+                                                                      G
+                                                                      "IntoFuture"
+                                                                  ]
                                                               ],
                                                             "new_unchecked",
                                                             [],
@@ -2021,7 +2185,14 @@ Module future.
                               let~ other : O := M.copy (| other |) in
                               let~ matched : M_ := M.copy (| matched |) in
                               let~ this : Ty.apply (Ty.path "*mut") [] [ T ] := M.copy (| this |) in
-                              let~ discr : Ty.associated := M.copy (| discr |) in
+                              let~ discr :
+                                  Ty.associated_in_trait
+                                    "core::marker::DiscriminantKind"
+                                    []
+                                    []
+                                    T
+                                    "Discriminant" :=
+                                M.copy (| discr |) in
                               M.use
                                 (M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -2035,9 +2206,21 @@ Module future.
                                                 Ty.path "bool",
                                                 M.get_trait_method (|
                                                   "core::cmp::PartialEq",
-                                                  Ty.associated,
+                                                  Ty.associated_in_trait
+                                                    "core::marker::DiscriminantKind"
+                                                    []
+                                                    []
+                                                    T
+                                                    "Discriminant",
                                                   [],
-                                                  [ Ty.associated ],
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "core::marker::DiscriminantKind"
+                                                      []
+                                                      []
+                                                      T
+                                                      "Discriminant"
+                                                  ],
                                                   "eq",
                                                   [],
                                                   []
@@ -2047,7 +2230,12 @@ Module future.
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       M.call_closure (|
-                                                        Ty.associated,
+                                                        Ty.associated_in_trait
+                                                          "core::marker::DiscriminantKind"
+                                                          []
+                                                          []
+                                                          T
+                                                          "Discriminant",
                                                         M.get_function (|
                                                           "core::intrinsics::discriminant_value",
                                                           [],
@@ -2087,7 +2275,12 @@ Module future.
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "core::future::into_future::IntoFuture"
+                                                []
+                                                []
+                                                M_
+                                                "IntoFuture",
                                               M.get_trait_method (|
                                                 "core::future::into_future::IntoFuture",
                                                 M_,
@@ -2116,7 +2309,12 @@ Module future.
                                                               [ Ty.tuple [] ],
                                                             M.get_trait_method (|
                                                               "core::future::future::Future",
-                                                              Ty.associated,
+                                                              Ty.associated_in_trait
+                                                                "core::future::into_future::IntoFuture"
+                                                                []
+                                                                []
+                                                                M_
+                                                                "IntoFuture",
                                                               [],
                                                               [],
                                                               "poll",
@@ -2132,7 +2330,14 @@ Module future.
                                                                     Ty.apply
                                                                       (Ty.path "&mut")
                                                                       []
-                                                                      [ Ty.associated ]
+                                                                      [
+                                                                        Ty.associated_in_trait
+                                                                          "core::future::into_future::IntoFuture"
+                                                                          []
+                                                                          []
+                                                                          M_
+                                                                          "IntoFuture"
+                                                                      ]
                                                                   ],
                                                                 M.get_associated_function (|
                                                                   Ty.apply
@@ -2142,7 +2347,14 @@ Module future.
                                                                       Ty.apply
                                                                         (Ty.path "&mut")
                                                                         []
-                                                                        [ Ty.associated ]
+                                                                        [
+                                                                          Ty.associated_in_trait
+                                                                            "core::future::into_future::IntoFuture"
+                                                                            []
+                                                                            []
+                                                                            M_
+                                                                            "IntoFuture"
+                                                                        ]
                                                                     ],
                                                                   "new_unchecked",
                                                                   [],
@@ -2234,7 +2446,12 @@ Module future.
                                         M.match_operator (|
                                           M.alloc (|
                                             M.call_closure (|
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "core::future::into_future::IntoFuture"
+                                                []
+                                                []
+                                                O
+                                                "IntoFuture",
                                               M.get_trait_method (|
                                                 "core::future::into_future::IntoFuture",
                                                 O,
@@ -2263,7 +2480,12 @@ Module future.
                                                               [ Ty.tuple [] ],
                                                             M.get_trait_method (|
                                                               "core::future::future::Future",
-                                                              Ty.associated,
+                                                              Ty.associated_in_trait
+                                                                "core::future::into_future::IntoFuture"
+                                                                []
+                                                                []
+                                                                O
+                                                                "IntoFuture",
                                                               [],
                                                               [],
                                                               "poll",
@@ -2279,7 +2501,14 @@ Module future.
                                                                     Ty.apply
                                                                       (Ty.path "&mut")
                                                                       []
-                                                                      [ Ty.associated ]
+                                                                      [
+                                                                        Ty.associated_in_trait
+                                                                          "core::future::into_future::IntoFuture"
+                                                                          []
+                                                                          []
+                                                                          O
+                                                                          "IntoFuture"
+                                                                      ]
                                                                   ],
                                                                 M.get_associated_function (|
                                                                   Ty.apply
@@ -2289,7 +2518,14 @@ Module future.
                                                                       Ty.apply
                                                                         (Ty.path "&mut")
                                                                         []
-                                                                        [ Ty.associated ]
+                                                                        [
+                                                                          Ty.associated_in_trait
+                                                                            "core::future::into_future::IntoFuture"
+                                                                            []
+                                                                            []
+                                                                            O
+                                                                            "IntoFuture"
+                                                                        ]
                                                                     ],
                                                                   "new_unchecked",
                                                                   [],
@@ -2460,8 +2696,9 @@ Module future.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_future_async_drop_Noop.
     
@@ -2471,8 +2708,9 @@ Module future.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_future_async_drop_Noop.
     
@@ -2521,8 +2759,9 @@ Module future.
       Axiom Implements :
         M.IsTraitInstance
           "core::future::future::Future"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("poll", InstanceField.Method poll) ].
     End Impl_core_future_future_Future_for_core_future_async_drop_Noop.

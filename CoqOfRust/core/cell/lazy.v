@@ -937,8 +937,9 @@ Module cell.
         forall (T F : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::Deref"
-          (Self T F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T F)
           (* Instance *)
           [ ("Target", InstanceField.Ty (_Target T F)); ("deref", InstanceField.Method (deref T F))
           ].
@@ -979,8 +980,9 @@ Module cell.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_where_core_default_Default_T_for_core_cell_lazy_LazyCell_T_ToT.
     
@@ -1153,8 +1155,9 @@ Module cell.
         forall (T F : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T F)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T F)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_cell_lazy_LazyCell_T_F.
     

@@ -112,8 +112,9 @@ Module ops.
         forall (Y R : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self Y R)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Y R)
           (* Instance *) [ ("clone", InstanceField.Method (clone Y R)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_Y_where_core_clone_Clone_R_for_core_ops_coroutine_CoroutineState_Y_R.
     
@@ -125,8 +126,9 @@ Module ops.
         forall (Y R : Ty.t),
         M.IsTraitInstance
           "core::marker::Copy"
-          (Self Y R)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Y R)
           (* Instance *) [].
     End Impl_core_marker_Copy_where_core_marker_Copy_Y_where_core_marker_Copy_R_for_core_ops_coroutine_CoroutineState_Y_R.
     
@@ -138,8 +140,9 @@ Module ops.
         forall (Y R : Ty.t),
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          (Self Y R)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Y R)
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_coroutine_CoroutineState_Y_R.
     
@@ -288,8 +291,9 @@ Module ops.
         forall (Y R : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self Y R)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Y R)
           (* Instance *) [ ("eq", InstanceField.Method (eq Y R)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_R_for_core_ops_coroutine_CoroutineState_Y_R.
     
@@ -459,8 +463,9 @@ Module ops.
         forall (Y R : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          (Self Y R)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Y R)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp Y R)) ].
     End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_R_for_core_ops_coroutine_CoroutineState_Y_R.
     
@@ -500,8 +505,9 @@ Module ops.
         forall (Y R : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self Y R)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Y R)
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq Y R))
           ].
@@ -691,8 +697,9 @@ Module ops.
         forall (Y R : Ty.t),
         M.IsTraitInstance
           "core::cmp::Ord"
-          (Self Y R)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Y R)
           (* Instance *) [ ("cmp", InstanceField.Method (cmp Y R)) ].
     End Impl_core_cmp_Ord_where_core_cmp_Ord_Y_where_core_cmp_Ord_R_for_core_ops_coroutine_CoroutineState_Y_R.
     
@@ -792,8 +799,9 @@ Module ops.
         forall (Y R : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self Y R)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Y R)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt Y R)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_Y_where_core_fmt_Debug_R_for_core_ops_coroutine_CoroutineState_Y_R.
     
@@ -913,8 +921,9 @@ Module ops.
         forall (Y R : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self Y R)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self Y R)
           (* Instance *) [ ("hash", InstanceField.Method (hash Y R)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_Y_where_core_hash_Hash_R_for_core_ops_coroutine_CoroutineState_Y_R.
     
@@ -926,10 +935,12 @@ Module ops.
         Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ].
       
       (*     type Yield = G::Yield; *)
-      Definition _Yield (G R : Ty.t) : Ty.t := Ty.associated.
+      Definition _Yield (G R : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield".
       
       (*     type Return = G::Return; *)
-      Definition _Return (G R : Ty.t) : Ty.t := Ty.associated.
+      Definition _Return (G R : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return".
       
       (*
           fn resume(mut self: Pin<&mut Self>, arg: R) -> CoroutineState<Self::Yield, Self::Return> {
@@ -947,7 +958,10 @@ Module ops.
               Ty.apply
                 (Ty.path "core::ops::coroutine::CoroutineState")
                 []
-                [ Ty.associated; Ty.associated ],
+                [
+                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield";
+                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return"
+                ],
               M.get_trait_method (|
                 "core::ops::coroutine::Coroutine",
                 G,
@@ -1018,8 +1032,9 @@ Module ops.
         forall (G R : Ty.t),
         M.IsTraitInstance
           "core::ops::coroutine::Coroutine"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ R ]
           (Self G R)
-          (* Trait polymorphic types *) [ (* R *) R ]
           (* Instance *)
           [
             ("Yield", InstanceField.Ty (_Yield G R));
@@ -1032,10 +1047,12 @@ Module ops.
       Definition Self (G R : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ G ].
       
       (*     type Yield = G::Yield; *)
-      Definition _Yield (G R : Ty.t) : Ty.t := Ty.associated.
+      Definition _Yield (G R : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield".
       
       (*     type Return = G::Return; *)
-      Definition _Return (G R : Ty.t) : Ty.t := Ty.associated.
+      Definition _Return (G R : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return".
       
       (*
           fn resume(mut self: Pin<&mut Self>, arg: R) -> CoroutineState<Self::Yield, Self::Return> {
@@ -1053,7 +1070,10 @@ Module ops.
               Ty.apply
                 (Ty.path "core::ops::coroutine::CoroutineState")
                 []
-                [ Ty.associated; Ty.associated ],
+                [
+                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield";
+                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return"
+                ],
               M.get_trait_method (|
                 "core::ops::coroutine::Coroutine",
                 G,
@@ -1123,8 +1143,9 @@ Module ops.
         forall (G R : Ty.t),
         M.IsTraitInstance
           "core::ops::coroutine::Coroutine"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ R ]
           (Self G R)
-          (* Trait polymorphic types *) [ (* R *) R ]
           (* Instance *)
           [
             ("Yield", InstanceField.Ty (_Yield G R));

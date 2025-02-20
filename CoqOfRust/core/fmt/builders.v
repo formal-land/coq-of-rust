@@ -45,8 +45,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_core_fmt_builders_PadAdapterState.
     
@@ -870,8 +871,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Write"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("write_str", InstanceField.Method write_str);
@@ -6356,7 +6358,12 @@ Module fmt.
                       (M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              I
+                              "IntoIter",
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
                               I,
@@ -6382,7 +6389,12 @@ Module fmt.
                                           Ty.apply (Ty.path "core::option::Option") [] [ D ],
                                           M.get_trait_method (|
                                             "core::iter::traits::iterator::Iterator",
-                                            Ty.associated,
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::collect::IntoIterator"
+                                              []
+                                              []
+                                              I
+                                              "IntoIter",
                                             [],
                                             [],
                                             "next",
@@ -7377,7 +7389,12 @@ Module fmt.
                       (M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              I
+                              "IntoIter",
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
                               I,
@@ -7403,7 +7420,12 @@ Module fmt.
                                           Ty.apply (Ty.path "core::option::Option") [] [ D ],
                                           M.get_trait_method (|
                                             "core::iter::traits::iterator::Iterator",
-                                            Ty.associated,
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::collect::IntoIterator"
+                                              []
+                                              []
+                                              I
+                                              "IntoIter",
                                             [],
                                             [],
                                             "next",
@@ -10593,7 +10615,12 @@ Module fmt.
                       (M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              I
+                              "IntoIter",
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
                               I,
@@ -10622,7 +10649,12 @@ Module fmt.
                                             [ Ty.tuple [ K; V ] ],
                                           M.get_trait_method (|
                                             "core::iter::traits::iterator::Iterator",
-                                            Ty.associated,
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::collect::IntoIterator"
+                                              []
+                                              []
+                                              I
+                                              "IntoIter",
                                             [],
                                             [],
                                             "next",
@@ -11591,8 +11623,9 @@ Module fmt.
         forall (F : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt F)) ].
     End Impl_core_fmt_Debug_where_core_ops_function_Fn_F_Tuple_ref_mut_core_fmt_Formatter__for_core_fmt_builders_FromFn_F.
     
@@ -11645,8 +11678,9 @@ Module fmt.
         forall (F : Ty.t),
         M.IsTraitInstance
           "core::fmt::Display"
-          (Self F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self F)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt F)) ].
     End Impl_core_fmt_Display_where_core_ops_function_Fn_F_Tuple_ref_mut_core_fmt_Formatter__for_core_fmt_builders_FromFn_F.
   End builders.

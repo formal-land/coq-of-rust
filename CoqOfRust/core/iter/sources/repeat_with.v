@@ -40,8 +40,9 @@ Module iter.
           forall (F : Ty.t),
           M.IsTraitInstance
             "core::marker::Copy"
-            (Self F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self F)
             (* Instance *) [].
       End Impl_core_marker_Copy_where_core_marker_Copy_F_for_core_iter_sources_repeat_with_RepeatWith_F.
       
@@ -87,8 +88,9 @@ Module iter.
           forall (F : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self F)
             (* Instance *) [ ("clone", InstanceField.Method (clone F)) ].
       End Impl_core_clone_Clone_where_core_clone_Clone_F_for_core_iter_sources_repeat_with_RepeatWith_F.
       
@@ -150,8 +152,9 @@ Module iter.
           forall (F : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self F)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt F)) ].
       End Impl_core_fmt_Debug_for_core_iter_sources_repeat_with_RepeatWith_F.
       
@@ -299,7 +302,15 @@ Module iter.
                                         Ty.apply
                                           (Ty.path "core::ops::control_flow::ControlFlow")
                                           []
-                                          [ Ty.associated; Acc ],
+                                          [
+                                            Ty.associated_in_trait
+                                              "core::ops::try_trait::Try"
+                                              []
+                                              []
+                                              R
+                                              "Residual";
+                                            Acc
+                                          ],
                                         M.get_trait_method (|
                                           "core::ops::try_trait::Try",
                                           R,
@@ -349,7 +360,14 @@ Module iter.
                                                       "core::ops::try_trait::FromResidual",
                                                       R,
                                                       [],
-                                                      [ Ty.associated ],
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "core::ops::try_trait::Try"
+                                                          []
+                                                          []
+                                                          R
+                                                          "Residual"
+                                                      ],
                                                       "from_residual",
                                                       [],
                                                       []
@@ -387,8 +405,9 @@ Module iter.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self A F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self A F)
             (* Instance *)
             [
               ("Item", InstanceField.Ty (_Item A F));
@@ -406,8 +425,9 @@ Module iter.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::FusedIterator"
-            (Self A F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self A F)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_F_Tuple__for_core_iter_sources_repeat_with_RepeatWith_F.
       
@@ -419,8 +439,9 @@ Module iter.
           forall (A F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::TrustedLen"
-            (Self A F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self A F)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_TrustedLen_where_core_ops_function_FnMut_F_Tuple__for_core_iter_sources_repeat_with_RepeatWith_F.
     End repeat_with.

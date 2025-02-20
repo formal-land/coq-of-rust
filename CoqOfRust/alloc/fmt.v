@@ -33,7 +33,9 @@ Module fmt.
             [
               Ty.path "alloc::string::String";
               Ty.function [ Ty.tuple [] ] (Ty.path "alloc::string::String");
-              Ty.function [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] Ty.associated
+              Ty.function
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                (Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] (Ty.path "str") "Owned")
             ]
           |),
           [

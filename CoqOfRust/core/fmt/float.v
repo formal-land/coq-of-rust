@@ -51,8 +51,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::float::GeneralFormat"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("already_rounded_value_should_use_exponential",
@@ -105,8 +106,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::float::GeneralFormat"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("already_rounded_value_should_use_exponential",
@@ -1334,8 +1336,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_f32.
     
@@ -1374,8 +1377,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_f32.
     
@@ -1415,8 +1419,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerExp"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerExp_for_f32.
     
@@ -1456,8 +1461,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperExp"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperExp_for_f32.
     
@@ -1496,8 +1502,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_f64.
     
@@ -1536,8 +1543,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_f64.
     
@@ -1577,8 +1585,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerExp"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerExp_for_f64.
     
@@ -1618,8 +1627,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperExp"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperExp_for_f64.
     
@@ -1759,8 +1769,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_f16.
     
@@ -1900,8 +1911,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_f128.
   End float.

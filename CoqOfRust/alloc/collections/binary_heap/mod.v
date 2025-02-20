@@ -146,8 +146,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
     End Impl_core_fmt_Debug_where_core_cmp_Ord_T_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_PeekMut_T_A.
     
@@ -280,8 +281,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
     End Impl_core_ops_drop_Drop_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_PeekMut_T_A.
     
@@ -443,8 +445,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::Deref"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [ ("Target", InstanceField.Ty (_Target T A)); ("deref", InstanceField.Method (deref T A))
           ].
@@ -746,8 +749,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::ops::deref::DerefMut"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("deref_mut", InstanceField.Method (deref_mut T A)) ].
     End Impl_core_ops_deref_DerefMut_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_PeekMut_T_A.
     
@@ -1033,8 +1037,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("clone", InstanceField.Method (clone T A));
@@ -1082,8 +1087,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_where_core_cmp_Ord_T_for_alloc_collections_binary_heap_BinaryHeap_T_alloc_alloc_Global.
     
@@ -1171,8 +1177,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_BinaryHeap_T_A.
     
@@ -1250,8 +1257,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
     End Impl_core_ops_drop_Drop_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_RebuildOnDrop_T_A.
     
@@ -5551,8 +5559,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("drop", InstanceField.Method (drop T)) ].
     End Impl_core_ops_drop_Drop_for_alloc_collections_binary_heap_Hole_T.
     
@@ -5603,8 +5612,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_for_alloc_collections_binary_heap_Iter_T.
     
@@ -5711,8 +5721,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_binary_heap_Iter_T.
     
@@ -5765,8 +5776,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_for_alloc_collections_binary_heap_Iter_T.
     
@@ -5890,8 +5902,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T));
@@ -5945,8 +5958,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_alloc_collections_binary_heap_Iter_T.
     
@@ -5994,8 +6008,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("is_empty", InstanceField.Method (is_empty T)) ].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_alloc_collections_binary_heap_Iter_T.
     
@@ -6007,8 +6022,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_alloc_collections_binary_heap_Iter_T.
     
@@ -6070,8 +6086,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("clone", InstanceField.Method (clone T A)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_clone_Clone_A_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_T_A.
     
@@ -6229,8 +6246,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_T_A.
     
@@ -6319,8 +6337,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T A));
@@ -6373,8 +6392,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T A)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_T_A.
     
@@ -6422,8 +6442,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("is_empty", InstanceField.Method (is_empty T A)) ].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_T_A.
     
@@ -6435,8 +6456,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_T_A.
     
@@ -6448,8 +6470,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedFused"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedFused_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIter_T_A.
     
@@ -6501,8 +6524,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_for_alloc_collections_binary_heap_IntoIter_T_alloc_alloc_Global.
     
@@ -6536,8 +6560,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::SourceIter"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Source", InstanceField.Ty (_Source T A));
@@ -6603,8 +6628,9 @@ Module collections.
         forall (I A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::InPlaceIterable"
-          (Self I A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self I A)
           (* Instance *)
           [
             ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I A));
@@ -6663,8 +6689,9 @@ Module collections.
         forall (I : Ty.t),
         M.IsTraitInstance
           "alloc::vec::in_place_collect::AsVecIntoIter"
-          (Self I)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self I)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item I));
@@ -6732,8 +6759,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("clone", InstanceField.Method (clone T A)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_clone_Clone_A_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIterSorted_T_A.
     
@@ -6794,8 +6822,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_fmt_Debug_A_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIterSorted_T_A.
     
@@ -6937,8 +6966,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T A));
@@ -6955,8 +6985,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIterSorted_T_A.
     
@@ -6968,8 +6999,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIterSorted_T_A.
     
@@ -6981,8 +7013,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_IntoIterSorted_T_A.
     
@@ -7048,8 +7081,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_fmt_Debug_A_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_Drain_T_A.
     
@@ -7186,8 +7220,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T A));
@@ -7240,8 +7275,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T A)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_Drain_T_A.
     
@@ -7289,8 +7325,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("is_empty", InstanceField.Method (is_empty T A)) ].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_Drain_T_A.
     
@@ -7302,8 +7339,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_Drain_T_A.
     
@@ -7379,8 +7417,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_cmp_Ord_T_where_core_fmt_Debug_A_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_DrainSorted_T_A.
     
@@ -7570,8 +7609,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
     End Impl_core_ops_drop_Drop_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_DrainSorted_T_A.
     
@@ -7673,8 +7713,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T A));
@@ -7691,8 +7732,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_DrainSorted_T_A.
     
@@ -7704,8 +7746,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_DrainSorted_T_A.
     
@@ -7717,8 +7760,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_collections_binary_heap_DrainSorted_T_A.
     
@@ -7769,8 +7813,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
           (Self T A)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ]
           (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
     End Impl_core_convert_From_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_alloc_vec_Vec_T_A_for_alloc_collections_binary_heap_BinaryHeap_T_A.
     
@@ -7824,8 +7869,9 @@ Module collections.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
           (Self N T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ N ] [ T ] ]
           (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
     End Impl_core_convert_From_where_core_cmp_Ord_T_array_N_T_for_alloc_collections_binary_heap_BinaryHeap_T_alloc_alloc_Global.
     
@@ -7857,9 +7903,10 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ] ]
+          [ Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ] ]
+          (Self T A)
           (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
     End Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_collections_binary_heap_BinaryHeap_T_A_for_alloc_vec_Vec_T_A.
     
@@ -7903,7 +7950,12 @@ Module collections.
                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      I
+                      "IntoIter",
                     [],
                     [],
                     "collect",
@@ -7913,7 +7965,12 @@ Module collections.
                   |),
                   [
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        I
+                        "IntoIter",
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         I,
@@ -7936,8 +7993,9 @@ Module collections.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::FromIterator"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* A *) T ]
           (* Instance *) [ ("from_iter", InstanceField.Method (from_iter T)) ].
     End Impl_core_iter_traits_collect_FromIterator_where_core_cmp_Ord_T_T_for_alloc_collections_binary_heap_BinaryHeap_T_alloc_alloc_Global.
     
@@ -7996,8 +8054,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::IntoIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T A));
@@ -8048,8 +8107,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::IntoIterator"
-          (Self T A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item T A));
@@ -8220,8 +8280,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::Extend"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T A)
-          (* Trait polymorphic types *) [ (* A *) T ]
           (* Instance *)
           [
             ("extend", InstanceField.Method (extend T A));
@@ -8262,7 +8323,14 @@ Module collections.
                         Ty.apply
                           (Ty.path "core::iter::adapters::cloned::Cloned")
                           []
-                          [ Ty.associated ]
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              I
+                              "IntoIter"
+                          ]
                       ]
                     |),
                     [
@@ -8271,10 +8339,22 @@ Module collections.
                         Ty.apply
                           (Ty.path "core::iter::adapters::cloned::Cloned")
                           []
-                          [ Ty.associated ],
+                          [
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              I
+                              "IntoIter"
+                          ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
-                          Ty.associated,
+                          Ty.associated_in_trait
+                            "core::iter::traits::collect::IntoIterator"
+                            []
+                            []
+                            I
+                            "IntoIter",
                           [],
                           [],
                           "cloned",
@@ -8283,7 +8363,12 @@ Module collections.
                         |),
                         [
                           M.call_closure (|
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              I
+                              "IntoIter",
                             M.get_trait_method (|
                               "core::iter::traits::collect::IntoIterator",
                               I,
@@ -8399,8 +8484,9 @@ Module collections.
         forall (T A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::Extend"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ T ] ]
           (Self T A)
-          (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ T ] ]
           (* Instance *)
           [
             ("extend", InstanceField.Method (extend T A));

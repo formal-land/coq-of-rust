@@ -45,8 +45,9 @@ Module random.
     Axiom Implements :
       M.IsTraitInstance
         "core::random::Random"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("random", InstanceField.Method random) ].
   End Impl_core_random_Random_for_bool.
   
@@ -111,8 +112,9 @@ Module random.
     Axiom Implements :
       M.IsTraitInstance
         "core::random::Random"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("random", InstanceField.Method random) ].
   End Impl_core_random_Random_for_u8.
   
@@ -177,8 +179,9 @@ Module random.
     Axiom Implements :
       M.IsTraitInstance
         "core::random::Random"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("random", InstanceField.Method random) ].
   End Impl_core_random_Random_for_i8.
   
@@ -243,8 +246,9 @@ Module random.
     Axiom Implements :
       M.IsTraitInstance
         "core::random::Random"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("random", InstanceField.Method random) ].
   End Impl_core_random_Random_for_u16.
   
@@ -309,8 +313,9 @@ Module random.
     Axiom Implements :
       M.IsTraitInstance
         "core::random::Random"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("random", InstanceField.Method random) ].
   End Impl_core_random_Random_for_i16.
   
@@ -375,8 +380,9 @@ Module random.
     Axiom Implements :
       M.IsTraitInstance
         "core::random::Random"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("random", InstanceField.Method random) ].
   End Impl_core_random_Random_for_u32.
   
@@ -441,8 +447,9 @@ Module random.
     Axiom Implements :
       M.IsTraitInstance
         "core::random::Random"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("random", InstanceField.Method random) ].
   End Impl_core_random_Random_for_i32.
   
@@ -507,8 +514,9 @@ Module random.
     Axiom Implements :
       M.IsTraitInstance
         "core::random::Random"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("random", InstanceField.Method random) ].
   End Impl_core_random_Random_for_u64.
   
@@ -573,8 +581,9 @@ Module random.
     Axiom Implements :
       M.IsTraitInstance
         "core::random::Random"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("random", InstanceField.Method random) ].
   End Impl_core_random_Random_for_i64.
   
@@ -645,8 +654,9 @@ Module random.
     Axiom Implements :
       M.IsTraitInstance
         "core::random::Random"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("random", InstanceField.Method random) ].
   End Impl_core_random_Random_for_u128.
   
@@ -717,8 +727,9 @@ Module random.
     Axiom Implements :
       M.IsTraitInstance
         "core::random::Random"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("random", InstanceField.Method random) ].
   End Impl_core_random_Random_for_i128.
   
@@ -783,8 +794,9 @@ Module random.
     Axiom Implements :
       M.IsTraitInstance
         "core::random::Random"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("random", InstanceField.Method random) ].
   End Impl_core_random_Random_for_usize.
   
@@ -849,8 +861,9 @@ Module random.
     Axiom Implements :
       M.IsTraitInstance
         "core::random::Random"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("random", InstanceField.Method random) ].
   End Impl_core_random_Random_for_isize.
 End random.

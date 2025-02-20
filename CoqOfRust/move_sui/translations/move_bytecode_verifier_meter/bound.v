@@ -237,8 +237,9 @@ Module bound.
     Axiom Implements :
       M.IsTraitInstance
         "move_bytecode_verifier_meter::Meter"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("enter_scope", InstanceField.Method enter_scope);

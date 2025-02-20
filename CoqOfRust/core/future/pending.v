@@ -60,8 +60,9 @@ Module future.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::future::future::Future"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output T)); ("poll", InstanceField.Method (poll T)) ].
     End Impl_core_future_future_Future_for_core_future_pending_Pending_T.
@@ -124,8 +125,9 @@ Module future.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_for_core_future_pending_Pending_T.
     
@@ -156,8 +158,9 @@ Module future.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_for_core_future_pending_Pending_T.
   End pending.

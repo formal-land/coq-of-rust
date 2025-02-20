@@ -56,8 +56,9 @@ Module Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_try_from_and_try_into_EvenNumber.
 
@@ -67,8 +68,9 @@ Module Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
 
@@ -104,8 +106,9 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
 
@@ -162,8 +165,9 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::TryFrom"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) [ Ty.path "i32" ]
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
       (* Instance *)
       [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
 End Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.

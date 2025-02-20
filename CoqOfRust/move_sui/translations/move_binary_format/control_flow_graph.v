@@ -4281,8 +4281,9 @@ Module control_flow_graph.
     Axiom Implements :
       M.IsTraitInstance
         "move_binary_format::control_flow_graph::ControlFlowGraph"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("block_start", InstanceField.Method block_start);

@@ -84,8 +84,9 @@ Module array.
         forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "array") [ N ] [ U ] ]
           (Self N T U)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ U ] ]
           (* Instance *)
           [ ("eq", InstanceField.Method (eq N T U)); ("ne", InstanceField.Method (ne N T U)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_array_N_U_for_array_N_T.
@@ -291,8 +292,9 @@ Module array.
         forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ U ] ]
           (Self N T U)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "slice") [] [ U ] ]
           (* Instance *)
           [ ("eq", InstanceField.Method (eq N T U)); ("ne", InstanceField.Method (ne N T U)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_slice_U_for_array_N_T.
@@ -498,8 +500,9 @@ Module array.
         forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "array") [ N ] [ U ] ]
           (Self N T U)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ U ] ]
           (* Instance *)
           [ ("eq", InstanceField.Method (eq N T U)); ("ne", InstanceField.Method (ne N T U)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_array_N_U_for_slice_T.
@@ -591,9 +594,10 @@ Module array.
         forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self N T U)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ]
+          (Self N T U)
           (* Instance *)
           [ ("eq", InstanceField.Method (eq N T U)); ("ne", InstanceField.Method (ne N T U)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_ref__slice_U_for_array_N_T.
@@ -686,8 +690,9 @@ Module array.
         forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "array") [ N ] [ U ] ]
           (Self N T U)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ U ] ]
           (* Instance *)
           [ ("eq", InstanceField.Method (eq N T U)); ("ne", InstanceField.Method (ne N T U)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_array_N_U_for_ref__slice_T.
@@ -779,9 +784,10 @@ Module array.
         forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self N T U)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ]
+          [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ]
+          (Self N T U)
           (* Instance *)
           [ ("eq", InstanceField.Method (eq N T U)); ("ne", InstanceField.Method (ne N T U)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_ref_mut_slice_U_for_array_N_T.
@@ -874,8 +880,9 @@ Module array.
         forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "array") [ N ] [ U ] ]
           (Self N T U)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ U ] ]
           (* Instance *)
           [ ("eq", InstanceField.Method (eq N T U)); ("ne", InstanceField.Method (ne N T U)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_array_N_U_for_ref_mut_slice_T.
@@ -887,8 +894,9 @@ Module array.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_array_N_T.
     
@@ -1056,8 +1064,9 @@ Module array.
         forall (N : Value.t) (T Other : Ty.t),
         M.IsTraitInstance
           "core::array::equality::SpecArrayEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Other ]
           (Self N T Other)
-          (* Trait polymorphic types *) [ (* Other *) Other ]
           (* Instance *)
           [
             ("spec_eq", InstanceField.Method (spec_eq N T Other));
@@ -1158,8 +1167,9 @@ Module array.
         forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::array::equality::SpecArrayEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ U ]
           (Self N T U)
-          (* Trait polymorphic types *) [ (* Other *) U ]
           (* Instance *)
           [
             ("spec_eq", InstanceField.Method (spec_eq N T U));

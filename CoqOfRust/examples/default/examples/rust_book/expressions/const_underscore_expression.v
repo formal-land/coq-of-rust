@@ -35,8 +35,9 @@ Module underscore.
     Axiom Implements :
       M.IsTraitInstance
         "const_underscore_expression::BarTrait"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("show", InstanceField.Method show) ].
   End Impl_const_underscore_expression_BarTrait_for_const_underscore_expression_Bar.
 End underscore.

@@ -17,8 +17,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_convert_num_private_Sealed_for_f16.
     
@@ -51,8 +52,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u8" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u8_for_f16.
     
@@ -85,8 +87,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u16" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u16_for_f16.
     
@@ -119,8 +122,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u32" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u32_for_f16.
     
@@ -153,8 +157,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u64" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u64_for_f16.
     
@@ -187,8 +192,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u128" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u128_for_f16.
     
@@ -221,8 +227,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "usize" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_usize_for_f16.
     
@@ -255,8 +262,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i8" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i8_for_f16.
     
@@ -289,8 +297,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i16" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i16_for_f16.
     
@@ -323,8 +332,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i32" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i32_for_f16.
     
@@ -357,8 +367,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i64" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i64_for_f16.
     
@@ -391,8 +402,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i128" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i128_for_f16.
     
@@ -425,8 +437,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "isize" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_isize_for_f16.
     
@@ -436,8 +449,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_convert_num_private_Sealed_for_f32.
     
@@ -470,8 +484,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u8" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u8_for_f32.
     
@@ -504,8 +519,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u16" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u16_for_f32.
     
@@ -538,8 +554,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u32" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u32_for_f32.
     
@@ -572,8 +589,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u64" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u64_for_f32.
     
@@ -606,8 +624,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u128" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u128_for_f32.
     
@@ -640,8 +659,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "usize" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_usize_for_f32.
     
@@ -674,8 +694,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i8" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i8_for_f32.
     
@@ -708,8 +729,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i16" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i16_for_f32.
     
@@ -742,8 +764,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i32" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i32_for_f32.
     
@@ -776,8 +799,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i64" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i64_for_f32.
     
@@ -810,8 +834,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i128" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i128_for_f32.
     
@@ -844,8 +869,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "isize" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_isize_for_f32.
     
@@ -855,8 +881,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_convert_num_private_Sealed_for_f64.
     
@@ -889,8 +916,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u8" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u8_for_f64.
     
@@ -923,8 +951,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u16" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u16_for_f64.
     
@@ -957,8 +986,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u32" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u32_for_f64.
     
@@ -991,8 +1021,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u64" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u64_for_f64.
     
@@ -1025,8 +1056,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u128" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u128_for_f64.
     
@@ -1059,8 +1091,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "usize" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_usize_for_f64.
     
@@ -1093,8 +1126,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i8" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i8_for_f64.
     
@@ -1127,8 +1161,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i16" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i16_for_f64.
     
@@ -1161,8 +1196,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i32" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i32_for_f64.
     
@@ -1195,8 +1231,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i64" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i64_for_f64.
     
@@ -1229,8 +1266,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i128" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i128_for_f64.
     
@@ -1263,8 +1301,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "isize" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_isize_for_f64.
     
@@ -1274,8 +1313,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_convert_num_private_Sealed_for_f128.
     
@@ -1308,8 +1348,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u8" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u8_for_f128.
     
@@ -1342,8 +1383,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u16" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u16_for_f128.
     
@@ -1376,8 +1418,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u32" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u32_for_f128.
     
@@ -1410,8 +1453,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u64" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u64_for_f128.
     
@@ -1444,8 +1488,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "u128" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_u128_for_f128.
     
@@ -1478,8 +1523,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "usize" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_usize_for_f128.
     
@@ -1512,8 +1558,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i8" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i8_for_f128.
     
@@ -1546,8 +1593,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i16" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i16_for_f128.
     
@@ -1580,8 +1628,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i32" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i32_for_f128.
     
@@ -1614,8 +1663,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i64" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i64_for_f128.
     
@@ -1648,8 +1698,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "i128" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_i128_for_f128.
     
@@ -1682,8 +1733,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::num::FloatToInt"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Int *) Ty.path "isize" ]
           (* Instance *) [ ("to_int_unchecked", InstanceField.Method to_int_unchecked) ].
     End Impl_core_convert_num_FloatToInt_isize_for_f128.
     
@@ -1707,8 +1759,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "bool" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_bool_for_u8.
     
@@ -1732,8 +1785,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "bool" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_bool_for_u16.
     
@@ -1757,8 +1811,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "bool" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_bool_for_u32.
     
@@ -1782,8 +1837,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "bool" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_bool_for_u64.
     
@@ -1807,8 +1863,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "bool" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_bool_for_u128.
     
@@ -1832,8 +1889,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "bool" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_bool_for_usize.
     
@@ -1857,8 +1915,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "bool" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_bool_for_i8.
     
@@ -1882,8 +1941,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "bool" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_bool_for_i16.
     
@@ -1907,8 +1967,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "bool" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_bool_for_i32.
     
@@ -1932,8 +1993,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "bool" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_bool_for_i64.
     
@@ -1957,8 +2019,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "bool" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_bool_for_i128.
     
@@ -1982,8 +2045,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "bool" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_bool_for_isize.
     
@@ -2007,8 +2071,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u8_for_u16.
     
@@ -2032,8 +2097,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u8_for_u32.
     
@@ -2057,8 +2123,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u8_for_u64.
     
@@ -2082,8 +2149,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u8_for_u128.
     
@@ -2107,8 +2175,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u8_for_usize.
     
@@ -2132,8 +2201,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u16_for_u32.
     
@@ -2157,8 +2227,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u16_for_u64.
     
@@ -2182,8 +2253,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u16_for_u128.
     
@@ -2207,8 +2279,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u32_for_u64.
     
@@ -2232,8 +2305,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u32_for_u128.
     
@@ -2257,8 +2331,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u64_for_u128.
     
@@ -2282,8 +2357,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i8_for_i16.
     
@@ -2307,8 +2383,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i8_for_i32.
     
@@ -2332,8 +2409,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i8_for_i64.
     
@@ -2357,8 +2435,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i8_for_i128.
     
@@ -2382,8 +2461,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i8_for_isize.
     
@@ -2407,8 +2487,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i16_for_i32.
     
@@ -2432,8 +2513,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i16_for_i64.
     
@@ -2457,8 +2539,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i16_for_i128.
     
@@ -2482,8 +2565,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i32_for_i64.
     
@@ -2507,8 +2591,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i32_for_i128.
     
@@ -2532,8 +2617,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i64" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i64_for_i128.
     
@@ -2557,8 +2643,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u8_for_i16.
     
@@ -2582,8 +2669,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u8_for_i32.
     
@@ -2607,8 +2695,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u8_for_i64.
     
@@ -2632,8 +2721,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u8_for_i128.
     
@@ -2657,8 +2747,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u16_for_i32.
     
@@ -2682,8 +2773,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u16_for_i64.
     
@@ -2707,8 +2799,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u16_for_i128.
     
@@ -2732,8 +2825,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u32_for_i64.
     
@@ -2757,8 +2851,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u32_for_i128.
     
@@ -2782,8 +2877,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u64_for_i128.
     
@@ -2807,8 +2903,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u16_for_usize.
     
@@ -2832,8 +2929,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u8_for_isize.
     
@@ -2857,8 +2955,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i16_for_isize.
     
@@ -2882,8 +2981,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i8_for_f32.
     
@@ -2907,8 +3007,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i8_for_f64.
     
@@ -2932,8 +3033,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i16_for_f32.
     
@@ -2957,8 +3059,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i16_for_f64.
     
@@ -2982,8 +3085,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_i32_for_f64.
     
@@ -3007,8 +3111,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u8_for_f32.
     
@@ -3032,8 +3137,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u8_for_f64.
     
@@ -3057,8 +3163,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u16_for_f32.
     
@@ -3082,8 +3189,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u16_for_f64.
     
@@ -3107,8 +3215,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u32_for_f64.
     
@@ -3132,8 +3241,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "f16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "f16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_f16_for_f64.
     
@@ -3157,8 +3267,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "f16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "f16" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_f16_for_f128.
     
@@ -3182,8 +3293,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "f32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "f32" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_f32_for_f64.
     
@@ -3207,8 +3319,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "f32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "f32" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_f32_for_f128.
     
@@ -3232,8 +3345,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "f64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "f64" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_f64_for_f128.
     
@@ -3257,8 +3371,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "bool" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_bool_for_f32.
     
@@ -3282,8 +3397,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "bool" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "bool" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_bool_for_f64.
     
@@ -3344,8 +3460,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u16_for_u8.
@@ -3407,8 +3524,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u32_for_u8.
@@ -3470,8 +3588,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u32_for_u16.
@@ -3533,8 +3652,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u64_for_u8.
@@ -3596,8 +3716,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u64_for_u16.
@@ -3659,8 +3780,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u64_for_u32.
@@ -3722,8 +3844,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u128_for_u8.
@@ -3785,8 +3908,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u128_for_u16.
@@ -3848,8 +3972,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u128_for_u32.
@@ -3911,8 +4036,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u128_for_u64.
@@ -3984,8 +4110,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i16" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i16_for_i8.
@@ -4057,8 +4184,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i32_for_i8.
@@ -4130,8 +4258,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i32_for_i16.
@@ -4203,8 +4332,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i64_for_i8.
@@ -4276,8 +4406,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i64_for_i16.
@@ -4349,8 +4480,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i64_for_i32.
@@ -4422,8 +4554,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i128_for_i8.
@@ -4495,8 +4628,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i128_for_i16.
@@ -4568,8 +4702,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i128_for_i32.
@@ -4641,8 +4776,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i128_for_i64.
@@ -4704,8 +4840,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u8_for_i8.
@@ -4767,8 +4904,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u16_for_i8.
@@ -4830,8 +4968,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u16_for_i16.
@@ -4893,8 +5032,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u32_for_i8.
@@ -4956,8 +5096,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u32_for_i16.
@@ -5019,8 +5160,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u32_for_i32.
@@ -5082,8 +5224,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u64_for_i8.
@@ -5145,8 +5288,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u64_for_i16.
@@ -5208,8 +5352,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u64_for_i32.
@@ -5271,8 +5416,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u64_for_i64.
@@ -5334,8 +5480,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u128_for_i8.
@@ -5397,8 +5544,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u128_for_i16.
@@ -5460,8 +5608,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u128_for_i32.
@@ -5523,8 +5672,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u128_for_i64.
@@ -5586,8 +5736,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u128_for_i128.
@@ -5646,8 +5797,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i8" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i8_for_u8.
@@ -5706,8 +5858,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i8" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i8_for_u16.
@@ -5766,8 +5919,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i8" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i8_for_u32.
@@ -5826,8 +5980,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i8" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i8_for_u64.
@@ -5886,8 +6041,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i8" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i8_for_u128.
@@ -5959,8 +6115,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i16" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i16_for_u8.
@@ -6019,8 +6176,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i16" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i16_for_u16.
@@ -6079,8 +6237,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i16" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i16_for_u32.
@@ -6139,8 +6298,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i16" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i16_for_u64.
@@ -6199,8 +6359,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i16" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i16_for_u128.
@@ -6272,8 +6433,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i32_for_u8.
@@ -6345,8 +6507,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i32_for_u16.
@@ -6405,8 +6568,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i32_for_u32.
@@ -6465,8 +6629,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i32_for_u64.
@@ -6525,8 +6690,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i32_for_u128.
@@ -6598,8 +6764,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i64_for_u8.
@@ -6671,8 +6838,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i64_for_u16.
@@ -6744,8 +6912,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i64_for_u32.
@@ -6804,8 +6973,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i64_for_u64.
@@ -6864,8 +7034,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i64_for_u128.
@@ -6937,8 +7108,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i128_for_u8.
@@ -7010,8 +7182,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i128_for_u16.
@@ -7083,8 +7256,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i128_for_u32.
@@ -7156,8 +7330,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i128_for_u64.
@@ -7216,8 +7391,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i128_for_u128.
@@ -7281,8 +7457,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "usize" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_usize_for_isize.
@@ -7341,8 +7518,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "isize" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_isize_for_usize.
@@ -7411,8 +7589,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "usize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "usize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_usize_for_u8.
@@ -7480,8 +7659,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "usize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "usize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_usize_for_u16.
@@ -7549,8 +7729,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "usize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "usize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_usize_for_u32.
@@ -7580,8 +7761,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "usize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "usize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_usize_for_u64.
@@ -7611,8 +7793,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "usize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "usize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_usize_for_u128.
@@ -7680,8 +7863,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "usize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "usize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_usize_for_i8.
@@ -7749,8 +7933,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "usize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "usize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_usize_for_i16.
@@ -7818,8 +8003,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "usize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "usize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_usize_for_i32.
@@ -7887,8 +8073,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "usize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "usize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_usize_for_i64.
@@ -7918,8 +8105,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "usize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "usize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_usize_for_i128.
@@ -7995,8 +8183,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "isize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "isize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_isize_for_u8.
@@ -8072,8 +8261,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "isize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "isize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_isize_for_u16.
@@ -8149,8 +8339,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "isize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "isize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_isize_for_u32.
@@ -8213,8 +8404,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "isize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "isize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_isize_for_u64.
@@ -8277,8 +8469,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "isize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "isize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_isize_for_u128.
@@ -8354,8 +8547,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "isize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "isize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_isize_for_i8.
@@ -8431,8 +8625,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "isize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "isize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_isize_for_i16.
@@ -8508,8 +8703,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "isize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "isize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_isize_for_i32.
@@ -8539,8 +8735,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "isize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "isize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_isize_for_i64.
@@ -8570,8 +8767,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "isize" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "isize" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_isize_for_i128.
@@ -8601,8 +8799,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "u32" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_u32_for_usize.
@@ -8632,8 +8831,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "u64" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_u64_for_usize.
@@ -8701,8 +8901,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "u128" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "u128" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_u128_for_usize.
@@ -8765,8 +8966,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "i8" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "i8" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_i8_for_usize.
@@ -8829,8 +9031,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "i16" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "i16" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_i16_for_usize.
@@ -8893,8 +9096,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "i32" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_i32_for_usize.
@@ -8957,8 +9161,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "i64" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "i64" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_i64_for_usize.
@@ -9034,8 +9239,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "i128" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "i128" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_i128_for_usize.
@@ -9065,8 +9271,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "u16" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_u16_for_isize.
@@ -9096,8 +9303,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "u32" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_u32_for_isize.
@@ -9165,8 +9373,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "u64" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_u64_for_isize.
@@ -9234,8 +9443,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "u128" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "u128" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_u128_for_isize.
@@ -9265,8 +9475,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "i32" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_i32_for_isize.
@@ -9296,8 +9507,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "i64" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "i64" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_i64_for_isize.
@@ -9373,8 +9585,9 @@ Module convert.
         Axiom Implements :
           M.IsTraitInstance
             "core::convert::TryFrom"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.path "i128" ]
             Self
-            (* Trait polymorphic types *) [ (* T *) Ty.path "i128" ]
             (* Instance *)
             [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
       End Impl_core_convert_TryFrom_i128_for_isize.
@@ -9436,9 +9649,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u8_for_core_num_nonzero_NonZero_u16.
     
@@ -9498,9 +9712,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u8_for_core_num_nonzero_NonZero_u32.
     
@@ -9560,9 +9775,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u8_for_core_num_nonzero_NonZero_u64.
     
@@ -9622,9 +9838,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u8_for_core_num_nonzero_NonZero_u128.
     
@@ -9684,9 +9901,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u8_for_core_num_nonzero_NonZero_usize.
     
@@ -9746,9 +9964,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u16_for_core_num_nonzero_NonZero_u32.
     
@@ -9808,9 +10027,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u16_for_core_num_nonzero_NonZero_u64.
     
@@ -9870,9 +10090,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u16_for_core_num_nonzero_NonZero_u128.
     
@@ -9932,9 +10153,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u16_for_core_num_nonzero_NonZero_usize.
     
@@ -9994,9 +10216,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u32_for_core_num_nonzero_NonZero_u64.
     
@@ -10056,9 +10279,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u32_for_core_num_nonzero_NonZero_u128.
     
@@ -10118,9 +10342,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u64_for_core_num_nonzero_NonZero_u128.
     
@@ -10180,9 +10405,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_i8_for_core_num_nonzero_NonZero_i16.
     
@@ -10242,9 +10468,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_i8_for_core_num_nonzero_NonZero_i32.
     
@@ -10304,9 +10531,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_i8_for_core_num_nonzero_NonZero_i64.
     
@@ -10366,9 +10594,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_i8_for_core_num_nonzero_NonZero_i128.
     
@@ -10428,9 +10657,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_i8_for_core_num_nonzero_NonZero_isize.
     
@@ -10490,9 +10720,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_i16_for_core_num_nonzero_NonZero_i32.
     
@@ -10552,9 +10783,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_i16_for_core_num_nonzero_NonZero_i64.
     
@@ -10614,9 +10846,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_i16_for_core_num_nonzero_NonZero_i128.
     
@@ -10676,9 +10909,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_i16_for_core_num_nonzero_NonZero_isize.
     
@@ -10738,9 +10972,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_i32_for_core_num_nonzero_NonZero_i64.
     
@@ -10800,9 +11035,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_i32_for_core_num_nonzero_NonZero_i128.
     
@@ -10862,9 +11098,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_i64_for_core_num_nonzero_NonZero_i128.
     
@@ -10924,9 +11161,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u8_for_core_num_nonzero_NonZero_i16.
     
@@ -10986,9 +11224,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u8_for_core_num_nonzero_NonZero_i32.
     
@@ -11048,9 +11287,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u8_for_core_num_nonzero_NonZero_i64.
     
@@ -11110,9 +11350,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u8_for_core_num_nonzero_NonZero_i128.
     
@@ -11172,9 +11413,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u8_for_core_num_nonzero_NonZero_isize.
     
@@ -11234,9 +11476,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u16_for_core_num_nonzero_NonZero_i32.
     
@@ -11296,9 +11539,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u16_for_core_num_nonzero_NonZero_i64.
     
@@ -11358,9 +11602,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u16_for_core_num_nonzero_NonZero_i128.
     
@@ -11420,9 +11665,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u32_for_core_num_nonzero_NonZero_i64.
     
@@ -11482,9 +11728,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u32_for_core_num_nonzero_NonZero_i128.
     
@@ -11544,9 +11791,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_num_nonzero_NonZero_u64_for_core_num_nonzero_NonZero_i128.
     
@@ -11607,8 +11855,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u8_for_core_num_nonzero_NonZero_u8.
@@ -11670,8 +11919,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u16_for_core_num_nonzero_NonZero_u16.
@@ -11733,8 +11983,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u32_for_core_num_nonzero_NonZero_u32.
@@ -11796,8 +12047,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u64_for_core_num_nonzero_NonZero_u64.
@@ -11859,8 +12111,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_u128_for_core_num_nonzero_NonZero_u128.
@@ -11922,8 +12175,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "usize" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_usize_for_core_num_nonzero_NonZero_usize.
@@ -11985,8 +12239,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i8" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i8_for_core_num_nonzero_NonZero_i8.
@@ -12048,8 +12303,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i16" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i16_for_core_num_nonzero_NonZero_i16.
@@ -12111,8 +12367,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i32" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i32_for_core_num_nonzero_NonZero_i32.
@@ -12174,8 +12431,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i64" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i64_for_core_num_nonzero_NonZero_i64.
@@ -12237,8 +12495,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "i128" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_i128_for_core_num_nonzero_NonZero_i128.
@@ -12300,8 +12559,9 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "isize" ]
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_isize_for_core_num_nonzero_NonZero_isize.
@@ -12481,9 +12741,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u16_for_core_num_nonzero_NonZero_u8.
@@ -12663,9 +12924,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u32_for_core_num_nonzero_NonZero_u8.
@@ -12846,9 +13108,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u32_for_core_num_nonzero_NonZero_u16.
@@ -13030,9 +13293,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u32_for_core_num_nonzero_NonZero_usize.
@@ -13212,9 +13476,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u64_for_core_num_nonzero_NonZero_u8.
@@ -13395,9 +13660,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u64_for_core_num_nonzero_NonZero_u16.
@@ -13578,9 +13844,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u64_for_core_num_nonzero_NonZero_u32.
@@ -13762,9 +14029,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u64_for_core_num_nonzero_NonZero_usize.
@@ -13944,9 +14212,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u128_for_core_num_nonzero_NonZero_u8.
@@ -14127,9 +14396,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u128_for_core_num_nonzero_NonZero_u16.
@@ -14310,9 +14580,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u128_for_core_num_nonzero_NonZero_u32.
@@ -14493,9 +14764,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u128_for_core_num_nonzero_NonZero_u64.
@@ -14677,9 +14949,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u128_for_core_num_nonzero_NonZero_usize.
@@ -14859,9 +15132,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_usize_for_core_num_nonzero_NonZero_u8.
@@ -15042,9 +15316,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_usize_for_core_num_nonzero_NonZero_u16.
@@ -15225,9 +15500,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_usize_for_core_num_nonzero_NonZero_u32.
@@ -15408,9 +15684,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_usize_for_core_num_nonzero_NonZero_u64.
@@ -15591,9 +15868,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_usize_for_core_num_nonzero_NonZero_u128.
@@ -15773,9 +16051,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i16_for_core_num_nonzero_NonZero_i8.
@@ -15955,9 +16234,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i32_for_core_num_nonzero_NonZero_i8.
@@ -16138,9 +16418,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i32_for_core_num_nonzero_NonZero_i16.
@@ -16322,9 +16603,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i32_for_core_num_nonzero_NonZero_isize.
@@ -16504,9 +16786,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i64_for_core_num_nonzero_NonZero_i8.
@@ -16687,9 +16970,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i64_for_core_num_nonzero_NonZero_i16.
@@ -16870,9 +17154,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i64_for_core_num_nonzero_NonZero_i32.
@@ -17054,9 +17339,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i64_for_core_num_nonzero_NonZero_isize.
@@ -17236,9 +17522,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i128_for_core_num_nonzero_NonZero_i8.
@@ -17419,9 +17706,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i128_for_core_num_nonzero_NonZero_i16.
@@ -17602,9 +17890,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i128_for_core_num_nonzero_NonZero_i32.
@@ -17785,9 +18074,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i128_for_core_num_nonzero_NonZero_i64.
@@ -17969,9 +18259,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i128_for_core_num_nonzero_NonZero_isize.
@@ -18151,9 +18442,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_isize_for_core_num_nonzero_NonZero_i8.
@@ -18334,9 +18626,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_isize_for_core_num_nonzero_NonZero_i16.
@@ -18517,9 +18810,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_isize_for_core_num_nonzero_NonZero_i32.
@@ -18700,9 +18994,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_isize_for_core_num_nonzero_NonZero_i64.
@@ -18883,9 +19178,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_isize_for_core_num_nonzero_NonZero_i128.
@@ -19065,9 +19361,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u8_for_core_num_nonzero_NonZero_i8.
@@ -19247,9 +19544,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u16_for_core_num_nonzero_NonZero_i8.
@@ -19430,9 +19728,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u16_for_core_num_nonzero_NonZero_i16.
@@ -19614,9 +19913,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u16_for_core_num_nonzero_NonZero_isize.
@@ -19796,9 +20096,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u32_for_core_num_nonzero_NonZero_i8.
@@ -19979,9 +20280,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u32_for_core_num_nonzero_NonZero_i16.
@@ -20162,9 +20464,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u32_for_core_num_nonzero_NonZero_i32.
@@ -20346,9 +20649,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u32_for_core_num_nonzero_NonZero_isize.
@@ -20528,9 +20832,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u64_for_core_num_nonzero_NonZero_i8.
@@ -20711,9 +21016,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u64_for_core_num_nonzero_NonZero_i16.
@@ -20894,9 +21200,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u64_for_core_num_nonzero_NonZero_i32.
@@ -21077,9 +21384,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u64_for_core_num_nonzero_NonZero_i64.
@@ -21261,9 +21569,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u64_for_core_num_nonzero_NonZero_isize.
@@ -21443,9 +21752,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u128_for_core_num_nonzero_NonZero_i8.
@@ -21626,9 +21936,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u128_for_core_num_nonzero_NonZero_i16.
@@ -21809,9 +22120,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u128_for_core_num_nonzero_NonZero_i32.
@@ -21992,9 +22304,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u128_for_core_num_nonzero_NonZero_i64.
@@ -22175,9 +22488,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u128_for_core_num_nonzero_NonZero_i128.
@@ -22359,9 +22673,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_u128_for_core_num_nonzero_NonZero_isize.
@@ -22541,9 +22856,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_usize_for_core_num_nonzero_NonZero_i8.
@@ -22724,9 +23040,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_usize_for_core_num_nonzero_NonZero_i16.
@@ -22907,9 +23224,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_usize_for_core_num_nonzero_NonZero_i32.
@@ -23090,9 +23408,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_usize_for_core_num_nonzero_NonZero_i64.
@@ -23273,9 +23592,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_usize_for_core_num_nonzero_NonZero_i128.
@@ -23457,9 +23777,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_usize_for_core_num_nonzero_NonZero_isize.
@@ -23639,9 +23960,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i8_for_core_num_nonzero_NonZero_u8.
@@ -23822,9 +24144,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i8_for_core_num_nonzero_NonZero_u16.
@@ -24005,9 +24328,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i8_for_core_num_nonzero_NonZero_u32.
@@ -24188,9 +24512,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i8_for_core_num_nonzero_NonZero_u64.
@@ -24371,9 +24696,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i8_for_core_num_nonzero_NonZero_u128.
@@ -24555,9 +24881,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i8_for_core_num_nonzero_NonZero_usize.
@@ -24737,9 +25064,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i16_for_core_num_nonzero_NonZero_u8.
@@ -24920,9 +25248,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i16_for_core_num_nonzero_NonZero_u16.
@@ -25103,9 +25432,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i16_for_core_num_nonzero_NonZero_u32.
@@ -25286,9 +25616,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i16_for_core_num_nonzero_NonZero_u64.
@@ -25469,9 +25800,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i16_for_core_num_nonzero_NonZero_u128.
@@ -25653,9 +25985,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i16_for_core_num_nonzero_NonZero_usize.
@@ -25835,9 +26168,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i32_for_core_num_nonzero_NonZero_u8.
@@ -26018,9 +26352,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i32_for_core_num_nonzero_NonZero_u16.
@@ -26201,9 +26536,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i32_for_core_num_nonzero_NonZero_u32.
@@ -26384,9 +26720,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i32_for_core_num_nonzero_NonZero_u64.
@@ -26567,9 +26904,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i32_for_core_num_nonzero_NonZero_u128.
@@ -26751,9 +27089,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i32_for_core_num_nonzero_NonZero_usize.
@@ -26933,9 +27272,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i64_for_core_num_nonzero_NonZero_u8.
@@ -27116,9 +27456,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i64_for_core_num_nonzero_NonZero_u16.
@@ -27299,9 +27640,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i64_for_core_num_nonzero_NonZero_u32.
@@ -27482,9 +27824,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i64_for_core_num_nonzero_NonZero_u64.
@@ -27665,9 +28008,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i64_for_core_num_nonzero_NonZero_u128.
@@ -27849,9 +28193,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i64_for_core_num_nonzero_NonZero_usize.
@@ -28031,9 +28376,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i128_for_core_num_nonzero_NonZero_u8.
@@ -28214,9 +28560,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i128_for_core_num_nonzero_NonZero_u16.
@@ -28397,9 +28744,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i128_for_core_num_nonzero_NonZero_u32.
@@ -28580,9 +28928,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i128_for_core_num_nonzero_NonZero_u64.
@@ -28763,9 +29112,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i128_for_core_num_nonzero_NonZero_u128.
@@ -28947,9 +29297,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_i128_for_core_num_nonzero_NonZero_usize.
@@ -29129,9 +29480,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_isize_for_core_num_nonzero_NonZero_u8.
@@ -29312,9 +29664,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_isize_for_core_num_nonzero_NonZero_u16.
@@ -29495,9 +29848,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_isize_for_core_num_nonzero_NonZero_u32.
@@ -29678,9 +30032,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_isize_for_core_num_nonzero_NonZero_u64.
@@ -29861,9 +30216,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_isize_for_core_num_nonzero_NonZero_u128.
@@ -30045,9 +30401,10 @@ Module convert.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::TryFrom"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ]
+          Self
           (* Instance *)
           [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
     End Impl_core_convert_TryFrom_core_num_nonzero_NonZero_isize_for_core_num_nonzero_NonZero_usize.

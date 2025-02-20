@@ -40,8 +40,9 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_runtime_AccountId.
 
@@ -66,8 +67,9 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_call_runtime_AccountId.
 
@@ -75,7 +77,12 @@ Module Impl_core_marker_Copy_for_call_runtime_AccountId.
   Definition Self : Ty.t := Ty.path "call_runtime::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_call_runtime_AccountId.
 
 Axiom Balance : (Ty.path "call_runtime::Balance") = (Ty.path "u128").
@@ -115,8 +122,9 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) [ Ty.path "call_runtime::AccountId" ]
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.path "call_runtime::AccountId" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddress_call_runtime_AccountId_Tuple_.
 
@@ -186,8 +194,9 @@ Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_call_runtime_RuntimeCaller.
 
@@ -236,8 +245,9 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
 
@@ -247,8 +257,9 @@ Module Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
   Axiom Implements :
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
 
@@ -269,8 +280,9 @@ Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
 
@@ -294,8 +306,9 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
   Axiom Implements :
     M.IsTraitInstance
       "core::cmp::Eq"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
@@ -375,8 +388,9 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
   Axiom Implements :
     M.IsTraitInstance
       "core::convert::From"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) [ Ty.path "call_runtime::EnvError" ]
       Self
-      (* Trait polymorphic types *) [ (* T *) Ty.path "call_runtime::EnvError" ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeError.
 

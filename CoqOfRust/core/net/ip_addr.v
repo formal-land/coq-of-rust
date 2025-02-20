@@ -31,8 +31,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_net_ip_addr_IpAddr.
     
@@ -64,8 +65,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_net_ip_addr_IpAddr.
     
@@ -101,8 +103,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_net_ip_addr_IpAddr.
@@ -113,8 +116,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_ip_addr_IpAddr.
     
@@ -276,8 +280,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_net_ip_addr_IpAddr.
     
@@ -394,8 +399,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_net_ip_addr_IpAddr.
     
@@ -557,8 +563,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_core_net_ip_addr_IpAddr.
     
@@ -743,8 +750,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_core_net_ip_addr_IpAddr.
     
@@ -766,8 +774,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_net_ip_addr_Ipv4Addr.
     
@@ -792,8 +801,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_net_ip_addr_Ipv4Addr.
     
@@ -803,8 +813,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_ip_addr_Ipv4Addr.
     
@@ -855,8 +866,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_net_ip_addr_Ipv4Addr.
     
@@ -885,8 +897,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_net_ip_addr_Ipv4Addr.
@@ -953,8 +966,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_net_ip_addr_Ipv4Addr.
     
@@ -976,8 +990,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_net_ip_addr_Ipv6Addr.
     
@@ -1002,8 +1017,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_net_ip_addr_Ipv6Addr.
     
@@ -1013,8 +1029,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_ip_addr_Ipv6Addr.
     
@@ -1065,8 +1082,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_net_ip_addr_Ipv6Addr.
     
@@ -1095,8 +1113,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_net_ip_addr_Ipv6Addr.
@@ -1163,8 +1182,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_net_ip_addr_Ipv6Addr.
     
@@ -1228,8 +1248,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::Copy"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_Copy_for_core_net_ip_addr_Ipv6MulticastScope.
     
@@ -1239,8 +1260,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_ip_addr_Ipv6MulticastScope.
     
@@ -1287,8 +1309,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_net_ip_addr_Ipv6MulticastScope.
     
@@ -1312,8 +1335,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_core_net_ip_addr_Ipv6MulticastScope.
@@ -1334,8 +1358,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_net_ip_addr_Ipv6MulticastScope.
     
@@ -1390,8 +1415,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_net_ip_addr_Ipv6MulticastScope.
     
@@ -1526,8 +1552,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_net_ip_addr_Ipv6MulticastScope.
     
@@ -3507,8 +3534,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_net_ip_addr_IpAddr.
     
@@ -3551,8 +3579,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_net_ip_addr_IpAddr.
     
@@ -3576,8 +3605,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::net::ip_addr::Ipv4Addr" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_IpAddr.
     
@@ -3601,8 +3631,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::net::ip_addr::Ipv6Addr" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_IpAddr.
     
@@ -4145,8 +4176,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_net_ip_addr_Ipv4Addr.
     
@@ -4189,8 +4221,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_net_ip_addr_Ipv4Addr.
     
@@ -4263,8 +4296,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "core::net::ip_addr::Ipv4Addr" ]
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_IpAddr.
     
@@ -4337,8 +4371,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::IpAddr" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "core::net::ip_addr::IpAddr" ]
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_core_net_ip_addr_IpAddr_for_core_net_ip_addr_Ipv4Addr.
     
@@ -4382,8 +4417,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_core_net_ip_addr_Ipv4Addr.
     
@@ -4462,8 +4498,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "core::net::ip_addr::Ipv4Addr" ]
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_IpAddr.
     
@@ -4542,8 +4579,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::IpAddr" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "core::net::ip_addr::IpAddr" ]
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_core_net_ip_addr_IpAddr_for_core_net_ip_addr_Ipv4Addr.
     
@@ -4602,8 +4640,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_core_net_ip_addr_Ipv4Addr.
     
@@ -4636,8 +4675,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::net::ip_addr::Ipv4Addr" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_net_ip_addr_Ipv4Addr_for_u32.
     
@@ -4670,8 +4710,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u32_for_core_net_ip_addr_Ipv4Addr.
     
@@ -4695,12 +4736,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [
-            (* T *)
-            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ]
-          ]
+          [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_array_Usize_4_u8_for_core_net_ip_addr_Ipv4Addr.
     
@@ -4745,12 +4784,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [
-            (* T *)
-            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ]
-          ]
+          [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_array_Usize_4_u8_for_core_net_ip_addr_IpAddr.
     
@@ -8375,8 +8412,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_net_ip_addr_Ipv6Addr.
     
@@ -8419,8 +8457,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_net_ip_addr_Ipv6Addr.
     
@@ -8493,8 +8532,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::IpAddr" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "core::net::ip_addr::IpAddr" ]
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_core_net_ip_addr_IpAddr_for_core_net_ip_addr_Ipv6Addr.
     
@@ -8567,8 +8607,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "core::net::ip_addr::Ipv6Addr" ]
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_IpAddr.
     
@@ -8612,8 +8653,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_core_net_ip_addr_Ipv6Addr.
     
@@ -8692,8 +8734,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "core::net::ip_addr::Ipv6Addr" ]
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_IpAddr.
     
@@ -8772,8 +8815,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::IpAddr" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "core::net::ip_addr::IpAddr" ]
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_core_net_ip_addr_IpAddr_for_core_net_ip_addr_Ipv6Addr.
     
@@ -8852,8 +8896,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_core_net_ip_addr_Ipv6Addr.
     
@@ -8886,8 +8931,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::net::ip_addr::Ipv6Addr" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_core_net_ip_addr_Ipv6Addr_for_u128.
     
@@ -8920,8 +8966,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "u128" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_u128_for_core_net_ip_addr_Ipv6Addr.
     
@@ -8945,12 +8992,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [
-            (* T *)
-            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ]
-          ]
+          [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_array_Usize_16_u8_for_core_net_ip_addr_Ipv6Addr.
     
@@ -9020,12 +9065,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [
-            (* T *)
-            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u16" ]
-          ]
+          [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u16" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_array_Usize_8_u16_for_core_net_ip_addr_Ipv6Addr.
     
@@ -9070,12 +9113,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [
-            (* T *)
-            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ]
-          ]
+          [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_array_Usize_16_u8_for_core_net_ip_addr_IpAddr.
     
@@ -9120,12 +9161,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [
-            (* T *)
-            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u16" ]
-          ]
+          [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u16" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_array_Usize_8_u16_for_core_net_ip_addr_IpAddr.
     
@@ -9259,8 +9298,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_net_ip_addr_Ipv4Addr.
@@ -9301,8 +9341,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_ref__core_net_ip_addr_Ipv4Addr.
@@ -9437,8 +9478,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_net_ip_addr_Ipv6Addr.
@@ -9479,8 +9521,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_ref__core_net_ip_addr_Ipv6Addr.
@@ -9691,8 +9734,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_core_net_ip_addr_Ipv4Addr.
     
@@ -9738,9 +9782,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_ref__core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
     
@@ -9787,8 +9832,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_core_net_ip_addr_Ipv4Addr.
@@ -9839,9 +9885,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_ref__core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
@@ -9893,8 +9940,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "core::net::ip_addr::Ipv4Addr" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_core_net_ip_addr_Ipv4Addr_for_ref__core_net_ip_addr_Ipv4Addr.
@@ -9949,9 +9997,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_ref__core_net_ip_addr_Ipv4Addr_for_ref__core_net_ip_addr_Ipv4Addr.
@@ -10162,8 +10211,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_core_net_ip_addr_Ipv4Addr.
     
@@ -10209,9 +10259,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_ref__core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
     
@@ -10258,8 +10309,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_core_net_ip_addr_Ipv4Addr.
@@ -10310,9 +10362,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_ref__core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
@@ -10364,8 +10417,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "core::net::ip_addr::Ipv4Addr" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_core_net_ip_addr_Ipv4Addr_for_ref__core_net_ip_addr_Ipv4Addr.
@@ -10420,9 +10474,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv4Addr" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_ref__core_net_ip_addr_Ipv4Addr_for_ref__core_net_ip_addr_Ipv4Addr.
@@ -10633,8 +10688,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_core_net_ip_addr_Ipv6Addr.
     
@@ -10680,9 +10736,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_ref__core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
     
@@ -10729,8 +10786,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_core_net_ip_addr_Ipv6Addr.
@@ -10781,9 +10839,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_ref__core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
@@ -10835,8 +10894,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "core::net::ip_addr::Ipv6Addr" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_core_net_ip_addr_Ipv6Addr_for_ref__core_net_ip_addr_Ipv6Addr.
@@ -10891,9 +10951,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_ref__core_net_ip_addr_Ipv6Addr_for_ref__core_net_ip_addr_Ipv6Addr.
@@ -11104,8 +11165,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_core_net_ip_addr_Ipv6Addr.
     
@@ -11151,9 +11213,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_ref__core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
     
@@ -11200,8 +11263,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_core_net_ip_addr_Ipv6Addr.
@@ -11252,9 +11316,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_ref__core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
@@ -11306,8 +11371,9 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "core::net::ip_addr::Ipv6Addr" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_core_net_ip_addr_Ipv6Addr_for_ref__core_net_ip_addr_Ipv6Addr.
@@ -11362,9 +11428,10 @@ Module net.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::net::ip_addr::Ipv6Addr" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_ref__core_net_ip_addr_Ipv6Addr_for_ref__core_net_ip_addr_Ipv6Addr.

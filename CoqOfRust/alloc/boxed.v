@@ -4414,8 +4414,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::drop::Drop"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("drop", InstanceField.Method (drop T A)) ].
   End Impl_core_ops_drop_Drop_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
@@ -4456,8 +4457,9 @@ Module boxed.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
   
@@ -4516,8 +4518,9 @@ Module boxed.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_for_alloc_boxed_Box_slice_T_alloc_alloc_Global.
   
@@ -4619,8 +4622,9 @@ Module boxed.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_alloc_boxed_Box_str_alloc_alloc_Global.
   
@@ -4773,8 +4777,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [
           ("clone", InstanceField.Method (clone T A));
@@ -4868,8 +4873,9 @@ Module boxed.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_alloc_boxed_Box_str_alloc_alloc_Global.
   
@@ -4958,8 +4964,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [ ("eq", InstanceField.Method (eq T A)); ("ne", InstanceField.Method (ne T A)) ].
   End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_where_core_cmp_PartialEq_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
@@ -5166,8 +5173,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [
           ("partial_cmp", InstanceField.Method (partial_cmp T A));
@@ -5224,8 +5232,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::cmp::Ord"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("cmp", InstanceField.Method (cmp T A)) ].
   End Impl_core_cmp_Ord_where_core_marker_Sized_T_where_core_cmp_Ord_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
@@ -5236,8 +5245,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_marker_Sized_T_where_core_cmp_Eq_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
@@ -5280,8 +5290,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("hash", InstanceField.Method (hash T A)) ].
   End Impl_core_hash_Hash_where_core_marker_Sized_T_where_core_hash_Hash_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
@@ -5711,8 +5722,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::hash::Hasher"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [
           ("finish", InstanceField.Method (finish T A));
@@ -5766,8 +5778,9 @@ Module boxed.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_T_for_alloc_boxed_Box_T_alloc_alloc_Global.
   
@@ -5806,8 +5819,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ] ]
         (* Instance *) [ ("from", InstanceField.Method (from T A)) ].
   End Impl_core_convert_From_where_core_marker_Sized_T_where_core_alloc_Allocator_A_alloc_boxed_Box_T_A_for_core_pin_Pin_alloc_boxed_Box_T_A.
   
@@ -5863,8 +5877,9 @@ Module boxed.
       forall (T : Ty.t),
       M.IsTraitInstance
         "alloc::boxed::BoxFromSlice"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("from_slice", InstanceField.Method (from_slice T)) ].
   End Impl_alloc_boxed_BoxFromSlice_where_core_clone_Clone_T_T_for_alloc_boxed_Box_slice_T_alloc_alloc_Global.
   
@@ -6028,8 +6043,9 @@ Module boxed.
       forall (T : Ty.t),
       M.IsTraitInstance
         "alloc::boxed::BoxFromSlice"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("from_slice", InstanceField.Method (from_slice T)) ].
   End Impl_alloc_boxed_BoxFromSlice_where_core_marker_Copy_T_T_for_alloc_boxed_Box_slice_T_alloc_alloc_Global.
   
@@ -6077,9 +6093,10 @@ Module boxed.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_where_core_clone_Clone_T_ref__slice_T_for_alloc_boxed_Box_slice_T_alloc_alloc_Global.
   
@@ -6179,10 +6196,10 @@ Module boxed.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
-        ]
+        [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+        (Self T)
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_where_core_clone_Clone_T_alloc_borrow_Cow_slice_T_for_alloc_boxed_Box_slice_T_alloc_alloc_Global.
   
@@ -6242,8 +6259,9 @@ Module boxed.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_alloc_boxed_Box_str_alloc_alloc_Global.
   
@@ -6333,9 +6351,10 @@ Module boxed.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_str_alloc_alloc_Global.
   
@@ -6415,9 +6434,10 @@ Module boxed.
       forall (A : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
+        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
+        (Self A)
         (* Instance *) [ ("from", InstanceField.Method (from A)) ].
   End Impl_core_convert_From_where_core_alloc_Allocator_A_alloc_boxed_Box_str_A_for_alloc_boxed_Box_slice_u8_A.
   
@@ -6468,8 +6488,9 @@ Module boxed.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
         (Self N T)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "array") [ N ] [ T ] ]
         (* Instance *) [ ("from", InstanceField.Method (from N T)) ].
   End Impl_core_convert_From_array_N_T_for_alloc_boxed_Box_slice_T_alloc_alloc_Global.
   
@@ -6771,15 +6792,15 @@ Module boxed.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
         [
-          (* T *)
           Ty.apply
             (Ty.path "alloc::boxed::Box")
             []
             [ Ty.apply (Ty.path "slice") [] [ T ]; Ty.path "alloc::alloc::Global" ]
         ]
+        (Self N T)
         (* Instance *)
         [
           ("Error", InstanceField.Ty (_Error N T));
@@ -6906,9 +6927,10 @@ Module boxed.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::convert::TryFrom"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] ]
+        [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] ]
+        (Self N T)
         (* Instance *)
         [
           ("Error", InstanceField.Ty (_Error N T));
@@ -7640,8 +7662,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::fmt::Display"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
   End Impl_core_fmt_Display_where_core_fmt_Display_T_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
@@ -7686,8 +7709,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_T_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
@@ -7754,8 +7778,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::fmt::Pointer"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T A)) ].
   End Impl_core_fmt_Pointer_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
@@ -7792,8 +7817,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::Deref"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [ ("Target", InstanceField.Ty (_Target T A)); ("deref", InstanceField.Method (deref T A)) ].
   End Impl_core_ops_deref_Deref_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
@@ -7833,8 +7859,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::DerefMut"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [ ("deref_mut", InstanceField.Method (deref_mut T A)) ].
   End Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
@@ -7845,8 +7872,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::DerefPure"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
@@ -7857,8 +7885,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::ops::deref::Receiver"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_ops_deref_Receiver_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
@@ -7866,7 +7895,8 @@ Module boxed.
     Definition Self (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ].
     
     (*     type Item = I::Item; *)
-    Definition _Item (I A : Ty.t) : Ty.t := Ty.associated.
+    Definition _Item (I A : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item".
     
     (*
         fn next(&mut self) -> Option<I::Item> {
@@ -7880,7 +7910,10 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item" ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               I,
@@ -7946,7 +7979,10 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item" ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               I,
@@ -7979,7 +8015,10 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item" ],
             M.get_trait_method (|
               "alloc::boxed::BoxIter",
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ],
@@ -7998,8 +8037,9 @@ Module boxed.
       forall (I A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        (Self I A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self I A)
         (* Instance *)
         [
           ("Item", InstanceField.Ty (_Item I A));
@@ -8017,7 +8057,8 @@ Module boxed.
     Definition Self (I A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ].
     
     (*     type Item = I::Item; *)
-    Definition _Item (I A : Ty.t) : Ty.t := Ty.associated.
+    Definition _Item (I A : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item".
     
     (*
         default fn last(self) -> Option<I::Item> {
@@ -8036,7 +8077,10 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item" ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ],
@@ -8045,10 +8089,31 @@ Module boxed.
               "fold",
               [],
               [
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ];
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                  ];
                 Ty.function
-                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ]; Ty.associated ]
-                  (Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ])
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::iter::traits::iterator::Iterator"
+                          []
+                          []
+                          I
+                          "Item"
+                      ];
+                    Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"
+                    ])
               ]
             |),
             [
@@ -8064,8 +8129,9 @@ Module boxed.
       forall (I A : Ty.t),
       M.IsTraitInstance
         "alloc::boxed::BoxIter"
-        (Self I A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self I A)
         (* Instance *)
         [ ("Item", InstanceField.Ty (_Item I A)); ("last", InstanceField.Method (last I A)) ].
   End Impl_alloc_boxed_BoxIter_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Sized_I_where_core_alloc_Allocator_A_for_alloc_boxed_Box_I_A.
@@ -8085,7 +8151,10 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item" ],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
               I,
@@ -8104,8 +8173,9 @@ Module boxed.
       forall (I A : Ty.t),
       M.IsTraitInstance
         "alloc::boxed::BoxIter"
-        (Self I A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self I A)
         (* Instance *) [ ("last", InstanceField.Method (last I A)) ].
   End Impl_alloc_boxed_BoxIter_where_core_iter_traits_iterator_Iterator_I_where_core_alloc_Allocator_A_for_alloc_boxed_Box_I_A.
   
@@ -8124,7 +8194,10 @@ Module boxed.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item" ],
             M.get_trait_method (|
               "core::iter::traits::double_ended::DoubleEndedIterator",
               I,
@@ -8157,7 +8230,10 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let n := M.alloc (| n |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item" ],
             M.get_trait_method (|
               "core::iter::traits::double_ended::DoubleEndedIterator",
               I,
@@ -8182,8 +8258,9 @@ Module boxed.
       forall (I A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::double_ended::DoubleEndedIterator"
-        (Self I A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self I A)
         (* Instance *)
         [
           ("next_back", InstanceField.Method (next_back I A));
@@ -8262,8 +8339,9 @@ Module boxed.
       forall (I A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::exact_size::ExactSizeIterator"
-        (Self I A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self I A)
         (* Instance *)
         [ ("len", InstanceField.Method (len I A)); ("is_empty", InstanceField.Method (is_empty I A))
         ].
@@ -8276,8 +8354,9 @@ Module boxed.
       forall (I A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::marker::FusedIterator"
-        (Self I A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self I A)
         (* Instance *) [].
   End Impl_core_iter_traits_marker_FusedIterator_where_core_iter_traits_marker_FusedIterator_I_where_core_marker_Sized_I_where_core_alloc_Allocator_A_for_alloc_boxed_Box_I_A.
   
@@ -8285,7 +8364,8 @@ Module boxed.
     Definition Self (Args F A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ F; A ].
     
     (*     type Output = <F as FnOnce<Args>>::Output; *)
-    Definition _Output (Args F A : Ty.t) : Ty.t := Ty.associated.
+    Definition _Output (Args F A : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output".
     
     (*
         extern "rust-call" fn call_once(self, args: Args) -> Self::Output {
@@ -8305,7 +8385,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated,
+            Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
             M.get_trait_method (|
               "core::ops::function::FnOnce",
               F,
@@ -8324,8 +8404,9 @@ Module boxed.
       forall (Args F A : Ty.t),
       M.IsTraitInstance
         "core::ops::function::FnOnce"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Args ]
         (Self Args F A)
-        (* Trait polymorphic types *) [ (* Args *) Args ]
         (* Instance *)
         [
           ("Output", InstanceField.Ty (_Output Args F A));
@@ -8354,7 +8435,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated,
+            Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
             M.get_trait_method (|
               "core::ops::function::FnMut",
               F,
@@ -8379,8 +8460,9 @@ Module boxed.
       forall (Args F A : Ty.t),
       M.IsTraitInstance
         "core::ops::function::FnMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Args ]
         (Self Args F A)
-        (* Trait polymorphic types *) [ (* Args *) Args ]
         (* Instance *) [ ("call_mut", InstanceField.Method (call_mut Args F A)) ].
   End Impl_core_ops_function_FnMut_where_core_marker_Tuple_Args_where_core_ops_function_FnMut_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
   
@@ -8400,7 +8482,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated,
+            Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
             M.get_trait_method (| "core::ops::function::Fn", F, [], [ Args ], "call", [], [] |),
             [
               M.borrow (|
@@ -8417,8 +8499,9 @@ Module boxed.
       forall (Args F A : Ty.t),
       M.IsTraitInstance
         "core::ops::function::Fn"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Args ]
         (Self Args F A)
-        (* Trait polymorphic types *) [ (* Args *) Args ]
         (* Instance *) [ ("call", InstanceField.Method (call Args F A)) ].
   End Impl_core_ops_function_Fn_where_core_marker_Tuple_Args_where_core_ops_function_Fn_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
   
@@ -8426,10 +8509,12 @@ Module boxed.
     Definition Self (Args F A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ F; A ].
     
     (*     type Output = F::Output; *)
-    Definition _Output (Args F A : Ty.t) : Ty.t := Ty.associated.
+    Definition _Output (Args F A : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::ops::async_function::AsyncFnOnce" [] [] F "Output".
     
     (*     type CallOnceFuture = F::CallOnceFuture; *)
-    Definition _CallOnceFuture (Args F A : Ty.t) : Ty.t := Ty.associated.
+    Definition _CallOnceFuture (Args F A : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::ops::async_function::AsyncFnOnce" [] [] F "CallOnceFuture".
     
     (*
         extern "rust-call" fn async_call_once(self, args: Args) -> Self::CallOnceFuture {
@@ -8449,7 +8534,12 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated,
+            Ty.associated_in_trait
+              "core::ops::async_function::AsyncFnOnce"
+              []
+              []
+              F
+              "CallOnceFuture",
             M.get_trait_method (|
               "core::ops::async_function::AsyncFnOnce",
               F,
@@ -8468,8 +8558,9 @@ Module boxed.
       forall (Args F A : Ty.t),
       M.IsTraitInstance
         "core::ops::async_function::AsyncFnOnce"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Args ]
         (Self Args F A)
-        (* Trait polymorphic types *) [ (* Args *) Args ]
         (* Instance *)
         [
           ("Output", InstanceField.Ty (_Output Args F A));
@@ -8487,7 +8578,8 @@ Module boxed.
         where
             Self: 'a;
     *)
-    Definition _CallRefFuture (Args F A : Ty.t) : Ty.t := Ty.associated.
+    Definition _CallRefFuture (Args F A : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture".
     
     (*
         extern "rust-call" fn async_call_mut(&mut self, args: Args) -> Self::CallRefFuture<'_> {
@@ -8507,7 +8599,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated,
+            Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture",
             M.get_trait_method (|
               "core::ops::async_function::AsyncFnMut",
               F,
@@ -8532,8 +8624,9 @@ Module boxed.
       forall (Args F A : Ty.t),
       M.IsTraitInstance
         "core::ops::async_function::AsyncFnMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Args ]
         (Self Args F A)
-        (* Trait polymorphic types *) [ (* Args *) Args ]
         (* Instance *)
         [
           ("CallRefFuture", InstanceField.Ty (_CallRefFuture Args F A));
@@ -8562,7 +8655,7 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
           M.call_closure (|
-            Ty.associated,
+            Ty.associated_in_trait "core::ops::async_function::AsyncFnMut" [] [] F "CallRefFuture",
             M.get_trait_method (|
               "core::ops::async_function::AsyncFn",
               F,
@@ -8587,8 +8680,9 @@ Module boxed.
       forall (Args F A : Ty.t),
       M.IsTraitInstance
         "core::ops::async_function::AsyncFn"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Args ]
         (Self Args F A)
-        (* Trait polymorphic types *) [ (* Args *) Args ]
         (* Instance *) [ ("async_call", InstanceField.Method (async_call Args F A)) ].
   End Impl_core_ops_async_function_AsyncFn_where_core_marker_Tuple_Args_where_core_ops_async_function_AsyncFn_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
   
@@ -8599,8 +8693,9 @@ Module boxed.
       forall (T U A : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::CoerceUnsized"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ U; A ] ]
         (Self T U A)
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ U; A ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_where_core_alloc_Allocator_A_alloc_boxed_Box_U_A_for_alloc_boxed_Box_T_A.
   
@@ -8612,9 +8707,10 @@ Module boxed.
       forall (T U : Ty.t),
       M.IsTraitInstance
         "core::ops::unsize::DispatchFromDyn"
-        (Self T U)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ U; Ty.path "alloc::alloc::Global" ] ]
+        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ U; Ty.path "alloc::alloc::Global" ] ]
+        (Self T U)
         (* Instance *) [].
   End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Unsize_T_U_where_core_marker_Sized_U_alloc_boxed_Box_U_alloc_alloc_Global_for_alloc_boxed_Box_T_alloc_alloc_Global.
   
@@ -8652,7 +8748,12 @@ Module boxed.
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ I; Ty.path "alloc::alloc::Global" ],
                 M.get_trait_method (|
                   "core::iter::traits::iterator::Iterator",
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    T
+                    "IntoIter",
                   [],
                   [],
                   "collect",
@@ -8661,7 +8762,12 @@ Module boxed.
                 |),
                 [
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      T
+                      "IntoIter",
                     M.get_trait_method (|
                       "core::iter::traits::collect::IntoIterator",
                       T,
@@ -8684,8 +8790,9 @@ Module boxed.
       forall (I : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ I ]
         (Self I)
-        (* Trait polymorphic types *) [ (* A *) I ]
         (* Instance *) [ ("from_iter", InstanceField.Method (from_iter I)) ].
   End Impl_core_iter_traits_collect_FromIterator_I_for_alloc_boxed_Box_slice_I_alloc_alloc_Global.
   
@@ -8697,8 +8804,9 @@ Module boxed.
       forall (I A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        (Self I A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self I A)
         (* Instance *) [].
   End Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_alloc_boxed_Box_slice_I_A.
   
@@ -8713,8 +8821,9 @@ Module boxed.
       forall (I A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        (Self I A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self I A)
         (* Instance *) [].
   End Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_ref__alloc_boxed_Box_slice_I_A.
   
@@ -8729,8 +8838,9 @@ Module boxed.
       forall (I A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        (Self I A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self I A)
         (* Instance *) [].
   End Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_ref_mut_alloc_boxed_Box_slice_I_A.
   
@@ -8787,8 +8897,9 @@ Module boxed.
       forall (I A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::IntoIterator"
-        (Self I A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self I A)
         (* Instance *)
         [
           ("IntoIter", InstanceField.Ty (_IntoIter I A));
@@ -8839,8 +8950,9 @@ Module boxed.
       forall (I A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::IntoIterator"
-        (Self I A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self I A)
         (* Instance *)
         [
           ("IntoIter", InstanceField.Ty (_IntoIter I A));
@@ -8891,8 +9003,9 @@ Module boxed.
       forall (I A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::IntoIterator"
-        (Self I A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self I A)
         (* Instance *)
         [
           ("IntoIter", InstanceField.Ty (_IntoIter I A));
@@ -8948,8 +9061,9 @@ Module boxed.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "char" ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.path "char" ]
         (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
   End Impl_core_iter_traits_collect_FromIterator_char_for_alloc_boxed_Box_str_alloc_alloc_Global.
   
@@ -9000,8 +9114,9 @@ Module boxed.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ]
         (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
   End Impl_core_iter_traits_collect_FromIterator_ref__char_for_alloc_boxed_Box_str_alloc_alloc_Global.
   
@@ -9052,8 +9167,9 @@ Module boxed.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
   End Impl_core_iter_traits_collect_FromIterator_ref__str_for_alloc_boxed_Box_str_alloc_alloc_Global.
   
@@ -9104,8 +9220,9 @@ Module boxed.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.path "alloc::string::String" ]
         (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
   End Impl_core_iter_traits_collect_FromIterator_alloc_string_String_for_alloc_boxed_Box_str_alloc_alloc_Global.
   
@@ -9158,9 +9275,10 @@ Module boxed.
       forall (A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
-        (Self A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* A *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
+        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
+        (Self A)
         (* Instance *) [ ("from_iter", InstanceField.Method (from_iter A)) ].
   End Impl_core_iter_traits_collect_FromIterator_where_core_alloc_Allocator_A_alloc_boxed_Box_str_A_for_alloc_boxed_Box_str_alloc_alloc_Global.
   
@@ -9211,9 +9329,10 @@ Module boxed.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* A *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        Self
         (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
   End Impl_core_iter_traits_collect_FromIterator_alloc_borrow_Cow_str_for_alloc_boxed_Box_str_alloc_alloc_Global.
   
@@ -9425,8 +9544,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *)
         [
           ("clone", InstanceField.Method (clone T A));
@@ -9464,8 +9584,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::borrow::Borrow"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* Borrowed *) T ]
         (* Instance *) [ ("borrow", InstanceField.Method (borrow T A)) ].
   End Impl_core_borrow_Borrow_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_boxed_Box_T_A.
   
@@ -9504,8 +9625,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::borrow::BorrowMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* Borrowed *) T ]
         (* Instance *) [ ("borrow_mut", InstanceField.Method (borrow_mut T A)) ].
   End Impl_core_borrow_BorrowMut_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_boxed_Box_T_A.
   
@@ -9539,8 +9661,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("as_ref", InstanceField.Method (as_ref T A)) ].
   End Impl_core_convert_AsRef_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_boxed_Box_T_A.
   
@@ -9579,8 +9702,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::convert::AsMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T A)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("as_mut", InstanceField.Method (as_mut T A)) ].
   End Impl_core_convert_AsMut_where_core_marker_Sized_T_where_core_alloc_Allocator_A_T_for_alloc_boxed_Box_T_A.
   
@@ -9591,8 +9715,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::marker::Unpin"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_marker_Unpin_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
   
@@ -9600,10 +9725,12 @@ Module boxed.
     Definition Self (G R A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ G; A ].
     
     (*     type Yield = G::Yield; *)
-    Definition _Yield (G R A : Ty.t) : Ty.t := Ty.associated.
+    Definition _Yield (G R A : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield".
     
     (*     type Return = G::Return; *)
-    Definition _Return (G R A : Ty.t) : Ty.t := Ty.associated.
+    Definition _Return (G R A : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return".
     
     (*
         fn resume(mut self: Pin<&mut Self>, arg: R) -> CoroutineState<Self::Yield, Self::Return> {
@@ -9621,7 +9748,10 @@ Module boxed.
             Ty.apply
               (Ty.path "core::ops::coroutine::CoroutineState")
               []
-              [ Ty.associated; Ty.associated ],
+              [
+                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield";
+                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return"
+              ],
             M.get_trait_method (|
               "core::ops::coroutine::Coroutine",
               G,
@@ -9691,8 +9821,9 @@ Module boxed.
       forall (G R A : Ty.t),
       M.IsTraitInstance
         "core::ops::coroutine::Coroutine"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ R ]
         (Self G R A)
-        (* Trait polymorphic types *) [ (* R *) R ]
         (* Instance *)
         [
           ("Yield", InstanceField.Ty (_Yield G R A));
@@ -9706,10 +9837,12 @@ Module boxed.
       Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ G; A ] ].
     
     (*     type Yield = G::Yield; *)
-    Definition _Yield (G R A : Ty.t) : Ty.t := Ty.associated.
+    Definition _Yield (G R A : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield".
     
     (*     type Return = G::Return; *)
-    Definition _Return (G R A : Ty.t) : Ty.t := Ty.associated.
+    Definition _Return (G R A : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return".
     
     (*
         fn resume(mut self: Pin<&mut Self>, arg: R) -> CoroutineState<Self::Yield, Self::Return> {
@@ -9727,7 +9860,10 @@ Module boxed.
             Ty.apply
               (Ty.path "core::ops::coroutine::CoroutineState")
               []
-              [ Ty.associated; Ty.associated ],
+              [
+                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield";
+                Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return"
+              ],
             M.get_trait_method (|
               "core::ops::coroutine::Coroutine",
               G,
@@ -9801,8 +9937,9 @@ Module boxed.
       forall (G R A : Ty.t),
       M.IsTraitInstance
         "core::ops::coroutine::Coroutine"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ R ]
         (Self G R A)
-        (* Trait polymorphic types *) [ (* R *) R ]
         (* Instance *)
         [
           ("Yield", InstanceField.Ty (_Yield G R A));
@@ -9815,7 +9952,8 @@ Module boxed.
     Definition Self (F A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ F; A ].
     
     (*     type Output = F::Output; *)
-    Definition _Output (F A : Ty.t) : Ty.t := Ty.associated.
+    Definition _Output (F A : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::future::future::Future" [] [] F "Output".
     
     (*
         fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
@@ -9830,7 +9968,10 @@ Module boxed.
           (let self := M.alloc (| self |) in
           let cx := M.alloc (| cx |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.associated ],
+            Ty.apply
+              (Ty.path "core::task::poll::Poll")
+              []
+              [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output" ],
             M.get_trait_method (| "core::future::future::Future", F, [], [], "poll", [], [] |),
             [
               M.call_closure (|
@@ -9892,8 +10033,9 @@ Module boxed.
       forall (F A : Ty.t),
       M.IsTraitInstance
         "core::future::future::Future"
-        (Self F A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self F A)
         (* Instance *)
         [ ("Output", InstanceField.Ty (_Output F A)); ("poll", InstanceField.Method (poll F A)) ].
   End Impl_core_future_future_Future_where_core_marker_Sized_F_where_core_future_future_Future_F_where_core_marker_Unpin_F_where_core_alloc_Allocator_A_for_alloc_boxed_Box_F_A.
@@ -9903,7 +10045,8 @@ Module boxed.
       Ty.apply (Ty.path "alloc::boxed::Box") [] [ S; Ty.path "alloc::alloc::Global" ].
     
     (*     type Item = S::Item; *)
-    Definition _Item (S : Ty.t) : Ty.t := Ty.associated.
+    Definition _Item (S : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::async_iter::async_iter::AsyncIterator" [] [] S "Item".
     
     (*
         fn poll_next(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
@@ -9921,7 +10064,19 @@ Module boxed.
             Ty.apply
               (Ty.path "core::task::poll::Poll")
               []
-              [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
+              [
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.associated_in_trait
+                      "core::async_iter::async_iter::AsyncIterator"
+                      []
+                      []
+                      S
+                      "Item"
+                  ]
+              ],
             M.get_trait_method (|
               "core::async_iter::async_iter::AsyncIterator",
               S,
@@ -10029,8 +10184,9 @@ Module boxed.
       forall (S : Ty.t),
       M.IsTraitInstance
         "core::async_iter::async_iter::AsyncIterator"
-        (Self S)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self S)
         (* Instance *)
         [
           ("Item", InstanceField.Ty (_Item S));
@@ -10570,8 +10726,9 @@ Module boxed.
       forall (E : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ E ]
         (Self E)
-        (* Trait polymorphic types *) [ (* T *) E ]
         (* Instance *) [ ("from", InstanceField.Method (from E)) ].
   End Impl_core_convert_From_where_core_error_Error_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
   
@@ -10618,8 +10775,9 @@ Module boxed.
       forall (E : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ E ]
         (Self E)
-        (* Trait polymorphic types *) [ (* T *) E ]
         (* Instance *) [ ("from", InstanceField.Method (from E)) ].
   End Impl_core_convert_From_where_core_error_Error_E_where_core_marker_Send_E_where_core_marker_Sync_E_E_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_alloc_alloc_Global.
   
@@ -10692,8 +10850,9 @@ Module boxed.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "alloc::string::String" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_string_String_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_alloc_alloc_Global.
   
@@ -10782,8 +10941,9 @@ Module boxed.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "alloc::string::String" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_string_String_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
   
@@ -10867,8 +11027,9 @@ Module boxed.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_alloc_alloc_Global.
   
@@ -10928,8 +11089,9 @@ Module boxed.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
   
@@ -11013,9 +11175,10 @@ Module boxed.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait_alloc_alloc_Global.
   
@@ -11075,9 +11238,10 @@ Module boxed.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_boxed_Box_Dyn_core_error_Error_Trait_alloc_alloc_Global.
   
@@ -11224,8 +11388,9 @@ Module boxed.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::error::Error"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [
           ("description", InstanceField.Method (description T));
@@ -11242,8 +11407,9 @@ Module boxed.
       forall (T A : Ty.t),
       M.IsTraitInstance
         "core::pin::PinCoerceUnsized"
-        (Self T A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T A)
         (* Instance *) [].
   End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_where_core_alloc_Allocator_A_for_alloc_boxed_Box_T_A.
 End boxed.

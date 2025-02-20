@@ -1998,7 +1998,12 @@ Module slice.
             Ty.apply
               (Ty.path "core::option::Option")
               []
-              [ Ty.apply (Ty.path "&") [] [ Ty.associated ] ],
+              [
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ]
+              ],
             M.get_trait_method (|
               "core::slice::index::SliceIndex",
               I,
@@ -2035,7 +2040,12 @@ Module slice.
             Ty.apply
               (Ty.path "core::option::Option")
               []
-              [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
+              [
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ]
+              ],
             M.get_trait_method (|
               "core::slice::index::SliceIndex",
               I,
@@ -2083,7 +2093,10 @@ Module slice.
                 Pointer.Kind.Ref,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "*const") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "*const")
+                      []
+                      [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
                     M.get_trait_method (|
                       "core::slice::index::SliceIndex",
                       I,
@@ -2146,7 +2159,17 @@ Module slice.
                         Pointer.Kind.MutRef,
                         M.deref (|
                           M.call_closure (|
-                            Ty.apply (Ty.path "*mut") [] [ Ty.associated ],
+                            Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::slice::index::SliceIndex"
+                                  []
+                                  []
+                                  I
+                                  "Output"
+                              ],
                             M.get_trait_method (|
                               "core::slice::index::SliceIndex",
                               I,
@@ -14765,8 +14788,9 @@ Module slice.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::slice::CloneFromSpec"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("spec_clone_from", InstanceField.Method (spec_clone_from T)) ].
   End Impl_core_slice_CloneFromSpec_where_core_clone_Clone_T_T_for_slice_T.
   
@@ -14816,8 +14840,9 @@ Module slice.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::slice::CloneFromSpec"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ T ]
         (Self T)
-        (* Trait polymorphic types *) [ (* T *) T ]
         (* Instance *) [ ("spec_clone_from", InstanceField.Method (spec_clone_from T)) ].
   End Impl_core_slice_CloneFromSpec_where_core_marker_Copy_T_T_for_slice_T.
   
@@ -14846,8 +14871,9 @@ Module slice.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_for_ref__slice_T.
   
@@ -14881,8 +14907,9 @@ Module slice.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_for_ref_mut_slice_T.
   
@@ -14914,8 +14941,9 @@ Module slice.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::slice::SlicePattern"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *)
         [ ("Item", InstanceField.Ty (_Item T)); ("as_slice", InstanceField.Method (as_slice T)) ].
   End Impl_core_slice_SlicePattern_for_slice_T.
@@ -14951,8 +14979,9 @@ Module slice.
       forall (N : Value.t) (T : Ty.t),
       M.IsTraitInstance
         "core::slice::SlicePattern"
-        (Self N T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N T)
         (* Instance *)
         [ ("Item", InstanceField.Ty (_Item N T)); ("as_slice", InstanceField.Method (as_slice N T))
         ].
@@ -15341,8 +15370,9 @@ Module slice.
       forall (N : Value.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self N)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt N)) ].
   End Impl_core_fmt_Debug_for_core_slice_GetManyMutError_N.
   
@@ -15387,8 +15417,9 @@ Module slice.
       forall (N : Value.t),
       M.IsTraitInstance
         "core::fmt::Display"
-        (Self N)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt N)) ].
   End Impl_core_fmt_Display_for_core_slice_GetManyMutError_N.
 End slice.

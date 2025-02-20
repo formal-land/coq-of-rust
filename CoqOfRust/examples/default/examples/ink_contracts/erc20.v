@@ -61,8 +61,9 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
     forall (K V : Ty.t),
     M.IsTraitInstance
       "core::default::Default"
-      (Self K V)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self K V)
       (* Instance *) [ ("default", InstanceField.Method (default K V)) ].
 End Impl_core_default_Default_where_core_default_Default_K_where_core_default_Default_V_for_erc20_Mapping_K_V.
 
@@ -133,8 +134,9 @@ Module Impl_core_default_Default_for_erc20_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc20_AccountId.
 
@@ -159,8 +161,9 @@ Module Impl_core_clone_Clone_for_erc20_AccountId.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_erc20_AccountId.
 
@@ -168,7 +171,12 @@ Module Impl_core_marker_Copy_for_erc20_AccountId.
   Definition Self : Ty.t := Ty.path "erc20::AccountId".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_erc20_AccountId.
 
 Axiom Balance : (Ty.path "erc20::Balance") = (Ty.path "u128").
@@ -277,8 +285,9 @@ Module Impl_core_default_Default_for_erc20_Erc20.
   Axiom Implements :
     M.IsTraitInstance
       "core::default::Default"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("default", InstanceField.Method default) ].
 End Impl_core_default_Default_for_erc20_Erc20.
 

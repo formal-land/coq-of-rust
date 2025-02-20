@@ -239,9 +239,9 @@ Module collections.
         forall (T U A : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ] ]
           (Self T U A)
-          (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ] ]
           (* Instance *) [ ("eq", InstanceField.Method (eq T U A)) ].
     End Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_alloc_vec_Vec_U_A_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -485,9 +485,10 @@ Module collections.
         forall (T U A : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self T U A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ]
+          (Self T U A)
           (* Instance *) [ ("eq", InstanceField.Method (eq T U A)) ].
     End Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref__slice_U_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -731,9 +732,10 @@ Module collections.
         forall (T U A : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self T U A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ]
+          [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ]
+          (Self T U A)
           (* Instance *) [ ("eq", InstanceField.Method (eq T U A)) ].
     End Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref_mut_slice_U_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -979,8 +981,9 @@ Module collections.
         forall (N : Value.t) (T U A : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "array") [ N ] [ U ] ]
           (Self N T U A)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ U ] ]
           (* Instance *) [ ("eq", InstanceField.Method (eq N T U A)) ].
     End Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_array_N_U_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -1230,9 +1233,10 @@ Module collections.
         forall (N : Value.t) (T U A : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self N T U A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ] ]
+          (Self N T U A)
           (* Instance *) [ ("eq", InstanceField.Method (eq N T U A)) ].
     End Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref__array_N_U_for_alloc_collections_vec_deque_VecDeque_T_A.
     
@@ -1482,9 +1486,10 @@ Module collections.
         forall (N : Value.t) (T U A : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self N T U A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ] ]
+          [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ] ]
+          (Self N T U A)
           (* Instance *) [ ("eq", InstanceField.Method (eq N T U A)) ].
     End Impl_core_cmp_PartialEq_where_core_alloc_Allocator_A_where_core_cmp_PartialEq_T_U_ref_mut_array_N_U_for_alloc_collections_vec_deque_VecDeque_T_A.
   End vec_deque.

@@ -104,8 +104,9 @@ Module interpreter.
       Axiom Implements :
         M.IsTraitInstance
           "revm_interpreter::interpreter_types::RuntimeFlag"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("is_static", InstanceField.Method is_static);

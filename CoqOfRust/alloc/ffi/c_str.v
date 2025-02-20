@@ -24,8 +24,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_alloc_ffi_c_str_CString.
     
@@ -85,8 +86,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_CString.
     
@@ -156,8 +158,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_alloc_ffi_c_str_CString.
     
@@ -186,8 +189,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_alloc_ffi_c_str_CString.
@@ -252,8 +256,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Ord"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_alloc_ffi_c_str_CString.
     
@@ -305,8 +310,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_alloc_ffi_c_str_CString.
     
@@ -369,8 +375,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_alloc_ffi_c_str_CString.
     
@@ -465,8 +472,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_alloc_ffi_c_str_NulError.
     
@@ -476,8 +484,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_alloc_ffi_c_str_NulError.
     
@@ -554,8 +563,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_NulError.
     
@@ -591,8 +601,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_alloc_ffi_c_str_NulError.
@@ -660,8 +671,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_alloc_ffi_c_str_NulError.
     
@@ -754,8 +766,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
     
@@ -765,8 +778,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
     
@@ -864,8 +878,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
     
@@ -894,8 +909,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
@@ -987,8 +1003,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
     
@@ -1089,8 +1106,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_alloc_ffi_c_str_FromVecWithNulError.
     
@@ -1100,8 +1118,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_alloc_ffi_c_str_FromVecWithNulError.
     
@@ -1192,8 +1211,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_FromVecWithNulError.
     
@@ -1229,8 +1249,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_alloc_ffi_c_str_FromVecWithNulError.
@@ -1306,8 +1327,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_alloc_ffi_c_str_FromVecWithNulError.
     
@@ -1477,8 +1499,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_alloc_ffi_c_str_IntoStringError.
     
@@ -1488,8 +1511,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_alloc_ffi_c_str_IntoStringError.
     
@@ -1572,8 +1596,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_IntoStringError.
     
@@ -1609,8 +1634,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::Eq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_alloc_ffi_c_str_IntoStringError.
@@ -1683,8 +1709,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_alloc_ffi_c_str_IntoStringError.
     
@@ -3295,8 +3322,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("drop", InstanceField.Method drop) ].
     End Impl_core_ops_drop_Drop_for_alloc_ffi_c_str_CString.
     
@@ -3356,8 +3384,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::deref::Deref"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Target", InstanceField.Ty _Target); ("deref", InstanceField.Method deref) ].
     End Impl_core_ops_deref_Deref_for_alloc_ffi_c_str_CString.
@@ -3423,8 +3452,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_alloc_ffi_c_str_CString.
     
@@ -3461,8 +3491,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "alloc::ffi::c_str::CString" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "alloc::ffi::c_str::CString" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloc_ffi_c_str_CString_for_alloc_vec_Vec_u8_alloc_alloc_Global.
     
@@ -3518,8 +3549,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_alloc_ffi_c_str_CString.
     
@@ -3560,8 +3592,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::borrow::Borrow"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ffi::c_str::CStr" ]
           Self
-          (* Trait polymorphic types *) [ (* Borrowed *) Ty.path "core::ffi::c_str::CStr" ]
           (* Instance *) [ ("borrow", InstanceField.Method borrow) ].
     End Impl_core_borrow_Borrow_core_ffi_c_str_CStr_for_alloc_ffi_c_str_CString.
     
@@ -3594,10 +3627,10 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "core::ffi::c_str::CStr" ]
-          ]
+          [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloc_borrow_Cow_core_ffi_c_str_CStr_for_alloc_ffi_c_str_CString.
     
@@ -3715,9 +3748,10 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_ref__core_ffi_c_str_CStr_for_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global.
     
@@ -3814,10 +3848,10 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "core::ffi::c_str::CStr" ]
-          ]
+          [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloc_borrow_Cow_core_ffi_c_str_CStr_for_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global.
     
@@ -3894,15 +3928,15 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
           [
-            (* T *)
             Ty.apply
               (Ty.path "alloc::boxed::Box")
               []
               [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ]
           ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global_for_alloc_ffi_c_str_CString.
     
@@ -4036,10 +4070,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
           [
-            (* T *)
             Ty.apply
               (Ty.path "alloc::vec::Vec")
               []
@@ -4048,6 +4081,7 @@ Module ffi.
                 Ty.path "alloc::alloc::Global"
               ]
           ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloc_vec_Vec_core_num_nonzero_NonZero_u8_alloc_alloc_Global_for_alloc_ffi_c_str_CString.
     
@@ -4100,8 +4134,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global.
     
@@ -4141,8 +4176,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "alloc::ffi::c_str::CString" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "alloc::ffi::c_str::CString" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloc_ffi_c_str_CString_for_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global.
     
@@ -4167,8 +4203,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "alloc::ffi::c_str::CString" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "alloc::ffi::c_str::CString" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloc_ffi_c_str_CString_for_alloc_borrow_Cow_core_ffi_c_str_CStr.
     
@@ -4195,9 +4232,10 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_ref__core_ffi_c_str_CStr_for_alloc_borrow_Cow_core_ffi_c_str_CStr.
     
@@ -4240,9 +4278,10 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "alloc::ffi::c_str::CString" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::ffi::c_str::CString" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_ref__alloc_ffi_c_str_CString_for_alloc_borrow_Cow_core_ffi_c_str_CStr.
     
@@ -4370,8 +4409,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "alloc::ffi::c_str::CString" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "alloc::ffi::c_str::CString" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloc_ffi_c_str_CString_for_alloc_sync_Arc_core_ffi_c_str_CStr_alloc_alloc_Global.
     
@@ -4489,9 +4529,10 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_ref__core_ffi_c_str_CStr_for_alloc_sync_Arc_core_ffi_c_str_CStr_alloc_alloc_Global.
     
@@ -4619,8 +4660,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "alloc::ffi::c_str::CString" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "alloc::ffi::c_str::CString" ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloc_ffi_c_str_CString_for_alloc_rc_Rc_core_ffi_c_str_CStr_alloc_alloc_Global.
     
@@ -4738,9 +4780,10 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_ref__core_ffi_c_str_CStr_for_alloc_rc_Rc_core_ffi_c_str_CStr_alloc_alloc_Global.
     
@@ -4806,8 +4849,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_alloc_rc_Rc_core_ffi_c_str_CStr_alloc_alloc_Global.
     
@@ -4914,8 +4958,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::default::Default"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global.
     
@@ -5055,8 +5100,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_alloc_ffi_c_str_NulError.
     
@@ -5231,8 +5277,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_alloc_ffi_c_str_FromVecWithNulError.
     
@@ -5352,8 +5399,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_alloc_ffi_c_str_IntoStringError.
     
@@ -5574,8 +5622,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "alloc::borrow::ToOwned"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Owned", InstanceField.Ty _Owned);
@@ -5616,9 +5665,10 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::From"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
+          Self
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_ref__core_ffi_c_str_CStr_for_alloc_ffi_c_str_CString.
     
@@ -5663,8 +5713,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::index::Index"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ops::range::RangeFull" ]
           Self
-          (* Trait polymorphic types *) [ (* Idx *) Ty.path "core::ops::range::RangeFull" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("index", InstanceField.Method index) ].
     End Impl_core_ops_index_Index_core_ops_range_RangeFull_for_alloc_ffi_c_str_CString.
@@ -5706,8 +5757,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::convert::AsRef"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ffi::c_str::CStr" ]
           Self
-          (* Trait polymorphic types *) [ (* T *) Ty.path "core::ffi::c_str::CStr" ]
           (* Instance *) [ ("as_ref", InstanceField.Method as_ref) ].
     End Impl_core_convert_AsRef_core_ffi_c_str_CStr_for_alloc_ffi_c_str_CString.
     
@@ -5816,8 +5868,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::error::Error"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("description", InstanceField.Method description) ].
     End Impl_core_error_Error_for_alloc_ffi_c_str_NulError.
     
@@ -5827,8 +5880,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::error::Error"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_error_Error_for_alloc_ffi_c_str_FromVecWithNulError.
     
@@ -5885,8 +5939,9 @@ Module ffi.
       Axiom Implements :
         M.IsTraitInstance
           "core::error::Error"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("description", InstanceField.Method description);

@@ -41,8 +41,9 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
 

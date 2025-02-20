@@ -75,7 +75,11 @@ Module char.
       ltac:(M.monadic
         (let iter := M.alloc (| iter |) in
         M.call_closure (|
-          Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [] [ Ty.associated ],
+          Ty.apply
+            (Ty.path "core::char::decode::DecodeUtf16")
+            []
+            [ Ty.associated_in_trait "core::iter::traits::collect::IntoIterator" [] [] I "IntoIter"
+            ],
           M.get_function (| "core::char::decode::decode_utf16", [], [ I ] |),
           [ M.read (| iter |) ]
         |)))
@@ -217,8 +221,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_char_EscapeUnicode.
   
@@ -275,8 +280,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_char_EscapeUnicode.
   
@@ -553,8 +559,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("Item", InstanceField.Ty _Item);
@@ -607,8 +614,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::exact_size::ExactSizeIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("len", InstanceField.Method len) ].
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_char_EscapeUnicode.
   
@@ -618,8 +626,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::marker::FusedIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_iter_traits_marker_FusedIterator_for_core_char_EscapeUnicode.
   
@@ -680,8 +689,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_core_char_EscapeUnicode.
   
@@ -751,8 +761,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_char_EscapeDefault.
   
@@ -809,8 +820,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_char_EscapeDefault.
   
@@ -1170,8 +1182,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("Item", InstanceField.Ty _Item);
@@ -1224,8 +1237,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::exact_size::ExactSizeIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("len", InstanceField.Method len) ].
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_char_EscapeDefault.
   
@@ -1235,8 +1249,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::marker::FusedIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_iter_traits_marker_FusedIterator_for_core_char_EscapeDefault.
   
@@ -1297,8 +1312,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_core_char_EscapeDefault.
   
@@ -1356,8 +1372,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_char_EscapeDebug.
   
@@ -1414,8 +1431,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_char_EscapeDebug.
   
@@ -1536,8 +1554,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_char_EscapeDebugInner.
   
@@ -1634,8 +1653,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_char_EscapeDebugInner.
   
@@ -1962,8 +1982,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("Item", InstanceField.Ty _Item);
@@ -2046,8 +2067,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::exact_size::ExactSizeIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("len", InstanceField.Method len) ].
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_char_EscapeDebug.
   
@@ -2057,8 +2079,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::marker::FusedIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_iter_traits_marker_FusedIterator_for_core_char_EscapeDebug.
   
@@ -2178,8 +2201,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_core_char_EscapeDebug.
   
@@ -2244,8 +2268,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_char_ToLowercase.
   
@@ -2295,8 +2320,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_char_ToLowercase.
   
@@ -2556,8 +2582,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("Item", InstanceField.Ty _Item);
@@ -2690,8 +2717,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::double_ended::DoubleEndedIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("next_back", InstanceField.Method next_back);
@@ -2706,8 +2734,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::marker::FusedIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_iter_traits_marker_FusedIterator_for_core_char_ToLowercase.
   
@@ -2787,8 +2816,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::exact_size::ExactSizeIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("len", InstanceField.Method len); ("is_empty", InstanceField.Method is_empty) ].
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_char_ToLowercase.
@@ -2799,8 +2829,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::marker::TrustedLen"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_iter_traits_marker_TrustedLen_for_core_char_ToLowercase.
   
@@ -2815,8 +2846,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
   End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_char_ToLowercase.
@@ -2827,8 +2859,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::adapters::zip::TrustedRandomAccess"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_char_ToLowercase.
   
@@ -2883,8 +2916,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_core_char_ToLowercase.
   
@@ -2949,8 +2983,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_char_ToUppercase.
   
@@ -3000,8 +3035,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_char_ToUppercase.
   
@@ -3261,8 +3297,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("Item", InstanceField.Ty _Item);
@@ -3395,8 +3432,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::double_ended::DoubleEndedIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("next_back", InstanceField.Method next_back);
@@ -3411,8 +3449,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::marker::FusedIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_iter_traits_marker_FusedIterator_for_core_char_ToUppercase.
   
@@ -3492,8 +3531,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::exact_size::ExactSizeIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("len", InstanceField.Method len); ("is_empty", InstanceField.Method is_empty) ].
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_char_ToUppercase.
@@ -3504,8 +3544,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::marker::TrustedLen"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_iter_traits_marker_TrustedLen_for_core_char_ToUppercase.
   
@@ -3520,8 +3561,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
   End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_char_ToUppercase.
@@ -3532,8 +3574,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::adapters::zip::TrustedRandomAccess"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_char_ToUppercase.
   
@@ -3588,8 +3631,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_core_char_ToUppercase.
   
@@ -3660,8 +3704,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_char_CaseMappingIter.
   
@@ -3717,8 +3762,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_char_CaseMappingIter.
   
@@ -4147,8 +4193,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("Item", InstanceField.Ty _Item);
@@ -4290,8 +4337,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::double_ended::DoubleEndedIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("next_back", InstanceField.Method next_back);
@@ -4382,8 +4430,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::exact_size::ExactSizeIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("len", InstanceField.Method len); ("is_empty", InstanceField.Method is_empty) ].
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_char_CaseMappingIter.
@@ -4394,8 +4443,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::marker::FusedIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_iter_traits_marker_FusedIterator_for_core_char_CaseMappingIter.
   
@@ -4405,8 +4455,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::marker::TrustedLen"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_iter_traits_marker_TrustedLen_for_core_char_CaseMappingIter.
   
@@ -4421,8 +4472,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
   End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_char_CaseMappingIter.
@@ -4433,8 +4485,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::adapters::zip::TrustedRandomAccess"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_char_CaseMappingIter.
   
@@ -4700,8 +4753,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_core_char_CaseMappingIter.
   
@@ -4766,8 +4820,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_core_char_TryFromCharError.
   
@@ -4777,8 +4832,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_core_char_TryFromCharError.
   
@@ -4803,8 +4859,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_core_char_TryFromCharError.
   
@@ -4814,8 +4871,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_char_TryFromCharError.
   
@@ -4865,8 +4923,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_char_TryFromCharError.
   
@@ -4895,8 +4954,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_core_char_TryFromCharError.
@@ -4935,8 +4995,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_core_char_TryFromCharError.
   
@@ -4946,8 +5007,9 @@ Module char.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_core_char_TryFromCharError.
 End char.

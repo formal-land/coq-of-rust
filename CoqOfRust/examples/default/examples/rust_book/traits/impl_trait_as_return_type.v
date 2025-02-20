@@ -413,10 +413,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ]
             |)
           |) in
-        let~ v3 : Ty.associated :=
+        let~ v3 : Ty.associated_unknown :=
           M.alloc (|
             M.call_closure (|
-              Ty.associated,
+              Ty.associated_unknown,
               M.get_function (| "impl_trait_as_return_type::combine_vecs", [], [] |),
               [ M.read (| v1 |); M.read (| v2 |) ]
             |)
@@ -441,7 +441,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
-                          Ty.associated,
+                          Ty.associated_unknown,
                           [],
                           [],
                           "next",
@@ -580,7 +580,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
-                          Ty.associated,
+                          Ty.associated_unknown,
                           [],
                           [],
                           "next",
@@ -719,7 +719,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
-                          Ty.associated,
+                          Ty.associated_unknown,
                           [],
                           [],
                           "next",
@@ -858,7 +858,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
-                          Ty.associated,
+                          Ty.associated_unknown,
                           [],
                           [],
                           "next",
@@ -997,7 +997,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                         M.get_trait_method (|
                           "core::iter::traits::iterator::Iterator",
-                          Ty.associated,
+                          Ty.associated_unknown,
                           [],
                           [],
                           "next",

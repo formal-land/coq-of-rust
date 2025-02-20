@@ -946,8 +946,9 @@ Module hash.
       forall (H : Ty.t),
       M.IsTraitInstance
         "core::hash::Hasher"
-        (Self H)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self H)
         (* Instance *)
         [
           ("finish", InstanceField.Method (finish H));
@@ -978,10 +979,10 @@ Module hash.
           (let self := M.alloc (| self |) in
           let x := M.alloc (| x |) in
           M.read (|
-            let~ hasher : Ty.associated :=
+            let~ hasher : Ty.associated_in_trait "core::hash::BuildHasher" [] [] Self "Hasher" :=
               M.alloc (|
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait "core::hash::BuildHasher" [] [] Self "Hasher",
                   M.get_trait_method (|
                     "core::hash::BuildHasher",
                     Self,
@@ -1005,7 +1006,7 @@ Module hash.
                     [],
                     "hash",
                     [],
-                    [ Ty.associated ]
+                    [ Ty.associated_in_trait "core::hash::BuildHasher" [] [] Self "Hasher" ]
                   |),
                   [
                     M.borrow (| Pointer.Kind.Ref, x |);
@@ -1021,7 +1022,7 @@ Module hash.
                 Ty.path "u64",
                 M.get_trait_method (|
                   "core::hash::Hasher",
-                  Ty.associated,
+                  Ty.associated_in_trait "core::hash::BuildHasher" [] [] Self "Hasher",
                   [],
                   [],
                   "finish",
@@ -1129,8 +1130,9 @@ Module hash.
       forall (H : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self H)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self H)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt H)) ].
   End Impl_core_fmt_Debug_for_core_hash_BuildHasherDefault_H.
   
@@ -1164,8 +1166,9 @@ Module hash.
       forall (H : Ty.t),
       M.IsTraitInstance
         "core::hash::BuildHasher"
-        (Self H)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self H)
         (* Instance *)
         [
           ("Hasher", InstanceField.Ty (_Hasher H));
@@ -1198,8 +1201,9 @@ Module hash.
       forall (H : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self H)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self H)
         (* Instance *) [ ("clone", InstanceField.Method (clone H)) ].
   End Impl_core_clone_Clone_for_core_hash_BuildHasherDefault_H.
   
@@ -1234,8 +1238,9 @@ Module hash.
       forall (H : Ty.t),
       M.IsTraitInstance
         "core::default::Default"
-        (Self H)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self H)
         (* Instance *) [ ("default", InstanceField.Method (default H)) ].
   End Impl_core_default_Default_for_core_hash_BuildHasherDefault_H.
   
@@ -1263,8 +1268,9 @@ Module hash.
       forall (H : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self H)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self H)
         (* Instance *) [ ("eq", InstanceField.Method (eq H)) ].
   End Impl_core_cmp_PartialEq_for_core_hash_BuildHasherDefault_H.
   
@@ -1274,7 +1280,12 @@ Module hash.
     
     Axiom Implements :
       forall (H : Ty.t),
-      M.IsTraitInstance "core::cmp::Eq" (Self H) (* Trait polymorphic types *) [] (* Instance *) [].
+      M.IsTraitInstance
+        "core::cmp::Eq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        (Self H)
+        (* Instance *) [].
   End Impl_core_cmp_Eq_for_core_hash_BuildHasherDefault_H.
   
   Module impls.
@@ -1381,8 +1392,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("hash", InstanceField.Method hash); ("hash_slice", InstanceField.Method hash_slice) ].
     End Impl_core_hash_Hash_for_u8.
@@ -1490,8 +1502,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("hash", InstanceField.Method hash); ("hash_slice", InstanceField.Method hash_slice) ].
     End Impl_core_hash_Hash_for_u16.
@@ -1599,8 +1612,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("hash", InstanceField.Method hash); ("hash_slice", InstanceField.Method hash_slice) ].
     End Impl_core_hash_Hash_for_u32.
@@ -1708,8 +1722,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("hash", InstanceField.Method hash); ("hash_slice", InstanceField.Method hash_slice) ].
     End Impl_core_hash_Hash_for_u64.
@@ -1817,8 +1832,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("hash", InstanceField.Method hash); ("hash_slice", InstanceField.Method hash_slice) ].
     End Impl_core_hash_Hash_for_usize.
@@ -1926,8 +1942,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("hash", InstanceField.Method hash); ("hash_slice", InstanceField.Method hash_slice) ].
     End Impl_core_hash_Hash_for_i8.
@@ -2035,8 +2052,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("hash", InstanceField.Method hash); ("hash_slice", InstanceField.Method hash_slice) ].
     End Impl_core_hash_Hash_for_i16.
@@ -2144,8 +2162,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("hash", InstanceField.Method hash); ("hash_slice", InstanceField.Method hash_slice) ].
     End Impl_core_hash_Hash_for_i32.
@@ -2253,8 +2272,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("hash", InstanceField.Method hash); ("hash_slice", InstanceField.Method hash_slice) ].
     End Impl_core_hash_Hash_for_i64.
@@ -2362,8 +2382,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("hash", InstanceField.Method hash); ("hash_slice", InstanceField.Method hash_slice) ].
     End Impl_core_hash_Hash_for_isize.
@@ -2471,8 +2492,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("hash", InstanceField.Method hash); ("hash_slice", InstanceField.Method hash_slice) ].
     End Impl_core_hash_Hash_for_u128.
@@ -2580,8 +2602,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("hash", InstanceField.Method hash); ("hash_slice", InstanceField.Method hash_slice) ].
     End Impl_core_hash_Hash_for_i128.
@@ -2614,8 +2637,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_bool.
     
@@ -2647,8 +2671,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_char.
     
@@ -2686,8 +2711,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_str.
     
@@ -2719,8 +2745,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_never.
     
@@ -2741,8 +2768,9 @@ Module hash.
       Axiom Implements :
         M.IsTraitInstance
           "core::hash::Hash"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_Tuple_.
     
@@ -2800,8 +2828,9 @@ Module hash.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_marker_Sized_T_for_Tuple_T_.
     
@@ -2880,8 +2909,9 @@ Module hash.
         forall (T B : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T B)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T B)
           (* Instance *) [ ("hash", InstanceField.Method (hash T B)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_hash_Hash_B_where_core_marker_Sized_B_for_Tuple_T_B_.
     
@@ -2981,8 +3011,9 @@ Module hash.
         forall (T B C : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T B C)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T B C)
           (* Instance *) [ ("hash", InstanceField.Method (hash T B C)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_hash_Hash_B_where_core_hash_Hash_C_where_core_marker_Sized_C_for_Tuple_T_B_C_.
     
@@ -3103,8 +3134,9 @@ Module hash.
         forall (T B C D : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T B C D)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T B C D)
           (* Instance *) [ ("hash", InstanceField.Method (hash T B C D)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_hash_Hash_B_where_core_hash_Hash_C_where_core_hash_Hash_D_where_core_marker_Sized_D_for_Tuple_T_B_C_D_.
     
@@ -3251,8 +3283,9 @@ Module hash.
         forall (T B C D E : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T B C D E)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T B C D E)
           (* Instance *) [ ("hash", InstanceField.Method (hash T B C D E)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_hash_Hash_B_where_core_hash_Hash_C_where_core_hash_Hash_D_where_core_hash_Hash_E_where_core_marker_Sized_E_for_Tuple_T_B_C_D_E_.
     
@@ -3420,8 +3453,9 @@ Module hash.
         forall (T B C D E F : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T B C D E F)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T B C D E F)
           (* Instance *) [ ("hash", InstanceField.Method (hash T B C D E F)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_hash_Hash_B_where_core_hash_Hash_C_where_core_hash_Hash_D_where_core_hash_Hash_E_where_core_hash_Hash_F_where_core_marker_Sized_F_for_Tuple_T_B_C_D_E_F_.
     
@@ -3610,8 +3644,9 @@ Module hash.
         forall (T B C D E F G : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T B C D E F G)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T B C D E F G)
           (* Instance *) [ ("hash", InstanceField.Method (hash T B C D E F G)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_hash_Hash_B_where_core_hash_Hash_C_where_core_hash_Hash_D_where_core_hash_Hash_E_where_core_hash_Hash_F_where_core_hash_Hash_G_where_core_marker_Sized_G_for_Tuple_T_B_C_D_E_F_G_.
     
@@ -3821,8 +3856,9 @@ Module hash.
         forall (T B C D E F G H : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T B C D E F G H)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T B C D E F G H)
           (* Instance *) [ ("hash", InstanceField.Method (hash T B C D E F G H)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_hash_Hash_B_where_core_hash_Hash_C_where_core_hash_Hash_D_where_core_hash_Hash_E_where_core_hash_Hash_F_where_core_hash_Hash_G_where_core_hash_Hash_H_where_core_marker_Sized_H_for_Tuple_T_B_C_D_E_F_G_H_.
     
@@ -4053,8 +4089,9 @@ Module hash.
         forall (T B C D E F G H I : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T B C D E F G H I)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T B C D E F G H I)
           (* Instance *) [ ("hash", InstanceField.Method (hash T B C D E F G H I)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_hash_Hash_B_where_core_hash_Hash_C_where_core_hash_Hash_D_where_core_hash_Hash_E_where_core_hash_Hash_F_where_core_hash_Hash_G_where_core_hash_Hash_H_where_core_hash_Hash_I_where_core_marker_Sized_I_for_Tuple_T_B_C_D_E_F_G_H_I_.
     
@@ -4307,8 +4344,9 @@ Module hash.
         forall (T B C D E F G H I J : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T B C D E F G H I J)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T B C D E F G H I J)
           (* Instance *) [ ("hash", InstanceField.Method (hash T B C D E F G H I J)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_hash_Hash_B_where_core_hash_Hash_C_where_core_hash_Hash_D_where_core_hash_Hash_E_where_core_hash_Hash_F_where_core_hash_Hash_G_where_core_hash_Hash_H_where_core_hash_Hash_I_where_core_hash_Hash_J_where_core_marker_Sized_J_for_Tuple_T_B_C_D_E_F_G_H_I_J_.
     
@@ -4582,8 +4620,9 @@ Module hash.
         forall (T B C D E F G H I J K : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T B C D E F G H I J K)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T B C D E F G H I J K)
           (* Instance *) [ ("hash", InstanceField.Method (hash T B C D E F G H I J K)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_hash_Hash_B_where_core_hash_Hash_C_where_core_hash_Hash_D_where_core_hash_Hash_E_where_core_hash_Hash_F_where_core_hash_Hash_G_where_core_hash_Hash_H_where_core_hash_Hash_I_where_core_hash_Hash_J_where_core_hash_Hash_K_where_core_marker_Sized_K_for_Tuple_T_B_C_D_E_F_G_H_I_J_K_.
     
@@ -4878,8 +4917,9 @@ Module hash.
         forall (T B C D E F G H I J K L : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T B C D E F G H I J K L)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T B C D E F G H I J K L)
           (* Instance *) [ ("hash", InstanceField.Method (hash T B C D E F G H I J K L)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_where_core_hash_Hash_B_where_core_hash_Hash_C_where_core_hash_Hash_D_where_core_hash_Hash_E_where_core_hash_Hash_F_where_core_hash_Hash_G_where_core_hash_Hash_H_where_core_hash_Hash_I_where_core_hash_Hash_J_where_core_hash_Hash_K_where_core_hash_Hash_L_where_core_marker_Sized_L_for_Tuple_T_B_C_D_E_F_G_H_I_J_K_L_.
     
@@ -4946,8 +4986,9 @@ Module hash.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_for_slice_T.
     
@@ -4990,8 +5031,9 @@ Module hash.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
     End Impl_core_hash_Hash_where_core_marker_Sized_T_where_core_hash_Hash_T_for_ref__T.
     
@@ -5034,8 +5076,9 @@ Module hash.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
     End Impl_core_hash_Hash_where_core_marker_Sized_T_where_core_hash_Hash_T_for_ref_mut_T.
     
@@ -5060,7 +5103,11 @@ Module hash.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    Ty.tuple [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ]; Ty.associated ],
+                    Ty.tuple
+                      [
+                        Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ];
+                        Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata"
+                      ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*const") [] [ T ],
                       "to_raw_parts",
@@ -5111,7 +5158,12 @@ Module hash.
                             Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "core::ptr::metadata::Pointee"
+                                []
+                                []
+                                T
+                                "Metadata",
                               [],
                               [],
                               "hash",
@@ -5135,8 +5187,9 @@ Module hash.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
     End Impl_core_hash_Hash_where_core_marker_Sized_T_for_pointer_const_T.
     
@@ -5161,7 +5214,11 @@ Module hash.
               M.match_operator (|
                 M.alloc (|
                   M.call_closure (|
-                    Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ]; Ty.associated ],
+                    Ty.tuple
+                      [
+                        Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ];
+                        Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata"
+                      ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "*mut") [] [ T ],
                       "to_raw_parts",
@@ -5212,7 +5269,12 @@ Module hash.
                             Ty.tuple [],
                             M.get_trait_method (|
                               "core::hash::Hash",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "core::ptr::metadata::Pointee"
+                                []
+                                []
+                                T
+                                "Metadata",
                               [],
                               [],
                               "hash",
@@ -5236,8 +5298,9 @@ Module hash.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
     End Impl_core_hash_Hash_where_core_marker_Sized_T_for_pointer_mut_T.
   End impls.

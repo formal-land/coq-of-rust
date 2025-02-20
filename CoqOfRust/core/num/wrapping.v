@@ -19,8 +19,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_num_wrapping_Wrapping_T.
     
@@ -65,8 +66,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_num_wrapping_Wrapping_T.
     
@@ -99,8 +101,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq T)) ].
     End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_num_wrapping_Wrapping_T.
@@ -156,8 +159,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T)) ].
     End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_core_num_wrapping_Wrapping_T.
     
@@ -212,8 +216,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Ord"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
     End Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_core_num_wrapping_Wrapping_T.
     
@@ -258,8 +263,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_num_wrapping_Wrapping_T.
     
@@ -271,8 +277,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Copy"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_num_wrapping_Wrapping_T.
     
@@ -302,8 +309,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_where_core_default_Default_T_for_core_num_wrapping_Wrapping_T.
     
@@ -346,8 +354,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
     End Impl_core_hash_Hash_where_core_hash_Hash_T_for_core_num_wrapping_Wrapping_T.
     
@@ -392,8 +401,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_num_wrapping_Wrapping_T.
     
@@ -438,8 +448,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Display"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Display_where_core_fmt_Display_T_for_core_num_wrapping_Wrapping_T.
     
@@ -484,8 +495,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Binary"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Binary_where_core_fmt_Binary_T_for_core_num_wrapping_Wrapping_T.
     
@@ -530,8 +542,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Octal"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Octal_where_core_fmt_Octal_T_for_core_num_wrapping_Wrapping_T.
     
@@ -576,8 +589,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::LowerHex"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_LowerHex_where_core_fmt_LowerHex_T_for_core_num_wrapping_Wrapping_T.
     
@@ -622,8 +636,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::UpperHex"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_UpperHex_where_core_fmt_UpperHex_T_for_core_num_wrapping_Wrapping_T.
     
@@ -676,8 +691,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_core_num_wrapping_Wrapping_u8.
@@ -725,8 +741,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_core_num_wrapping_Wrapping_u8.
     
@@ -779,8 +796,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_core_num_wrapping_Wrapping_u8.
@@ -828,8 +846,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_core_num_wrapping_Wrapping_u8.
     
@@ -882,8 +901,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_core_num_wrapping_Wrapping_u16.
@@ -931,8 +951,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_core_num_wrapping_Wrapping_u16.
     
@@ -985,8 +1006,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_core_num_wrapping_Wrapping_u16.
@@ -1034,8 +1056,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_core_num_wrapping_Wrapping_u16.
     
@@ -1088,8 +1111,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_core_num_wrapping_Wrapping_u32.
@@ -1137,8 +1161,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_core_num_wrapping_Wrapping_u32.
     
@@ -1191,8 +1216,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_core_num_wrapping_Wrapping_u32.
@@ -1240,8 +1266,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_core_num_wrapping_Wrapping_u32.
     
@@ -1294,8 +1321,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_core_num_wrapping_Wrapping_u64.
@@ -1343,8 +1371,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_core_num_wrapping_Wrapping_u64.
     
@@ -1397,8 +1426,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_core_num_wrapping_Wrapping_u64.
@@ -1446,8 +1476,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_core_num_wrapping_Wrapping_u64.
     
@@ -1500,8 +1531,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_core_num_wrapping_Wrapping_u128.
@@ -1549,8 +1581,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_core_num_wrapping_Wrapping_u128.
     
@@ -1603,8 +1636,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_core_num_wrapping_Wrapping_u128.
@@ -1652,8 +1686,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_core_num_wrapping_Wrapping_u128.
     
@@ -1708,8 +1743,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_core_num_wrapping_Wrapping_usize.
@@ -1757,8 +1793,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_core_num_wrapping_Wrapping_usize.
     
@@ -1813,8 +1850,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_core_num_wrapping_Wrapping_usize.
@@ -1862,8 +1900,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_core_num_wrapping_Wrapping_usize.
     
@@ -1916,8 +1955,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_core_num_wrapping_Wrapping_i8.
@@ -1965,8 +2005,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_core_num_wrapping_Wrapping_i8.
     
@@ -2019,8 +2060,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_core_num_wrapping_Wrapping_i8.
@@ -2068,8 +2110,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_core_num_wrapping_Wrapping_i8.
     
@@ -2122,8 +2165,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_core_num_wrapping_Wrapping_i16.
@@ -2171,8 +2215,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_core_num_wrapping_Wrapping_i16.
     
@@ -2225,8 +2270,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_core_num_wrapping_Wrapping_i16.
@@ -2274,8 +2320,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_core_num_wrapping_Wrapping_i16.
     
@@ -2328,8 +2375,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_core_num_wrapping_Wrapping_i32.
@@ -2377,8 +2425,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_core_num_wrapping_Wrapping_i32.
     
@@ -2431,8 +2480,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_core_num_wrapping_Wrapping_i32.
@@ -2480,8 +2530,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_core_num_wrapping_Wrapping_i32.
     
@@ -2534,8 +2585,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_core_num_wrapping_Wrapping_i64.
@@ -2583,8 +2635,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_core_num_wrapping_Wrapping_i64.
     
@@ -2637,8 +2690,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_core_num_wrapping_Wrapping_i64.
@@ -2686,8 +2740,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_core_num_wrapping_Wrapping_i64.
     
@@ -2740,8 +2795,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_core_num_wrapping_Wrapping_i128.
@@ -2789,8 +2845,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_core_num_wrapping_Wrapping_i128.
     
@@ -2843,8 +2900,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_core_num_wrapping_Wrapping_i128.
@@ -2892,8 +2950,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_core_num_wrapping_Wrapping_i128.
     
@@ -2948,8 +3007,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shl"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
     End Impl_core_ops_bit_Shl_usize_for_core_num_wrapping_Wrapping_isize.
@@ -2997,8 +3057,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShlAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shl_assign", InstanceField.Method shl_assign) ].
     End Impl_core_ops_bit_ShlAssign_usize_for_core_num_wrapping_Wrapping_isize.
     
@@ -3053,8 +3114,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Shr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
     End Impl_core_ops_bit_Shr_usize_for_core_num_wrapping_Wrapping_isize.
@@ -3102,8 +3164,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::ShrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("shr_assign", InstanceField.Method shr_assign) ].
     End Impl_core_ops_bit_ShrAssign_usize_for_core_num_wrapping_Wrapping_isize.
     
@@ -3156,8 +3219,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_core_num_wrapping_Wrapping_usize.
@@ -3206,8 +3270,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_core_num_wrapping_Wrapping_usize.
     
@@ -3258,8 +3323,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_usize_for_core_num_wrapping_Wrapping_usize.
     
@@ -3312,8 +3378,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_core_num_wrapping_Wrapping_usize.
@@ -3362,8 +3429,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_core_num_wrapping_Wrapping_usize.
     
@@ -3414,8 +3482,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_usize_for_core_num_wrapping_Wrapping_usize.
     
@@ -3468,8 +3537,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_core_num_wrapping_Wrapping_usize.
@@ -3518,8 +3588,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_core_num_wrapping_Wrapping_usize.
     
@@ -3570,8 +3641,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_usize_for_core_num_wrapping_Wrapping_usize.
     
@@ -3624,8 +3696,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_core_num_wrapping_Wrapping_usize.
@@ -3674,8 +3747,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_core_num_wrapping_Wrapping_usize.
     
@@ -3726,8 +3800,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_usize_for_core_num_wrapping_Wrapping_usize.
     
@@ -3780,8 +3855,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_core_num_wrapping_Wrapping_usize.
@@ -3830,8 +3906,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_core_num_wrapping_Wrapping_usize.
     
@@ -3882,8 +3959,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_usize_for_core_num_wrapping_Wrapping_usize.
     
@@ -3924,8 +4002,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_wrapping_Wrapping_usize.
@@ -3974,8 +4053,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_core_num_wrapping_Wrapping_usize.
@@ -4024,8 +4104,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_core_num_wrapping_Wrapping_usize.
     
@@ -4076,8 +4157,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_usize_for_core_num_wrapping_Wrapping_usize.
     
@@ -4125,8 +4207,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_core_num_wrapping_Wrapping_usize.
@@ -4175,8 +4258,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_core_num_wrapping_Wrapping_usize.
     
@@ -4227,8 +4311,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_usize_for_core_num_wrapping_Wrapping_usize.
     
@@ -4276,8 +4361,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_core_num_wrapping_Wrapping_usize.
@@ -4326,8 +4412,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_core_num_wrapping_Wrapping_usize.
     
@@ -4378,8 +4465,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "usize" ]
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_usize_for_core_num_wrapping_Wrapping_usize.
     
@@ -4425,8 +4513,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_wrapping_Wrapping_usize.
@@ -4480,8 +4569,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_core_num_wrapping_Wrapping_u8.
@@ -4529,8 +4619,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_core_num_wrapping_Wrapping_u8.
     
@@ -4580,8 +4671,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_u8_for_core_num_wrapping_Wrapping_u8.
     
@@ -4634,8 +4726,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_core_num_wrapping_Wrapping_u8.
@@ -4683,8 +4776,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_core_num_wrapping_Wrapping_u8.
     
@@ -4734,8 +4828,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_u8_for_core_num_wrapping_Wrapping_u8.
     
@@ -4788,8 +4883,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_core_num_wrapping_Wrapping_u8.
@@ -4837,8 +4933,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_core_num_wrapping_Wrapping_u8.
     
@@ -4888,8 +4985,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_u8_for_core_num_wrapping_Wrapping_u8.
     
@@ -4942,8 +5040,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_core_num_wrapping_Wrapping_u8.
@@ -4991,8 +5090,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_core_num_wrapping_Wrapping_u8.
     
@@ -5042,8 +5142,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_u8_for_core_num_wrapping_Wrapping_u8.
     
@@ -5096,8 +5197,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_core_num_wrapping_Wrapping_u8.
@@ -5145,8 +5247,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_core_num_wrapping_Wrapping_u8.
     
@@ -5196,8 +5299,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_u8_for_core_num_wrapping_Wrapping_u8.
     
@@ -5238,8 +5342,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_wrapping_Wrapping_u8.
@@ -5288,8 +5393,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_core_num_wrapping_Wrapping_u8.
@@ -5337,8 +5443,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_core_num_wrapping_Wrapping_u8.
     
@@ -5388,8 +5495,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_u8_for_core_num_wrapping_Wrapping_u8.
     
@@ -5437,8 +5545,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_core_num_wrapping_Wrapping_u8.
@@ -5486,8 +5595,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_core_num_wrapping_Wrapping_u8.
     
@@ -5537,8 +5647,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_u8_for_core_num_wrapping_Wrapping_u8.
     
@@ -5586,8 +5697,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_core_num_wrapping_Wrapping_u8.
@@ -5635,8 +5747,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_core_num_wrapping_Wrapping_u8.
     
@@ -5686,8 +5799,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_u8_for_core_num_wrapping_Wrapping_u8.
     
@@ -5733,8 +5847,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_wrapping_Wrapping_u8.
@@ -5788,8 +5903,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_core_num_wrapping_Wrapping_u16.
@@ -5837,8 +5953,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_core_num_wrapping_Wrapping_u16.
     
@@ -5888,8 +6005,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_u16_for_core_num_wrapping_Wrapping_u16.
     
@@ -5942,8 +6060,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_core_num_wrapping_Wrapping_u16.
@@ -5991,8 +6110,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_core_num_wrapping_Wrapping_u16.
     
@@ -6042,8 +6162,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_u16_for_core_num_wrapping_Wrapping_u16.
     
@@ -6096,8 +6217,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_core_num_wrapping_Wrapping_u16.
@@ -6145,8 +6267,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_core_num_wrapping_Wrapping_u16.
     
@@ -6196,8 +6319,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_u16_for_core_num_wrapping_Wrapping_u16.
     
@@ -6250,8 +6374,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_core_num_wrapping_Wrapping_u16.
@@ -6299,8 +6424,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_core_num_wrapping_Wrapping_u16.
     
@@ -6350,8 +6476,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_u16_for_core_num_wrapping_Wrapping_u16.
     
@@ -6404,8 +6531,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_core_num_wrapping_Wrapping_u16.
@@ -6453,8 +6581,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_core_num_wrapping_Wrapping_u16.
     
@@ -6504,8 +6633,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_u16_for_core_num_wrapping_Wrapping_u16.
     
@@ -6546,8 +6676,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_wrapping_Wrapping_u16.
@@ -6596,8 +6727,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_core_num_wrapping_Wrapping_u16.
@@ -6645,8 +6777,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_core_num_wrapping_Wrapping_u16.
     
@@ -6696,8 +6829,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_u16_for_core_num_wrapping_Wrapping_u16.
     
@@ -6745,8 +6879,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_core_num_wrapping_Wrapping_u16.
@@ -6794,8 +6929,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_core_num_wrapping_Wrapping_u16.
     
@@ -6845,8 +6981,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_u16_for_core_num_wrapping_Wrapping_u16.
     
@@ -6894,8 +7031,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_core_num_wrapping_Wrapping_u16.
@@ -6943,8 +7081,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_core_num_wrapping_Wrapping_u16.
     
@@ -6994,8 +7133,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u16" ]
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_u16_for_core_num_wrapping_Wrapping_u16.
     
@@ -7041,8 +7181,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_wrapping_Wrapping_u16.
@@ -7096,8 +7237,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_core_num_wrapping_Wrapping_u32.
@@ -7145,8 +7287,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_core_num_wrapping_Wrapping_u32.
     
@@ -7196,8 +7339,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_u32_for_core_num_wrapping_Wrapping_u32.
     
@@ -7250,8 +7394,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_core_num_wrapping_Wrapping_u32.
@@ -7299,8 +7444,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_core_num_wrapping_Wrapping_u32.
     
@@ -7350,8 +7496,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_u32_for_core_num_wrapping_Wrapping_u32.
     
@@ -7404,8 +7551,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_core_num_wrapping_Wrapping_u32.
@@ -7453,8 +7601,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_core_num_wrapping_Wrapping_u32.
     
@@ -7504,8 +7653,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_u32_for_core_num_wrapping_Wrapping_u32.
     
@@ -7558,8 +7708,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_core_num_wrapping_Wrapping_u32.
@@ -7607,8 +7758,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_core_num_wrapping_Wrapping_u32.
     
@@ -7658,8 +7810,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_u32_for_core_num_wrapping_Wrapping_u32.
     
@@ -7712,8 +7865,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_core_num_wrapping_Wrapping_u32.
@@ -7761,8 +7915,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_core_num_wrapping_Wrapping_u32.
     
@@ -7812,8 +7967,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_u32_for_core_num_wrapping_Wrapping_u32.
     
@@ -7854,8 +8010,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_wrapping_Wrapping_u32.
@@ -7904,8 +8061,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_core_num_wrapping_Wrapping_u32.
@@ -7953,8 +8111,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_core_num_wrapping_Wrapping_u32.
     
@@ -8004,8 +8163,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_u32_for_core_num_wrapping_Wrapping_u32.
     
@@ -8053,8 +8213,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_core_num_wrapping_Wrapping_u32.
@@ -8102,8 +8263,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_core_num_wrapping_Wrapping_u32.
     
@@ -8153,8 +8315,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_u32_for_core_num_wrapping_Wrapping_u32.
     
@@ -8202,8 +8365,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_core_num_wrapping_Wrapping_u32.
@@ -8251,8 +8415,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_core_num_wrapping_Wrapping_u32.
     
@@ -8302,8 +8467,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_u32_for_core_num_wrapping_Wrapping_u32.
     
@@ -8349,8 +8515,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_wrapping_Wrapping_u32.
@@ -8404,8 +8571,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_core_num_wrapping_Wrapping_u64.
@@ -8453,8 +8621,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_core_num_wrapping_Wrapping_u64.
     
@@ -8504,8 +8673,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_u64_for_core_num_wrapping_Wrapping_u64.
     
@@ -8558,8 +8728,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_core_num_wrapping_Wrapping_u64.
@@ -8607,8 +8778,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_core_num_wrapping_Wrapping_u64.
     
@@ -8658,8 +8830,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_u64_for_core_num_wrapping_Wrapping_u64.
     
@@ -8712,8 +8885,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_core_num_wrapping_Wrapping_u64.
@@ -8761,8 +8935,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_core_num_wrapping_Wrapping_u64.
     
@@ -8812,8 +8987,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_u64_for_core_num_wrapping_Wrapping_u64.
     
@@ -8866,8 +9042,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_core_num_wrapping_Wrapping_u64.
@@ -8915,8 +9092,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_core_num_wrapping_Wrapping_u64.
     
@@ -8966,8 +9144,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_u64_for_core_num_wrapping_Wrapping_u64.
     
@@ -9020,8 +9199,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_core_num_wrapping_Wrapping_u64.
@@ -9069,8 +9249,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_core_num_wrapping_Wrapping_u64.
     
@@ -9120,8 +9301,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_u64_for_core_num_wrapping_Wrapping_u64.
     
@@ -9162,8 +9344,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_wrapping_Wrapping_u64.
@@ -9212,8 +9395,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_core_num_wrapping_Wrapping_u64.
@@ -9261,8 +9445,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_core_num_wrapping_Wrapping_u64.
     
@@ -9312,8 +9497,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_u64_for_core_num_wrapping_Wrapping_u64.
     
@@ -9361,8 +9547,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_core_num_wrapping_Wrapping_u64.
@@ -9410,8 +9597,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_core_num_wrapping_Wrapping_u64.
     
@@ -9461,8 +9649,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_u64_for_core_num_wrapping_Wrapping_u64.
     
@@ -9510,8 +9699,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_core_num_wrapping_Wrapping_u64.
@@ -9559,8 +9749,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_core_num_wrapping_Wrapping_u64.
     
@@ -9610,8 +9801,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u64" ]
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_u64_for_core_num_wrapping_Wrapping_u64.
     
@@ -9657,8 +9849,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_wrapping_Wrapping_u64.
@@ -9712,8 +9905,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_core_num_wrapping_Wrapping_u128.
@@ -9762,8 +9956,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_core_num_wrapping_Wrapping_u128.
     
@@ -9814,8 +10009,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_u128_for_core_num_wrapping_Wrapping_u128.
     
@@ -9868,8 +10064,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_core_num_wrapping_Wrapping_u128.
@@ -9918,8 +10115,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_core_num_wrapping_Wrapping_u128.
     
@@ -9970,8 +10168,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_u128_for_core_num_wrapping_Wrapping_u128.
     
@@ -10024,8 +10223,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_core_num_wrapping_Wrapping_u128.
@@ -10074,8 +10274,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_core_num_wrapping_Wrapping_u128.
     
@@ -10126,8 +10327,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_u128_for_core_num_wrapping_Wrapping_u128.
     
@@ -10180,8 +10382,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_core_num_wrapping_Wrapping_u128.
@@ -10230,8 +10433,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_core_num_wrapping_Wrapping_u128.
     
@@ -10282,8 +10486,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_u128_for_core_num_wrapping_Wrapping_u128.
     
@@ -10336,8 +10541,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_core_num_wrapping_Wrapping_u128.
@@ -10386,8 +10592,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_core_num_wrapping_Wrapping_u128.
     
@@ -10438,8 +10645,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_u128_for_core_num_wrapping_Wrapping_u128.
     
@@ -10480,8 +10688,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_wrapping_Wrapping_u128.
@@ -10530,8 +10739,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_core_num_wrapping_Wrapping_u128.
@@ -10580,8 +10790,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_core_num_wrapping_Wrapping_u128.
     
@@ -10632,8 +10843,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_u128_for_core_num_wrapping_Wrapping_u128.
     
@@ -10681,8 +10893,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_core_num_wrapping_Wrapping_u128.
@@ -10731,8 +10944,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_core_num_wrapping_Wrapping_u128.
     
@@ -10783,8 +10997,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_u128_for_core_num_wrapping_Wrapping_u128.
     
@@ -10832,8 +11047,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_core_num_wrapping_Wrapping_u128.
@@ -10882,8 +11098,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_core_num_wrapping_Wrapping_u128.
     
@@ -10934,8 +11151,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u128" ]
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_u128_for_core_num_wrapping_Wrapping_u128.
     
@@ -10981,8 +11199,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_wrapping_Wrapping_u128.
@@ -11036,8 +11255,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_core_num_wrapping_Wrapping_isize.
@@ -11086,8 +11306,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_core_num_wrapping_Wrapping_isize.
     
@@ -11138,8 +11359,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_isize_for_core_num_wrapping_Wrapping_isize.
     
@@ -11192,8 +11414,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_core_num_wrapping_Wrapping_isize.
@@ -11242,8 +11465,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_core_num_wrapping_Wrapping_isize.
     
@@ -11294,8 +11518,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_isize_for_core_num_wrapping_Wrapping_isize.
     
@@ -11348,8 +11573,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_core_num_wrapping_Wrapping_isize.
@@ -11398,8 +11624,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_core_num_wrapping_Wrapping_isize.
     
@@ -11450,8 +11677,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_isize_for_core_num_wrapping_Wrapping_isize.
     
@@ -11504,8 +11732,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_core_num_wrapping_Wrapping_isize.
@@ -11554,8 +11783,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_core_num_wrapping_Wrapping_isize.
     
@@ -11606,8 +11836,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_isize_for_core_num_wrapping_Wrapping_isize.
     
@@ -11660,8 +11891,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_core_num_wrapping_Wrapping_isize.
@@ -11710,8 +11942,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_core_num_wrapping_Wrapping_isize.
     
@@ -11762,8 +11995,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_isize_for_core_num_wrapping_Wrapping_isize.
     
@@ -11804,8 +12038,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_wrapping_Wrapping_isize.
@@ -11854,8 +12089,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_core_num_wrapping_Wrapping_isize.
@@ -11904,8 +12140,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_core_num_wrapping_Wrapping_isize.
     
@@ -11956,8 +12193,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_isize_for_core_num_wrapping_Wrapping_isize.
     
@@ -12005,8 +12243,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_core_num_wrapping_Wrapping_isize.
@@ -12055,8 +12294,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_core_num_wrapping_Wrapping_isize.
     
@@ -12107,8 +12347,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_isize_for_core_num_wrapping_Wrapping_isize.
     
@@ -12156,8 +12397,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_core_num_wrapping_Wrapping_isize.
@@ -12206,8 +12448,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_core_num_wrapping_Wrapping_isize.
     
@@ -12258,8 +12501,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "isize" ]
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_isize_for_core_num_wrapping_Wrapping_isize.
     
@@ -12305,8 +12549,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_wrapping_Wrapping_isize.
@@ -12360,8 +12605,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_core_num_wrapping_Wrapping_i8.
@@ -12409,8 +12655,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_core_num_wrapping_Wrapping_i8.
     
@@ -12460,8 +12707,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_i8_for_core_num_wrapping_Wrapping_i8.
     
@@ -12514,8 +12762,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_core_num_wrapping_Wrapping_i8.
@@ -12563,8 +12812,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_core_num_wrapping_Wrapping_i8.
     
@@ -12614,8 +12864,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_i8_for_core_num_wrapping_Wrapping_i8.
     
@@ -12668,8 +12919,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_core_num_wrapping_Wrapping_i8.
@@ -12717,8 +12969,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_core_num_wrapping_Wrapping_i8.
     
@@ -12768,8 +13021,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_i8_for_core_num_wrapping_Wrapping_i8.
     
@@ -12822,8 +13076,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_core_num_wrapping_Wrapping_i8.
@@ -12871,8 +13126,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_core_num_wrapping_Wrapping_i8.
     
@@ -12922,8 +13178,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_i8_for_core_num_wrapping_Wrapping_i8.
     
@@ -12976,8 +13233,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_core_num_wrapping_Wrapping_i8.
@@ -13025,8 +13283,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_core_num_wrapping_Wrapping_i8.
     
@@ -13076,8 +13335,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_i8_for_core_num_wrapping_Wrapping_i8.
     
@@ -13118,8 +13378,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_wrapping_Wrapping_i8.
@@ -13168,8 +13429,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_core_num_wrapping_Wrapping_i8.
@@ -13217,8 +13479,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_core_num_wrapping_Wrapping_i8.
     
@@ -13268,8 +13531,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_i8_for_core_num_wrapping_Wrapping_i8.
     
@@ -13317,8 +13581,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_core_num_wrapping_Wrapping_i8.
@@ -13366,8 +13631,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_core_num_wrapping_Wrapping_i8.
     
@@ -13417,8 +13683,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_i8_for_core_num_wrapping_Wrapping_i8.
     
@@ -13466,8 +13733,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_core_num_wrapping_Wrapping_i8.
@@ -13515,8 +13783,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_core_num_wrapping_Wrapping_i8.
     
@@ -13566,8 +13835,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i8" ]
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_i8_for_core_num_wrapping_Wrapping_i8.
     
@@ -13613,8 +13883,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_wrapping_Wrapping_i8.
@@ -13668,8 +13939,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_core_num_wrapping_Wrapping_i16.
@@ -13717,8 +13989,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_core_num_wrapping_Wrapping_i16.
     
@@ -13768,8 +14041,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_i16_for_core_num_wrapping_Wrapping_i16.
     
@@ -13822,8 +14096,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_core_num_wrapping_Wrapping_i16.
@@ -13871,8 +14146,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_core_num_wrapping_Wrapping_i16.
     
@@ -13922,8 +14198,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_i16_for_core_num_wrapping_Wrapping_i16.
     
@@ -13976,8 +14253,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_core_num_wrapping_Wrapping_i16.
@@ -14025,8 +14303,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_core_num_wrapping_Wrapping_i16.
     
@@ -14076,8 +14355,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_i16_for_core_num_wrapping_Wrapping_i16.
     
@@ -14130,8 +14410,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_core_num_wrapping_Wrapping_i16.
@@ -14179,8 +14460,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_core_num_wrapping_Wrapping_i16.
     
@@ -14230,8 +14512,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_i16_for_core_num_wrapping_Wrapping_i16.
     
@@ -14284,8 +14567,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_core_num_wrapping_Wrapping_i16.
@@ -14333,8 +14617,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_core_num_wrapping_Wrapping_i16.
     
@@ -14384,8 +14669,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_i16_for_core_num_wrapping_Wrapping_i16.
     
@@ -14426,8 +14712,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_wrapping_Wrapping_i16.
@@ -14476,8 +14763,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_core_num_wrapping_Wrapping_i16.
@@ -14525,8 +14813,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_core_num_wrapping_Wrapping_i16.
     
@@ -14576,8 +14865,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_i16_for_core_num_wrapping_Wrapping_i16.
     
@@ -14625,8 +14915,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_core_num_wrapping_Wrapping_i16.
@@ -14674,8 +14965,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_core_num_wrapping_Wrapping_i16.
     
@@ -14725,8 +15017,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_i16_for_core_num_wrapping_Wrapping_i16.
     
@@ -14774,8 +15067,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_core_num_wrapping_Wrapping_i16.
@@ -14823,8 +15117,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_core_num_wrapping_Wrapping_i16.
     
@@ -14874,8 +15169,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i16" ]
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_i16_for_core_num_wrapping_Wrapping_i16.
     
@@ -14921,8 +15217,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_wrapping_Wrapping_i16.
@@ -14976,8 +15273,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_core_num_wrapping_Wrapping_i32.
@@ -15025,8 +15323,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_core_num_wrapping_Wrapping_i32.
     
@@ -15076,8 +15375,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_i32_for_core_num_wrapping_Wrapping_i32.
     
@@ -15130,8 +15430,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_core_num_wrapping_Wrapping_i32.
@@ -15179,8 +15480,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_core_num_wrapping_Wrapping_i32.
     
@@ -15230,8 +15532,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_i32_for_core_num_wrapping_Wrapping_i32.
     
@@ -15284,8 +15587,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_core_num_wrapping_Wrapping_i32.
@@ -15333,8 +15637,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_core_num_wrapping_Wrapping_i32.
     
@@ -15384,8 +15689,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_i32_for_core_num_wrapping_Wrapping_i32.
     
@@ -15438,8 +15744,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_core_num_wrapping_Wrapping_i32.
@@ -15487,8 +15794,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_core_num_wrapping_Wrapping_i32.
     
@@ -15538,8 +15846,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_i32_for_core_num_wrapping_Wrapping_i32.
     
@@ -15592,8 +15901,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_core_num_wrapping_Wrapping_i32.
@@ -15641,8 +15951,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_core_num_wrapping_Wrapping_i32.
     
@@ -15692,8 +16003,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_i32_for_core_num_wrapping_Wrapping_i32.
     
@@ -15734,8 +16046,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_wrapping_Wrapping_i32.
@@ -15784,8 +16097,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_core_num_wrapping_Wrapping_i32.
@@ -15833,8 +16147,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_core_num_wrapping_Wrapping_i32.
     
@@ -15884,8 +16199,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_i32_for_core_num_wrapping_Wrapping_i32.
     
@@ -15933,8 +16249,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_core_num_wrapping_Wrapping_i32.
@@ -15982,8 +16299,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_core_num_wrapping_Wrapping_i32.
     
@@ -16033,8 +16351,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_i32_for_core_num_wrapping_Wrapping_i32.
     
@@ -16082,8 +16401,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_core_num_wrapping_Wrapping_i32.
@@ -16131,8 +16451,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_core_num_wrapping_Wrapping_i32.
     
@@ -16182,8 +16503,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i32" ]
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_i32_for_core_num_wrapping_Wrapping_i32.
     
@@ -16229,8 +16551,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_wrapping_Wrapping_i32.
@@ -16284,8 +16607,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_core_num_wrapping_Wrapping_i64.
@@ -16333,8 +16657,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_core_num_wrapping_Wrapping_i64.
     
@@ -16384,8 +16709,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_i64_for_core_num_wrapping_Wrapping_i64.
     
@@ -16438,8 +16764,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_core_num_wrapping_Wrapping_i64.
@@ -16487,8 +16814,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_core_num_wrapping_Wrapping_i64.
     
@@ -16538,8 +16866,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_i64_for_core_num_wrapping_Wrapping_i64.
     
@@ -16592,8 +16921,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_core_num_wrapping_Wrapping_i64.
@@ -16641,8 +16971,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_core_num_wrapping_Wrapping_i64.
     
@@ -16692,8 +17023,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_i64_for_core_num_wrapping_Wrapping_i64.
     
@@ -16746,8 +17078,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_core_num_wrapping_Wrapping_i64.
@@ -16795,8 +17128,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_core_num_wrapping_Wrapping_i64.
     
@@ -16846,8 +17180,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_i64_for_core_num_wrapping_Wrapping_i64.
     
@@ -16900,8 +17235,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_core_num_wrapping_Wrapping_i64.
@@ -16949,8 +17285,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_core_num_wrapping_Wrapping_i64.
     
@@ -17000,8 +17337,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_i64_for_core_num_wrapping_Wrapping_i64.
     
@@ -17042,8 +17380,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_wrapping_Wrapping_i64.
@@ -17092,8 +17431,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_core_num_wrapping_Wrapping_i64.
@@ -17141,8 +17481,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_core_num_wrapping_Wrapping_i64.
     
@@ -17192,8 +17533,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_i64_for_core_num_wrapping_Wrapping_i64.
     
@@ -17241,8 +17583,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_core_num_wrapping_Wrapping_i64.
@@ -17290,8 +17633,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_core_num_wrapping_Wrapping_i64.
     
@@ -17341,8 +17685,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_i64_for_core_num_wrapping_Wrapping_i64.
     
@@ -17390,8 +17735,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_core_num_wrapping_Wrapping_i64.
@@ -17439,8 +17785,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_core_num_wrapping_Wrapping_i64.
     
@@ -17490,8 +17837,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i64" ]
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_i64_for_core_num_wrapping_Wrapping_i64.
     
@@ -17537,8 +17885,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_wrapping_Wrapping_i64.
@@ -17592,8 +17941,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Add"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
     End Impl_core_ops_arith_Add_for_core_num_wrapping_Wrapping_i128.
@@ -17642,8 +17992,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_for_core_num_wrapping_Wrapping_i128.
     
@@ -17694,8 +18045,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_i128_for_core_num_wrapping_Wrapping_i128.
     
@@ -17748,8 +18100,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Sub"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
     End Impl_core_ops_arith_Sub_for_core_num_wrapping_Wrapping_i128.
@@ -17798,8 +18151,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_for_core_num_wrapping_Wrapping_i128.
     
@@ -17850,8 +18204,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_i128_for_core_num_wrapping_Wrapping_i128.
     
@@ -17904,8 +18259,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Mul"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
     End Impl_core_ops_arith_Mul_for_core_num_wrapping_Wrapping_i128.
@@ -17954,8 +18310,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_for_core_num_wrapping_Wrapping_i128.
     
@@ -18006,8 +18363,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_i128_for_core_num_wrapping_Wrapping_i128.
     
@@ -18060,8 +18418,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_for_core_num_wrapping_Wrapping_i128.
@@ -18110,8 +18469,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_for_core_num_wrapping_Wrapping_i128.
     
@@ -18162,8 +18522,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_i128_for_core_num_wrapping_Wrapping_i128.
     
@@ -18216,8 +18577,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_for_core_num_wrapping_Wrapping_i128.
@@ -18266,8 +18628,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_for_core_num_wrapping_Wrapping_i128.
     
@@ -18318,8 +18681,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_i128_for_core_num_wrapping_Wrapping_i128.
     
@@ -18360,8 +18724,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::Not"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_wrapping_Wrapping_i128.
@@ -18410,8 +18775,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXor"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
     End Impl_core_ops_bit_BitXor_for_core_num_wrapping_Wrapping_i128.
@@ -18460,8 +18826,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_for_core_num_wrapping_Wrapping_i128.
     
@@ -18512,8 +18879,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_i128_for_core_num_wrapping_Wrapping_i128.
     
@@ -18561,8 +18929,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_for_core_num_wrapping_Wrapping_i128.
@@ -18611,8 +18980,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_for_core_num_wrapping_Wrapping_i128.
     
@@ -18663,8 +19033,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_i128_for_core_num_wrapping_Wrapping_i128.
     
@@ -18712,8 +19083,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_for_core_num_wrapping_Wrapping_i128.
@@ -18762,8 +19134,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_for_core_num_wrapping_Wrapping_i128.
     
@@ -18814,8 +19187,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.path "i128" ]
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_i128_for_core_num_wrapping_Wrapping_i128.
     
@@ -18861,8 +19235,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_wrapping_Wrapping_i128.

@@ -13,8 +13,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Copy"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_mem_maybe_uninit_MaybeUninit_T.
     
@@ -42,8 +43,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_where_core_marker_Copy_T_for_core_mem_maybe_uninit_MaybeUninit_T.
     
@@ -94,8 +96,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_for_core_mem_maybe_uninit_MaybeUninit_T.
     
@@ -1901,10 +1904,21 @@ Module mem.
             (let this := M.alloc (| this |) in
             let it := M.alloc (| it |) in
             M.read (|
-              let~ iter : Ty.associated :=
+              let~ iter :
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    I
+                    "IntoIter" :=
                 M.alloc (|
                   M.call_closure (|
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      I
+                      "IntoIter",
                     M.get_trait_method (|
                       "core::iter::traits::collect::IntoIterator",
                       I,
@@ -1941,7 +1955,12 @@ Module mem.
                               []
                               [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                               ];
-                            Ty.associated
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              I
+                              "IntoIter"
                           ],
                         M.get_trait_method (|
                           "core::iter::traits::collect::IntoIterator",
@@ -1954,7 +1973,12 @@ Module mem.
                                 []
                                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
                                 ];
-                              Ty.associated
+                              Ty.associated_in_trait
+                                "core::iter::traits::collect::IntoIterator"
+                                []
+                                []
+                                I
+                                "IntoIter"
                             ],
                           [],
                           [],
@@ -1977,7 +2001,12 @@ Module mem.
                                       []
                                       [ T ]
                                   ];
-                                Ty.associated
+                                Ty.associated_in_trait
+                                  "core::iter::traits::collect::IntoIterator"
+                                  []
+                                  []
+                                  I
+                                  "IntoIter"
                               ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
@@ -1990,7 +2019,14 @@ Module mem.
                               [],
                               "zip",
                               [],
-                              [ Ty.associated ]
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::collect::IntoIterator"
+                                  []
+                                  []
+                                  I
+                                  "IntoIter"
+                              ]
                             |),
                             [
                               M.call_closure (|
@@ -2081,7 +2117,12 @@ Module mem.
                                                   []
                                                   [ T ]
                                               ];
-                                            Ty.associated
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::collect::IntoIterator"
+                                              []
+                                              []
+                                              I
+                                              "IntoIter"
                                           ],
                                         [],
                                         [],
@@ -2959,8 +3000,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("drop", InstanceField.Method (drop T)) ].
     End Impl_core_ops_drop_Drop_for_core_mem_maybe_uninit_Guard_T.
     
@@ -3299,8 +3341,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::mem::maybe_uninit::SpecFill"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *) [ ("spec_fill", InstanceField.Method (spec_fill T)) ].
     End Impl_core_mem_maybe_uninit_SpecFill_where_core_clone_Clone_T_T_for_slice_core_mem_maybe_uninit_MaybeUninit_T.
     
@@ -3361,8 +3404,9 @@ Module mem.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::mem::maybe_uninit::SpecFill"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *) [ ("spec_fill", InstanceField.Method (spec_fill T)) ].
     End Impl_core_mem_maybe_uninit_SpecFill_where_core_marker_Copy_T_T_for_slice_core_mem_maybe_uninit_MaybeUninit_T.
   End maybe_uninit.

@@ -701,7 +701,7 @@ Module mem.
       name := "Discriminant";
       const_params := [];
       ty_params := [ "T" ];
-      fields := [ Ty.associated ];
+      fields := [ Ty.associated_in_trait "core::marker::DiscriminantKind" [] [] T "Discriminant" ];
     } *)
   
   Module Impl_core_marker_Copy_for_core_mem_Discriminant_T.
@@ -711,8 +711,9 @@ Module mem.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::marker::Copy"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_marker_Copy_for_core_mem_Discriminant_T.
   
@@ -738,8 +739,9 @@ Module mem.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
   End Impl_core_clone_Clone_for_core_mem_Discriminant_T.
   
@@ -762,9 +764,9 @@ Module mem.
             Ty.path "bool",
             M.get_trait_method (|
               "core::cmp::PartialEq",
-              Ty.associated,
+              Ty.associated_in_trait "core::marker::DiscriminantKind" [] [] T "Discriminant",
               [],
-              [ Ty.associated ],
+              [ Ty.associated_in_trait "core::marker::DiscriminantKind" [] [] T "Discriminant" ],
               "eq",
               [],
               []
@@ -795,8 +797,9 @@ Module mem.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
   End Impl_core_cmp_PartialEq_for_core_mem_Discriminant_T.
   
@@ -805,7 +808,12 @@ Module mem.
     
     Axiom Implements :
       forall (T : Ty.t),
-      M.IsTraitInstance "core::cmp::Eq" (Self T) (* Trait polymorphic types *) [] (* Instance *) [].
+      M.IsTraitInstance
+        "core::cmp::Eq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        (Self T)
+        (* Instance *) [].
   End Impl_core_cmp_Eq_for_core_mem_Discriminant_T.
   
   Module Impl_core_hash_Hash_for_core_mem_Discriminant_T.
@@ -830,7 +838,7 @@ Module mem.
                   Ty.tuple [],
                   M.get_trait_method (|
                     "core::hash::Hash",
-                    Ty.associated,
+                    Ty.associated_in_trait "core::marker::DiscriminantKind" [] [] T "Discriminant",
                     [],
                     [],
                     "hash",
@@ -859,8 +867,9 @@ Module mem.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
   End Impl_core_hash_Hash_for_core_mem_Discriminant_T.
   
@@ -950,8 +959,9 @@ Module mem.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
   End Impl_core_fmt_Debug_for_core_mem_Discriminant_T.
   
@@ -969,7 +979,7 @@ Module mem.
           "core::mem::Discriminant"
           [
             M.call_closure (|
-              Ty.associated,
+              Ty.associated_in_trait "core::marker::DiscriminantKind" [] [] T "Discriminant",
               M.get_function (| "core::intrinsics::discriminant_value", [], [ T ] |),
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
             |)
@@ -1010,8 +1020,9 @@ Module mem.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::mem::SizedTypeProperties"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_mem_SizedTypeProperties_for_T.
 End mem.

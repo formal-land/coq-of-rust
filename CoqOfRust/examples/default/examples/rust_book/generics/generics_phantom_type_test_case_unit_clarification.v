@@ -30,8 +30,9 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
@@ -51,8 +52,9 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
@@ -60,7 +62,12 @@ Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarificat
   Definition Self : Ty.t := Ty.path "generics_phantom_type_test_case_unit_clarification::Inch".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Inch.
 
 (*
@@ -92,8 +99,9 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
@@ -113,8 +121,9 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
@@ -122,7 +131,12 @@ Module Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarificat
   Definition Self : Ty.t := Ty.path "generics_phantom_type_test_case_unit_clarification::Mm".
   
   Axiom Implements :
-    M.IsTraitInstance "core::marker::Copy" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::marker::Copy"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_marker_Copy_for_generics_phantom_type_test_case_unit_clarification_Mm.
 
 (* StructTuple
@@ -196,8 +210,9 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_Unit_for_generics_phantom_type_t
     forall (Unit : Ty.t),
     M.IsTraitInstance
       "core::fmt::Debug"
-      (Self Unit)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self Unit)
       (* Instance *) [ ("fmt", InstanceField.Method (fmt Unit)) ].
 End Impl_core_fmt_Debug_where_core_fmt_Debug_Unit_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
@@ -269,8 +284,9 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_ty
     forall (Unit : Ty.t),
     M.IsTraitInstance
       "core::clone::Clone"
-      (Self Unit)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self Unit)
       (* Instance *) [ ("clone", InstanceField.Method (clone Unit)) ].
 End Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
@@ -282,8 +298,9 @@ Module Impl_core_marker_Copy_where_core_marker_Copy_Unit_for_generics_phantom_ty
     forall (Unit : Ty.t),
     M.IsTraitInstance
       "core::marker::Copy"
-      (Self Unit)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self Unit)
       (* Instance *) [].
 End Impl_core_marker_Copy_where_core_marker_Copy_Unit_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
@@ -336,8 +353,9 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
     forall (Unit : Ty.t),
     M.IsTraitInstance
       "core::ops::arith::Add"
-      (Self Unit)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self Unit)
       (* Instance *)
       [ ("Output", InstanceField.Ty (_Output Unit)); ("add", InstanceField.Method (add Unit)) ].
 End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.

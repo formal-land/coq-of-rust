@@ -59,8 +59,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::DisplayInt"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("zero", InstanceField.Method zero);
@@ -124,8 +125,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::DisplayInt"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("zero", InstanceField.Method zero);
@@ -189,8 +191,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::DisplayInt"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("zero", InstanceField.Method zero);
@@ -254,8 +257,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::DisplayInt"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("zero", InstanceField.Method zero);
@@ -319,8 +323,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::DisplayInt"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("zero", InstanceField.Method zero);
@@ -384,8 +389,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::DisplayInt"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("zero", InstanceField.Method zero);
@@ -449,8 +455,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::DisplayInt"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("zero", InstanceField.Method zero);
@@ -514,8 +521,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::DisplayInt"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("zero", InstanceField.Method zero);
@@ -579,8 +587,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::DisplayInt"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("zero", InstanceField.Method zero);
@@ -644,8 +653,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::DisplayInt"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("zero", InstanceField.Method zero);
@@ -709,8 +719,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::DisplayInt"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("zero", InstanceField.Method zero);
@@ -774,8 +785,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::DisplayInt"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("zero", InstanceField.Method zero);
@@ -1752,8 +1764,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_fmt_num_Binary.
     
@@ -1763,8 +1776,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_fmt_num_Binary.
     
@@ -1785,8 +1799,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_fmt_num_Binary.
     
@@ -1814,8 +1829,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_fmt_num_Octal.
     
@@ -1825,8 +1841,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_fmt_num_Octal.
     
@@ -1847,8 +1864,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_fmt_num_Octal.
     
@@ -1876,8 +1894,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_fmt_num_LowerHex.
     
@@ -1887,8 +1906,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_fmt_num_LowerHex.
     
@@ -1909,8 +1929,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_fmt_num_LowerHex.
     
@@ -1938,8 +1959,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_fmt_num_UpperHex.
     
@@ -1949,8 +1971,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_fmt_num_UpperHex.
     
@@ -1971,8 +1994,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_fmt_num_UpperHex.
     
@@ -2117,8 +2141,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::GenericRadix"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("value_BASE", InstanceField.Constant value_BASE);
@@ -2268,8 +2293,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::GenericRadix"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("value_BASE", InstanceField.Constant value_BASE);
@@ -2428,8 +2454,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::GenericRadix"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("value_BASE", InstanceField.Constant value_BASE);
@@ -2588,8 +2615,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::num::GenericRadix"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("value_BASE", InstanceField.Constant value_BASE);
@@ -2641,8 +2669,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Binary"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Binary_for_isize.
     
@@ -2689,8 +2718,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Octal"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Octal_for_isize.
     
@@ -2737,8 +2767,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerHex_for_isize.
     
@@ -2785,8 +2816,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperHex_for_isize.
     
@@ -2833,8 +2865,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Binary"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Binary_for_usize.
     
@@ -2881,8 +2914,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Octal"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Octal_for_usize.
     
@@ -2929,8 +2963,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerHex_for_usize.
     
@@ -2977,8 +3012,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperHex_for_usize.
     
@@ -3025,8 +3061,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Binary"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Binary_for_i8.
     
@@ -3073,8 +3110,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Octal"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Octal_for_i8.
     
@@ -3121,8 +3159,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerHex_for_i8.
     
@@ -3169,8 +3208,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperHex_for_i8.
     
@@ -3217,8 +3257,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Binary"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Binary_for_u8.
     
@@ -3265,8 +3306,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Octal"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Octal_for_u8.
     
@@ -3313,8 +3355,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerHex_for_u8.
     
@@ -3361,8 +3404,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperHex_for_u8.
     
@@ -3409,8 +3453,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Binary"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Binary_for_i16.
     
@@ -3457,8 +3502,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Octal"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Octal_for_i16.
     
@@ -3505,8 +3551,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerHex_for_i16.
     
@@ -3553,8 +3600,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperHex_for_i16.
     
@@ -3601,8 +3649,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Binary"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Binary_for_u16.
     
@@ -3649,8 +3698,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Octal"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Octal_for_u16.
     
@@ -3697,8 +3747,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerHex_for_u16.
     
@@ -3745,8 +3796,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperHex_for_u16.
     
@@ -3793,8 +3845,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Binary"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Binary_for_i32.
     
@@ -3841,8 +3894,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Octal"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Octal_for_i32.
     
@@ -3889,8 +3943,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerHex_for_i32.
     
@@ -3937,8 +3992,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperHex_for_i32.
     
@@ -3985,8 +4041,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Binary"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Binary_for_u32.
     
@@ -4033,8 +4090,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Octal"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Octal_for_u32.
     
@@ -4081,8 +4139,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerHex_for_u32.
     
@@ -4129,8 +4188,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperHex_for_u32.
     
@@ -4177,8 +4237,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Binary"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Binary_for_i64.
     
@@ -4225,8 +4286,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Octal"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Octal_for_i64.
     
@@ -4273,8 +4335,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerHex_for_i64.
     
@@ -4321,8 +4384,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperHex_for_i64.
     
@@ -4369,8 +4433,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Binary"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Binary_for_u64.
     
@@ -4417,8 +4482,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Octal"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Octal_for_u64.
     
@@ -4465,8 +4531,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerHex_for_u64.
     
@@ -4513,8 +4580,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperHex_for_u64.
     
@@ -4561,8 +4629,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Binary"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Binary_for_i128.
     
@@ -4609,8 +4678,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Octal"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Octal_for_i128.
     
@@ -4657,8 +4727,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerHex_for_i128.
     
@@ -4705,8 +4776,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperHex_for_i128.
     
@@ -4753,8 +4825,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Binary"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Binary_for_u128.
     
@@ -4801,8 +4874,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Octal"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Octal_for_u128.
     
@@ -4849,8 +4923,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerHex_for_u128.
     
@@ -4897,8 +4972,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperHex"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperHex_for_u128.
     
@@ -5056,8 +5132,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_i8.
     
@@ -5215,8 +5292,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_i16.
     
@@ -5374,8 +5452,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_i32.
     
@@ -5533,8 +5612,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_i64.
     
@@ -5692,8 +5772,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_i128.
     
@@ -5851,8 +5932,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_isize.
     
@@ -6010,8 +6092,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_u8.
     
@@ -6169,8 +6252,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_u16.
     
@@ -6328,8 +6412,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_u32.
     
@@ -6487,8 +6572,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_u64.
     
@@ -6646,8 +6732,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_u128.
     
@@ -6805,8 +6892,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_usize.
     
@@ -7565,8 +7653,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Display"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Display_for_i8.
       
@@ -7684,8 +7773,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Display"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Display_for_u8.
       
@@ -7803,8 +7893,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Display"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Display_for_i16.
       
@@ -7922,8 +8013,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Display"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Display_for_u16.
       
@@ -8041,8 +8133,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Display"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Display_for_i32.
       
@@ -8160,8 +8253,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Display"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Display_for_u32.
       
@@ -8279,8 +8373,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Display"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Display_for_i64.
       
@@ -8398,8 +8493,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Display"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Display_for_u64.
       
@@ -8517,8 +8613,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Display"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Display_for_usize.
       
@@ -8636,8 +8733,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Display"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Display_for_isize.
       
@@ -10219,8 +10317,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::LowerExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_LowerExp_for_i8.
       
@@ -10339,8 +10438,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::LowerExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_LowerExp_for_u8.
       
@@ -10459,8 +10559,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::LowerExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_LowerExp_for_i16.
       
@@ -10579,8 +10680,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::LowerExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_LowerExp_for_u16.
       
@@ -10699,8 +10801,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::LowerExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_LowerExp_for_i32.
       
@@ -10819,8 +10922,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::LowerExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_LowerExp_for_u32.
       
@@ -10939,8 +11043,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::LowerExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_LowerExp_for_i64.
       
@@ -11059,8 +11164,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::LowerExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_LowerExp_for_u64.
       
@@ -11179,8 +11285,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::LowerExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_LowerExp_for_usize.
       
@@ -11299,8 +11406,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::LowerExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_LowerExp_for_isize.
       
@@ -11419,8 +11527,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::UpperExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_UpperExp_for_i8.
       
@@ -11539,8 +11648,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::UpperExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_UpperExp_for_u8.
       
@@ -11659,8 +11769,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::UpperExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_UpperExp_for_i16.
       
@@ -11779,8 +11890,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::UpperExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_UpperExp_for_u16.
       
@@ -11899,8 +12011,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::UpperExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_UpperExp_for_i32.
       
@@ -12019,8 +12132,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::UpperExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_UpperExp_for_u32.
       
@@ -12139,8 +12253,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::UpperExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_UpperExp_for_i64.
       
@@ -12259,8 +12374,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::UpperExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_UpperExp_for_u64.
       
@@ -12379,8 +12495,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::UpperExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_UpperExp_for_usize.
       
@@ -12499,8 +12616,9 @@ Module fmt.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::UpperExp"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_UpperExp_for_isize.
     End imp.
@@ -14069,8 +14187,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerExp"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerExp_for_i128.
     
@@ -14189,8 +14308,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::LowerExp"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_LowerExp_for_u128.
     
@@ -14309,8 +14429,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperExp"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperExp_for_i128.
     
@@ -14429,8 +14550,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::UpperExp"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperExp_for_u128.
     
@@ -15671,8 +15793,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_u128.
     
@@ -15790,8 +15913,9 @@ Module fmt.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_i128.
     

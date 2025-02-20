@@ -31,8 +31,9 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Debug"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
 
@@ -44,8 +45,9 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
   Axiom Implements :
     M.IsTraitInstance
       "core::clone::Clone"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("clone", InstanceField.Method clone) ].
 End Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
 
@@ -57,8 +59,9 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
   Axiom Implements :
     M.IsTraitInstance
       "core::fmt::Display"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
 End Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
 
@@ -66,7 +69,12 @@ Module Impl_core_error_Error_for_boxing_errors_EmptyVec.
   Definition Self : Ty.t := Ty.path "boxing_errors::EmptyVec".
   
   Axiom Implements :
-    M.IsTraitInstance "core::error::Error" Self (* Trait polymorphic types *) [] (* Instance *) [].
+    M.IsTraitInstance
+      "core::error::Error"
+      (* Trait polymorphic consts *) []
+      (* Trait polymorphic types *) []
+      Self
+      (* Instance *) [].
 End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 
 Parameter double_first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.

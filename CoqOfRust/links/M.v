@@ -790,7 +790,7 @@ Module Run.
       (method : PolymorphicFunction.t)
       (k : Value.t -> M) :
     let closure := Value.Closure (existS (_, _) (method generic_consts generic_tys)) in
-    IsTraitMethod.t trait_name self_ty trait_tys method_name method ->
+    IsTraitMethod.t trait_name trait_consts trait_tys self_ty method_name method ->
     {{ k closure 🔽 R, Output }} ->
     {{ LowM.CallPrimitive
         (Primitive.GetTraitMethod

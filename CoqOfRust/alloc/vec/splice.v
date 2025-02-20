@@ -10,12 +10,17 @@ Module vec.
         ty_params := [ "I"; "A" ];
         fields :=
           [
-            ("drain", Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ Ty.associated; A ]);
+            ("drain",
+              Ty.apply
+                (Ty.path "alloc::vec::drain::Drain")
+                []
+                [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item"; A
+                ]);
             ("replace_with", I)
           ];
       } *)
     
-    Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_A_where_core_alloc_Allocator_A_where_core_fmt_Debug_associated_type_for_alloc_vec_splice_Splice_I_A.
+    Module Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_A_where_core_alloc_Allocator_A_where_core_fmt_Debug_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_alloc_vec_splice_Splice_I_A.
       Definition Self (I A : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "alloc::vec::splice::Splice") [] [ I; A ].
       
@@ -86,17 +91,19 @@ Module vec.
         forall (I A : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self I A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self I A)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt I A)) ].
-    End Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_A_where_core_alloc_Allocator_A_where_core_fmt_Debug_associated_type_for_alloc_vec_splice_Splice_I_A.
+    End Impl_core_fmt_Debug_where_core_fmt_Debug_I_where_core_iter_traits_iterator_Iterator_I_where_core_fmt_Debug_A_where_core_alloc_Allocator_A_where_core_fmt_Debug_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_alloc_vec_splice_Splice_I_A.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_alloc_Allocator_A_for_alloc_vec_splice_Splice_I_A.
       Definition Self (I A : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "alloc::vec::splice::Splice") [] [ I; A ].
       
       (*     type Item = I::Item; *)
-      Definition _Item (I A : Ty.t) : Ty.t := Ty.associated.
+      Definition _Item (I A : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item".
       
       (*
           fn next(&mut self) -> Option<Self::Item> {
@@ -110,10 +117,19 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item" ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ Ty.associated; A ],
+                Ty.apply
+                  (Ty.path "alloc::vec::drain::Drain")
+                  []
+                  [
+                    Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item";
+                    A
+                  ],
                 [],
                 [],
                 "next",
@@ -151,7 +167,13 @@ Module vec.
                 ],
               M.get_trait_method (|
                 "core::iter::traits::iterator::Iterator",
-                Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ Ty.associated; A ],
+                Ty.apply
+                  (Ty.path "alloc::vec::drain::Drain")
+                  []
+                  [
+                    Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item";
+                    A
+                  ],
                 [],
                 [],
                 "size_hint",
@@ -176,8 +198,9 @@ Module vec.
         forall (I A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self I A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self I A)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item I A));
@@ -202,10 +225,19 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ],
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item" ],
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
-                Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ Ty.associated; A ],
+                Ty.apply
+                  (Ty.path "alloc::vec::drain::Drain")
+                  []
+                  [
+                    Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item";
+                    A
+                  ],
                 [],
                 [],
                 "next_back",
@@ -230,8 +262,9 @@ Module vec.
         forall (I A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self I A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self I A)
           (* Instance *) [ ("next_back", InstanceField.Method (next_back I A)) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_iter_traits_iterator_Iterator_I_where_core_alloc_Allocator_A_for_alloc_vec_splice_Splice_I_A.
     
@@ -243,8 +276,9 @@ Module vec.
         forall (I A : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self I A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self I A)
           (* Instance *) [].
     End Impl_core_iter_traits_exact_size_ExactSizeIterator_where_core_iter_traits_iterator_Iterator_I_where_core_alloc_Allocator_A_for_alloc_vec_splice_Splice_I_A.
     
@@ -315,13 +349,36 @@ Module vec.
                           Ty.apply
                             (Ty.path "&mut")
                             []
-                            [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ Ty.associated; A ]
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::drain::Drain")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    I
+                                    "Item";
+                                  A
+                                ]
                             ],
                           [],
                           [],
                           "for_each",
                           [],
-                          [ Ty.function [ Ty.associated ] (Ty.tuple []) ]
+                          [
+                            Ty.function
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item"
+                              ]
+                              (Ty.tuple [])
+                          ]
                         |),
                         [
                           M.borrow (|
@@ -335,14 +392,30 @@ Module vec.
                                     Ty.apply
                                       (Ty.path "alloc::vec::drain::Drain")
                                       []
-                                      [ Ty.associated; A ]
+                                      [
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::iterator::Iterator"
+                                          []
+                                          []
+                                          I
+                                          "Item";
+                                        A
+                                      ]
                                   ],
                                 M.get_trait_method (|
                                   "core::iter::traits::iterator::Iterator",
                                   Ty.apply
                                     (Ty.path "alloc::vec::drain::Drain")
                                     []
-                                    [ Ty.associated; A ],
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        I
+                                        "Item";
+                                      A
+                                    ],
                                   [],
                                   [],
                                   "by_ref",
@@ -362,7 +435,18 @@ Module vec.
                               |)
                             |)
                           |);
-                          M.get_function (| "core::mem::drop", [], [ Ty.associated ] |)
+                          M.get_function (|
+                            "core::mem::drop",
+                            [],
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ]
+                          |)
                         ]
                       |)
                     |) in
@@ -379,9 +463,29 @@ Module vec.
                           "iter"
                         |),
                         M.call_closure (|
-                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.associated ],
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ],
                           M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.associated ],
+                            Ty.apply
+                              (Ty.path "slice")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item"
+                              ],
                             "iter",
                             [],
                             []
@@ -435,9 +539,24 @@ Module vec.
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
                                             []
-                                            [ Ty.associated; A ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                I
+                                                "Item";
+                                              A
+                                            ],
                                           [],
-                                          [ Ty.associated ],
+                                          [
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::iterator::Iterator"
+                                              []
+                                              []
+                                              I
+                                              "Item"
+                                          ],
                                           "extend",
                                           [],
                                           [ Ty.apply (Ty.path "&mut") [] [ I ] ]
@@ -454,7 +573,15 @@ Module vec.
                                                     Ty.apply
                                                       (Ty.path "alloc::vec::Vec")
                                                       []
-                                                      [ Ty.associated; A ]
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "core::iter::traits::iterator::Iterator"
+                                                          []
+                                                          []
+                                                          I
+                                                          "Item";
+                                                        A
+                                                      ]
                                                   ],
                                                 M.get_associated_function (|
                                                   Ty.apply
@@ -464,7 +591,15 @@ Module vec.
                                                       Ty.apply
                                                         (Ty.path "alloc::vec::Vec")
                                                         []
-                                                        [ Ty.associated; A ]
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "core::iter::traits::iterator::Iterator"
+                                                            []
+                                                            []
+                                                            I
+                                                            "Item";
+                                                          A
+                                                        ]
                                                     ],
                                                   "as_mut",
                                                   [],
@@ -535,7 +670,15 @@ Module vec.
                                         Ty.apply
                                           (Ty.path "alloc::vec::drain::Drain")
                                           []
-                                          [ Ty.associated; A ],
+                                          [
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::iterator::Iterator"
+                                              []
+                                              []
+                                              I
+                                              "Item";
+                                            A
+                                          ],
                                         "fill",
                                         [],
                                         [ I ]
@@ -637,7 +780,15 @@ Module vec.
                                             Ty.apply
                                               (Ty.path "alloc::vec::drain::Drain")
                                               []
-                                              [ Ty.associated; A ],
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::iter::traits::iterator::Iterator"
+                                                  []
+                                                  []
+                                                  I
+                                                  "Item";
+                                                A
+                                              ],
                                             "move_tail",
                                             [],
                                             []
@@ -670,7 +821,15 @@ Module vec.
                                                         Ty.apply
                                                           (Ty.path "alloc::vec::drain::Drain")
                                                           []
-                                                          [ Ty.associated; A ],
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "core::iter::traits::iterator::Iterator"
+                                                              []
+                                                              []
+                                                              I
+                                                              "Item";
+                                                            A
+                                                          ],
                                                         "fill",
                                                         [],
                                                         [ I ]
@@ -721,19 +880,43 @@ Module vec.
                               Ty.apply
                                 (Ty.path "alloc::vec::into_iter::IntoIter")
                                 []
-                                [ Ty.associated; Ty.path "alloc::alloc::Global" ] :=
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    I
+                                    "Item";
+                                  Ty.path "alloc::alloc::Global"
+                                ] :=
                             M.alloc (|
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "alloc::vec::into_iter::IntoIter")
                                   []
-                                  [ Ty.associated; Ty.path "alloc::alloc::Global" ],
+                                  [
+                                    Ty.associated_in_trait
+                                      "core::iter::traits::iterator::Iterator"
+                                      []
+                                      []
+                                      I
+                                      "Item";
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 M.get_trait_method (|
                                   "core::iter::traits::collect::IntoIterator",
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
                                     []
-                                    [ Ty.associated; Ty.path "alloc::alloc::Global" ],
+                                    [
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        I
+                                        "Item";
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
                                   [],
                                   [],
                                   "into_iter",
@@ -745,7 +928,15 @@ Module vec.
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
                                       []
-                                      [ Ty.associated; Ty.path "alloc::alloc::Global" ],
+                                      [
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::iterator::Iterator"
+                                          []
+                                          []
+                                          I
+                                          "Item";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.apply (Ty.path "&mut") [] [ I ],
@@ -757,7 +948,15 @@ Module vec.
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
                                           []
-                                          [ Ty.associated; Ty.path "alloc::alloc::Global" ]
+                                          [
+                                            Ty.associated_in_trait
+                                              "core::iter::traits::iterator::Iterator"
+                                              []
+                                              []
+                                              I
+                                              "Item";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
                                       ]
                                     |),
                                     [
@@ -809,7 +1008,15 @@ Module vec.
                                               Ty.apply
                                                 (Ty.path "alloc::vec::into_iter::IntoIter")
                                                 []
-                                                [ Ty.associated; Ty.path "alloc::alloc::Global" ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::iter::traits::iterator::Iterator"
+                                                    []
+                                                    []
+                                                    I
+                                                    "Item";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
                                               [],
                                               [],
                                               "len",
@@ -834,7 +1041,15 @@ Module vec.
                                           Ty.apply
                                             (Ty.path "alloc::vec::drain::Drain")
                                             []
-                                            [ Ty.associated; A ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                I
+                                                "Item";
+                                              A
+                                            ],
                                           "move_tail",
                                           [],
                                           []
@@ -855,7 +1070,15 @@ Module vec.
                                               Ty.apply
                                                 (Ty.path "alloc::vec::into_iter::IntoIter")
                                                 []
-                                                [ Ty.associated; Ty.path "alloc::alloc::Global" ],
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "core::iter::traits::iterator::Iterator"
+                                                    []
+                                                    []
+                                                    I
+                                                    "Item";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ],
                                               [],
                                               [],
                                               "len",
@@ -875,14 +1098,30 @@ Module vec.
                                           Ty.apply
                                             (Ty.path "alloc::vec::drain::Drain")
                                             []
-                                            [ Ty.associated; A ],
+                                            [
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::iterator::Iterator"
+                                                []
+                                                []
+                                                I
+                                                "Item";
+                                              A
+                                            ],
                                           "fill",
                                           [],
                                           [
                                             Ty.apply
                                               (Ty.path "alloc::vec::into_iter::IntoIter")
                                               []
-                                              [ Ty.associated; Ty.path "alloc::alloc::Global" ]
+                                              [
+                                                Ty.associated_in_trait
+                                                  "core::iter::traits::iterator::Iterator"
+                                                  []
+                                                  []
+                                                  I
+                                                  "Item";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
                                           ]
                                         |),
                                         [
@@ -986,7 +1225,12 @@ Module vec.
                                                                   "alloc::vec::into_iter::IntoIter")
                                                                 []
                                                                 [
-                                                                  Ty.associated;
+                                                                  Ty.associated_in_trait
+                                                                    "core::iter::traits::iterator::Iterator"
+                                                                    []
+                                                                    []
+                                                                    I
+                                                                    "Item";
                                                                   Ty.path "alloc::alloc::Global"
                                                                 ],
                                                               [],
@@ -1134,8 +1378,9 @@ Module vec.
         forall (I A : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self I A)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self I A)
           (* Instance *) [ ("drop", InstanceField.Method (drop I A)) ].
     End Impl_core_ops_drop_Drop_where_core_iter_traits_iterator_Iterator_I_where_core_alloc_Allocator_A_for_alloc_vec_splice_Splice_I_A.
     

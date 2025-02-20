@@ -863,8 +863,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_slice_ascii_EscapeByte.
     
@@ -948,8 +949,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::clone::Clone"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_slice_ascii_EscapeAscii.
     
@@ -1172,8 +1174,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [
             ("Item", InstanceField.Ty _Item);
@@ -1233,8 +1236,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("next_back", InstanceField.Method next_back) ].
     End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_core_slice_ascii_EscapeAscii.
     
@@ -1244,8 +1248,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_slice_ascii_EscapeAscii.
     
@@ -2596,8 +2601,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Display"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Display_for_core_slice_ascii_EscapeAscii.
     
@@ -2656,8 +2662,9 @@ Module slice.
       Axiom Implements :
         M.IsTraitInstance
           "core::fmt::Debug"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_slice_ascii_EscapeAscii.
     

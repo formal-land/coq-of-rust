@@ -181,10 +181,21 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                       val))
                 ]
               |) in
-            let~ items : Ty.associated :=
+            let~ items :
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  impl_IntoIterator_Item___T_
+                  "IntoIter" :=
               M.alloc (|
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    impl_IntoIterator_Item___T_
+                    "IntoIter",
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     impl_IntoIterator_Item___T_,
@@ -209,7 +220,12 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                             Ty.apply (Ty.path "core::option::Option") [] [ T ],
                             M.get_trait_method (|
                               "core::iter::traits::iterator::Iterator",
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "core::iter::traits::collect::IntoIterator"
+                                []
+                                []
+                                impl_IntoIterator_Item___T_
+                                "IntoIter",
                               [],
                               [],
                               "next",
@@ -390,10 +406,20 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         (M.match_operator (|
                           M.alloc (|
                             M.call_closure (|
-                              Ty.associated,
+                              Ty.associated_in_trait
+                                "core::iter::traits::collect::IntoIterator"
+                                []
+                                []
+                                impl_IntoIterator_Item___T_
+                                "IntoIter",
                               M.get_trait_method (|
                                 "core::iter::traits::collect::IntoIterator",
-                                Ty.associated,
+                                Ty.associated_in_trait
+                                  "core::iter::traits::collect::IntoIterator"
+                                  []
+                                  []
+                                  impl_IntoIterator_Item___T_
+                                  "IntoIter",
                                 [],
                                 [],
                                 "into_iter",
@@ -416,7 +442,12 @@ Definition fmt_list (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                             Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                             M.get_trait_method (|
                                               "core::iter::traits::iterator::Iterator",
-                                              Ty.associated,
+                                              Ty.associated_in_trait
+                                                "core::iter::traits::collect::IntoIterator"
+                                                []
+                                                []
+                                                impl_IntoIterator_Item___T_
+                                                "IntoIter",
                                               [],
                                               [],
                                               "next",

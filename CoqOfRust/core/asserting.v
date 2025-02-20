@@ -36,9 +36,9 @@ Module asserting.
       forall (E : Ty.t),
       M.IsTraitInstance
         "core::asserting::TryCaptureGeneric"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ E; Ty.path "core::asserting::TryCaptureWithoutDebug" ]
         (Self E)
-        (* Trait polymorphic types *)
-        [ (* E *) E; (* M *) Ty.path "core::asserting::TryCaptureWithoutDebug" ]
         (* Instance *) [ ("try_capture", InstanceField.Method (try_capture E)) ].
   End Impl_core_asserting_TryCaptureGeneric_E_core_asserting_TryCaptureWithoutDebug_for_ref__core_asserting_Wrapper_ref__E.
   
@@ -79,8 +79,9 @@ Module asserting.
       forall (E : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self E)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self E)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt E)) ].
   End Impl_core_fmt_Debug_for_core_asserting_Capture_E_core_asserting_TryCaptureWithoutDebug.
   
@@ -146,9 +147,9 @@ Module asserting.
       forall (E : Ty.t),
       M.IsTraitInstance
         "core::asserting::TryCapturePrintable"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ E; Ty.path "core::asserting::TryCaptureWithDebug" ]
         (Self E)
-        (* Trait polymorphic types *)
-        [ (* E *) E; (* M *) Ty.path "core::asserting::TryCaptureWithDebug" ]
         (* Instance *) [ ("try_capture", InstanceField.Method (try_capture E)) ].
   End Impl_core_asserting_TryCapturePrintable_where_core_asserting_Printable_E_E_core_asserting_TryCaptureWithDebug_for_core_asserting_Wrapper_ref__E.
   
@@ -238,8 +239,9 @@ Module asserting.
       forall (E : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self E)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self E)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt E)) ].
   End Impl_core_fmt_Debug_where_core_asserting_Printable_E_for_core_asserting_Capture_E_core_asserting_TryCaptureWithDebug.
   
@@ -302,8 +304,9 @@ Module asserting.
       forall (T : Ty.t),
       M.IsTraitInstance
         "core::asserting::Printable"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [].
   End Impl_core_asserting_Printable_where_core_marker_Copy_T_where_core_fmt_Debug_T_for_T.
 End asserting.

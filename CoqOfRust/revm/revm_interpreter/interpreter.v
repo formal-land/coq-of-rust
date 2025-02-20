@@ -9,19 +9,73 @@ Module interpreter.
       ty_params := [ "WIRE" ];
       fields :=
         [
-          ("bytecode", Ty.associated);
-          ("stack", Ty.associated);
-          ("return_data", Ty.associated);
-          ("memory", Ty.associated);
-          ("input", Ty.associated);
-          ("sub_routine", Ty.associated);
-          ("control", Ty.associated);
-          ("runtime_flag", Ty.associated);
-          ("extend", Ty.associated)
+          ("bytecode",
+            Ty.associated_in_trait
+              "revm_interpreter::interpreter_types::InterpreterTypes"
+              []
+              []
+              WIRE
+              "Bytecode");
+          ("stack",
+            Ty.associated_in_trait
+              "revm_interpreter::interpreter_types::InterpreterTypes"
+              []
+              []
+              WIRE
+              "Stack");
+          ("return_data",
+            Ty.associated_in_trait
+              "revm_interpreter::interpreter_types::InterpreterTypes"
+              []
+              []
+              WIRE
+              "ReturnData");
+          ("memory",
+            Ty.associated_in_trait
+              "revm_interpreter::interpreter_types::InterpreterTypes"
+              []
+              []
+              WIRE
+              "Memory");
+          ("input",
+            Ty.associated_in_trait
+              "revm_interpreter::interpreter_types::InterpreterTypes"
+              []
+              []
+              WIRE
+              "Input");
+          ("sub_routine",
+            Ty.associated_in_trait
+              "revm_interpreter::interpreter_types::InterpreterTypes"
+              []
+              []
+              WIRE
+              "SubRoutineStack");
+          ("control",
+            Ty.associated_in_trait
+              "revm_interpreter::interpreter_types::InterpreterTypes"
+              []
+              []
+              WIRE
+              "Control");
+          ("runtime_flag",
+            Ty.associated_in_trait
+              "revm_interpreter::interpreter_types::InterpreterTypes"
+              []
+              []
+              WIRE
+              "RuntimeFlag");
+          ("extend",
+            Ty.associated_in_trait
+              "revm_interpreter::interpreter_types::InterpreterTypes"
+              []
+              []
+              WIRE
+              "Extend")
         ];
     } *)
   
-  Module Impl_core_fmt_Debug_where_core_fmt_Debug_WIRE_where_revm_interpreter_interpreter_types_InterpreterTypes_WIRE_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_for_revm_interpreter_interpreter_Interpreter_WIRE.
+  Module Impl_core_fmt_Debug_where_core_fmt_Debug_WIRE_where_revm_interpreter_interpreter_types_InterpreterTypes_WIRE_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Bytecode_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Stack_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_ReturnData_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Memory_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Input_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_SubRoutineStack_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Control_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_RuntimeFlag_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Extend_for_revm_interpreter_interpreter_Interpreter_WIRE.
     Definition Self (WIRE : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ WIRE ].
     
@@ -270,12 +324,13 @@ Module interpreter.
       forall (WIRE : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self WIRE)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self WIRE)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt WIRE)) ].
-  End Impl_core_fmt_Debug_where_core_fmt_Debug_WIRE_where_revm_interpreter_interpreter_types_InterpreterTypes_WIRE_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_where_core_fmt_Debug_associated_type_for_revm_interpreter_interpreter_Interpreter_WIRE.
+  End Impl_core_fmt_Debug_where_core_fmt_Debug_WIRE_where_revm_interpreter_interpreter_types_InterpreterTypes_WIRE_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Bytecode_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Stack_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_ReturnData_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Memory_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Input_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_SubRoutineStack_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Control_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_RuntimeFlag_where_core_fmt_Debug_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Extend_for_revm_interpreter_interpreter_Interpreter_WIRE.
   
-  Module Impl_core_clone_Clone_where_core_clone_Clone_WIRE_where_revm_interpreter_interpreter_types_InterpreterTypes_WIRE_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_for_revm_interpreter_interpreter_Interpreter_WIRE.
+  Module Impl_core_clone_Clone_where_core_clone_Clone_WIRE_where_revm_interpreter_interpreter_types_InterpreterTypes_WIRE_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Bytecode_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Stack_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_ReturnData_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Memory_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Input_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_SubRoutineStack_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Control_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_RuntimeFlag_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Extend_for_revm_interpreter_interpreter_Interpreter_WIRE.
     Definition Self (WIRE : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ WIRE ].
     
@@ -291,10 +346,20 @@ Module interpreter.
             [
               ("bytecode",
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                    []
+                    []
+                    WIRE
+                    "Bytecode",
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "revm_interpreter::interpreter_types::InterpreterTypes"
+                      []
+                      []
+                      WIRE
+                      "Bytecode",
                     [],
                     [],
                     "clone",
@@ -319,10 +384,20 @@ Module interpreter.
                 |));
               ("stack",
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                    []
+                    []
+                    WIRE
+                    "Stack",
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "revm_interpreter::interpreter_types::InterpreterTypes"
+                      []
+                      []
+                      WIRE
+                      "Stack",
                     [],
                     [],
                     "clone",
@@ -347,10 +422,20 @@ Module interpreter.
                 |));
               ("return_data",
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                    []
+                    []
+                    WIRE
+                    "ReturnData",
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "revm_interpreter::interpreter_types::InterpreterTypes"
+                      []
+                      []
+                      WIRE
+                      "ReturnData",
                     [],
                     [],
                     "clone",
@@ -375,10 +460,20 @@ Module interpreter.
                 |));
               ("memory",
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                    []
+                    []
+                    WIRE
+                    "Memory",
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "revm_interpreter::interpreter_types::InterpreterTypes"
+                      []
+                      []
+                      WIRE
+                      "Memory",
                     [],
                     [],
                     "clone",
@@ -403,10 +498,20 @@ Module interpreter.
                 |));
               ("input",
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                    []
+                    []
+                    WIRE
+                    "Input",
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "revm_interpreter::interpreter_types::InterpreterTypes"
+                      []
+                      []
+                      WIRE
+                      "Input",
                     [],
                     [],
                     "clone",
@@ -431,10 +536,20 @@ Module interpreter.
                 |));
               ("sub_routine",
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                    []
+                    []
+                    WIRE
+                    "SubRoutineStack",
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "revm_interpreter::interpreter_types::InterpreterTypes"
+                      []
+                      []
+                      WIRE
+                      "SubRoutineStack",
                     [],
                     [],
                     "clone",
@@ -459,10 +574,20 @@ Module interpreter.
                 |));
               ("control",
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                    []
+                    []
+                    WIRE
+                    "Control",
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "revm_interpreter::interpreter_types::InterpreterTypes"
+                      []
+                      []
+                      WIRE
+                      "Control",
                     [],
                     [],
                     "clone",
@@ -487,10 +612,20 @@ Module interpreter.
                 |));
               ("runtime_flag",
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                    []
+                    []
+                    WIRE
+                    "RuntimeFlag",
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "revm_interpreter::interpreter_types::InterpreterTypes"
+                      []
+                      []
+                      WIRE
+                      "RuntimeFlag",
                     [],
                     [],
                     "clone",
@@ -515,10 +650,20 @@ Module interpreter.
                 |));
               ("extend",
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                    []
+                    []
+                    WIRE
+                    "Extend",
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "revm_interpreter::interpreter_types::InterpreterTypes"
+                      []
+                      []
+                      WIRE
+                      "Extend",
                     [],
                     [],
                     "clone",
@@ -549,10 +694,11 @@ Module interpreter.
       forall (WIRE : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self WIRE)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self WIRE)
         (* Instance *) [ ("clone", InstanceField.Method (clone WIRE)) ].
-  End Impl_core_clone_Clone_where_core_clone_Clone_WIRE_where_revm_interpreter_interpreter_types_InterpreterTypes_WIRE_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_where_core_clone_Clone_associated_type_for_revm_interpreter_interpreter_Interpreter_WIRE.
+  End Impl_core_clone_Clone_where_core_clone_Clone_WIRE_where_revm_interpreter_interpreter_types_InterpreterTypes_WIRE_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Bytecode_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Stack_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_ReturnData_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Memory_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Input_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_SubRoutineStack_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Control_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_RuntimeFlag_where_core_clone_Clone_associated_in_trait_revm_interpreter_interpreter_types_InterpreterTypes___WIRE_Extend_for_revm_interpreter_interpreter_Interpreter_WIRE.
   
   Module Impl_revm_interpreter_interpreter_Interpreter_revm_interpreter_interpreter_EthInterpreter_EXT_MG.
     Definition Self (EXT MG : Ty.t) : Ty.t :=
@@ -780,8 +926,9 @@ Module interpreter.
       forall (EXT MG : Ty.t),
       M.IsTraitInstance
         "revm_interpreter::interpreter_types::InterpreterTypes"
-        (Self EXT MG)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self EXT MG)
         (* Instance *)
         [
           ("Stack", InstanceField.Ty (_Stack EXT MG));
@@ -934,8 +1081,9 @@ Module interpreter.
       forall (WIRE HOST : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self WIRE HOST)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self WIRE HOST)
         (* Instance *) [ ("clone", InstanceField.Method (clone WIRE HOST)) ].
   End Impl_core_clone_Clone_where_revm_interpreter_interpreter_types_InterpreterTypes_WIRE_for_revm_interpreter_interpreter_EthInstructionProvider_WIRE_HOST.
   
@@ -1173,8 +1321,9 @@ Module interpreter.
       forall (WIRE HOST : Ty.t),
       M.IsTraitInstance
         "revm_interpreter::interpreter::InstructionProvider"
-        (Self WIRE HOST)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self WIRE HOST)
         (* Instance *)
         [
           ("WIRE", InstanceField.Ty (_WIRE WIRE HOST));
@@ -1251,8 +1400,9 @@ Module interpreter.
       forall (IW H : Ty.t),
       M.IsTraitInstance
         "revm_interpreter::table::CustomInstruction"
-        (Self IW H)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self IW H)
         (* Instance *)
         [
           ("Wire", InstanceField.Ty (_Wire IW H));
@@ -1298,7 +1448,12 @@ Module interpreter.
                   Ty.path "u8",
                   M.get_trait_method (|
                     "revm_interpreter::interpreter_types::Jumps",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "revm_interpreter::interpreter_types::InterpreterTypes"
+                      []
+                      []
+                      IW
+                      "Bytecode",
                     [],
                     [],
                     "opcode",
@@ -1323,7 +1478,12 @@ Module interpreter.
                   Ty.tuple [],
                   M.get_trait_method (|
                     "revm_interpreter::interpreter_types::Jumps",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "revm_interpreter::interpreter_types::InterpreterTypes"
+                      []
+                      []
+                      IW
+                      "Bytecode",
                     [],
                     [],
                     "relative_jump",
@@ -1427,7 +1587,12 @@ Module interpreter.
                       Ty.tuple [],
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::LoopControl",
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                          []
+                          []
+                          IW
+                          "Control",
                         [],
                         [],
                         "set_next_action",
@@ -1478,7 +1643,12 @@ Module interpreter.
                                             "revm_interpreter::instruction_result::InstructionResult",
                                           M.get_trait_method (|
                                             "revm_interpreter::interpreter_types::LoopControl",
-                                            Ty.associated,
+                                            Ty.associated_in_trait
+                                              "revm_interpreter::interpreter_types::InterpreterTypes"
+                                              []
+                                              []
+                                              IW
+                                              "Control",
                                             [],
                                             [],
                                             "instruction_result",
@@ -1556,7 +1726,12 @@ Module interpreter.
                       Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
                       M.get_trait_method (|
                         "revm_interpreter::interpreter_types::LoopControl",
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "revm_interpreter::interpreter_types::InterpreterTypes"
+                          []
+                          []
+                          IW
+                          "Control",
                         [],
                         [],
                         "take_next_action",
@@ -1617,7 +1792,12 @@ Module interpreter.
                                 Ty.path "revm_interpreter::instruction_result::InstructionResult",
                                 M.get_trait_method (|
                                   "revm_interpreter::interpreter_types::LoopControl",
-                                  Ty.associated,
+                                  Ty.associated_in_trait
+                                    "revm_interpreter::interpreter_types::InterpreterTypes"
+                                    []
+                                    []
+                                    IW
+                                    "Control",
                                   [],
                                   [],
                                   "instruction_result",
@@ -1656,7 +1836,12 @@ Module interpreter.
                                       [ Ty.path "revm_interpreter::gas::Gas" ],
                                     M.get_trait_method (|
                                       "revm_interpreter::interpreter_types::LoopControl",
-                                      Ty.associated,
+                                      Ty.associated_in_trait
+                                        "revm_interpreter::interpreter_types::InterpreterTypes"
+                                        []
+                                        []
+                                        IW
+                                        "Control",
                                       [],
                                       [],
                                       "gas",
@@ -1806,8 +1991,9 @@ Module interpreter.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_interpreter_interpreter_InterpreterResult.
   
@@ -1893,8 +2079,9 @@ Module interpreter.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_interpreter_interpreter_InterpreterResult.
   
@@ -1904,8 +2091,9 @@ Module interpreter.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_InterpreterResult.
   
@@ -2021,8 +2209,9 @@ Module interpreter.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_InterpreterResult.
   
@@ -2065,8 +2254,9 @@ Module interpreter.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_interpreter_interpreter_InterpreterResult.

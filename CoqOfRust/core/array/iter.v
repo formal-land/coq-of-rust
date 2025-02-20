@@ -112,8 +112,9 @@ Module array.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::collect::IntoIterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item N T));
@@ -1313,8 +1314,9 @@ Module array.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::iterator::Iterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item N T));
@@ -1861,8 +1863,9 @@ Module array.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::double_ended::DoubleEndedIterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *)
           [
             ("next_back", InstanceField.Method (next_back N T));
@@ -1927,8 +1930,9 @@ Module array.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [ ("drop", InstanceField.Method (drop N T)) ].
     End Impl_core_ops_drop_Drop_for_core_array_iter_IntoIter_N_T.
     
@@ -2021,8 +2025,9 @@ Module array.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::exact_size::ExactSizeIterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *)
           [
             ("len", InstanceField.Method (len N T));
@@ -2038,8 +2043,9 @@ Module array.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::FusedIterator"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_FusedIterator_for_core_array_iter_IntoIter_N_T.
     
@@ -2051,8 +2057,9 @@ Module array.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::traits::marker::TrustedLen"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [].
     End Impl_core_iter_traits_marker_TrustedLen_for_core_array_iter_IntoIter_N_T.
     
@@ -2066,8 +2073,9 @@ Module array.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::array::iter::NonDrop"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_array_iter_NonDrop_where_core_marker_Copy_T_for_T.
     
@@ -2085,8 +2093,9 @@ Module array.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::iter::adapters::zip::TrustedRandomAccessNoCoerce"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *)
           [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT N T))
           ].
@@ -2425,8 +2434,9 @@ Module array.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [ ("clone", InstanceField.Method (clone N T)) ].
     End Impl_core_clone_Clone_where_core_clone_Clone_T_for_core_array_iter_IntoIter_N_T.
     
@@ -2533,8 +2543,9 @@ Module array.
         forall (N : Value.t) (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self N T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self N T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt N T)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_array_iter_IntoIter_N_T.
   End iter.

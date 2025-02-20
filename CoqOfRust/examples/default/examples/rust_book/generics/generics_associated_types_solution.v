@@ -158,8 +158,9 @@ Module Impl_generics_associated_types_solution_Contains_for_generics_associated_
   Axiom Implements :
     M.IsTraitInstance
       "generics_associated_types_solution::Contains"
-      Self
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      Self
       (* Instance *)
       [
         ("A", InstanceField.Ty _A);
@@ -227,7 +228,7 @@ Definition get_a (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (let container := M.alloc (| container |) in
       M.call_closure (|
-        Ty.associated,
+        Ty.associated_in_trait "generics_associated_types_solution::Contains" [] [] C "A",
         M.get_trait_method (|
           "generics_associated_types_solution::Contains",
           C,

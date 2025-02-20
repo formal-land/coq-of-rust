@@ -19,7 +19,7 @@ Module unit_.
             Ty.tuple [],
             M.get_trait_method (|
               "core::iter::traits::iterator::Iterator",
-              Ty.associated,
+              Ty.associated_in_trait "core::iter::traits::collect::IntoIterator" [] [] I "IntoIter",
               [],
               [],
               "for_each",
@@ -28,7 +28,12 @@ Module unit_.
             |),
             [
               M.call_closure (|
-                Ty.associated,
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter",
                 M.get_trait_method (|
                   "core::iter::traits::collect::IntoIterator",
                   I,
@@ -60,8 +65,9 @@ Module unit_.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.tuple [] ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.tuple [] ]
         (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
   End Impl_core_iter_traits_collect_FromIterator_Tuple__for_Tuple_.
 End unit_.

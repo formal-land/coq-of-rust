@@ -53,28 +53,28 @@ Smpl Add apply run_max_by : run_closure.
 Module Ord.
   Definition Run_cmp (Self : Set) `{Link Self} : Set :=
     {cmp @
-      IsTraitMethod.t "core::cmp::Ord" (Φ Self) [] "cmp" cmp *
+      IsTraitMethod.t "core::cmp::Ord" [] [] (Φ Self) "cmp" cmp *
       forall (self other : Ref.t Pointer.Kind.Ref Self),
         {{ cmp [] [] [ φ self; φ other ] 🔽 Ordering.t }}
     }.
 
   Definition Run_max (Self : Set) `{Link Self} : Set :=
     {max @
-      IsTraitMethod.t "core::cmp::Ord" (Φ Self) [] "max" max *
+      IsTraitMethod.t "core::cmp::Ord" [] [] (Φ Self) "max" max *
       forall (self other : Self),
         {{ max [] [] [ φ self; φ other ] 🔽 Self }}
     }.
 
   Definition Run_min (Self : Set) `{Link Self} : Set :=
     {min @
-      IsTraitMethod.t "core::cmp::Ord" (Φ Self) [] "min" min *
+      IsTraitMethod.t "core::cmp::Ord" [] [] (Φ Self) "min" min *
       forall (self other : Self),
         {{ min [] [] [ φ self; φ other ] 🔽 Self }}
     }.
 
   Definition Run_clamp (Self : Set) `{Link Self} : Set :=
     {clamp @
-      IsTraitMethod.t "core::cmp::Ord" (Φ Self) [] "clamp" clamp *
+      IsTraitMethod.t "core::cmp::Ord" [] [] (Φ Self) "clamp" clamp *
       forall (self min max : Self),
         {{ clamp [] [] [ φ self; φ min; φ max ] 🔽 Self }}
     }.

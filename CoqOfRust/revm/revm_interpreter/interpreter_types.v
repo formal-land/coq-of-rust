@@ -24,7 +24,12 @@ Module interpreter_types.
           let offset := M.alloc (| offset |) in
           let len := M.alloc (| len |) in
           M.call_closure (|
-            Ty.associated,
+            Ty.associated_in_trait
+              "revm_interpreter::interpreter_types::MemoryTrait"
+              []
+              []
+              Self
+              "{{synthetic}}",
             M.get_trait_method (|
               "revm_interpreter::interpreter_types::MemoryTrait",
               Self,

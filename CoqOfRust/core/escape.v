@@ -816,8 +816,9 @@ Module escape.
       forall (N : Value.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self N)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N)
         (* Instance *) [ ("clone", InstanceField.Method (clone N)) ].
   End Impl_core_clone_Clone_for_core_escape_EscapeIterInner_N.
   
@@ -892,8 +893,9 @@ Module escape.
       forall (N : Value.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self N)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self N)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt N)) ].
   End Impl_core_fmt_Debug_for_core_escape_EscapeIterInner_N.
   

@@ -17,8 +17,9 @@ Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTup
     forall (A B : Ty.t),
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (Self A B)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self A B)
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomTuple_A_B.
 
@@ -96,8 +97,9 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
     forall (A B : Ty.t),
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (Self A B)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self A B)
       (* Instance *) [ ("eq", InstanceField.Method (eq A B)) ].
 End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomTuple_A_B.
 
@@ -118,8 +120,9 @@ Module Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStr
     forall (A B : Ty.t),
     M.IsTraitInstance
       "core::marker::StructuralPartialEq"
-      (Self A B)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self A B)
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_generics_phantom_type_PhantomStruct_A_B.
 
@@ -197,8 +200,9 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
     forall (A B : Ty.t),
     M.IsTraitInstance
       "core::cmp::PartialEq"
-      (Self A B)
+      (* Trait polymorphic consts *) []
       (* Trait polymorphic types *) []
+      (Self A B)
       (* Instance *) [ ("eq", InstanceField.Method (eq A B)) ].
 End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_B_for_generics_phantom_type_PhantomStruct_A_B.
 

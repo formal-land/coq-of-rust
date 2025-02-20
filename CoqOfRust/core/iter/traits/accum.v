@@ -77,8 +77,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_i8.
       
@@ -149,8 +150,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_i8.
       
@@ -235,8 +237,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__i8_for_i8.
       
@@ -321,8 +324,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i8" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__i8_for_i8.
       
@@ -393,8 +397,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_i16.
       
@@ -465,8 +470,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_i16.
       
@@ -551,8 +557,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__i16_for_i16.
       
@@ -637,8 +644,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i16" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__i16_for_i16.
       
@@ -709,8 +717,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_i32.
       
@@ -781,8 +790,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_i32.
       
@@ -867,8 +877,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__i32_for_i32.
       
@@ -953,8 +964,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__i32_for_i32.
       
@@ -1025,8 +1037,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_i64.
       
@@ -1097,8 +1110,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_i64.
       
@@ -1183,8 +1197,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__i64_for_i64.
       
@@ -1269,8 +1284,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i64" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__i64_for_i64.
       
@@ -1341,8 +1357,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_i128.
       
@@ -1413,8 +1430,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_i128.
       
@@ -1499,8 +1517,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "i128" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i128" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__i128_for_i128.
       
@@ -1585,8 +1604,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "i128" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "i128" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__i128_for_i128.
       
@@ -1657,8 +1677,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_isize.
       
@@ -1729,8 +1750,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_isize.
       
@@ -1816,8 +1838,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "isize" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "isize" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__isize_for_isize.
       
@@ -1903,8 +1926,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "isize" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "isize" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__isize_for_isize.
       
@@ -1975,8 +1999,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_u8.
       
@@ -2047,8 +2072,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_u8.
       
@@ -2133,8 +2159,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__u8_for_u8.
       
@@ -2219,8 +2246,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__u8_for_u8.
       
@@ -2291,8 +2319,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_u16.
       
@@ -2363,8 +2392,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_u16.
       
@@ -2449,8 +2479,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__u16_for_u16.
       
@@ -2535,8 +2566,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__u16_for_u16.
       
@@ -2607,8 +2639,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_u32.
       
@@ -2679,8 +2712,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_u32.
       
@@ -2765,8 +2799,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__u32_for_u32.
       
@@ -2851,8 +2886,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__u32_for_u32.
       
@@ -2923,8 +2959,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_u64.
       
@@ -2995,8 +3032,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_u64.
       
@@ -3081,8 +3119,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__u64_for_u64.
       
@@ -3167,8 +3206,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__u64_for_u64.
       
@@ -3239,8 +3279,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_u128.
       
@@ -3311,8 +3352,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_u128.
       
@@ -3397,8 +3439,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__u128_for_u128.
       
@@ -3483,8 +3526,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__u128_for_u128.
       
@@ -3555,8 +3599,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_usize.
       
@@ -3627,8 +3672,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_usize.
       
@@ -3714,8 +3760,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__usize_for_usize.
       
@@ -3801,8 +3848,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__usize_for_usize.
       
@@ -3907,8 +3955,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i8.
       
@@ -4013,8 +4062,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i8.
       
@@ -4132,15 +4182,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ]
             ]
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i8_for_core_num_wrapping_Wrapping_i8.
       
@@ -4258,15 +4308,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ]
             ]
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i8_for_core_num_wrapping_Wrapping_i8.
       
@@ -4371,8 +4421,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i16.
       
@@ -4477,8 +4528,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i16.
       
@@ -4596,15 +4648,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ]
             ]
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i16_for_core_num_wrapping_Wrapping_i16.
       
@@ -4722,15 +4774,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ]
             ]
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i16_for_core_num_wrapping_Wrapping_i16.
       
@@ -4835,8 +4887,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i32.
       
@@ -4941,8 +4994,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i32.
       
@@ -5060,15 +5114,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ]
             ]
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i32_for_core_num_wrapping_Wrapping_i32.
       
@@ -5186,15 +5240,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ]
             ]
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i32_for_core_num_wrapping_Wrapping_i32.
       
@@ -5299,8 +5353,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i64.
       
@@ -5405,8 +5460,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i64.
       
@@ -5524,15 +5580,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ]
             ]
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i64_for_core_num_wrapping_Wrapping_i64.
       
@@ -5650,15 +5706,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ]
             ]
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i64_for_core_num_wrapping_Wrapping_i64.
       
@@ -5766,8 +5822,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i128.
       
@@ -5875,8 +5932,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i128.
       
@@ -5997,15 +6055,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ]
             ]
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i128_for_core_num_wrapping_Wrapping_i128.
       
@@ -6126,15 +6184,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ]
             ]
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i128_for_core_num_wrapping_Wrapping_i128.
       
@@ -6245,8 +6303,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_isize.
       
@@ -6357,8 +6416,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_isize.
       
@@ -6479,15 +6539,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ]
             ]
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_isize_for_core_num_wrapping_Wrapping_isize.
       
@@ -6608,15 +6668,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ]
             ]
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_isize_for_core_num_wrapping_Wrapping_isize.
       
@@ -6721,8 +6781,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u8.
       
@@ -6827,8 +6888,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u8.
       
@@ -6946,15 +7008,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ]
             ]
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u8_for_core_num_wrapping_Wrapping_u8.
       
@@ -7072,15 +7134,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ]
             ]
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u8_for_core_num_wrapping_Wrapping_u8.
       
@@ -7185,8 +7247,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u16.
       
@@ -7291,8 +7354,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u16.
       
@@ -7410,15 +7474,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ]
             ]
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u16_for_core_num_wrapping_Wrapping_u16.
       
@@ -7536,15 +7600,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ]
             ]
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u16_for_core_num_wrapping_Wrapping_u16.
       
@@ -7649,8 +7713,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u32.
       
@@ -7755,8 +7820,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u32.
       
@@ -7874,15 +7940,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ]
             ]
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u32_for_core_num_wrapping_Wrapping_u32.
       
@@ -8000,15 +8066,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ]
             ]
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u32_for_core_num_wrapping_Wrapping_u32.
       
@@ -8113,8 +8179,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u64.
       
@@ -8219,8 +8286,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u64.
       
@@ -8338,15 +8406,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ]
             ]
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u64_for_core_num_wrapping_Wrapping_u64.
       
@@ -8464,15 +8532,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ]
             ]
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u64_for_core_num_wrapping_Wrapping_u64.
       
@@ -8580,8 +8648,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u128.
       
@@ -8689,8 +8758,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u128.
       
@@ -8811,15 +8881,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ]
             ]
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u128_for_core_num_wrapping_Wrapping_u128.
       
@@ -8940,15 +9010,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ]
             ]
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u128_for_core_num_wrapping_Wrapping_u128.
       
@@ -9059,8 +9129,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_usize.
       
@@ -9171,8 +9242,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_usize.
       
@@ -9293,15 +9365,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ]
             ]
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_usize_for_core_num_wrapping_Wrapping_usize.
       
@@ -9422,15 +9494,15 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *)
             [
-              (* A *)
               Ty.apply
                 (Ty.path "&")
                 []
                 [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ]
             ]
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_usize_for_core_num_wrapping_Wrapping_usize.
       
@@ -9501,8 +9573,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_f32.
       
@@ -9573,8 +9646,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_f32.
       
@@ -9659,8 +9733,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__f32_for_f32.
       
@@ -9745,8 +9820,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "f32" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__f32_for_f32.
       
@@ -9817,8 +9893,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_for_f64.
       
@@ -9889,8 +9966,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_for_f64.
       
@@ -9975,8 +10053,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ]
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
       End Impl_core_iter_traits_accum_Sum_ref__f64_for_f64.
       
@@ -10061,8 +10140,9 @@ Module iter.
         Axiom Implements :
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ]
             Self
-            (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "f64" ] ]
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__f64_for_f64.
       
@@ -10165,9 +10245,9 @@ Module iter.
           forall (T U E : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
             (Self T U E)
-            (* Trait polymorphic types *)
-            [ (* A *) Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
             (* Instance *) [ ("sum", InstanceField.Method (sum T U E)) ].
       End Impl_core_iter_traits_accum_Sum_where_core_iter_traits_accum_Sum_T_U_core_result_Result_U_E_for_core_result_Result_T_E.
       
@@ -10275,9 +10355,9 @@ Module iter.
           forall (T U E : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
             (Self T U E)
-            (* Trait polymorphic types *)
-            [ (* A *) Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
             (* Instance *) [ ("product", InstanceField.Method (product T U E)) ].
       End Impl_core_iter_traits_accum_Product_where_core_iter_traits_accum_Product_T_U_core_result_Result_U_E_for_core_result_Result_T_E.
       
@@ -10379,9 +10459,9 @@ Module iter.
           forall (T U : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::option::Option") [] [ U ] ]
             (Self T U)
-            (* Trait polymorphic types *)
-            [ (* A *) Ty.apply (Ty.path "core::option::Option") [] [ U ] ]
             (* Instance *) [ ("sum", InstanceField.Method (sum T U)) ].
       End Impl_core_iter_traits_accum_Sum_where_core_iter_traits_accum_Sum_T_U_core_option_Option_U_for_core_option_Option_T.
       
@@ -10483,9 +10563,9 @@ Module iter.
           forall (T U : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::option::Option") [] [ U ] ]
             (Self T U)
-            (* Trait polymorphic types *)
-            [ (* A *) Ty.apply (Ty.path "core::option::Option") [] [ U ] ]
             (* Instance *) [ ("product", InstanceField.Method (product T U)) ].
       End Impl_core_iter_traits_accum_Product_where_core_iter_traits_accum_Product_T_U_core_option_Option_U_for_core_option_Option_T.
     End accum.

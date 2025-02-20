@@ -4417,15 +4417,15 @@ End SuccessOrHalt.
 
 Module Interpreter.
   Record t {WIRE: Set} : Set := {
-    bytecode: Unknown type Associated;
-    stack: Unknown type Associated;
-    return_data: Unknown type Associated;
-    memory: Unknown type Associated;
-    input: Unknown type Associated;
-    sub_routine: Unknown type Associated;
-    control: Unknown type Associated;
-    runtime_flag: Unknown type Associated;
-    extend: Unknown type Associated;
+    bytecode: Unknown type {'AssociatedInTrait': {'trait_name': ['revm_interpreter', 'interpreter_types', 'InterpreterTypes'], 'const_args': [], 'ty_args': [], 'self_ty': {'Var': {'name': 'WIRE'}}, 'name': 'Bytecode'}};
+    stack: Unknown type {'AssociatedInTrait': {'trait_name': ['revm_interpreter', 'interpreter_types', 'InterpreterTypes'], 'const_args': [], 'ty_args': [], 'self_ty': {'Var': {'name': 'WIRE'}}, 'name': 'Stack'}};
+    return_data: Unknown type {'AssociatedInTrait': {'trait_name': ['revm_interpreter', 'interpreter_types', 'InterpreterTypes'], 'const_args': [], 'ty_args': [], 'self_ty': {'Var': {'name': 'WIRE'}}, 'name': 'ReturnData'}};
+    memory: Unknown type {'AssociatedInTrait': {'trait_name': ['revm_interpreter', 'interpreter_types', 'InterpreterTypes'], 'const_args': [], 'ty_args': [], 'self_ty': {'Var': {'name': 'WIRE'}}, 'name': 'Memory'}};
+    input: Unknown type {'AssociatedInTrait': {'trait_name': ['revm_interpreter', 'interpreter_types', 'InterpreterTypes'], 'const_args': [], 'ty_args': [], 'self_ty': {'Var': {'name': 'WIRE'}}, 'name': 'Input'}};
+    sub_routine: Unknown type {'AssociatedInTrait': {'trait_name': ['revm_interpreter', 'interpreter_types', 'InterpreterTypes'], 'const_args': [], 'ty_args': [], 'self_ty': {'Var': {'name': 'WIRE'}}, 'name': 'SubRoutineStack'}};
+    control: Unknown type {'AssociatedInTrait': {'trait_name': ['revm_interpreter', 'interpreter_types', 'InterpreterTypes'], 'const_args': [], 'ty_args': [], 'self_ty': {'Var': {'name': 'WIRE'}}, 'name': 'Control'}};
+    runtime_flag: Unknown type {'AssociatedInTrait': {'trait_name': ['revm_interpreter', 'interpreter_types', 'InterpreterTypes'], 'const_args': [], 'ty_args': [], 'self_ty': {'Var': {'name': 'WIRE'}}, 'name': 'RuntimeFlag'}};
+    extend: Unknown type {'AssociatedInTrait': {'trait_name': ['revm_interpreter', 'interpreter_types', 'InterpreterTypes'], 'const_args': [], 'ty_args': [], 'self_ty': {'Var': {'name': 'WIRE'}}, 'name': 'Extend'}};
   }.
   Arguments Build_t {_}.
   Arguments t : clear implicits.

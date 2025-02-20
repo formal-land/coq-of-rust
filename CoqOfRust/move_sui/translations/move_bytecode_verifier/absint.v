@@ -124,8 +124,9 @@ Module absint.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_bytecode_verifier_absint_JoinResult.
   
@@ -179,8 +180,9 @@ Module absint.
       forall (State : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self State)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self State)
         (* Instance *) [ ("clone", InstanceField.Method (clone State)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_State_for_move_bytecode_verifier_absint_BlockInvariant_State.
   
@@ -376,7 +378,14 @@ Module absint.
                         Ty.apply
                           (Ty.path "move_bytecode_verifier::absint::BlockInvariant")
                           []
-                          [ Ty.associated ];
+                          [
+                            Ty.associated_in_trait
+                              "move_bytecode_verifier::absint::TransferFunctions"
+                              []
+                              []
+                              Self
+                              "State"
+                          ];
                         Ty.path "alloc::alloc::Global"
                       ] :=
                   M.alloc (|
@@ -389,7 +398,14 @@ Module absint.
                           Ty.apply
                             (Ty.path "move_bytecode_verifier::absint::BlockInvariant")
                             []
-                            [ Ty.associated ];
+                            [
+                              Ty.associated_in_trait
+                                "move_bytecode_verifier::absint::TransferFunctions"
+                                []
+                                []
+                                Self
+                                "State"
+                            ];
                           Ty.path "alloc::alloc::Global"
                         ],
                       M.get_associated_function (|
@@ -401,7 +417,14 @@ Module absint.
                             Ty.apply
                               (Ty.path "move_bytecode_verifier::absint::BlockInvariant")
                               []
-                              [ Ty.associated ];
+                              [
+                                Ty.associated_in_trait
+                                  "move_bytecode_verifier::absint::TransferFunctions"
+                                  []
+                                  []
+                                  Self
+                                  "State"
+                              ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "new",
@@ -466,7 +489,14 @@ Module absint.
                         Ty.apply
                           (Ty.path "move_bytecode_verifier::absint::BlockInvariant")
                           []
-                          [ Ty.associated ]
+                          [
+                            Ty.associated_in_trait
+                              "move_bytecode_verifier::absint::TransferFunctions"
+                              []
+                              []
+                              Self
+                              "State"
+                          ]
                       ] :=
                   M.alloc (|
                     M.call_closure (|
@@ -477,7 +507,14 @@ Module absint.
                           Ty.apply
                             (Ty.path "move_bytecode_verifier::absint::BlockInvariant")
                             []
-                            [ Ty.associated ]
+                            [
+                              Ty.associated_in_trait
+                                "move_bytecode_verifier::absint::TransferFunctions"
+                                []
+                                []
+                                Self
+                                "State"
+                            ]
                         ],
                       M.get_associated_function (|
                         Ty.apply
@@ -488,7 +525,14 @@ Module absint.
                             Ty.apply
                               (Ty.path "move_bytecode_verifier::absint::BlockInvariant")
                               []
-                              [ Ty.associated ];
+                              [
+                                Ty.associated_in_trait
+                                  "move_bytecode_verifier::absint::TransferFunctions"
+                                  []
+                                  []
+                                  Self
+                                  "State"
+                              ];
                             Ty.path "alloc::alloc::Global"
                           ],
                         "insert",
@@ -528,7 +572,14 @@ Module absint.
                                       Ty.apply
                                         (Ty.path "move_bytecode_verifier::absint::BlockInvariant")
                                         []
-                                        [ Ty.associated ]
+                                        [
+                                          Ty.associated_in_trait
+                                            "move_bytecode_verifier::absint::TransferFunctions"
+                                            []
+                                            []
+                                            Self
+                                            "State"
+                                        ]
                                     ] :=
                                 M.copy (|
                                   M.match_operator (|
@@ -546,7 +597,14 @@ Module absint.
                                                   (Ty.path
                                                     "move_bytecode_verifier::absint::BlockInvariant")
                                                   []
-                                                  [ Ty.associated ]
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "move_bytecode_verifier::absint::TransferFunctions"
+                                                      []
+                                                      []
+                                                      Self
+                                                      "State"
+                                                  ]
                                               ]
                                           ],
                                         M.get_associated_function (|
@@ -559,7 +617,14 @@ Module absint.
                                                 (Ty.path
                                                   "move_bytecode_verifier::absint::BlockInvariant")
                                                 []
-                                                [ Ty.associated ];
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "move_bytecode_verifier::absint::TransferFunctions"
+                                                    []
+                                                    []
+                                                    Self
+                                                    "State"
+                                                ];
                                               Ty.path "alloc::alloc::Global"
                                             ],
                                           "get_mut",
@@ -657,7 +722,18 @@ Module absint.
                                     ]
                                   |)
                                 |) in
-                              let~ pre_state : Ty.apply (Ty.path "&") [] [ Ty.associated ] :=
+                              let~ pre_state :
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.associated_in_trait
+                                        "move_bytecode_verifier::absint::TransferFunctions"
+                                        []
+                                        []
+                                        Self
+                                        "State"
+                                    ] :=
                                 M.alloc (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
@@ -668,7 +744,13 @@ Module absint.
                                     |)
                                   |)
                                 |) in
-                              let~ post_state : Ty.associated :=
+                              let~ post_state :
+                                  Ty.associated_in_trait
+                                    "move_bytecode_verifier::absint::TransferFunctions"
+                                    []
+                                    []
+                                    Self
+                                    "State" :=
                                 M.copy (|
                                   M.match_operator (|
                                     M.alloc (|
@@ -684,7 +766,12 @@ Module absint.
                                                 Ty.path "core::convert::Infallible";
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ];
-                                            Ty.associated
+                                            Ty.associated_in_trait
+                                              "move_bytecode_verifier::absint::TransferFunctions"
+                                              []
+                                              []
+                                              Self
+                                              "State"
                                           ],
                                         M.get_trait_method (|
                                           "core::ops::try_trait::Try",
@@ -692,7 +779,12 @@ Module absint.
                                             (Ty.path "core::result::Result")
                                             []
                                             [
-                                              Ty.associated;
+                                              Ty.associated_in_trait
+                                                "move_bytecode_verifier::absint::TransferFunctions"
+                                                []
+                                                []
+                                                Self
+                                                "State";
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ],
                                           [],
@@ -707,7 +799,12 @@ Module absint.
                                               (Ty.path "core::result::Result")
                                               []
                                               [
-                                                Ty.associated;
+                                                Ty.associated_in_trait
+                                                  "move_bytecode_verifier::absint::TransferFunctions"
+                                                  []
+                                                  []
+                                                  Self
+                                                  "State";
                                                 Ty.path "move_binary_format::errors::PartialVMError"
                                               ],
                                             M.get_trait_method (|
@@ -1164,7 +1261,14 @@ Module absint.
                                                                         (Ty.path
                                                                           "move_bytecode_verifier::absint::BlockInvariant")
                                                                         []
-                                                                        [ Ty.associated ]
+                                                                        [
+                                                                          Ty.associated_in_trait
+                                                                            "move_bytecode_verifier::absint::TransferFunctions"
+                                                                            []
+                                                                            []
+                                                                            Self
+                                                                            "State"
+                                                                        ]
                                                                     ]
                                                                 ],
                                                               M.get_associated_function (|
@@ -1178,7 +1282,14 @@ Module absint.
                                                                       (Ty.path
                                                                         "move_bytecode_verifier::absint::BlockInvariant")
                                                                       []
-                                                                      [ Ty.associated ];
+                                                                      [
+                                                                        Ty.associated_in_trait
+                                                                          "move_bytecode_verifier::absint::TransferFunctions"
+                                                                          []
+                                                                          []
+                                                                          Self
+                                                                          "State"
+                                                                      ];
                                                                     Ty.path "alloc::alloc::Global"
                                                                   ],
                                                                 "get_mut",
@@ -1259,7 +1370,13 @@ Module absint.
                                                                                   Ty.apply
                                                                                     (Ty.path "&mut")
                                                                                     []
-                                                                                    [ Ty.associated
+                                                                                    [
+                                                                                      Ty.associated_in_trait
+                                                                                        "move_bytecode_verifier::absint::TransferFunctions"
+                                                                                        []
+                                                                                        []
+                                                                                        Self
+                                                                                        "State"
                                                                                     ] :=
                                                                                 M.alloc (|
                                                                                   M.borrow (|
@@ -1289,7 +1406,12 @@ Module absint.
                                                                                     ],
                                                                                   M.get_trait_method (|
                                                                                     "move_bytecode_verifier::absint::AbstractDomain",
-                                                                                    Ty.associated,
+                                                                                    Ty.associated_in_trait
+                                                                                      "move_bytecode_verifier::absint::TransferFunctions"
+                                                                                      []
+                                                                                      []
+                                                                                      Self
+                                                                                      "State",
                                                                                     [],
                                                                                     [],
                                                                                     "join",
@@ -1726,7 +1848,14 @@ Module absint.
                                                                           (Ty.path
                                                                             "move_bytecode_verifier::absint::BlockInvariant")
                                                                           []
-                                                                          [ Ty.associated ]
+                                                                          [
+                                                                            Ty.associated_in_trait
+                                                                              "move_bytecode_verifier::absint::TransferFunctions"
+                                                                              []
+                                                                              []
+                                                                              Self
+                                                                              "State"
+                                                                          ]
                                                                       ] :=
                                                                   M.alloc (|
                                                                     M.call_closure (|
@@ -1739,7 +1868,14 @@ Module absint.
                                                                             (Ty.path
                                                                               "move_bytecode_verifier::absint::BlockInvariant")
                                                                             []
-                                                                            [ Ty.associated ]
+                                                                            [
+                                                                              Ty.associated_in_trait
+                                                                                "move_bytecode_verifier::absint::TransferFunctions"
+                                                                                []
+                                                                                []
+                                                                                Self
+                                                                                "State"
+                                                                            ]
                                                                         ],
                                                                       M.get_associated_function (|
                                                                         Ty.apply
@@ -1752,7 +1888,14 @@ Module absint.
                                                                               (Ty.path
                                                                                 "move_bytecode_verifier::absint::BlockInvariant")
                                                                               []
-                                                                              [ Ty.associated ];
+                                                                              [
+                                                                                Ty.associated_in_trait
+                                                                                  "move_bytecode_verifier::absint::TransferFunctions"
+                                                                                  []
+                                                                                  []
+                                                                                  Self
+                                                                                  "State"
+                                                                              ];
                                                                             Ty.path
                                                                               "alloc::alloc::Global"
                                                                           ],
@@ -1777,10 +1920,20 @@ Module absint.
                                                                           [
                                                                             ("pre",
                                                                               M.call_closure (|
-                                                                                Ty.associated,
+                                                                                Ty.associated_in_trait
+                                                                                  "move_bytecode_verifier::absint::TransferFunctions"
+                                                                                  []
+                                                                                  []
+                                                                                  Self
+                                                                                  "State",
                                                                                 M.get_trait_method (|
                                                                                   "core::clone::Clone",
-                                                                                  Ty.associated,
+                                                                                  Ty.associated_in_trait
+                                                                                    "move_bytecode_verifier::absint::TransferFunctions"
+                                                                                    []
+                                                                                    []
+                                                                                    Self
+                                                                                    "State",
                                                                                   [],
                                                                                   [],
                                                                                   "clone",
@@ -1931,7 +2084,12 @@ Module absint.
                                       (Ty.path "core::result::Result")
                                       []
                                       [
-                                        Ty.associated;
+                                        Ty.associated_in_trait
+                                          "move_bytecode_verifier::absint::TransferFunctions"
+                                          []
+                                          []
+                                          Self
+                                          "State";
                                         Ty.path "move_binary_format::errors::PartialVMError"
                                       ],
                                     M.get_trait_method (|
@@ -1940,7 +2098,12 @@ Module absint.
                                         (Ty.path "core::result::Result")
                                         []
                                         [
-                                          Ty.associated;
+                                          Ty.associated_in_trait
+                                            "move_bytecode_verifier::absint::TransferFunctions"
+                                            []
+                                            []
+                                            Self
+                                            "State";
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ],
                                       [],
@@ -1975,13 +2138,29 @@ Module absint.
                           val))
                     ]
                   |) in
-                let~ state_acc : Ty.associated :=
+                let~ state_acc :
+                    Ty.associated_in_trait
+                      "move_bytecode_verifier::absint::TransferFunctions"
+                      []
+                      []
+                      Self
+                      "State" :=
                   M.alloc (|
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "move_bytecode_verifier::absint::TransferFunctions"
+                        []
+                        []
+                        Self
+                        "State",
                       M.get_trait_method (|
                         "core::clone::Clone",
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "move_bytecode_verifier::absint::TransferFunctions"
+                          []
+                          []
+                          Self
+                          "State",
                         [],
                         [],
                         "clone",
@@ -2351,7 +2530,12 @@ Module absint.
                                                               (Ty.path "core::result::Result")
                                                               []
                                                               [
-                                                                Ty.associated;
+                                                                Ty.associated_in_trait
+                                                                  "move_bytecode_verifier::absint::TransferFunctions"
+                                                                  []
+                                                                  []
+                                                                  Self
+                                                                  "State";
                                                                 Ty.path
                                                                   "move_binary_format::errors::PartialVMError"
                                                               ],
@@ -2361,7 +2545,12 @@ Module absint.
                                                                 (Ty.path "core::result::Result")
                                                                 []
                                                                 [
-                                                                  Ty.associated;
+                                                                  Ty.associated_in_trait
+                                                                    "move_bytecode_verifier::absint::TransferFunctions"
+                                                                    []
+                                                                    []
+                                                                    Self
+                                                                    "State";
                                                                   Ty.path
                                                                     "move_binary_format::errors::PartialVMError"
                                                                 ],

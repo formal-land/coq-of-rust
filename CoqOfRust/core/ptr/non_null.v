@@ -19,8 +19,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
@@ -32,8 +33,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
@@ -487,7 +489,7 @@ Module ptr.
                   [ M.read (| self |) ]
                 |);
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata",
                   M.get_function (| "core::ptr::metadata::metadata", [], [ T ] |),
                   [
                     (* MutToConstPointer *)
@@ -2626,16 +2628,25 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let index := M.alloc (| index |) in
             M.call_closure (|
-              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.associated ],
+              Ty.apply
+                (Ty.path "core::ptr::non_null::NonNull")
+                []
+                [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
               M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "core::ptr::non_null::NonNull")
+                  []
+                  [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
                 "new_unchecked",
                 [],
                 []
               |),
               [
                 M.call_closure (|
-                  Ty.apply (Ty.path "*mut") [] [ Ty.associated ],
+                  Ty.apply
+                    (Ty.path "*mut")
+                    []
+                    [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     "get_unchecked_mut",
@@ -2693,8 +2704,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
@@ -2706,8 +2718,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Copy"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Copy_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
@@ -2719,9 +2732,10 @@ Module ptr.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::CoerceUnsized"
-          (Self T U)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ U ] ]
+          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ U ] ]
+          (Self T U)
           (* Instance *) [].
     End Impl_core_ops_unsize_CoerceUnsized_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_marker_Unsize_T_U_core_ptr_non_null_NonNull_U_for_core_ptr_non_null_NonNull_T.
     
@@ -2733,9 +2747,10 @@ Module ptr.
         forall (T U : Ty.t),
         M.IsTraitInstance
           "core::ops::unsize::DispatchFromDyn"
-          (Self T U)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ U ] ]
+          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ U ] ]
+          (Self T U)
           (* Instance *) [].
     End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_marker_Unsize_T_U_core_ptr_non_null_NonNull_U_for_core_ptr_non_null_NonNull_T.
     
@@ -2747,8 +2762,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::pin::PinCoerceUnsized"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
@@ -2813,8 +2829,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
@@ -2879,8 +2896,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Pointer"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Pointer_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
@@ -2892,8 +2910,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
@@ -2942,8 +2961,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
     End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
@@ -3019,8 +3039,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Ord"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
     End Impl_core_cmp_Ord_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
@@ -3096,8 +3117,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T)) ].
     End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
@@ -3154,8 +3176,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
     End Impl_core_hash_Hash_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
@@ -3191,9 +3214,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ]
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_where_core_marker_Sized_T_core_ptr_unique_Unique_T_for_core_ptr_non_null_NonNull_T.
     
@@ -3236,8 +3259,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&mut") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&mut") [] [ T ] ]
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_where_core_marker_Sized_T_ref_mut_T_for_core_ptr_non_null_NonNull_T.
     
@@ -3278,8 +3302,9 @@ Module ptr.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ T ] ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ T ] ]
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_where_core_marker_Sized_T_ref__T_for_core_ptr_non_null_NonNull_T.
   End non_null.

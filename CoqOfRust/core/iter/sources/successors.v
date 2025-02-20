@@ -109,8 +109,9 @@ Module iter.
           forall (T F : Ty.t),
           M.IsTraitInstance
             "core::clone::Clone"
-            (Self T F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T F)
             (* Instance *) [ ("clone", InstanceField.Method (clone T F)) ].
       End Impl_core_clone_Clone_where_core_clone_Clone_T_where_core_clone_Clone_F_for_core_iter_sources_successors_Successors_T_F.
       
@@ -355,8 +356,9 @@ Module iter.
           forall (T F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::iterator::Iterator"
-            (Self T F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T F)
             (* Instance *)
             [
               ("Item", InstanceField.Ty (_Item T F));
@@ -373,8 +375,9 @@ Module iter.
           forall (T F : Ty.t),
           M.IsTraitInstance
             "core::iter::traits::marker::FusedIterator"
-            (Self T F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T F)
             (* Instance *) [].
       End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_F_Tuple_ref__T__for_core_iter_sources_successors_Successors_T_F.
       
@@ -469,8 +472,9 @@ Module iter.
           forall (T F : Ty.t),
           M.IsTraitInstance
             "core::fmt::Debug"
-            (Self T F)
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            (Self T F)
             (* Instance *) [ ("fmt", InstanceField.Method (fmt T F)) ].
       End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_iter_sources_successors_Successors_T_F.
     End successors.

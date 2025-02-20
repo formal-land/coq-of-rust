@@ -91,8 +91,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_u256_U256FromStrError.
   
@@ -241,8 +242,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_u256_U256CastErrorKind.
   
@@ -252,8 +254,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_u256_U256CastErrorKind.
   
@@ -300,8 +303,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_u256_U256CastErrorKind.
   
@@ -325,8 +329,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_u256_U256CastErrorKind.
@@ -347,8 +352,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_u256_U256CastErrorKind.
   
@@ -358,8 +364,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_move_core_types_u256_U256CastErrorKind.
   
@@ -414,8 +421,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_u256_U256CastErrorKind.
   
@@ -499,8 +507,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_u256_U256CastError.
   
@@ -553,8 +562,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_move_core_types_u256_U256CastError.
   
@@ -826,8 +836,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_u256_U256CastError.
   
@@ -875,8 +886,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("source", InstanceField.Method source) ].
   End Impl_core_error_Error_for_move_core_types_u256_U256FromStrError.
   
@@ -962,8 +974,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_u256_U256FromStrError.
   
@@ -996,8 +1009,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_u256_U256.
   
@@ -1051,8 +1065,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_u256_U256.
   
@@ -1062,8 +1077,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_u256_U256.
   
@@ -1113,8 +1129,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_u256_U256.
   
@@ -1143,8 +1160,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_u256_U256.
@@ -1193,8 +1211,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_u256_U256.
   
@@ -1204,8 +1223,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_move_core_types_u256_U256.
   
@@ -1265,8 +1285,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_core_types_u256_U256.
   
@@ -1326,8 +1347,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_core_types_u256_U256.
   
@@ -1362,8 +1384,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_move_core_types_u256_U256.
   
@@ -1413,8 +1436,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_move_core_types_u256_U256.
   
@@ -1469,8 +1493,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::UpperHex"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_UpperHex_for_move_core_types_u256_U256.
   
@@ -1525,8 +1550,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::LowerHex"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_LowerHex_for_move_core_types_u256_U256.
   
@@ -1571,8 +1597,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_move_core_types_u256_U256.
@@ -1624,7 +1651,15 @@ Module u256.
                                       Ty.apply
                                         (Ty.path "core::result::Result")
                                         []
-                                        [ Ty.path "core::convert::Infallible"; Ty.associated ];
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.associated_in_trait
+                                            "serde::de::Deserializer"
+                                            []
+                                            []
+                                            D
+                                            "Error"
+                                        ];
                                       Ty.apply
                                         (Ty.path "array")
                                         [ Value.Integer IntegerKind.Usize 32 ]
@@ -1640,7 +1675,12 @@ Module u256.
                                           (Ty.path "array")
                                           [ Value.Integer IntegerKind.Usize 32 ]
                                           [ Ty.path "u8" ];
-                                        Ty.associated
+                                        Ty.associated_in_trait
+                                          "serde::de::Deserializer"
+                                          []
+                                          []
+                                          D
+                                          "Error"
                                       ],
                                     [],
                                     [],
@@ -1658,7 +1698,12 @@ Module u256.
                                             (Ty.path "array")
                                             [ Value.Integer IntegerKind.Usize 32 ]
                                             [ Ty.path "u8" ];
-                                          Ty.associated
+                                          Ty.associated_in_trait
+                                            "serde::de::Deserializer"
+                                            []
+                                            []
+                                            D
+                                            "Error"
                                         ],
                                       M.get_trait_method (|
                                         "serde::de::Deserialize",
@@ -1697,7 +1742,12 @@ Module u256.
                                                 []
                                                 [
                                                   Ty.path "move_core_types::u256::U256";
-                                                  Ty.associated
+                                                  Ty.associated_in_trait
+                                                    "serde::de::Deserializer"
+                                                    []
+                                                    []
+                                                    D
+                                                    "Error"
                                                 ],
                                               M.get_trait_method (|
                                                 "core::ops::try_trait::FromResidual",
@@ -1706,7 +1756,12 @@ Module u256.
                                                   []
                                                   [
                                                     Ty.path "move_core_types::u256::U256";
-                                                    Ty.associated
+                                                    Ty.associated_in_trait
+                                                      "serde::de::Deserializer"
+                                                      []
+                                                      []
+                                                      D
+                                                      "Error"
                                                   ],
                                                 [],
                                                 [
@@ -1715,7 +1770,12 @@ Module u256.
                                                     []
                                                     [
                                                       Ty.path "core::convert::Infallible";
-                                                      Ty.associated
+                                                      Ty.associated_in_trait
+                                                        "serde::de::Deserializer"
+                                                        []
+                                                        []
+                                                        D
+                                                        "Error"
                                                     ]
                                                 ],
                                                 "from_residual",
@@ -1753,8 +1813,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "serde::de::Deserialize"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("deserialize", InstanceField.Method deserialize) ].
   End Impl_serde_de_Deserialize_for_move_core_types_u256_U256.
   
@@ -1776,7 +1837,13 @@ Module u256.
           (let self := M.alloc (| self |) in
           let serializer := M.alloc (| serializer |) in
           M.call_closure (|
-            Ty.apply (Ty.path "core::result::Result") [] [ Ty.associated; Ty.associated ],
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+              ],
             M.get_trait_method (|
               "serde::ser::Serialize",
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
@@ -1814,8 +1881,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "serde::ser::Serialize"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("serialize", InstanceField.Method serialize) ].
   End Impl_serde_ser_Serialize_for_move_core_types_u256_U256.
   
@@ -1878,8 +1946,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::bit::Shl"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "u32" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u32" ]
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
   End Impl_core_ops_bit_Shl_u32_for_move_core_types_u256_U256.
   
@@ -1942,8 +2011,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::bit::Shl"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "u8" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("shl", InstanceField.Method shl) ].
   End Impl_core_ops_bit_Shl_u8_for_move_core_types_u256_U256.
   
@@ -2006,8 +2076,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::bit::Shr"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "u8" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "u8" ]
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("shr", InstanceField.Method shr) ].
   End Impl_core_ops_bit_Shr_u8_for_move_core_types_u256_U256.
   
@@ -2085,8 +2156,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::bit::BitOr"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *)
         [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
   End Impl_core_ops_bit_BitOr_move_core_types_u256_U256_for_move_core_types_u256_U256.
@@ -2165,8 +2237,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::bit::BitAnd"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *)
         [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
   End Impl_core_ops_bit_BitAnd_move_core_types_u256_U256_for_move_core_types_u256_U256.
@@ -2245,8 +2318,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::bit::BitXor"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *)
         [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
   End Impl_core_ops_bit_BitXor_move_core_types_u256_U256_for_move_core_types_u256_U256.
@@ -2293,8 +2367,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::bit::BitAndAssign"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
   End Impl_core_ops_bit_BitAndAssign_move_core_types_u256_U256_for_move_core_types_u256_U256.
   
@@ -2331,8 +2406,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::Add"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
   End Impl_core_ops_arith_Add_move_core_types_u256_U256_for_move_core_types_u256_U256.
   
@@ -2378,8 +2454,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::AddAssign"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
   End Impl_core_ops_arith_AddAssign_move_core_types_u256_U256_for_move_core_types_u256_U256.
   
@@ -2416,8 +2493,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::Sub"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
   End Impl_core_ops_arith_Sub_move_core_types_u256_U256_for_move_core_types_u256_U256.
   
@@ -2463,8 +2541,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::SubAssign"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
   End Impl_core_ops_arith_SubAssign_move_core_types_u256_U256_for_move_core_types_u256_U256.
   
@@ -2501,8 +2580,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::Mul"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
   End Impl_core_ops_arith_Mul_move_core_types_u256_U256_for_move_core_types_u256_U256.
   
@@ -2548,8 +2628,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::MulAssign"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
   End Impl_core_ops_arith_MulAssign_move_core_types_u256_U256_for_move_core_types_u256_U256.
   
@@ -2600,8 +2681,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::Div"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
   End Impl_core_ops_arith_Div_move_core_types_u256_U256_for_move_core_types_u256_U256.
   
@@ -2647,8 +2729,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::DivAssign"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
   End Impl_core_ops_arith_DivAssign_move_core_types_u256_U256_for_move_core_types_u256_U256.
   
@@ -2699,8 +2782,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::Rem"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
   End Impl_core_ops_arith_Rem_move_core_types_u256_U256_for_move_core_types_u256_U256.
   
@@ -2765,8 +2849,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::RemAssign"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
   End Impl_core_ops_arith_RemAssign_move_core_types_u256_U256_for_move_core_types_u256_U256.
   
@@ -3735,7 +3820,10 @@ Module u256.
             M.match_operator (|
               M.alloc (|
                 M.call_closure (|
-                  Ty.apply (Ty.path "core::result::Result") [] [ T; Ty.associated ],
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ T; Ty.associated_in_trait "core::convert::TryFrom" [] [] T "Error" ],
                   M.get_trait_method (|
                     "core::convert::TryFrom",
                     T,
@@ -4497,8 +4585,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "u8" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "u8" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_u8_for_move_core_types_u256_U256.
   
@@ -4538,8 +4627,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "u16" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "u16" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_u16_for_move_core_types_u256_U256.
   
@@ -4579,8 +4669,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "u32" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "u32" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_u32_for_move_core_types_u256_U256.
   
@@ -4620,8 +4711,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "u64" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "u64" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_u64_for_move_core_types_u256_U256.
   
@@ -4661,8 +4753,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "u128" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "u128" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_u128_for_move_core_types_u256_U256.
   
@@ -4720,9 +4813,10 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ] ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ] ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__move_core_types_u256_U256_for_num_bigint_bigint_BigInt.
   
@@ -4891,9 +4985,10 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ] ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ] ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__move_core_types_u256_U256_for_ethnum_uint_U256.
   
@@ -4988,8 +5083,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::TryFrom"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *)
         [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
   End Impl_core_convert_TryFrom_move_core_types_u256_U256_for_u8.
@@ -5085,8 +5181,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::TryFrom"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *)
         [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
   End Impl_core_convert_TryFrom_move_core_types_u256_U256_for_u16.
@@ -5182,8 +5279,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::TryFrom"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *)
         [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
   End Impl_core_convert_TryFrom_move_core_types_u256_U256_for_u32.
@@ -5279,8 +5377,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::TryFrom"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *)
         [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
   End Impl_core_convert_TryFrom_move_core_types_u256_U256_for_u64.
@@ -5406,8 +5505,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::TryFrom"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *)
         [ ("Error", InstanceField.Ty _Error); ("try_from", InstanceField.Method try_from) ].
   End Impl_core_convert_TryFrom_move_core_types_u256_U256_for_u128.
@@ -5475,8 +5575,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "rand::distributions::distribution::Distribution"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::u256::U256" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "move_core_types::u256::U256" ]
         (* Instance *) [ ("sample", InstanceField.Method sample) ].
   End Impl_rand_distributions_distribution_Distribution_move_core_types_u256_U256_for_rand_distributions_Standard.
   
@@ -5514,8 +5615,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_u256_UniformU256.
   
@@ -5525,8 +5627,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_move_core_types_u256_UniformU256.
   
@@ -5612,8 +5715,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_u256_UniformU256.
   
@@ -5623,8 +5727,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_u256_UniformU256.
   
@@ -5740,8 +5845,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_u256_UniformU256.
   
@@ -5770,8 +5876,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_move_core_types_u256_UniformU256.
@@ -5785,8 +5892,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "rand::distributions::uniform::SampleUniform"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("Sampler", InstanceField.Ty _Sampler) ].
   End Impl_rand_distributions_uniform_SampleUniform_for_move_core_types_u256_U256.
   
@@ -7131,8 +7239,9 @@ Module u256.
     Axiom Implements :
       M.IsTraitInstance
         "rand::distributions::uniform::UniformSampler"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("X", InstanceField.Ty _X);

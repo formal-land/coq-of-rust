@@ -12,8 +12,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "revm_context_interface::result::HaltReasonTrait"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [].
   End Impl_revm_context_interface_result_HaltReasonTrait_where_core_clone_Clone_HaltReasonT_where_core_fmt_Debug_HaltReasonT_where_core_cmp_PartialEq_HaltReasonT_where_core_cmp_Eq_HaltReasonT_where_core_convert_From_HaltReasonT_revm_context_interface_result_HaltReason_for_HaltReasonT.
   
@@ -113,8 +114,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt HaltReasonT)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ResultAndState_HaltReasonT.
   
@@ -223,8 +225,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("clone", InstanceField.Method (clone HaltReasonT)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ResultAndState_HaltReasonT.
   
@@ -236,8 +239,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ResultAndState_HaltReasonT.
   
@@ -349,8 +353,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("eq", InstanceField.Method (eq HaltReasonT)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ResultAndState_HaltReasonT.
   
@@ -390,8 +395,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *)
         [
           ("assert_receiver_is_total_eq",
@@ -723,8 +729,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("clone", InstanceField.Method (clone HaltReasonT)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
   
@@ -943,8 +950,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt HaltReasonT)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
   
@@ -956,8 +964,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
   
@@ -1412,8 +1421,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("eq", InstanceField.Method (eq HaltReasonT)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
   
@@ -1485,8 +1495,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *)
         [
           ("assert_receiver_is_total_eq",
@@ -1813,8 +1824,9 @@ Module result.
       forall (HaltReasonT : Ty.t),
       M.IsTraitInstance
         "core::hash::Hash"
-        (Self HaltReasonT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self HaltReasonT)
         (* Instance *) [ ("hash", InstanceField.Method (hash HaltReasonT)) ].
   End Impl_core_hash_Hash_where_core_hash_Hash_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
   
@@ -2539,8 +2551,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_result_Output.
   
@@ -2650,8 +2663,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_result_Output.
   
@@ -2661,8 +2675,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_Output.
   
@@ -2875,8 +2890,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_result_Output.
   
@@ -2912,8 +2928,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_result_Output.
@@ -3060,8 +3077,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_context_interface_result_Output.
   
@@ -3510,8 +3528,9 @@ Module result.
       forall (DBError TransactionError : Ty.t),
       M.IsTraitInstance
         "core::fmt::Debug"
-        (Self DBError TransactionError)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DBError TransactionError)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt DBError TransactionError)) ].
   End Impl_core_fmt_Debug_where_core_fmt_Debug_DBError_where_core_fmt_Debug_TransactionError_for_revm_context_interface_result_EVMError_DBError_TransactionError.
   
@@ -3693,8 +3712,9 @@ Module result.
       forall (DBError TransactionError : Ty.t),
       M.IsTraitInstance
         "core::clone::Clone"
-        (Self DBError TransactionError)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DBError TransactionError)
         (* Instance *) [ ("clone", InstanceField.Method (clone DBError TransactionError)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_DBError_where_core_clone_Clone_TransactionError_for_revm_context_interface_result_EVMError_DBError_TransactionError.
   
@@ -3709,8 +3729,9 @@ Module result.
       forall (DBError TransactionError : Ty.t),
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        (Self DBError TransactionError)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DBError TransactionError)
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_EVMError_DBError_TransactionError.
   
@@ -3999,8 +4020,9 @@ Module result.
       forall (DBError TransactionError : Ty.t),
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        (Self DBError TransactionError)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DBError TransactionError)
         (* Instance *) [ ("eq", InstanceField.Method (eq DBError TransactionError)) ].
   End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_DBError_where_core_cmp_PartialEq_TransactionError_for_revm_context_interface_result_EVMError_DBError_TransactionError.
   
@@ -4057,8 +4079,9 @@ Module result.
       forall (DBError TransactionError : Ty.t),
       M.IsTraitInstance
         "core::cmp::Eq"
-        (Self DBError TransactionError)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DBError TransactionError)
         (* Instance *)
         [
           ("assert_receiver_is_total_eq",
@@ -4091,8 +4114,9 @@ Module result.
       forall (DBError TX : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ DBError ]
         (Self DBError TX)
-        (* Trait polymorphic types *) [ (* T *) DBError ]
         (* Instance *) [ ("from", InstanceField.Method (from DBError TX)) ].
   End Impl_core_convert_From_where_revm_database_interface_DBErrorMarker_DBError_DBError_for_revm_context_interface_result_EVMError_DBError_TX.
   
@@ -4129,8 +4153,9 @@ Module result.
       forall (DB TX : Ty.t),
       M.IsTraitInstance
         "revm_context_interface::result::FromStringError"
-        (Self DB TX)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DB TX)
         (* Instance *) [ ("from_string", InstanceField.Method (from_string DB TX)) ].
   End Impl_revm_context_interface_result_FromStringError_for_revm_context_interface_result_EVMError_DB_TX.
   
@@ -4162,9 +4187,10 @@ Module result.
       forall (DB : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
-        (Self DB)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_context_interface::result::InvalidTransaction" ]
+        [ Ty.path "revm_context_interface::result::InvalidTransaction" ]
+        (Self DB)
         (* Instance *) [ ("from", InstanceField.Method (from DB)) ].
   End Impl_core_convert_From_revm_context_interface_result_InvalidTransaction_for_revm_context_interface_result_EVMError_DB_revm_context_interface_result_InvalidTransaction.
   
@@ -4426,8 +4452,9 @@ Module result.
       forall (DBError TransactionValidationErrorT : Ty.t),
       M.IsTraitInstance
         "core::error::Error"
-        (Self DBError TransactionValidationErrorT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DBError TransactionValidationErrorT)
         (* Instance *)
         [ ("source", InstanceField.Method (source DBError TransactionValidationErrorT)) ].
   End Impl_core_error_Error_where_core_error_Error_DBError_where_core_error_Error_TransactionValidationErrorT_for_revm_context_interface_result_EVMError_DBError_TransactionValidationErrorT.
@@ -4801,8 +4828,9 @@ Module result.
       forall (DBError TransactionValidationErrorT : Ty.t),
       M.IsTraitInstance
         "core::fmt::Display"
-        (Self DBError TransactionValidationErrorT)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self DBError TransactionValidationErrorT)
         (* Instance *) [ ("fmt", InstanceField.Method (fmt DBError TransactionValidationErrorT)) ].
   End Impl_core_fmt_Display_where_core_fmt_Display_DBError_where_core_fmt_Display_TransactionValidationErrorT_for_revm_context_interface_result_EVMError_DBError_TransactionValidationErrorT.
   
@@ -4839,9 +4867,9 @@ Module result.
       forall (DBError TransactionValidationErrorT : Ty.t),
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::result::InvalidHeader" ]
         (Self DBError TransactionValidationErrorT)
-        (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_context_interface::result::InvalidHeader" ]
         (* Instance *)
         [ ("from", InstanceField.Method (from DBError TransactionValidationErrorT)) ].
   End Impl_core_convert_From_revm_context_interface_result_InvalidHeader_for_revm_context_interface_result_EVMError_DBError_TransactionValidationErrorT.
@@ -6053,8 +6081,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_result_InvalidTransaction.
   
@@ -6683,8 +6712,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_result_InvalidTransaction.
   
@@ -6694,8 +6724,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_InvalidTransaction.
   
@@ -7163,8 +7194,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_result_InvalidTransaction.
   
@@ -7224,8 +7256,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_result_InvalidTransaction.
@@ -7557,8 +7590,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_context_interface_result_InvalidTransaction.
   
@@ -7568,8 +7602,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "revm_context_interface::transaction::TransactionError"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_revm_context_interface_transaction_TransactionError_for_revm_context_interface_result_InvalidTransaction.
   
@@ -7595,9 +7630,10 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.path "revm_specification::eip7702::authorization_list::InvalidAuthorization" ]
+        [ Ty.path "revm_specification::eip7702::authorization_list::InvalidAuthorization" ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_revm_specification_eip7702_authorization_list_InvalidAuthorization_for_revm_context_interface_result_InvalidTransaction.
   
@@ -7607,8 +7643,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_revm_context_interface_result_InvalidTransaction.
   
@@ -9385,8 +9422,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_revm_context_interface_result_InvalidTransaction.
   
@@ -9475,8 +9513,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_result_InvalidHeader.
   
@@ -9486,8 +9525,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_context_interface_result_InvalidHeader.
   
@@ -9507,8 +9547,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_result_InvalidHeader.
   
@@ -9518,8 +9559,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_InvalidHeader.
   
@@ -9566,8 +9608,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_result_InvalidHeader.
   
@@ -9591,8 +9634,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_result_InvalidHeader.
@@ -9648,8 +9692,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_context_interface_result_InvalidHeader.
   
@@ -9659,8 +9704,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_error_Error_for_revm_context_interface_result_InvalidHeader.
   
@@ -9790,8 +9836,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_revm_context_interface_result_InvalidHeader.
   
@@ -9920,8 +9967,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_result_SuccessReason.
   
@@ -9941,8 +9989,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_result_SuccessReason.
   
@@ -9952,8 +10001,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_context_interface_result_SuccessReason.
   
@@ -9963,8 +10013,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_SuccessReason.
   
@@ -10011,8 +10062,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_result_SuccessReason.
   
@@ -10036,8 +10088,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_result_SuccessReason.
@@ -10093,8 +10146,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_context_interface_result_SuccessReason.
   
@@ -10944,8 +10998,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_result_HaltReason.
   
@@ -10970,8 +11025,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_result_HaltReason.
   
@@ -10981,8 +11037,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_context_interface_result_HaltReason.
   
@@ -10992,8 +11049,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_HaltReason.
   
@@ -11099,8 +11157,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_result_HaltReason.
   
@@ -11129,8 +11188,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_result_HaltReason.
@@ -11221,8 +11281,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_context_interface_result_HaltReason.
   
@@ -11391,8 +11452,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_revm_context_interface_result_OutOfGasError.
   
@@ -11402,8 +11464,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Copy"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Copy_for_revm_context_interface_result_OutOfGasError.
   
@@ -11423,8 +11486,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_revm_context_interface_result_OutOfGasError.
   
@@ -11434,8 +11498,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_OutOfGasError.
   
@@ -11482,8 +11547,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_context_interface_result_OutOfGasError.
   
@@ -11507,8 +11573,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_context_interface_result_OutOfGasError.
@@ -11564,8 +11631,9 @@ Module result.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_revm_context_interface_result_OutOfGasError.
 End result.

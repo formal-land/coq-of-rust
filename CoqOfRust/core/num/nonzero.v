@@ -71,8 +71,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Debug"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroU8Inner.
       
@@ -97,8 +98,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroU8Inner.
       
@@ -108,8 +110,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::Copy"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_Copy_for_core_num_nonzero_private_NonZeroU8Inner.
       
@@ -119,8 +122,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::StructuralPartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroU8Inner.
       
@@ -156,8 +160,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::PartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroU8Inner.
       
@@ -222,8 +227,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Debug"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroU16Inner.
       
@@ -248,8 +254,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroU16Inner.
       
@@ -259,8 +266,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::Copy"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_Copy_for_core_num_nonzero_private_NonZeroU16Inner.
       
@@ -270,8 +278,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::StructuralPartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroU16Inner.
       
@@ -307,8 +316,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::PartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroU16Inner.
       
@@ -373,8 +383,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Debug"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroU32Inner.
       
@@ -399,8 +410,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroU32Inner.
       
@@ -410,8 +422,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::Copy"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_Copy_for_core_num_nonzero_private_NonZeroU32Inner.
       
@@ -421,8 +434,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::StructuralPartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroU32Inner.
       
@@ -458,8 +472,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::PartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroU32Inner.
       
@@ -524,8 +539,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Debug"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroU64Inner.
       
@@ -550,8 +566,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroU64Inner.
       
@@ -561,8 +578,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::Copy"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_Copy_for_core_num_nonzero_private_NonZeroU64Inner.
       
@@ -572,8 +590,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::StructuralPartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroU64Inner.
       
@@ -609,8 +628,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::PartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroU64Inner.
       
@@ -675,8 +695,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Debug"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroU128Inner.
       
@@ -701,8 +722,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroU128Inner.
       
@@ -712,8 +734,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::Copy"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_Copy_for_core_num_nonzero_private_NonZeroU128Inner.
       
@@ -723,8 +746,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::StructuralPartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroU128Inner.
       
@@ -760,8 +784,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::PartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroU128Inner.
       
@@ -826,8 +851,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Debug"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroUsizeInner.
       
@@ -852,8 +878,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroUsizeInner.
       
@@ -863,8 +890,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::Copy"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_Copy_for_core_num_nonzero_private_NonZeroUsizeInner.
       
@@ -874,8 +902,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::StructuralPartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroUsizeInner.
       
@@ -911,8 +940,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::PartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroUsizeInner.
       
@@ -977,8 +1007,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Debug"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroI8Inner.
       
@@ -1003,8 +1034,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroI8Inner.
       
@@ -1014,8 +1046,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::Copy"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_Copy_for_core_num_nonzero_private_NonZeroI8Inner.
       
@@ -1025,8 +1058,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::StructuralPartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroI8Inner.
       
@@ -1062,8 +1096,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::PartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroI8Inner.
       
@@ -1128,8 +1163,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Debug"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroI16Inner.
       
@@ -1154,8 +1190,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroI16Inner.
       
@@ -1165,8 +1202,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::Copy"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_Copy_for_core_num_nonzero_private_NonZeroI16Inner.
       
@@ -1176,8 +1214,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::StructuralPartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroI16Inner.
       
@@ -1213,8 +1252,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::PartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroI16Inner.
       
@@ -1279,8 +1319,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Debug"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroI32Inner.
       
@@ -1305,8 +1346,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroI32Inner.
       
@@ -1316,8 +1358,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::Copy"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_Copy_for_core_num_nonzero_private_NonZeroI32Inner.
       
@@ -1327,8 +1370,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::StructuralPartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroI32Inner.
       
@@ -1364,8 +1408,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::PartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroI32Inner.
       
@@ -1430,8 +1475,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Debug"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroI64Inner.
       
@@ -1456,8 +1502,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroI64Inner.
       
@@ -1467,8 +1514,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::Copy"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_Copy_for_core_num_nonzero_private_NonZeroI64Inner.
       
@@ -1478,8 +1526,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::StructuralPartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroI64Inner.
       
@@ -1515,8 +1564,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::PartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroI64Inner.
       
@@ -1581,8 +1631,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Debug"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroI128Inner.
       
@@ -1607,8 +1658,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroI128Inner.
       
@@ -1618,8 +1670,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::Copy"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_Copy_for_core_num_nonzero_private_NonZeroI128Inner.
       
@@ -1629,8 +1682,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::StructuralPartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroI128Inner.
       
@@ -1666,8 +1720,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::PartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroI128Inner.
       
@@ -1732,8 +1787,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::fmt::Debug"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroIsizeInner.
       
@@ -1758,8 +1814,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
       End Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroIsizeInner.
       
@@ -1769,8 +1826,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::Copy"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_Copy_for_core_num_nonzero_private_NonZeroIsizeInner.
       
@@ -1780,8 +1838,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::marker::StructuralPartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroIsizeInner.
       
@@ -1817,8 +1876,9 @@ Module num.
         Axiom Implements :
           M.IsTraitInstance
             "core::cmp::PartialEq"
-            Self
+            (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
+            Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroIsizeInner.
     End private.
@@ -1829,8 +1889,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_num_nonzero_private_Sealed_for_u8.
     
@@ -1843,8 +1904,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::ZeroablePrimitive"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("NonZeroInner", InstanceField.Ty _NonZeroInner) ].
     End Impl_core_num_nonzero_ZeroablePrimitive_for_u8.
     
@@ -1854,8 +1916,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_num_nonzero_private_Sealed_for_u16.
     
@@ -1868,8 +1931,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::ZeroablePrimitive"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("NonZeroInner", InstanceField.Ty _NonZeroInner) ].
     End Impl_core_num_nonzero_ZeroablePrimitive_for_u16.
     
@@ -1879,8 +1943,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_num_nonzero_private_Sealed_for_u32.
     
@@ -1893,8 +1958,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::ZeroablePrimitive"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("NonZeroInner", InstanceField.Ty _NonZeroInner) ].
     End Impl_core_num_nonzero_ZeroablePrimitive_for_u32.
     
@@ -1904,8 +1970,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_num_nonzero_private_Sealed_for_u64.
     
@@ -1918,8 +1985,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::ZeroablePrimitive"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("NonZeroInner", InstanceField.Ty _NonZeroInner) ].
     End Impl_core_num_nonzero_ZeroablePrimitive_for_u64.
     
@@ -1929,8 +1997,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_num_nonzero_private_Sealed_for_u128.
     
@@ -1943,8 +2012,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::ZeroablePrimitive"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("NonZeroInner", InstanceField.Ty _NonZeroInner) ].
     End Impl_core_num_nonzero_ZeroablePrimitive_for_u128.
     
@@ -1954,8 +2024,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_num_nonzero_private_Sealed_for_usize.
     
@@ -1968,8 +2039,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::ZeroablePrimitive"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("NonZeroInner", InstanceField.Ty _NonZeroInner) ].
     End Impl_core_num_nonzero_ZeroablePrimitive_for_usize.
     
@@ -1979,8 +2051,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_num_nonzero_private_Sealed_for_i8.
     
@@ -1993,8 +2066,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::ZeroablePrimitive"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("NonZeroInner", InstanceField.Ty _NonZeroInner) ].
     End Impl_core_num_nonzero_ZeroablePrimitive_for_i8.
     
@@ -2004,8 +2078,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_num_nonzero_private_Sealed_for_i16.
     
@@ -2018,8 +2093,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::ZeroablePrimitive"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("NonZeroInner", InstanceField.Ty _NonZeroInner) ].
     End Impl_core_num_nonzero_ZeroablePrimitive_for_i16.
     
@@ -2029,8 +2105,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_num_nonzero_private_Sealed_for_i32.
     
@@ -2043,8 +2120,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::ZeroablePrimitive"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("NonZeroInner", InstanceField.Ty _NonZeroInner) ].
     End Impl_core_num_nonzero_ZeroablePrimitive_for_i32.
     
@@ -2054,8 +2132,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_num_nonzero_private_Sealed_for_i64.
     
@@ -2068,8 +2147,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::ZeroablePrimitive"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("NonZeroInner", InstanceField.Ty _NonZeroInner) ].
     End Impl_core_num_nonzero_ZeroablePrimitive_for_i64.
     
@@ -2079,8 +2159,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_num_nonzero_private_Sealed_for_i128.
     
@@ -2093,8 +2174,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::ZeroablePrimitive"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("NonZeroInner", InstanceField.Ty _NonZeroInner) ].
     End Impl_core_num_nonzero_ZeroablePrimitive_for_i128.
     
@@ -2104,8 +2186,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::private::Sealed"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [].
     End Impl_core_num_nonzero_private_Sealed_for_isize.
     
@@ -2118,8 +2201,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::num::nonzero::ZeroablePrimitive"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *) [ ("NonZeroInner", InstanceField.Ty _NonZeroInner) ].
     End Impl_core_num_nonzero_ZeroablePrimitive_for_isize.
     
@@ -2128,7 +2212,8 @@ Module num.
         name := "NonZero";
         const_params := [];
         ty_params := [ "T" ];
-        fields := [ Ty.associated ];
+        fields :=
+          [ Ty.associated_in_trait "core::num::nonzero::ZeroablePrimitive" [] [] T "NonZeroInner" ];
       } *)
     
     Module Impl_core_fmt_Debug_where_core_num_nonzero_ZeroablePrimitive_T_where_core_fmt_Debug_T_for_core_num_nonzero_NonZero_T.
@@ -2179,8 +2264,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_num_nonzero_ZeroablePrimitive_T_where_core_fmt_Debug_T_for_core_num_nonzero_NonZero_T.
     
@@ -2232,8 +2318,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Display"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Display_where_core_num_nonzero_ZeroablePrimitive_T_where_core_fmt_Display_T_for_core_num_nonzero_NonZero_T.
     
@@ -2285,8 +2372,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Binary"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Binary_where_core_num_nonzero_ZeroablePrimitive_T_where_core_fmt_Binary_T_for_core_num_nonzero_NonZero_T.
     
@@ -2338,8 +2426,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Octal"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Octal_where_core_num_nonzero_ZeroablePrimitive_T_where_core_fmt_Octal_T_for_core_num_nonzero_NonZero_T.
     
@@ -2391,8 +2480,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::LowerHex"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_LowerHex_where_core_num_nonzero_ZeroablePrimitive_T_where_core_fmt_LowerHex_T_for_core_num_nonzero_NonZero_T.
     
@@ -2444,8 +2534,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::UpperHex"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_UpperHex_where_core_num_nonzero_ZeroablePrimitive_T_where_core_fmt_UpperHex_T_for_core_num_nonzero_NonZero_T.
     
@@ -2457,8 +2548,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Freeze"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Freeze_where_core_num_nonzero_ZeroablePrimitive_T_where_core_marker_Freeze_T_for_core_num_nonzero_NonZero_T.
     
@@ -2470,8 +2562,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::panic::unwind_safe::RefUnwindSafe"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_RefUnwindSafe_where_core_num_nonzero_ZeroablePrimitive_T_where_core_panic_unwind_safe_RefUnwindSafe_T_for_core_num_nonzero_NonZero_T.
     
@@ -2483,8 +2576,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Send"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Send_where_core_num_nonzero_ZeroablePrimitive_T_where_core_marker_Send_T_for_core_num_nonzero_NonZero_T.
     
@@ -2496,8 +2590,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_num_nonzero_ZeroablePrimitive_T_where_core_marker_Sync_T_for_core_num_nonzero_NonZero_T.
     
@@ -2509,8 +2604,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Unpin"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Unpin_where_core_num_nonzero_ZeroablePrimitive_T_where_core_marker_Unpin_T_for_core_num_nonzero_NonZero_T.
     
@@ -2522,8 +2618,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::panic::unwind_safe::UnwindSafe"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_panic_unwind_safe_UnwindSafe_where_core_num_nonzero_ZeroablePrimitive_T_where_core_panic_unwind_safe_UnwindSafe_T_for_core_num_nonzero_NonZero_T.
     
@@ -2560,8 +2657,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::clone::Clone"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
     End Impl_core_clone_Clone_where_core_num_nonzero_ZeroablePrimitive_T_for_core_num_nonzero_NonZero_T.
     
@@ -2573,8 +2671,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Copy"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Copy_where_core_num_nonzero_ZeroablePrimitive_T_for_core_num_nonzero_NonZero_T.
     
@@ -2688,8 +2787,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("eq", InstanceField.Method (eq T)); ("ne", InstanceField.Method (ne T)) ].
     End Impl_core_cmp_PartialEq_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialEq_T_for_core_num_nonzero_NonZero_T.
@@ -2702,8 +2802,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::StructuralPartialEq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_where_core_num_nonzero_ZeroablePrimitive_T_where_core_marker_StructuralPartialEq_T_for_core_num_nonzero_NonZero_T.
     
@@ -2715,8 +2816,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Eq"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_Eq_T_for_core_num_nonzero_NonZero_T.
     
@@ -2988,8 +3090,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("partial_cmp", InstanceField.Method (partial_cmp T));
@@ -3234,8 +3337,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::cmp::Ord"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [
             ("cmp", InstanceField.Method (cmp T));
@@ -3293,8 +3397,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::hash::Hash"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
     End Impl_core_hash_Hash_where_core_num_nonzero_ZeroablePrimitive_T_where_core_hash_Hash_T_for_core_num_nonzero_NonZero_T.
     
@@ -3330,9 +3435,10 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* T *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
+          (Self T)
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_where_core_num_nonzero_ZeroablePrimitive_T_core_num_nonzero_NonZero_T_for_T.
     
@@ -3401,8 +3507,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output T)); ("bitor", InstanceField.Method (bitor T)) ].
     End Impl_core_ops_bit_BitOr_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_T_for_core_num_nonzero_NonZero_T.
@@ -3463,8 +3570,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::bit::BitOr"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* Rhs *) T ]
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output T)); ("bitor", InstanceField.Method (bitor T)) ].
     End Impl_core_ops_bit_BitOr_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_T_T_for_core_num_nonzero_NonZero_T.
@@ -3524,9 +3632,10 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::bit::BitOr"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
+          (Self T)
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output T)); ("bitor", InstanceField.Method (bitor T)) ].
     End Impl_core_ops_bit_BitOr_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_T_core_num_nonzero_NonZero_T_for_T.
@@ -3581,8 +3690,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("bitor_assign", InstanceField.Method (bitor_assign T)) ].
     End Impl_core_ops_bit_BitOrAssign_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
     
@@ -3636,8 +3746,9 @@ Module num.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* Rhs *) T ]
           (* Instance *) [ ("bitor_assign", InstanceField.Method (bitor_assign T)) ].
     End Impl_core_ops_bit_BitOrAssign_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_core_num_nonzero_NonZero_T_T_T_for_core_num_nonzero_NonZero_T.
     
@@ -5781,8 +5892,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::traits::FromStr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
     End Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_u8.
@@ -5829,9 +5941,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_core_num_nonzero_NonZero_u8_for_u8.
@@ -5878,9 +5991,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_core_num_nonzero_NonZero_u8_for_u8.
     
@@ -5926,9 +6040,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_core_num_nonzero_NonZero_u8_for_u8.
@@ -5975,9 +6090,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_core_num_nonzero_NonZero_u8_for_u8.
     
@@ -7666,8 +7782,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::traits::FromStr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
     End Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_u16.
@@ -7714,9 +7831,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_core_num_nonzero_NonZero_u16_for_u16.
@@ -7763,9 +7881,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_core_num_nonzero_NonZero_u16_for_u16.
     
@@ -7811,9 +7930,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_core_num_nonzero_NonZero_u16_for_u16.
@@ -7860,9 +7980,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_core_num_nonzero_NonZero_u16_for_u16.
     
@@ -9551,8 +9672,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::traits::FromStr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
     End Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_u32.
@@ -9599,9 +9721,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_core_num_nonzero_NonZero_u32_for_u32.
@@ -9648,9 +9771,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_core_num_nonzero_NonZero_u32_for_u32.
     
@@ -9696,9 +9820,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_core_num_nonzero_NonZero_u32_for_u32.
@@ -9745,9 +9870,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_core_num_nonzero_NonZero_u32_for_u32.
     
@@ -11436,8 +11562,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::traits::FromStr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
     End Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_u64.
@@ -11484,9 +11611,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_core_num_nonzero_NonZero_u64_for_u64.
@@ -11533,9 +11661,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_core_num_nonzero_NonZero_u64_for_u64.
     
@@ -11581,9 +11710,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_core_num_nonzero_NonZero_u64_for_u64.
@@ -11630,9 +11760,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_core_num_nonzero_NonZero_u64_for_u64.
     
@@ -13333,8 +13464,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::traits::FromStr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
     End Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_u128.
@@ -13381,9 +13513,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_core_num_nonzero_NonZero_u128_for_u128.
@@ -13430,9 +13563,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_core_num_nonzero_NonZero_u128_for_u128.
     
@@ -13478,9 +13612,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_core_num_nonzero_NonZero_u128_for_u128.
@@ -13527,9 +13662,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_core_num_nonzero_NonZero_u128_for_u128.
     
@@ -15231,8 +15367,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::traits::FromStr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
     End Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_usize.
@@ -15279,9 +15416,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Div"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
     End Impl_core_ops_arith_Div_core_num_nonzero_NonZero_usize_for_usize.
@@ -15328,9 +15466,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_core_num_nonzero_NonZero_usize_for_usize.
     
@@ -15376,9 +15515,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Rem"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
     End Impl_core_ops_arith_Rem_core_num_nonzero_NonZero_usize_for_usize.
@@ -15425,9 +15565,10 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+          Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_core_num_nonzero_NonZero_usize_for_usize.
     
@@ -17291,8 +17432,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::traits::FromStr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
     End Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_i8.
@@ -17357,8 +17499,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_nonzero_NonZero_i8.
@@ -19223,8 +19366,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::traits::FromStr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
     End Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_i16.
@@ -19289,8 +19433,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_nonzero_NonZero_i16.
@@ -21155,8 +21300,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::traits::FromStr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
     End Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_i32.
@@ -21221,8 +21367,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_nonzero_NonZero_i32.
@@ -23087,8 +23234,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::traits::FromStr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
     End Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_i64.
@@ -23153,8 +23301,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_nonzero_NonZero_i64.
@@ -25034,8 +25183,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::traits::FromStr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
     End Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_i128.
@@ -25100,8 +25250,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_nonzero_NonZero_i128.
@@ -26982,8 +27133,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::str::traits::FromStr"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
     End Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_isize.
@@ -27048,8 +27200,9 @@ Module num.
       Axiom Implements :
         M.IsTraitInstance
           "core::ops::arith::Neg"
-          Self
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("neg", InstanceField.Method neg) ].
     End Impl_core_ops_arith_Neg_for_core_num_nonzero_NonZero_isize.

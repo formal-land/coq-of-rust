@@ -2137,8 +2137,9 @@ Module slice.
             forall (T : Ty.t),
             M.IsTraitInstance
               "core::slice::sort::stable::quicksort::IsFreeze"
-              (Self T)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self T)
               (* Instance *) [ ("is_freeze", InstanceField.Method (is_freeze T)) ].
         End Impl_core_slice_sort_stable_quicksort_IsFreeze_for_T.
         
@@ -2166,8 +2167,9 @@ Module slice.
             forall (T : Ty.t),
             M.IsTraitInstance
               "core::slice::sort::stable::quicksort::IsFreeze"
-              (Self T)
+              (* Trait polymorphic consts *) []
               (* Trait polymorphic types *) []
+              (Self T)
               (* Instance *) [ ("is_freeze", InstanceField.Method (is_freeze T)) ].
         End Impl_core_slice_sort_stable_quicksort_IsFreeze_where_core_slice_sort_shared_FreezeMarker_T_for_T.
         

@@ -193,7 +193,8 @@ enum TopLevelItem {
         predicates: Vec<Rc<WherePredicate>>,
         self_ty: Rc<CoqType>,
         of_trait: Rc<Path>,
-        trait_ty_params: Vec<(String, Rc<TraitTyParamValue>)>,
+        trait_const_params: Vec<Rc<Expr>>,
+        trait_ty_params: Vec<Rc<CoqType>>,
         items: Vec<Rc<TraitImplItem>>,
     },
     Error {
@@ -667,9 +668,10 @@ fn compile_top_level_item_without_local_items<'a>(
                                 }),
                         )
                         .collect();
-
-                    // Get the generics for the trait
-                    let trait_generics = env.tcx.generics_of(trait_ref.trait_def_id().unwrap());
+                    // We do not handle them yet. This might require going to the THIR level.
+                    let trait_const_params = vec![];
+                    let trait_ty_params =
+                        compile_path_ty_params(env, &item.owner_id.def_id, trait_ref.path);
 
                     vec![Rc::new(TopLevelItem::TraitImpl {
                         generic_consts,
@@ -677,12 +679,8 @@ fn compile_top_level_item_without_local_items<'a>(
                         predicates,
                         self_ty,
                         of_trait: compile_path(env, trait_ref.path),
-                        trait_ty_params: get_ty_params_with_default_status(
-                            env,
-                            &item.owner_id.def_id,
-                            trait_generics,
-                            trait_ref.path,
-                        ),
+                        trait_const_params,
+                        trait_ty_params,
                         items,
                     })]
                 }
@@ -2149,12 +2147,13 @@ impl TopLevelItem {
                 predicates,
                 self_ty,
                 of_trait,
+                trait_const_params,
                 trait_ty_params,
                 items,
             } => {
                 let generics = [generic_consts.clone(), generic_tys.clone()].concat();
                 let module_name = format!(
-                    "Impl_{}{}{}_for_{}",
+                    "Impl_{}{}{}{}_for_{}",
                     of_trait.to_name(),
                     predicates
                         .iter()
@@ -2178,14 +2177,13 @@ impl TopLevelItem {
                             )
                         })
                         .collect::<String>(),
+                    trait_const_params
+                        .iter()
+                        .map(|const_| format!("_{}", const_.to_name()))
+                        .join(""),
                     trait_ty_params
                         .iter()
-                        .filter_map(|(_, trait_ty_param)| match trait_ty_param.as_ref() {
-                            FieldWithDefault::RequiredValue(ty)
-                            | FieldWithDefault::OptionalValue(ty) =>
-                                Some(format!("_{}", ty.to_name())),
-                            FieldWithDefault::Default => None,
-                        })
+                        .map(|ty| format!("_{}", ty.to_name()))
                         .join(""),
                     self_ty.to_name()
                 );
@@ -2272,6 +2270,24 @@ impl TopLevelItem {
                                                     Rc::new(coq::Expression::String(
                                                         of_trait.to_string(),
                                                     )),
+                                                    Rc::new(coq::Expression::Comment(
+                                                        "Trait polymorphic consts".to_string(),
+                                                        Rc::new(coq::Expression::List {
+                                                            exprs: trait_const_params
+                                                                .iter()
+                                                                .map(|const_| const_.to_coq())
+                                                                .collect(),
+                                                        }),
+                                                    )),
+                                                    Rc::new(coq::Expression::Comment(
+                                                        "Trait polymorphic types".to_string(),
+                                                        Rc::new(coq::Expression::List {
+                                                            exprs: trait_ty_params
+                                                                .iter()
+                                                                .map(|ty| ty.to_coq())
+                                                                .collect(),
+                                                        }),
+                                                    )),
                                                     coq::Expression::just_name("Self").apply_many(
                                                         &generics
                                                             .iter()
@@ -2280,30 +2296,6 @@ impl TopLevelItem {
                                                             })
                                                             .collect_vec(),
                                                     ),
-                                                    Rc::new(coq::Expression::Comment(
-                                                        "Trait polymorphic types".to_string(),
-                                                        Rc::new(coq::Expression::List {
-                                                            exprs: trait_ty_params
-                                                                .iter()
-                                                                .filter_map(|(name, ty)| {
-                                                                    match ty.as_ref() {
-                                                                FieldWithDefault::RequiredValue(
-                                                                    ty,
-                                                                )
-                                                                | FieldWithDefault::OptionalValue(
-                                                                    ty,
-                                                                ) => Some(Rc::new(
-                                                                    coq::Expression::Comment(
-                                                                        name.clone(),
-                                                                        ty.to_coq(),
-                                                                    ),
-                                                                )),
-                                                                FieldWithDefault::Default => None,
-                                                            }
-                                                                })
-                                                                .collect(),
-                                                        }),
-                                                    )),
                                                     Rc::new(coq::Expression::Comment(
                                                         "Instance".to_string(),
                                                         Rc::new(coq::Expression::List {

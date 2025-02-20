@@ -29,7 +29,8 @@ Module async_iter.
       Definition Self (S : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ S ].
       
       (*     type Item = S::Item; *)
-      Definition _Item (S : Ty.t) : Ty.t := Ty.associated.
+      Definition _Item (S : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::async_iter::async_iter::AsyncIterator" [] [] S "Item".
       
       (*
           fn poll_next(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
@@ -47,7 +48,19 @@ Module async_iter.
               Ty.apply
                 (Ty.path "core::task::poll::Poll")
                 []
-                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "core::async_iter::async_iter::AsyncIterator"
+                        []
+                        []
+                        S
+                        "Item"
+                    ]
+                ],
               M.get_trait_method (|
                 "core::async_iter::async_iter::AsyncIterator",
                 S,
@@ -151,8 +164,9 @@ Module async_iter.
         forall (S : Ty.t),
         M.IsTraitInstance
           "core::async_iter::async_iter::AsyncIterator"
-          (Self S)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self S)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item S));
@@ -161,11 +175,17 @@ Module async_iter.
           ].
     End Impl_core_async_iter_async_iter_AsyncIterator_where_core_marker_Sized_S_where_core_async_iter_async_iter_AsyncIterator_S_where_core_marker_Unpin_S_for_ref_mut_S.
     
-    Module Impl_core_async_iter_async_iter_AsyncIterator_where_core_ops_deref_DerefMut_P_where_core_async_iter_async_iter_AsyncIterator_associated_type_for_core_pin_Pin_P.
+    Module Impl_core_async_iter_async_iter_AsyncIterator_where_core_ops_deref_DerefMut_P_where_core_async_iter_async_iter_AsyncIterator_associated_in_trait_core_ops_deref_Deref___P_Target_for_core_pin_Pin_P.
       Definition Self (P : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ P ].
       
       (*     type Item = <P::Target as AsyncIterator>::Item; *)
-      Definition _Item (P : Ty.t) : Ty.t := Ty.associated.
+      Definition _Item (P : Ty.t) : Ty.t :=
+        Ty.associated_in_trait
+          "core::async_iter::async_iter::AsyncIterator"
+          []
+          []
+          (Ty.associated_in_trait "core::ops::deref::Deref" [] [] P "Target")
+          "Item".
       
       (*
           fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
@@ -183,10 +203,22 @@ Module async_iter.
               Ty.apply
                 (Ty.path "core::task::poll::Poll")
                 []
-                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ],
+                [
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "core::async_iter::async_iter::AsyncIterator"
+                        []
+                        []
+                        (Ty.associated_in_trait "core::ops::deref::Deref" [] [] P "Target")
+                        "Item"
+                    ]
+                ],
               M.get_trait_method (|
                 "core::async_iter::async_iter::AsyncIterator",
-                Ty.associated,
+                Ty.associated_in_trait "core::ops::deref::Deref" [] [] P "Target",
                 [],
                 [],
                 "poll_next",
@@ -198,7 +230,12 @@ Module async_iter.
                   Ty.apply
                     (Ty.path "core::pin::Pin")
                     []
-                    [ Ty.apply (Ty.path "&mut") [] [ Ty.associated ] ],
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] P "Target" ]
+                    ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                     "as_deref_mut",
@@ -230,7 +267,7 @@ Module async_iter.
                 ],
               M.get_trait_method (|
                 "core::async_iter::async_iter::AsyncIterator",
-                Ty.associated,
+                Ty.associated_in_trait "core::ops::deref::Deref" [] [] P "Target",
                 [],
                 [],
                 "size_hint",
@@ -242,7 +279,10 @@ Module async_iter.
                   Pointer.Kind.Ref,
                   M.deref (|
                     M.call_closure (|
-                      Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] P "Target" ],
                       M.get_trait_method (|
                         "core::ops::deref::Deref",
                         Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
@@ -265,15 +305,16 @@ Module async_iter.
         forall (P : Ty.t),
         M.IsTraitInstance
           "core::async_iter::async_iter::AsyncIterator"
-          (Self P)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self P)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item P));
             ("poll_next", InstanceField.Method (poll_next P));
             ("size_hint", InstanceField.Method (size_hint P))
           ].
-    End Impl_core_async_iter_async_iter_AsyncIterator_where_core_ops_deref_DerefMut_P_where_core_async_iter_async_iter_AsyncIterator_associated_type_for_core_pin_Pin_P.
+    End Impl_core_async_iter_async_iter_AsyncIterator_where_core_ops_deref_DerefMut_P_where_core_async_iter_async_iter_AsyncIterator_associated_in_trait_core_ops_deref_Deref___P_Target_for_core_pin_Pin_P.
     
     Module Impl_core_task_poll_Poll_core_option_Option_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -352,7 +393,8 @@ Module async_iter.
       Definition Self (I : Ty.t) : Ty.t := I.
       
       (*     type Item = I::Item; *)
-      Definition _Item (I : Ty.t) : Ty.t := Ty.associated.
+      Definition _Item (I : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::async_iter::async_iter::AsyncIterator" [] [] I "Item".
       
       (*     type IntoAsyncIter = I; *)
       Definition _IntoAsyncIter (I : Ty.t) : Ty.t := I.
@@ -381,8 +423,9 @@ Module async_iter.
         forall (I : Ty.t),
         M.IsTraitInstance
           "core::async_iter::async_iter::IntoAsyncIterator"
-          (Self I)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self I)
           (* Instance *)
           [
             ("Item", InstanceField.Ty (_Item I));

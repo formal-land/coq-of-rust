@@ -23,8 +23,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_alloc_string_String.
   
@@ -82,8 +83,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_alloc_string_String.
   
@@ -151,8 +153,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialOrd"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_alloc_string_String.
   
@@ -181,8 +184,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_alloc_string_String.
@@ -246,8 +250,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Ord"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_alloc_string_String.
   
@@ -335,8 +340,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_alloc_string_FromUtf8Error.
   
@@ -346,8 +352,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::StructuralPartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_alloc_string_FromUtf8Error.
   
@@ -438,8 +445,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_alloc_string_FromUtf8Error.
   
@@ -475,8 +483,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::Eq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_alloc_string_FromUtf8Error.
@@ -562,8 +571,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_alloc_string_FromUtf8Error.
   
@@ -628,8 +638,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_alloc_string_FromUtf16Error.
   
@@ -6091,10 +6102,11 @@ Module string.
                       [ Ty.tuple [ Ty.path "usize"; Ty.path "usize" ] ]
                   ] :=
               M.copy (|
-                let~ searcher : Ty.associated :=
+                let~ searcher :
+                    Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher" :=
                   M.alloc (|
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait "core::str::pattern::Pattern" [] [] P "Searcher",
                       M.get_trait_method (|
                         "core::str::pattern::Pattern",
                         P,
@@ -6255,7 +6267,12 @@ Module string.
                                                               ],
                                                             M.get_trait_method (|
                                                               "core::str::pattern::Searcher",
-                                                              Ty.associated,
+                                                              Ty.associated_in_trait
+                                                                "core::str::pattern::Pattern"
+                                                                []
+                                                                []
+                                                                P
+                                                                "Searcher",
                                                               [],
                                                               [],
                                                               "next_match",
@@ -9520,8 +9537,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_alloc_string_FromUtf8Error.
   
@@ -9559,8 +9577,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_alloc_string_FromUtf16Error.
   
@@ -9584,8 +9603,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("description", InstanceField.Method description) ].
   End Impl_core_error_Error_for_alloc_string_FromUtf8Error.
   
@@ -9612,8 +9632,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::error::Error"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("description", InstanceField.Method description) ].
   End Impl_core_error_Error_for_alloc_string_FromUtf16Error.
   
@@ -9727,8 +9748,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::clone::Clone"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("clone", InstanceField.Method clone); ("clone_from", InstanceField.Method clone_from) ].
   End Impl_core_clone_Clone_for_alloc_string_String.
@@ -9781,8 +9803,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "char" ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.path "char" ]
         (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
   End Impl_core_iter_traits_collect_FromIterator_char_for_alloc_string_String.
   
@@ -9834,8 +9857,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ]
         (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
   End Impl_core_iter_traits_collect_FromIterator_ref__char_for_alloc_string_String.
   
@@ -9887,8 +9911,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
   End Impl_core_iter_traits_collect_FromIterator_ref__str_for_alloc_string_String.
   
@@ -9917,10 +9942,21 @@ Module string.
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.read (|
-            let~ iterator : Ty.associated :=
+            let~ iterator :
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter" :=
               M.alloc (|
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    I
+                    "IntoIter",
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     I,
@@ -9939,7 +9975,12 @@ Module string.
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "alloc::string::String" ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      I
+                      "IntoIter",
                     [],
                     [],
                     "next",
@@ -9985,7 +10026,14 @@ Module string.
                             [ Ty.path "alloc::string::String" ],
                             "extend",
                             [],
-                            [ Ty.associated ]
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::collect::IntoIterator"
+                                []
+                                []
+                                I
+                                "IntoIter"
+                            ]
                           |),
                           [ M.borrow (| Pointer.Kind.MutRef, buf |); M.read (| iterator |) ]
                         |)
@@ -10000,8 +10048,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.path "alloc::string::String" ]
         (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
   End Impl_core_iter_traits_collect_FromIterator_alloc_string_String_for_alloc_string_String.
   
@@ -10055,9 +10104,10 @@ Module string.
       forall (A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
-        (Self A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* A *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
+        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
+        (Self A)
         (* Instance *) [ ("from_iter", InstanceField.Method (from_iter A)) ].
   End Impl_core_iter_traits_collect_FromIterator_where_core_alloc_Allocator_A_alloc_boxed_Box_str_A_for_alloc_string_String.
   
@@ -10087,10 +10137,21 @@ Module string.
         ltac:(M.monadic
           (let iter := M.alloc (| iter |) in
           M.read (|
-            let~ iterator : Ty.associated :=
+            let~ iterator :
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter" :=
               M.alloc (|
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    I
+                    "IntoIter",
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     I,
@@ -10112,7 +10173,12 @@ Module string.
                     [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      I
+                      "IntoIter",
                     [],
                     [],
                     "next",
@@ -10171,7 +10237,14 @@ Module string.
                             [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
                             "extend",
                             [],
-                            [ Ty.associated ]
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::collect::IntoIterator"
+                                []
+                                []
+                                I
+                                "IntoIter"
+                            ]
                           |),
                           [ M.borrow (| Pointer.Kind.MutRef, buf |); M.read (| iterator |) ]
                         |)
@@ -10186,9 +10259,10 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* A *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        Self
         (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
   End Impl_core_iter_traits_collect_FromIterator_alloc_borrow_Cow_str_for_alloc_string_String.
   
@@ -10210,10 +10284,21 @@ Module string.
           (let self := M.alloc (| self |) in
           let iter := M.alloc (| iter |) in
           M.read (|
-            let~ iterator : Ty.associated :=
+            let~ iterator :
+                Ty.associated_in_trait
+                  "core::iter::traits::collect::IntoIterator"
+                  []
+                  []
+                  I
+                  "IntoIter" :=
               M.alloc (|
                 M.call_closure (|
-                  Ty.associated,
+                  Ty.associated_in_trait
+                    "core::iter::traits::collect::IntoIterator"
+                    []
+                    []
+                    I
+                    "IntoIter",
                   M.get_trait_method (|
                     "core::iter::traits::collect::IntoIterator",
                     I,
@@ -10236,7 +10321,12 @@ Module string.
                     ],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      I
+                      "IntoIter",
                     [],
                     [],
                     "size_hint",
@@ -10274,7 +10364,12 @@ Module string.
                           Ty.tuple [],
                           M.get_trait_method (|
                             "core::iter::traits::iterator::Iterator",
-                            Ty.associated,
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              I
+                              "IntoIter",
                             [],
                             [],
                             "for_each",
@@ -10389,8 +10484,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::Extend"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "char" ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.path "char" ]
         (* Instance *)
         [
           ("extend", InstanceField.Method extend);
@@ -10425,7 +10521,18 @@ Module string.
                     [ Ty.path "char" ],
                     "extend",
                     [],
-                    [ Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ Ty.associated ]
+                    [
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::cloned::Cloned")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::collect::IntoIterator"
+                            []
+                            []
+                            I
+                            "IntoIter"
+                        ]
                     ]
                   |),
                   [
@@ -10434,10 +10541,22 @@ Module string.
                       Ty.apply
                         (Ty.path "core::iter::adapters::cloned::Cloned")
                         []
-                        [ Ty.associated ],
+                        [
+                          Ty.associated_in_trait
+                            "core::iter::traits::collect::IntoIterator"
+                            []
+                            []
+                            I
+                            "IntoIter"
+                        ],
                       M.get_trait_method (|
                         "core::iter::traits::iterator::Iterator",
-                        Ty.associated,
+                        Ty.associated_in_trait
+                          "core::iter::traits::collect::IntoIterator"
+                          []
+                          []
+                          I
+                          "IntoIter",
                         [],
                         [],
                         "cloned",
@@ -10446,7 +10565,12 @@ Module string.
                       |),
                       [
                         M.call_closure (|
-                          Ty.associated,
+                          Ty.associated_in_trait
+                            "core::iter::traits::collect::IntoIterator"
+                            []
+                            []
+                            I
+                            "IntoIter",
                           M.get_trait_method (|
                             "core::iter::traits::collect::IntoIterator",
                             I,
@@ -10546,8 +10670,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::Extend"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ]
         (* Instance *)
         [
           ("extend", InstanceField.Method extend);
@@ -10577,7 +10702,12 @@ Module string.
                   Ty.tuple [],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      I
+                      "IntoIter",
                     [],
                     [],
                     "for_each",
@@ -10590,7 +10720,12 @@ Module string.
                   |),
                   [
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        I
+                        "IntoIter",
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         I,
@@ -10681,8 +10816,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::Extend"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *)
         [ ("extend", InstanceField.Method extend); ("extend_one", InstanceField.Method extend_one)
         ].
@@ -10710,7 +10846,12 @@ Module string.
                   Ty.tuple [],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      I
+                      "IntoIter",
                     [],
                     [],
                     "for_each",
@@ -10726,7 +10867,12 @@ Module string.
                   |),
                   [
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        I
+                        "IntoIter",
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         I,
@@ -10789,9 +10935,10 @@ Module string.
       forall (A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::Extend"
-        (Self A)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* A *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
+        [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
+        (Self A)
         (* Instance *) [ ("extend", InstanceField.Method (extend A)) ].
   End Impl_core_iter_traits_collect_Extend_where_core_alloc_Allocator_A_alloc_boxed_Box_str_A_for_alloc_string_String.
   
@@ -10816,7 +10963,12 @@ Module string.
                   Ty.tuple [],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      I
+                      "IntoIter",
                     [],
                     [],
                     "for_each",
@@ -10825,7 +10977,12 @@ Module string.
                   |),
                   [
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        I
+                        "IntoIter",
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         I,
@@ -10957,8 +11114,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::Extend"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.path "alloc::string::String" ]
         (* Instance *)
         [ ("extend", InstanceField.Method extend); ("extend_one", InstanceField.Method extend_one)
         ].
@@ -10985,7 +11143,12 @@ Module string.
                   Ty.tuple [],
                   M.get_trait_method (|
                     "core::iter::traits::iterator::Iterator",
-                    Ty.associated,
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      I
+                      "IntoIter",
                     [],
                     [],
                     "for_each",
@@ -10999,7 +11162,12 @@ Module string.
                   |),
                   [
                     M.call_closure (|
-                      Ty.associated,
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        I
+                        "IntoIter",
                       M.get_trait_method (|
                         "core::iter::traits::collect::IntoIterator",
                         I,
@@ -11134,9 +11302,10 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::Extend"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* A *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        Self
         (* Instance *)
         [ ("extend", InstanceField.Method extend); ("extend_one", InstanceField.Method extend_one)
         ].
@@ -11146,7 +11315,13 @@ Module string.
     Definition Self : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ].
     
     (*     type Searcher<'a> = <&'b str as Pattern>::Searcher<'a>; *)
-    Definition _Searcher : Ty.t := Ty.associated.
+    Definition _Searcher : Ty.t :=
+      Ty.associated_in_trait
+        "core::str::pattern::Pattern"
+        []
+        []
+        (Ty.apply (Ty.path "&") [] [ Ty.path "str" ])
+        "Searcher".
     
     (*
         fn into_searcher(self, haystack: &str) -> <&'b str as Pattern>::Searcher<'_> {
@@ -11463,8 +11638,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::pattern::Pattern"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("Searcher", InstanceField.Ty _Searcher);
@@ -11643,8 +11819,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "str" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "str" ]
         (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
   End Impl_core_cmp_PartialEq_str_for_alloc_string_String.
   
@@ -11814,8 +11991,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "alloc::string::String" ]
         (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
   End Impl_core_cmp_PartialEq_alloc_string_String_for_str.
   
@@ -11991,8 +12169,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
   End Impl_core_cmp_PartialEq_ref__str_for_alloc_string_String.
   
@@ -12168,8 +12347,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "alloc::string::String" ]
         (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
   End Impl_core_cmp_PartialEq_alloc_string_String_for_ref__str.
   
@@ -12373,8 +12553,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "str" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "str" ]
         (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
   End Impl_core_cmp_PartialEq_str_for_alloc_borrow_Cow_str.
   
@@ -12580,9 +12761,10 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* Rhs *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
   End Impl_core_cmp_PartialEq_alloc_borrow_Cow_str_for_str.
   
@@ -12792,8 +12974,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
   End Impl_core_cmp_PartialEq_ref__str_for_alloc_borrow_Cow_str.
   
@@ -13005,9 +13188,10 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* Rhs *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
   End Impl_core_cmp_PartialEq_alloc_borrow_Cow_str_for_ref__str.
   
@@ -13211,8 +13395,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.path "alloc::string::String" ]
         (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
   End Impl_core_cmp_PartialEq_alloc_string_String_for_alloc_borrow_Cow_str.
   
@@ -13418,9 +13603,10 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::cmp::PartialEq"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* Rhs *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        Self
         (* Instance *) [ ("eq", InstanceField.Method eq); ("ne", InstanceField.Method ne) ].
   End Impl_core_cmp_PartialEq_alloc_borrow_Cow_str_for_alloc_string_String.
   
@@ -13447,8 +13633,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::default::Default"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_alloc_string_String.
   
@@ -13505,8 +13692,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Display"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Display_for_alloc_string_String.
   
@@ -13563,8 +13751,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_alloc_string_String.
   
@@ -13613,8 +13802,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::hash::Hash"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_alloc_string_String.
   
@@ -13661,8 +13851,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::Add"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
   End Impl_core_ops_arith_Add_ref__str_for_alloc_string_String.
   
@@ -13705,8 +13896,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::arith::AddAssign"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
   End Impl_core_ops_arith_AddAssign_ref__str_for_alloc_string_String.
   
@@ -13714,7 +13906,8 @@ Module string.
     Definition Self (I : Ty.t) : Ty.t := Ty.path "alloc::string::String".
     
     (*     type Output = I::Output; *)
-    Definition _Output (I : Ty.t) : Ty.t := Ty.associated.
+    Definition _Output (I : Ty.t) : Ty.t :=
+      Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output".
     
     (*
         fn index(&self, index: I) -> &I::Output {
@@ -13732,7 +13925,10 @@ Module string.
             Pointer.Kind.Ref,
             M.deref (|
               M.call_closure (|
-                Ty.apply (Ty.path "&") [] [ Ty.associated ],
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
                 M.get_trait_method (|
                   "core::slice::index::SliceIndex",
                   I,
@@ -13770,8 +13966,9 @@ Module string.
       forall (I : Ty.t),
       M.IsTraitInstance
         "core::ops::index::Index"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ I ]
         (Self I)
-        (* Trait polymorphic types *) [ (* Idx *) I ]
         (* Instance *)
         [ ("Output", InstanceField.Ty (_Output I)); ("index", InstanceField.Method (index I)) ].
   End Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_str_I_for_alloc_string_String.
@@ -13798,7 +13995,10 @@ Module string.
                 Pointer.Kind.MutRef,
                 M.deref (|
                   M.call_closure (|
-                    Ty.apply (Ty.path "&mut") [] [ Ty.associated ],
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.associated_in_trait "core::slice::index::SliceIndex" [] [] I "Output" ],
                     M.get_trait_method (|
                       "core::slice::index::SliceIndex",
                       I,
@@ -13838,8 +14038,9 @@ Module string.
       forall (I : Ty.t),
       M.IsTraitInstance
         "core::ops::index::IndexMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ I ]
         (Self I)
-        (* Trait polymorphic types *) [ (* Idx *) I ]
         (* Instance *) [ ("index_mut", InstanceField.Method (index_mut I)) ].
   End Impl_core_ops_index_IndexMut_where_core_slice_index_SliceIndex_I_str_I_for_alloc_string_String.
   
@@ -13914,8 +14115,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::deref::Deref"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Target", InstanceField.Ty _Target); ("deref", InstanceField.Method deref) ].
   End Impl_core_ops_deref_Deref_for_alloc_string_String.
@@ -13926,8 +14128,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::deref::DerefPure"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_ops_deref_DerefPure_for_alloc_string_String.
   
@@ -14009,8 +14212,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::deref::DerefMut"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("deref_mut", InstanceField.Method deref_mut) ].
   End Impl_core_ops_deref_DerefMut_for_alloc_string_String.
   
@@ -14055,8 +14259,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::str::traits::FromStr"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [ ("Err", InstanceField.Ty _Err); ("from_str", InstanceField.Method from_str) ].
   End Impl_core_str_traits_FromStr_for_alloc_string_String.
@@ -14153,8 +14358,9 @@ Module string.
       forall (T : Ty.t),
       M.IsTraitInstance
         "alloc::string::ToString"
-        (Self T)
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        (Self T)
         (* Instance *) [ ("to_string", InstanceField.Method (to_string T)) ].
   End Impl_alloc_string_ToString_where_core_fmt_Display_T_where_core_marker_Sized_T_for_T.
   
@@ -14206,8 +14412,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_core_ascii_ascii_char_AsciiChar.
   
@@ -14265,8 +14472,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_char.
   
@@ -14324,8 +14532,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_bool.
   
@@ -14495,8 +14704,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_u8.
   
@@ -14701,8 +14911,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_i8.
   
@@ -14840,8 +15051,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__str.
   
@@ -14968,8 +15180,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__str.
   
@@ -15087,8 +15300,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__str.
   
@@ -15197,8 +15411,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__ref__ref__str.
   
@@ -15296,8 +15511,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__ref__str.
   
@@ -15382,8 +15598,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__str.
   
@@ -15458,8 +15675,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__str.
   
@@ -15523,8 +15741,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__str.
   
@@ -15579,8 +15798,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_ref__ref__ref__ref__str.
   
@@ -15626,8 +15846,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_ref__ref__ref__str.
   
@@ -15664,8 +15885,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_ref__ref__str.
   
@@ -15701,8 +15923,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_ref__str.
   
@@ -15738,8 +15961,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_str.
   
@@ -15814,8 +16038,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_alloc_borrow_Cow_str.
   
@@ -15851,8 +16076,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_alloc_string_String.
   
@@ -15880,8 +16106,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "alloc::string::ToString"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_core_fmt_Arguments.
   
@@ -15922,8 +16149,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "str" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
         (* Instance *) [ ("as_ref", InstanceField.Method as_ref) ].
   End Impl_core_convert_AsRef_str_for_alloc_string_String.
   
@@ -15969,8 +16197,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::AsMut"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "str" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
         (* Instance *) [ ("as_mut", InstanceField.Method as_mut) ].
   End Impl_core_convert_AsMut_str_for_alloc_string_String.
   
@@ -16003,8 +16232,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
         (* Instance *) [ ("as_ref", InstanceField.Method as_ref) ].
   End Impl_core_convert_AsRef_slice_u8_for_alloc_string_String.
   
@@ -16040,8 +16270,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_alloc_string_String.
   
@@ -16077,8 +16308,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref_mut_str_for_alloc_string_String.
   
@@ -16114,9 +16346,10 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__alloc_string_String_for_alloc_string_String.
   
@@ -16144,15 +16377,15 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
         [
-          (* T *)
           Ty.apply
             (Ty.path "alloc::boxed::Box")
             []
             [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
         ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_boxed_Box_str_alloc_alloc_Global_for_alloc_string_String.
   
@@ -16189,8 +16422,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "alloc::string::String" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_string_String_for_alloc_boxed_Box_str_alloc_alloc_Global.
   
@@ -16223,9 +16457,10 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_borrow_Cow_str_for_alloc_string_String.
   
@@ -16251,8 +16486,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__str_for_alloc_borrow_Cow_str.
   
@@ -16276,8 +16512,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "alloc::string::String" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_string_String_for_alloc_borrow_Cow_str.
   
@@ -16319,9 +16556,10 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *)
-        [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ]
+        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ]
+        Self
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_ref__alloc_string_String_for_alloc_borrow_Cow_str.
   
@@ -16361,8 +16599,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "char" ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.path "char" ]
         (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
   End Impl_core_iter_traits_collect_FromIterator_char_for_alloc_borrow_Cow_str.
   
@@ -16402,8 +16641,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
         (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
   End Impl_core_iter_traits_collect_FromIterator_ref__str_for_alloc_borrow_Cow_str.
   
@@ -16443,8 +16683,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
-        (* Trait polymorphic types *) [ (* A *) Ty.path "alloc::string::String" ]
         (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
   End Impl_core_iter_traits_collect_FromIterator_alloc_string_String_for_alloc_borrow_Cow_str.
   
@@ -16476,8 +16717,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "alloc::string::String" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_alloc_string_String_for_alloc_vec_Vec_u8_alloc_alloc_Global.
   
@@ -16550,8 +16792,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Write"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("write_str", InstanceField.Method write_str);
@@ -16664,8 +16907,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::fmt::Debug"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_alloc_string_Drain.
   
@@ -16675,8 +16919,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Sync"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Sync_for_alloc_string_Drain.
   
@@ -16686,8 +16931,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::marker::Send"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_marker_Send_for_alloc_string_Drain.
   
@@ -16867,8 +17113,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::ops::drop::Drop"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("drop", InstanceField.Method drop) ].
   End Impl_core_ops_drop_Drop_for_alloc_string_Drain.
   
@@ -16940,8 +17187,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "str" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "str" ]
         (* Instance *) [ ("as_ref", InstanceField.Method as_ref) ].
   End Impl_core_convert_AsRef_str_for_alloc_string_Drain.
   
@@ -16990,8 +17238,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::AsRef"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
         (* Instance *) [ ("as_ref", InstanceField.Method as_ref) ].
   End Impl_core_convert_AsRef_slice_u8_for_alloc_string_Drain.
   
@@ -17101,8 +17350,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::iterator::Iterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *)
         [
           ("Item", InstanceField.Ty _Item);
@@ -17153,8 +17403,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::double_ended::DoubleEndedIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [ ("next_back", InstanceField.Method next_back) ].
   End Impl_core_iter_traits_double_ended_DoubleEndedIterator_for_alloc_string_Drain.
   
@@ -17164,8 +17415,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::iter::traits::marker::FusedIterator"
-        Self
+        (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) []
+        Self
         (* Instance *) [].
   End Impl_core_iter_traits_marker_FusedIterator_for_alloc_string_Drain.
   
@@ -17201,8 +17453,9 @@ Module string.
     Axiom Implements :
       M.IsTraitInstance
         "core::convert::From"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) [ Ty.path "char" ]
         Self
-        (* Trait polymorphic types *) [ (* T *) Ty.path "char" ]
         (* Instance *) [ ("from", InstanceField.Method from) ].
   End Impl_core_convert_From_char_for_alloc_string_String.
 End string.

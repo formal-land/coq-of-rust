@@ -38,8 +38,9 @@ Module sync.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::default::Default"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("default", InstanceField.Method (default T)) ].
     End Impl_core_default_Default_where_core_default_Default_T_where_core_marker_Sized_T_for_core_sync_exclusive_Exclusive_T.
     
@@ -51,8 +52,9 @@ Module sync.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::marker::Sync"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [].
     End Impl_core_marker_Sync_where_core_marker_Sized_T_for_core_sync_exclusive_Exclusive_T.
     
@@ -114,8 +116,9 @@ Module sync.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::fmt::Debug"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_Debug_where_core_marker_Sized_T_for_core_sync_exclusive_Exclusive_T.
     
@@ -451,8 +454,9 @@ Module sync.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::convert::From"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ T ]
           (Self T)
-          (* Trait polymorphic types *) [ (* T *) T ]
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_T_for_core_sync_exclusive_Exclusive_T.
     
@@ -461,7 +465,8 @@ Module sync.
         Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ F ].
       
       (*     type Output = F::Output; *)
-      Definition _Output (F Args : Ty.t) : Ty.t := Ty.associated.
+      Definition _Output (F Args : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output".
       
       (*
           extern "rust-call" fn call_once(self, args: Args) -> Self::Output {
@@ -481,7 +486,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let args := M.alloc (| args |) in
             M.call_closure (|
-              Ty.associated,
+              Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
               M.get_trait_method (|
                 "core::ops::function::FnOnce",
                 F,
@@ -512,8 +517,9 @@ Module sync.
         forall (F Args : Ty.t),
         M.IsTraitInstance
           "core::ops::function::FnOnce"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Args ]
           (Self F Args)
-          (* Trait polymorphic types *) [ (* Args *) Args ]
           (* Instance *)
           [
             ("Output", InstanceField.Ty (_Output F Args));
@@ -543,7 +549,7 @@ Module sync.
             (let self := M.alloc (| self |) in
             let args := M.alloc (| args |) in
             M.call_closure (|
-              Ty.associated,
+              Ty.associated_in_trait "core::ops::function::FnOnce" [] [] F "Output",
               M.get_trait_method (|
                 "core::ops::function::FnMut",
                 F,
@@ -579,8 +585,9 @@ Module sync.
         forall (F Args : Ty.t),
         M.IsTraitInstance
           "core::ops::function::FnMut"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Args ]
           (Self F Args)
-          (* Trait polymorphic types *) [ (* Args *) Args ]
           (* Instance *) [ ("call_mut", InstanceField.Method (call_mut F Args)) ].
     End Impl_core_ops_function_FnMut_where_core_ops_function_FnMut_F_Args_where_core_marker_Tuple_Args_Args_for_core_sync_exclusive_Exclusive_F.
     
@@ -589,7 +596,8 @@ Module sync.
         Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ].
       
       (*     type Output = T::Output; *)
-      Definition _Output (T : Ty.t) : Ty.t := Ty.associated.
+      Definition _Output (T : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::future::future::Future" [] [] T "Output".
       
       (*
           fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
@@ -604,7 +612,10 @@ Module sync.
             (let self := M.alloc (| self |) in
             let cx := M.alloc (| cx |) in
             M.call_closure (|
-              Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.associated ],
+              Ty.apply
+                (Ty.path "core::task::poll::Poll")
+                []
+                [ Ty.associated_in_trait "core::future::future::Future" [] [] T "Output" ],
               M.get_trait_method (| "core::future::future::Future", T, [], [], "poll", [], [] |),
               [
                 M.call_closure (|
@@ -627,8 +638,9 @@ Module sync.
         forall (T : Ty.t),
         M.IsTraitInstance
           "core::future::future::Future"
-          (Self T)
+          (* Trait polymorphic consts *) []
           (* Trait polymorphic types *) []
+          (Self T)
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output T)); ("poll", InstanceField.Method (poll T)) ].
     End Impl_core_future_future_Future_where_core_future_future_Future_T_where_core_marker_Sized_T_for_core_sync_exclusive_Exclusive_T.
@@ -638,10 +650,12 @@ Module sync.
         Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ G ].
       
       (*     type Yield = G::Yield; *)
-      Definition _Yield (R G : Ty.t) : Ty.t := Ty.associated.
+      Definition _Yield (R G : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield".
       
       (*     type Return = G::Return; *)
-      Definition _Return (R G : Ty.t) : Ty.t := Ty.associated.
+      Definition _Return (R G : Ty.t) : Ty.t :=
+        Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return".
       
       (*
           fn resume(self: Pin<&mut Self>, arg: R) -> CoroutineState<Self::Yield, Self::Return> {
@@ -659,7 +673,10 @@ Module sync.
               Ty.apply
                 (Ty.path "core::ops::coroutine::CoroutineState")
                 []
-                [ Ty.associated; Ty.associated ],
+                [
+                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Yield";
+                  Ty.associated_in_trait "core::ops::coroutine::Coroutine" [] [] G "Return"
+                ],
               M.get_trait_method (|
                 "core::ops::coroutine::Coroutine",
                 G,
@@ -690,8 +707,9 @@ Module sync.
         forall (R G : Ty.t),
         M.IsTraitInstance
           "core::ops::coroutine::Coroutine"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ R ]
           (Self R G)
-          (* Trait polymorphic types *) [ (* R *) R ]
           (* Instance *)
           [
             ("Yield", InstanceField.Ty (_Yield R G));
