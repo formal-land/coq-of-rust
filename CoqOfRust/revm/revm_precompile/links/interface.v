@@ -61,6 +61,39 @@ Module PrecompileOutput.
   Defined.
   Smpl Add apply of_value : of_value.
 
+  Module SubPointer.
+    Definition get_gas_used : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_precompile::interface::PrecompileOutput" "gas_used") :=
+    {|
+      SubPointer.Runner.projection x := Some x.(gas_used);
+      SubPointer.Runner.injection x y := Some (x <| gas_used := y |>);
+    |}.
+
+    Lemma get_gas_used_is_valid :
+      SubPointer.Runner.Valid.t get_gas_used.
+    Proof.
+      now constructor.
+    Qed.
+
+    Smpl Add apply get_gas_used_is_valid : run_sub_pointer.
+
+    Definition get_bytes : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_precompile::interface::PrecompileOutput" "bytes") :=
+    {|
+      SubPointer.Runner.projection x := Some x.(bytes);
+      SubPointer.Runner.injection x y := Some (x <| bytes := y |>);
+    |}.
+
+    Lemma get_bytes_is_valid :
+      SubPointer.Runner.Valid.t get_bytes.
+    Proof.
+      now constructor.
+    Qed.
+
+    Smpl Add apply get_bytes_is_valid : run_sub_pointer.
+
+  End SubPointer.
+
 End PrecompileOutput.
 
 Module Impl_PrecompileOutput.
@@ -81,3 +114,5 @@ Module Impl_PrecompileOutput.
   Defined.
   Smpl Add apply run_new : run_closure.
 End Impl_PrecompileOutput.
+
+
