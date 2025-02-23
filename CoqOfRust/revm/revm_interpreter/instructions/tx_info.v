@@ -992,7 +992,7 @@ Module instructions.
                         [],
                         [],
                         "popn_top",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 0 ],
                         []
                       |),
                       [

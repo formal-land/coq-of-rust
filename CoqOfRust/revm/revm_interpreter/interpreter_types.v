@@ -312,7 +312,7 @@ Module interpreter_types.
                   [],
                   [],
                   "popn_top",
-                  [],
+                  [ Value.Integer IntegerKind.Usize 0 ],
                   []
                 |),
                 [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
@@ -426,7 +426,7 @@ Module interpreter_types.
                   [],
                   [],
                   "popn",
-                  [],
+                  [ Value.Integer IntegerKind.Usize 1 ],
                   []
                 |),
                 [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]

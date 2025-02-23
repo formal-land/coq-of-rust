@@ -32,7 +32,7 @@ Module array.
                 [ N ],
                 [ U ],
                 "spec_eq",
-                [ N ],
+                [],
                 []
               |),
               [
@@ -69,7 +69,7 @@ Module array.
                 [ N ],
                 [ U ],
                 "spec_ne",
-                [ N ],
+                [],
                 []
               |),
               [
@@ -1151,7 +1151,7 @@ Module array.
                   [ N ],
                   [ U ],
                   "spec_eq",
-                  [ N ],
+                  [],
                   []
                 |),
                 [

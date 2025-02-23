@@ -410,7 +410,7 @@ Module instructions.
                         [],
                         [],
                         "popn",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 4 ],
                         []
                       |),
                       [
@@ -1725,7 +1725,7 @@ Module instructions.
                         [],
                         [],
                         "popn",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 2 ],
                         []
                       |),
                       [
@@ -3322,7 +3322,7 @@ Module instructions.
                         [],
                         [],
                         "popn",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 2 ],
                         []
                       |),
                       [
@@ -4388,7 +4388,7 @@ Module instructions.
                         [],
                         [],
                         "popn",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 1 ],
                         []
                       |),
                       [
@@ -4878,7 +4878,7 @@ Module instructions.
                                         [],
                                         [],
                                         "popn",
-                                        [],
+                                        [ Value.Integer IntegerKind.Usize 1 ],
                                         []
                                       |),
                                       [
@@ -6405,7 +6405,7 @@ Module instructions.
                         [],
                         [],
                         "popn",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 3 ],
                         []
                       |),
                       [
@@ -7481,7 +7481,7 @@ Module instructions.
                                             [],
                                             [],
                                             "popn",
-                                            [],
+                                            [ Value.Integer IntegerKind.Usize 1 ],
                                             []
                                           |),
                                           [
@@ -8280,7 +8280,7 @@ Module instructions.
                         [],
                         [],
                         "popn",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 3 ],
                         []
                       |),
                       [
@@ -9040,7 +9040,7 @@ Module instructions.
                         [],
                         [],
                         "popn",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 3 ],
                         []
                       |),
                       [
@@ -9899,7 +9899,7 @@ Module instructions.
                         [],
                         [],
                         "popn",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 2 ],
                         []
                       |),
                       [
@@ -10701,7 +10701,7 @@ Module instructions.
                         [],
                         [],
                         "popn",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 2 ],
                         []
                       |),
                       [

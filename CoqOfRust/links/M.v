@@ -4,6 +4,17 @@ Import List.ListNotations.
 
 Local Open Scope list.
 
+Axiom IsTraitAssociatedType_eq :
+  forall
+    (trait_name : string)
+    (trait_consts : list Value.t)
+    (trait_tys : list Ty.t)
+    (self_ty : Ty.t)
+    (associated_type_name : string)
+    (ty : Ty.t),
+  IsTraitAssociatedType trait_name trait_consts trait_tys self_ty associated_type_name ty ->
+  Ty.associated_in_trait trait_name trait_consts trait_tys self_ty associated_type_name = ty.
+
 Class Link (A : Set) : Set := {
   Φ : Ty.t;
   φ : A -> Value.t;
@@ -42,6 +53,8 @@ End OfTy.
 
 Smpl Create of_value.
 Smpl Add reflexivity : of_value.
+(* Because some types contain constant parameters *)
+Smpl Add smpl of_value : of_ty.
 
 Module OfValue.
   Inductive t (value' : Value.t) : Type :=

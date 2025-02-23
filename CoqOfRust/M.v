@@ -6,6 +6,7 @@ Require Export Coq.ZArith.ZArith.
 Require Export Lia.
 From Hammer Require Export Tactics.
 Require Export smpl.Smpl.
+Require Export coqutil.Datatypes.List.
 
 Import List.ListNotations.
 
@@ -63,6 +64,13 @@ Module List.
       | S index => x :: replace_at l index update
       end
     end.
+
+  Lemma replace_at_map_eq {A B : Set} (l : list A) (f : A -> B) (index : nat) (update : A) :
+    List.map f (replace_at l index update) =
+    replace_at (List.map f l) index (f update).
+  Proof.
+    revert l; induction index; intros; destruct l; cbn; f_equal; auto.
+  Qed.
 End List.
 
 Module IntegerKind.
@@ -237,7 +245,11 @@ Module Value.
       end
     | Pointer.Index.Array index =>
       match value with
-      | Array fields => Some (Array (List.replace_at fields (Z.to_nat index) update))
+      | Array fields =>
+        match List.nth_error fields (Z.to_nat index) with
+        | Some _ => Some (Array (List.replace_at fields (Z.to_nat index) update))
+        | None => None
+        end
       | _ => None
       end
     | Pointer.Index.StructRecord constructor field =>
@@ -770,7 +782,8 @@ Module SubPointer.
     get_sub_pointer value (Pointer.Index.StructRecord constructor field).
 
   (** Get an element of a slice by index. *)
-  Parameter get_slice_index : Value.t -> Z -> M.
+  Definition get_slice_index (value : Value.t) (index : Z) : M :=
+    get_sub_pointer value (Pointer.Index.Array index).
 
   (** Get an element of a slice by index counting from the end. *)
   Parameter get_slice_rev_index : Value.t -> Z -> M.

@@ -3,18 +3,21 @@ Require Import CoqOfRust.links.M.
 
 Module ruint.
   Module Uint.
-    Parameter t : Z -> Z -> Set.
+    Parameter t : Usize.t -> Usize.t -> Set.
 
-    Parameter to_value : forall {BITS LIMBS : Z}, t BITS LIMBS -> Value.t.
+    Parameter to_value : forall {BITS LIMBS : Usize.t}, t BITS LIMBS -> Value.t.
 
-    Global Instance IsLink : forall {BITS LIMBS : Z}, Link (t BITS LIMBS) := {
-      Φ :=
-        Ty.apply
-          (Ty.path "ruint::Uint")
-          [ Value.Integer IntegerKind.Usize BITS; Value.Integer IntegerKind.Usize LIMBS ]
-          [];
+    Global Instance IsLink : forall {BITS LIMBS : Usize.t}, Link (t BITS LIMBS) := {
+      Φ := Ty.apply (Ty.path "ruint::Uint") [ φ BITS; φ LIMBS ] [];
       φ := to_value;
     }.
+
+    Definition of_ty (BITS' LIMBS' : Value.t) (BITS LIMBS : Usize.t) :
+      BITS' = φ BITS ->
+      LIMBS' = φ LIMBS ->
+      OfTy.t (Ty.apply (Ty.path "ruint::Uint") [ BITS' ; LIMBS' ] []).
+    Proof. intros. eapply OfTy.Make with (A := t BITS LIMBS). now subst. Defined.
+    Smpl Add eapply of_ty : of_ty.
   End Uint.
 End ruint.
 
@@ -65,7 +68,7 @@ End FixedBytes.
 
 Module U256.
   Definition t : Set :=
-    ruint.Uint.t 256 4.
+    ruint.Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |}.
 End U256.
 
 Module B256.

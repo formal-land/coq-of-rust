@@ -34,7 +34,7 @@ End EOFCreateKind.
 Module EOFCreateInputs.
   Record t : Set := {
     caller: alloy_primitives.bits.links.address.Address.t;
-    value: ruint.Uint.t 256 4;
+    value: U256.t;
     gas_limit: U64.t;
     kind: revm_interpreter.interpreter_action.links.eof_create_inputs.EOFCreateKind.t;
   }.

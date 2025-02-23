@@ -20,35 +20,186 @@ pub struct Interpreter<WIRE: InterpreterTypes> {
 }
 *)
 Module Interpreter.
-  Record t {WIRE : Set} `{InterpreterTypes.Trait WIRE} : Set := {
-    bytecode: InterpreterTypes.Bytecode (Self := WIRE);
-    stack: InterpreterTypes.Stack (Self := WIRE);
-    return_data: InterpreterTypes.ReturnData (Self := WIRE);
-    memory: InterpreterTypes.Memory (Self := WIRE);
-    input: InterpreterTypes.Input (Self := WIRE);
-    sub_routine: InterpreterTypes.SubRoutineStack (Self := WIRE);
-    control: InterpreterTypes.Control (Self := WIRE);
-    runtime_flag: InterpreterTypes.RuntimeFlag (Self := WIRE);
-    extend: InterpreterTypes.Extend (Self := WIRE);
+  Record t
+    {WIRE : Set} `{Link WIRE}
+    {Stack : Set} `{Link Stack}
+    {Memory : Set} `{Link Memory}
+    {Bytecode : Set} `{Link Bytecode}
+    {ReturnData : Set} `{Link ReturnData}
+    {Input : Set} `{Link Input}
+    {SubRoutineStack : Set} `{Link SubRoutineStack}
+    {Control : Set} `{Link Control}
+    {RuntimeFlag : Set} `{Link RuntimeFlag}
+    {Extend : Set} `{Link Extend}
+    {run_InterpreterTypes_for_WIRE :
+      InterpreterTypes.Run
+        WIRE
+        (Stack := Stack)
+        (Memory := Memory)
+        (Bytecode := Bytecode)
+        (ReturnData := ReturnData)
+        (Input := Input)
+        (SubRoutineStack := SubRoutineStack)
+        (Control := Control)
+        (RuntimeFlag := RuntimeFlag)
+        (Extend := Extend)
+    }
+    : Set := {
+    bytecode : Bytecode;
+    stack : Stack;
+    return_data : ReturnData;
+    memory : Memory;
+    input : Input;
+    sub_routine : SubRoutineStack;
+    control : Control;
+    runtime_flag : RuntimeFlag;
+    extend : Extend;
   }.
-  Arguments Build_t {_ _}.
-  Arguments t _ {_}.
+  Arguments t _ {_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _} _.
 
-  Global Instance IsLink {WIRE: Set}
-      `{InterpreterTypes.Trait WIRE} `{InterpreterTypes.HasLinks.t WIRE} :
-      Link (t WIRE) := {
-    Φ := Ty.path "revm_interpreter::interpreter::Interpreter";
-    φ '(Build_t bytecode stack return_data memory input sub_routine control runtime_flag extend) :=
-      Value.StructRecord "revm_interpreter::interpreter::Interpreter" [
-        ("bytecode", φ bytecode);
-        ("stack", φ stack);
-        ("return_data", φ return_data);
-        ("memory", φ memory);
-        ("input", φ input);
-        ("sub_routine", φ sub_routine);
-        ("control", φ control);
-        ("runtime_flag", φ runtime_flag);
-        ("extend", φ extend)
-      ]
+Section Interpreter.
+  Context
+    {WIRE : Set} `{Link WIRE}
+    {Stack : Set} `{Link Stack}
+    {Memory : Set} `{Link Memory}
+    {Bytecode : Set} `{Link Bytecode}
+    {ReturnData : Set} `{Link ReturnData}
+    {Input : Set} `{Link Input}
+    {SubRoutineStack : Set} `{Link SubRoutineStack}
+    {Control : Set} `{Link Control}
+    {RuntimeFlag : Set} `{Link RuntimeFlag}
+    {Extend : Set} `{Link Extend}
+    {run_InterpreterTypes_for_WIRE :
+      InterpreterTypes.Run
+        WIRE
+        (Stack := Stack)
+        (Memory := Memory)
+        (Bytecode := Bytecode)
+        (ReturnData := ReturnData)
+        (Input := Input)
+        (SubRoutineStack := SubRoutineStack)
+        (Control := Control)
+        (RuntimeFlag := RuntimeFlag)
+        (Extend := Extend)
+    }.
+
+  Global Instance IsLink : Link (t WIRE run_InterpreterTypes_for_WIRE) := {
+    Φ := Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ Φ WIRE ];
+    φ x :=
+      Value.StructRecord
+        "revm_interpreter::interpreter::Interpreter"
+        [
+          ("bytecode", φ x.(bytecode));
+          ("stack", φ x.(stack));
+          ("return_data", φ x.(return_data));
+          ("memory", φ x.(memory));
+          ("input", φ x.(input));
+          ("sub_routine", φ x.(sub_routine));
+          ("control", φ x.(control));
+          ("runtime_flag", φ x.(runtime_flag));
+          ("extend", φ x.(extend))
+        ];
   }.
+
+  Definition get_bytecode : SubPointer.Runner.t (t WIRE run_InterpreterTypes_for_WIRE)
+      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "bytecode") :=
+    {|
+      SubPointer.Runner.projection x := Some x.(bytecode);
+      SubPointer.Runner.injection x y := Some (x <| bytecode := y |>);
+    |}.
+
+  Lemma get_bytecode_is_valid : SubPointer.Runner.Valid.t get_bytecode.
+  Proof. now constructor. Qed.
+
+  Definition get_stack : SubPointer.Runner.t (t WIRE run_InterpreterTypes_for_WIRE)
+      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "stack") :=
+    {|
+      SubPointer.Runner.projection x := Some x.(stack);
+      SubPointer.Runner.injection x y := Some (x <| stack := y |>);
+    |}.
+
+  Lemma get_stack_is_valid : SubPointer.Runner.Valid.t get_stack.
+  Proof. now constructor. Qed.
+
+  Definition get_return_data : SubPointer.Runner.t (t WIRE run_InterpreterTypes_for_WIRE)
+      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "return_data") :=
+    {|
+      SubPointer.Runner.projection x := Some x.(return_data);
+      SubPointer.Runner.injection x y := Some (x <| return_data := y |>);
+    |}.
+
+  Lemma get_return_data_is_valid : SubPointer.Runner.Valid.t get_return_data.
+  Proof. now constructor. Qed.
+
+  Definition get_memory : SubPointer.Runner.t (t WIRE run_InterpreterTypes_for_WIRE)
+      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "memory") :=
+    {|
+      SubPointer.Runner.projection x := Some x.(memory);
+      SubPointer.Runner.injection x y := Some (x <| memory := y |>);
+    |}.
+
+  Lemma get_memory_is_valid : SubPointer.Runner.Valid.t get_memory.
+  Proof. now constructor. Qed.
+
+  Definition get_input : SubPointer.Runner.t (t WIRE run_InterpreterTypes_for_WIRE)
+      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "input") :=
+    {|
+      SubPointer.Runner.projection x := Some x.(input);
+      SubPointer.Runner.injection x y := Some (x <| input := y |>);
+    |}.
+
+  Lemma get_input_is_valid : SubPointer.Runner.Valid.t get_input.
+  Proof. now constructor. Qed.
+
+  Definition get_sub_routine : SubPointer.Runner.t (t WIRE run_InterpreterTypes_for_WIRE)
+      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "sub_routine") :=
+    {|
+      SubPointer.Runner.projection x := Some x.(sub_routine);
+      SubPointer.Runner.injection x y := Some (x <| sub_routine := y |>);
+    |}.
+
+  Lemma get_sub_routine_is_valid : SubPointer.Runner.Valid.t get_sub_routine.
+  Proof. now constructor. Qed.
+
+  Definition get_control : SubPointer.Runner.t (t WIRE run_InterpreterTypes_for_WIRE)
+      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "control") :=
+    {|
+      SubPointer.Runner.projection x := Some x.(control);
+      SubPointer.Runner.injection x y := Some (x <| control := y |>);
+    |}.
+
+  Lemma get_control_is_valid : SubPointer.Runner.Valid.t get_control.
+  Proof. now constructor. Qed.
+
+  Definition get_runtime_flag : SubPointer.Runner.t (t WIRE run_InterpreterTypes_for_WIRE)
+      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "runtime_flag") :=
+    {|
+      SubPointer.Runner.projection x := Some x.(runtime_flag);
+      SubPointer.Runner.injection x y := Some (x <| runtime_flag := y |>);
+    |}.
+
+  Lemma get_runtime_flag_is_valid : SubPointer.Runner.Valid.t get_runtime_flag.
+  Proof. now constructor. Qed.
+
+  Definition get_extend : SubPointer.Runner.t (t WIRE run_InterpreterTypes_for_WIRE)
+      (Pointer.Index.StructRecord "revm_interpreter::interpreter::Interpreter" "extend") :=
+    {|
+      SubPointer.Runner.projection x := Some x.(extend);
+      SubPointer.Runner.injection x y := Some (x <| extend := y |>);
+    |}.
+
+  Lemma get_extend_is_valid : SubPointer.Runner.Valid.t get_extend.
+  Proof. now constructor. Qed.
+End Interpreter.
+
+(* The [Smpl] would not work inside the section *)
+Smpl Add apply get_bytecode_is_valid : run_sub_pointer.
+Smpl Add apply get_stack_is_valid : run_sub_pointer.
+Smpl Add apply get_return_data_is_valid : run_sub_pointer.
+Smpl Add apply get_memory_is_valid : run_sub_pointer.
+Smpl Add apply get_input_is_valid : run_sub_pointer.
+Smpl Add apply get_sub_routine_is_valid : run_sub_pointer.
+Smpl Add apply get_control_is_valid : run_sub_pointer.
+Smpl Add apply get_runtime_flag_is_valid : run_sub_pointer.
+Smpl Add apply get_extend_is_valid : run_sub_pointer.
 End Interpreter.
