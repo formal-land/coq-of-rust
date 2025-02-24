@@ -819,4 +819,6 @@ Module clone.
           (* Instance *) [].
     End Impl_core_clone_Clone_where_core_marker_Sized_T_for_ref_mut_T.
   End impls.
+
+  
 End clone.

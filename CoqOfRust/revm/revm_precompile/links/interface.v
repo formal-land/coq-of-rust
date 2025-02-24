@@ -1,10 +1,12 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.lib.
 Require Import CoqOfRust.links.M.
+Require Import core.links.clone.
 Require core.links.default.
 Require revm.links.dependencies.
 Import revm.links.dependencies.alloy_primitives.links.bytes_.
 Require Import revm_precompile.interface.
+
 
 Import Run.
 
@@ -114,5 +116,20 @@ Module Impl_PrecompileOutput.
   Defined.
   Smpl Add apply run_new : run_closure.
 End Impl_PrecompileOutput.
+
+Module Impl_Clone_for_PrecompileOutput.
+
+  Definition run_clone : clone.Clone.Run_clone PrecompileOutput.t.
+  Proof.
+    eexists; split.
+    - eapply IsTraitMethod.Defined.
+      + apply interface.Impl_core_clone_Clone_for_revm_precompile_interface_PrecompileOutput.Implements.
+      + reflexivity.
+    - intros self.
+    destruct Impl_Clone_for_u64.run.
+    destruct clone.
+      run_symbolic.
+  Defined.
+End Impl_Clone_for_PrecompileOutput.
 
 
