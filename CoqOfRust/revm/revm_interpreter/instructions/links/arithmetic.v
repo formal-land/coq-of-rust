@@ -2,6 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.lib.
 Require Import CoqOfRust.links.M.
 Require Import revm_context_interface.links.host.
+Require Import revm_interpreter.links.gas.
 Require Import revm_interpreter.links.interpreter.
 Require Import revm_interpreter.links.interpreter_types.
 Require Import revm_interpreter.instructions.arithmetic.
@@ -51,32 +52,27 @@ Proof.
     erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
     destruct run_InterpreterTypes_for_WIRE.
     destruct run_LoopControl_for_Control.
-    destruct gas, set_instruction_result.
+    destruct gas as [gas [H_gas run_gas]].
+    destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
     run_symbolic.
     run_symbolic_closure. {
-      admit.
+      apply Impl_Gas.run_record_cost.
     }
     intros []; run_symbolic.
     run_symbolic_are_equal_bool; run_symbolic.
-    run_symbolic_let. {
-      run_symbolic.
-      run_symbolic_closure. {
-        cbn in *.
-        admit.
-      }
-      intros []; run_symbolic.
-    }
-    intros [|[]]; run_symbolic.
   }
   intros [|[]]; run_symbolic.
   erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
-  destruct popn_top.
+  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   run_symbolic.
   run_symbolic_let. {
     run_symbolic.
-    admit.
+    run_symbolic_closure. {
+      apply dependencies.ruint.Uint.run_wrapping_add.
+    }
+    intros []; run_symbolic.
   }
   intros [|[]]; run_symbolic.
-Admitted.
+Defined.

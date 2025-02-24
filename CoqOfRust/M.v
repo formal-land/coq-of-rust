@@ -822,12 +822,14 @@ Definition borrow (kind : Pointer.Kind.t) (value : Value.t) : M :=
     pure (Value.Pointer {| Pointer.kind := kind; Pointer.core := core |})
   | _ => impossible "expected a raw pointer"
   end.
+Opaque borrow.
 
 Definition deref (value : Value.t) : M :=
   match value with
   | Value.Pointer pointer => pure (Value.Pointer (Pointer.deref pointer))
   | _ => impossible "expected a pointer"
   end.
+Opaque deref.
 
 Parameter pointer_coercion : Value.t -> Value.t.
 

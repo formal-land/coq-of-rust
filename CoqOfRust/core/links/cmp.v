@@ -28,11 +28,7 @@ Definition run_max_by {T F : Set} `{Link T} `{Link F}
 Proof.
   destruct Run_FnOnce_for_F as [[call_once [H_call_once run_call_once]]].
   run_symbolic.
-  run_symbolic_closure. {
-    apply (run_call_once compare (Ref.immediate _ v1, Ref.immediate _ v2)).
-  }
-  intros [ordering|]; run_symbolic.
-  destruct ordering; run_symbolic.
+  cbn in *; destruct_all Ordering.t; run_symbolic.
 Defined.
 Smpl Add apply run_max_by : run_closure.
 
