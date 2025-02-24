@@ -2,6 +2,8 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import core.clone.
 
+Import Run.
+
 (*
     pub trait Clone: Sized {
         fn clone(&self) -> Self;

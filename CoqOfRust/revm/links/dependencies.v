@@ -3,7 +3,6 @@ Require Import CoqOfRust.links.M.
 Require Import core.convert.links.mod.
 Require Import core.links.array.
 Require core.links.clone.
-Require core.links.default.
 Import Run.
 
 Module ruint.
