@@ -126,9 +126,11 @@ Module Impl_Clone_for_PrecompileOutput.
       + apply interface.Impl_core_clone_Clone_for_revm_precompile_interface_PrecompileOutput.Implements.
       + reflexivity.
     - intros self.
-    destruct Impl_Clone_for_u64.run.
-    destruct clone.
-      run_symbolic.
+       + destruct Impl_Clone_for_u64.run.
+         destruct clone.
+         destruct Impl_Clone_for_Bytes.run.
+         destruct clone.
+         run_symbolic.
   Defined.
 End Impl_Clone_for_PrecompileOutput.
 

@@ -65,9 +65,8 @@ Module alloy_primitives.
         Axiom Implements :
           M.IsTraitInstance
             "core::clone::Clone"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
             Self
+            (* Trait polymorphic types *) []
             (* Instance *) [ ("clone", InstanceField.Method clone) ].
 
         Definition run_clone : clone.Clone.Run_clone Bytes.t.
