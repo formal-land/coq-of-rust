@@ -268,7 +268,7 @@ Module instructions.
                         [],
                         [],
                         "popn_top",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 0 ],
                         []
                       |),
                       [
@@ -1745,7 +1745,7 @@ Module instructions.
                         [],
                         [],
                         "popn",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 3 ],
                         []
                       |),
                       [

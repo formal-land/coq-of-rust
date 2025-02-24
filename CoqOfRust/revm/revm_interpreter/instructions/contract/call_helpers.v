@@ -64,7 +64,7 @@ Module instructions.
                           [],
                           [],
                           "popn",
-                          [],
+                          [ Value.Integer IntegerKind.Usize 4 ],
                           []
                         |),
                         [

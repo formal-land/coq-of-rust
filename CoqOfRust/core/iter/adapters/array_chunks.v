@@ -698,7 +698,7 @@ Module iter.
                                 [],
                                 [],
                                 "next_chunk",
-                                [],
+                                [ N ],
                                 []
                               |),
                               [
@@ -1257,7 +1257,7 @@ Module iter.
                                 [],
                                 [],
                                 "next_chunk",
-                                [],
+                                [ N ],
                                 []
                               |),
                               [
@@ -1898,7 +1898,7 @@ Module iter.
                                           [],
                                           [],
                                           "next_chunk",
-                                          [],
+                                          [ N ],
                                           []
                                         |),
                                         [ M.borrow (| Pointer.Kind.MutRef, iter |) ]

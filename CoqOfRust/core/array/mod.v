@@ -2198,7 +2198,7 @@ Module array.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             Ty.apply (Ty.path "array") [ N ] [ T ],
-            M.get_trait_method (| "core::array::SpecArrayClone", T, [], [], "clone", [], [] |),
+            M.get_trait_method (| "core::array::SpecArrayClone", T, [], [], "clone", [ N ], [] |),
             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

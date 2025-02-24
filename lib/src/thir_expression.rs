@@ -1045,7 +1045,7 @@ pub(crate) fn compile_expr<'a>(
                             let method_name = symbol.unwrap().to_string();
                             let generic_consts = generic_args
                                 .iter()
-                                .take(nb_parent_generics)
+                                .skip(nb_parent_generics)
                                 .filter_map(|generic_arg| {
                                     generic_arg
                                         .as_const()

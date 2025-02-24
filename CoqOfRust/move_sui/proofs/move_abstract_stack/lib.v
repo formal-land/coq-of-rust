@@ -409,9 +409,8 @@ Module AbstractStack.
     end.
   Proof.
     unfold AbstractStack.pop_any_n.
-    step.
+    step; cbn; [reflexivity|].
     rename Heqb into H_or.
-    simpl; reflexivity.
     pose proof (pop_any_n_helper_is_valid stack.(AbstractStack.values) n) as H_pop_any_n_helper.
     pose proof (get_length_pop_any_n_helper stack.(AbstractStack.values) n) as H_pop_any_n_helper'.
     destruct (AbstractStack.pop_any_n_helper stack.(AbstractStack.values) n) as [values'|]; cbn; [|trivial].
