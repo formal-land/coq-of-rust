@@ -1,8 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import core.links.array.
 Require Import core.convert.links.mod.
-
+Require Import core.links.array.
+Require core.links.clone.
 Import Run.
 
 Module ruint.
@@ -156,10 +156,39 @@ Module alloy_primitives.
         Parameter to_value : t -> Value.t.
 
         Global Instance IsLink : Link t := {
-          Φ := Ty.path "bytes::bytes::Bytes";
+          Φ := Ty.path "alloy_primitives::bytes_::Bytes";
           φ := to_value;
         }.
+
+        Definition of_ty : OfTy.t (Ty.path "alloy_primitives::bytes_::Bytes").
+        Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+        Smpl Add apply of_ty : of_ty.
       End Bytes.
+      
+      Module Impl_Clone_for_Bytes.
+        Definition Self : Ty.t := Ty.path "alloy_primitives::bytes_::Bytes".
+
+        Parameter clone : PolymorphicFunction.t.
+
+        Axiom Implements :
+          M.IsTraitInstance
+            "core::clone::Clone"
+            (* Trait polymorphic consts *) []
+            (* Trait polymorphic types *) []
+            Self
+            (* Instance *) [ ("clone", InstanceField.Method clone) ].
+
+        Definition run_clone : clone.Clone.Run_clone Bytes.t.
+        Admitted.
+      
+        Definition run : clone.Clone.Run Bytes.t.
+        Proof.
+          constructor.
+          { (* clone *)
+            exact run_clone.
+          }
+        Defined.
+      End Impl_Clone_for_Bytes.
     End bytes_.
   End links.
 End alloy_primitives.
