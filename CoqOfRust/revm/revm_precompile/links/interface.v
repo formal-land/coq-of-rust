@@ -3,6 +3,7 @@ Require Import CoqOfRust.links.lib.
 Require Import CoqOfRust.links.M.
 Require Import core.links.clone.
 Require core.links.default.
+Require Import alloc.links.string.
 Require revm.links.dependencies.
 Import revm.links.dependencies.alloy_primitives.links.bytes_.
 Require Import revm_precompile.interface.
@@ -118,7 +119,6 @@ Module Impl_PrecompileOutput.
 End Impl_PrecompileOutput.
 
 Module Impl_Clone_for_PrecompileOutput.
-
   Definition run_clone : clone.Clone.Run_clone PrecompileOutput.t.
   Proof.
     eexists; split.
@@ -133,5 +133,56 @@ Module Impl_Clone_for_PrecompileOutput.
          run_symbolic.
   Defined.
 End Impl_Clone_for_PrecompileOutput.
+
+Module PrecompileError.
+  Inductive t : Set :=
+  | OutOfGas
+  | Blake2WrongLength
+  | Blake2WrongFinalIndicatorFlag
+  | ModexpExpOverflow
+  | ModexpBaseOverflow
+  | ModexpModOverflow
+  | Bn128FieldPointNotAMember
+  | Bn128AffineGFailedToCreate
+  | Bn128PairLength
+  | BlobInvalidInputLength
+  | BlobMismatchedVersion
+  | BlobVerifyKzgProofFailed
+  | Other (msg : String.t).
+
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_precompile::interface::PrecompileError";
+    φ x :=
+    match x with
+    | OutOfGas =>
+        Value.StructTuple "revm_precompile::interface::PrecompileError::OutOfGas" []
+    | Blake2WrongLength =>
+        Value.StructTuple "revm_precompile::interface::PrecompileError::Blake2WrongLength" []
+    | Blake2WrongFinalIndicatorFlag =>
+        Value.StructTuple "revm_precompile::interface::PrecompileError::Blake2WrongFinalIndicatorFlag" []
+    | ModexpExpOverflow =>
+        Value.StructTuple "revm_precompile::interface::PrecompileError::ModexpExpOverflow" []
+    | ModexpBaseOverflow =>
+        Value.StructTuple "revm_precompile::interface::PrecompileError::ModexpBaseOverflow" []
+    | ModexpModOverflow =>
+        Value.StructTuple "revm_precompile::interface::PrecompileError::ModexpModOverflow" []
+    | Bn128FieldPointNotAMember =>
+        Value.StructTuple "revm_precompile::interface::PrecompileError::Bn128FieldPointNotAMember" []
+    | Bn128AffineGFailedToCreate =>
+        Value.StructTuple "revm_precompile::interface::PrecompileError::Bn128AffineGFailedToCreate" []
+    | Bn128PairLength =>
+        Value.StructTuple "revm_precompile::interface::PrecompileError::Bn128PairLength" []
+    | BlobInvalidInputLength =>
+        Value.StructTuple "revm_precompile::interface::PrecompileError::BlobInvalidInputLength" []
+    | BlobMismatchedVersion =>
+        Value.StructTuple "revm_precompile::interface::PrecompileError::BlobMismatchedVersion" []
+    | BlobVerifyKzgProofFailed =>
+        Value.StructTuple "revm_precompile::interface::PrecompileError::BlobVerifyKzgProofFailed" []
+    | Other msg =>
+        Value.StructRecord "revm_precompile::interface::PrecompileError::Other" [("msg", φ msg)]
+    end;
+}.
+
+End PrecompileError.
 
 
