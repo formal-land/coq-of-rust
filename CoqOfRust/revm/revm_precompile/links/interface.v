@@ -181,7 +181,76 @@ Module PrecompileError.
     | Other msg =>
         Value.StructRecord "revm_precompile::interface::PrecompileError::Other" [("msg", φ msg)]
     end;
-}.
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "revm_precompile::interface::PrecompileError").
+  Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
+
+  Lemma of_value_with_OutOfGas :
+    Value.StructTuple "revm_precompile::interface::PrecompileError::OutOfGas" [] = φ OutOfGas.
+  Proof. reflexivity. Qed.
+  Smpl Add apply of_value_with_OutOfGas : of_value.
+
+  Lemma of_value_with_Blake2WrongLength :
+  Value.StructTuple "revm_precompile::interface::PrecompileError::Blake2WrongLength" [] = φ Blake2WrongLength.
+Proof. reflexivity. Qed.
+Smpl Add apply of_value_with_Blake2WrongLength : of_value.
+
+Lemma of_value_with_Blake2WrongFinalIndicatorFlag :
+  Value.StructTuple "revm_precompile::interface::PrecompileError::Blake2WrongFinalIndicatorFlag" [] = φ Blake2WrongFinalIndicatorFlag.
+Proof. reflexivity. Qed.
+Smpl Add apply of_value_with_Blake2WrongFinalIndicatorFlag : of_value.
+
+Lemma of_value_with_ModexpExpOverflow :
+  Value.StructTuple "revm_precompile::interface::PrecompileError::ModexpExpOverflow" [] = φ ModexpExpOverflow.
+Proof. reflexivity. Qed.
+Smpl Add apply of_value_with_ModexpExpOverflow : of_value.
+
+Lemma of_value_with_ModexpBaseOverflow :
+  Value.StructTuple "revm_precompile::interface::PrecompileError::ModexpBaseOverflow" [] = φ ModexpBaseOverflow.
+Proof. reflexivity. Qed.
+Smpl Add apply of_value_with_ModexpBaseOverflow : of_value.
+
+Lemma of_value_with_ModexpModOverflow :
+  Value.StructTuple "revm_precompile::interface::PrecompileError::ModexpModOverflow" [] = φ ModexpModOverflow.
+Proof. reflexivity. Qed.
+Smpl Add apply of_value_with_ModexpModOverflow : of_value.
+
+Lemma of_value_with_Bn128FieldPointNotAMember :
+  Value.StructTuple "revm_precompile::interface::PrecompileError::Bn128FieldPointNotAMember" [] = φ Bn128FieldPointNotAMember.
+Proof. reflexivity. Qed.
+Smpl Add apply of_value_with_Bn128FieldPointNotAMember : of_value.
+
+Lemma of_value_with_Bn128AffineGFailedToCreate :
+  Value.StructTuple "revm_precompile::interface::PrecompileError::Bn128AffineGFailedToCreate" [] = φ Bn128AffineGFailedToCreate.
+Proof. reflexivity. Qed.
+Smpl Add apply of_value_with_Bn128AffineGFailedToCreate : of_value.
+
+Lemma of_value_with_Bn128PairLength :
+  Value.StructTuple "revm_precompile::interface::PrecompileError::Bn128PairLength" [] = φ Bn128PairLength.
+Proof. reflexivity. Qed.
+Smpl Add apply of_value_with_Bn128PairLength : of_value.
+
+Lemma of_value_with_BlobInvalidInputLength :
+  Value.StructTuple "revm_precompile::interface::PrecompileError::BlobInvalidInputLength" [] = φ BlobInvalidInputLength.
+Proof. reflexivity. Qed.
+Smpl Add apply of_value_with_BlobInvalidInputLength : of_value.
+
+Lemma of_value_with_BlobMismatchedVersion :
+  Value.StructTuple "revm_precompile::interface::PrecompileError::BlobMismatchedVersion" [] = φ BlobMismatchedVersion.
+Proof. reflexivity. Qed.
+Smpl Add apply of_value_with_BlobMismatchedVersion : of_value.
+
+Lemma of_value_with_BlobVerifyKzgProofFailed :
+  Value.StructTuple "revm_precompile::interface::PrecompileError::BlobVerifyKzgProofFailed" [] = φ BlobVerifyKzgProofFailed.
+Proof. reflexivity. Qed.
+Smpl Add apply of_value_with_BlobVerifyKzgProofFailed : of_value.
+
+Lemma of_value_with_Other (msg : String.t) :
+  Value.StructRecord "revm_precompile::interface::PrecompileError::Other" [("msg", φ msg)] = φ (Other msg).
+Proof. reflexivity. Qed.
+Smpl Add apply of_value_with_Other : of_value.
 
 End PrecompileError.
 
