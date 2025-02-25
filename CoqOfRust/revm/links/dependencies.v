@@ -1,6 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 
+Import Run.
+
 Module ruint.
   Module Uint.
     Parameter t : Usize.t -> Usize.t -> Set.
@@ -18,6 +20,27 @@ Module ruint.
       OfTy.t (Ty.apply (Ty.path "ruint::Uint") [ BITS' ; LIMBS' ] []).
     Proof. intros. eapply OfTy.Make with (A := t BITS LIMBS). now subst. Defined.
     Smpl Add eapply of_ty : of_ty.
+
+    Parameter wrapping_add : PolymorphicFunction.t.
+
+    Axiom wrapping_add_IsAssociated :
+      forall {BITS LIMBS : Z},
+      IsAssociatedFunction
+        (
+          Ty.apply (Ty.path "ruint::Uint")
+            [
+              Value.Integer IntegerKind.Usize BITS;
+              Value.Integer IntegerKind.Usize LIMBS
+            ]
+            []
+        )
+        "wrapping_add" wrapping_add.
+    Smpl Add apply wrapping_add_IsAssociated : is_associated.
+
+    Parameter run_wrapping_add :
+      forall {BITS LIMBS : Usize.t},
+      forall (x1 x2 : t BITS LIMBS),
+      {{ wrapping_add [ φ BITS; φ LIMBS ] [] [ φ x1; φ x2 ] 🔽 t BITS LIMBS }}.
   End Uint.
 End ruint.
 

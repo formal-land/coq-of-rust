@@ -95,6 +95,15 @@ Module OfValue.
     | |- context [ get_value (of_value _) ] =>
       rewrite get_value_of_value_eq
     end.
+
+  Lemma value_of_value_eq (value : Value.t)
+    (of_value : OfValue.t value) :
+    value = φ (get_value of_value).
+  Proof.
+    destruct of_value.
+    subst.
+    reflexivity.
+  Qed.
 End OfValue.
 
 (** Implementation of the primitive Rust operator for equality check *)
@@ -463,7 +472,7 @@ Module Ref.
   Smpl Add apply of_ty_mut_pointer : of_ty.
 
   (** We can make the conversion of values for immediate pointers that are used in Rust `const`. *)
-  Lemma of_value_with {A : Set} `{Link A} (value : A) value' :
+  Lemma of_value_with_immediate {A : Set} `{Link A} (value : A) value' :
     value' = φ value ->
     Value.Pointer {|
       Pointer.kind := Pointer.Kind.Raw;
@@ -472,9 +481,9 @@ Module Ref.
   Proof.
     now intros; subst.
   Qed.
-  Smpl Add apply of_value_with : of_value.
+  Smpl Add apply of_value_with_immediate : of_value.
 
-  Definition of_value (value' : Value.t) :
+  Definition of_value_immediate (value' : Value.t) :
     OfValue.t value' ->
     OfValue.t (Value.Pointer {|
       Pointer.kind := Pointer.Kind.Raw;
@@ -485,7 +494,24 @@ Module Ref.
     eapply OfValue.Make with (A := t Pointer.Kind.Raw A).
     smpl of_value; eassumption.
   Defined.
-  Smpl Add apply of_value : of_value.
+  Smpl Add apply of_value_immediate : of_value.
+
+  Lemma of_value_with_of_core {A : Set} `{Link A} (kind : Pointer.Kind.t) (ref : Ref.t kind A) :
+    Value.Pointer {| Pointer.kind := kind; Pointer.core := Ref.to_core ref |} =
+    φ ref.
+  Proof.
+    reflexivity.
+  Qed.
+  Smpl Add apply of_value_with_of_core : of_value.
+
+  Definition of_value_of_core {kind1 kind2 : Pointer.Kind.t} {A : Set} `{Link A}
+      (ref : Ref.t kind1 A) :
+    OfValue.t (Value.Pointer {| Pointer.kind := kind2; Pointer.core := Ref.to_core ref |}).
+  Proof.
+    eapply OfValue.Make with (A := t kind2 A) (value := cast_to kind2 ref).
+    reflexivity.
+  Defined.
+  Smpl Add apply of_value_of_core : of_value.
 End Ref.
 
 Module SubPointer.
@@ -728,14 +754,14 @@ Module Run.
     let ref := Ref.immediate Pointer.Kind.Raw value in
     {{ k (φ value) 🔽 R, Output }} ->
     {{ LowM.CallPrimitive (Primitive.StateRead (φ ref)) k 🔽 R, Output }}
-  | CallPrimitiveStateWrite {A : Set} `{Link A}
-      (ref_core : Ref.Core.t A)
-      (value : A) (value' : Value.t)
+  | CallPrimitiveStateWrite
+      (value' : Value.t) (of_value : OfValue.t value')
+      (ref' : Value.t)
+      (ref : Ref.t Pointer.Kind.Raw (OfValue.get_Set of_value))
       (k : Value.t -> M) :
-    let ref : Ref.t Pointer.Kind.Raw A := {| Ref.core := ref_core |} in
-    value' = φ value ->
+    ref' = φ ref ->
     {{ k (φ tt) 🔽 R, Output }} ->
-    {{ LowM.CallPrimitive (Primitive.StateWrite (φ ref) value') k 🔽 R, Output }}
+    {{ LowM.CallPrimitive (Primitive.StateWrite ref' value') k 🔽 R, Output }}
   | CallPrimitiveGetSubPointer {A : Set} `{Link A}
       (ref_core : Ref.Core.t A)
       (index : Pointer.Index.t)
@@ -948,7 +974,7 @@ Proof.
     exact (evaluate _ _ _ _ _ run).
   }
   { (* Write *)
-    apply (LowM.CallPrimitive (Primitive.StateWrite ref_core value)).
+    apply (LowM.CallPrimitive (Primitive.StateWrite ref.(Ref.core) (OfValue.get_value of_value))).
     intros _.
     exact (evaluate _ _ _ _ _ run).
   }
@@ -1027,7 +1053,11 @@ Ltac run_symbolic_state_read_immediate :=
   apply Run.CallPrimitiveStateReadImmediate.
 
 Ltac run_symbolic_state_write :=
-  eapply Run.CallPrimitiveStateWrite; [now repeat smpl of_value |].
+  unshelve eapply Run.CallPrimitiveStateWrite; [
+    now repeat smpl of_value |
+    |
+    now repeat smpl of_value |
+  ].
 
 Ltac run_symbolic_get_function :=
   eapply Run.CallPrimitiveGetFunction; [smpl is_function |].
@@ -1044,16 +1074,53 @@ Ltac run_symbolic_get_trait_method :=
 
 Smpl Create run_closure.
 
+Ltac as_of_values elements :=
+  match elements with
+  | [] => constr:(@nil Value.t)
+  | ?element :: ?elements =>
+    let elements := as_of_values elements in
+    constr:(
+      (let value := OfValue.get_value (value' := element) ltac:(repeat smpl of_value) in
+      φ value) ::
+      elements
+    )
+  end.
+
+Ltac as_of_tys elements :=
+  match elements with
+  | [] => constr:(@nil Ty.t)
+  | ?element :: ?elements =>
+    let elements := as_of_tys elements in
+    constr:(
+      (Φ (OfTy.get_Set (ty' := element) ltac:(repeat smpl of_ty))) ::
+      elements
+    )
+  end.
+
+(** We put all the parameters of a function call in a form where each element is the image of some
+    value of the link side. *)
+Ltac prepare_call :=
+  match goal with
+  | |- {{ ?f ?consts ?tys ?arguments 🔽 _ }} =>
+    let consts' := as_of_values consts in
+    let tys' := as_of_tys tys in
+    let arguments' := as_of_values arguments in
+    change consts with consts';
+    change tys with tys';
+    change arguments with arguments';
+    with_strategy opaque [f Φ] cbn
+  end.
+
 Ltac run_symbolic_closure :=
-  unshelve eapply Run.CallClosure; [repeat smpl of_ty | |].
+  unshelve eapply Run.CallClosure; [repeat smpl of_ty | try prepare_call |].
 
 Ltac run_symbolic_closure_auto :=
   unshelve eapply Run.CallClosure; [
     now repeat smpl of_ty |
+    prepare_call;
     now (
-      smpl run_closure ||
       match goal with
-      | H : _ |- _ => apply H
+      | H : _ |- _ => simple apply H
       end
     ) |
     intros []
@@ -1118,6 +1185,7 @@ Ltac run_symbolic_one_step_immediate :=
   match goal with
   | |- {{ _ 🔽 _, _ }} =>
     cbn ||
+    run_main_rewrites ||
     run_symbolic_pure ||
     run_symbolic_state_alloc_immediate ||
     run_symbolic_state_read_immediate ||
@@ -1128,7 +1196,6 @@ Ltac run_symbolic_one_step_immediate :=
     run_symbolic_get_trait_method ||
     run_symbolic_closure_auto ||
     run_sub_pointer ||
-    run_main_rewrites ||
     run_rewrites ||
     fold @LowM.let_
   end.

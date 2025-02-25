@@ -438,6 +438,10 @@ Module Impl_SpecId.
     }}.
   Proof.
     run_symbolic.
+    run_symbolic_closure. {
+      apply run_n.
+    }
+    intros []; run_symbolic.
   Defined.
   Smpl Add simple apply run_try_from_u8 : run_closure.
 
