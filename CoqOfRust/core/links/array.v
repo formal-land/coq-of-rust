@@ -43,3 +43,22 @@ Module SubPointer.
   Qed.
   Smpl Add eapply get_index_is_valid : run_sub_pointer.
 End SubPointer.
+
+(** This lemma is useful when the [repeat_nat] construct (used to build array with repetition)
+    appears and to switch it with the [φ] on its parameters. *)
+Lemma repeat_nat_φ_eq {A : Set} `{Link A} (times : nat) (value : A) :
+  Value.Array (repeat_nat times (φ value)) =
+  φ ({| value := repeat_nat times value |} : t A {| Integer.value := Z.of_nat times |}).
+Proof.
+  with_strategy transparent [φ] cbn.
+  induction times; cbn; congruence.
+Qed.
+
+Lemma repeat_φ_eq {A : Set} `{Link A} (times : Z) (value : A) :
+  repeat (φ value) (Value.Integer IntegerKind.Usize times) =
+  M.pure (φ ({| value := repeat_nat (Z.to_nat times) value |} : t A {| Integer.value := times |})).
+Proof.
+  with_strategy transparent [φ] cbn.
+  rewrite repeat_nat_φ_eq.
+  reflexivity.
+Qed.

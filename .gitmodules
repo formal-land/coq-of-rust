@@ -6,7 +6,7 @@
 	url = https://github.com/rust-lang/rust.git
 [submodule "third-party/revm"]
 	path = third-party/revm
-	url = https://github.com/bluealloy/revm.git
+	url = https://github.com/formal-land/revm.git
 [submodule "third-party/move-sui"]
 	path = third-party/move-sui
 	url = https://github.com/formal-land/move-sui.git

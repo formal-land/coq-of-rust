@@ -8,7 +8,6 @@ examples/axiomatized/examples/rust_book/traits/traits.v
 examples/axiomatized/examples/subtle.v
 # These files take a very long time (ten minutes)
 revm/revm_bytecode/opcode.v
-revm/revm_interpreter/opcode.v
 revm/types.v
 core/array/mod.v
 core/iter/adapters/flatten.v
