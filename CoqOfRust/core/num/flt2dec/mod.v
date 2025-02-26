@@ -112,7 +112,10 @@ Module num.
                     let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         let β :=
-                          M.SubPointer.get_array_field (| M.deref (| M.read (| d |) |), i |) in
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| d |) |),
+                            M.read (| i |)
+                          |) in
                         M.write (|
                           β,
                           BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U8 1 |)
@@ -223,7 +226,7 @@ Module num.
                                                   M.write (|
                                                     M.SubPointer.get_array_field (|
                                                       M.deref (| M.read (| d |) |),
-                                                      j
+                                                      M.read (| j |)
                                                     |),
                                                     M.read (| UnsupportedLiteral |)
                                                   |)
@@ -261,7 +264,7 @@ Module num.
                         M.write (|
                           M.SubPointer.get_array_field (|
                             M.deref (| M.read (| d |) |),
-                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                            Value.Integer IntegerKind.Usize 0
                           |),
                           M.read (| UnsupportedLiteral |)
                         |)
@@ -367,7 +370,7 @@ Module num.
                                                   M.write (|
                                                     M.SubPointer.get_array_field (|
                                                       M.deref (| M.read (| d |) |),
-                                                      j
+                                                      M.read (| j |)
                                                     |),
                                                     M.read (| UnsupportedLiteral |)
                                                   |)
@@ -532,7 +535,7 @@ Module num.
                                 M.read (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| buf |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |)
                                 |),
                                 M.read (| UnsupportedLiteral |)
@@ -625,7 +628,7 @@ Module num.
                         M.write (|
                           M.SubPointer.get_array_field (|
                             M.deref (| M.read (| parts |) |),
-                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                            Value.Integer IntegerKind.Usize 0
                           |),
                           M.call_closure (|
                             Ty.apply
@@ -659,7 +662,7 @@ Module num.
                         M.write (|
                           M.SubPointer.get_array_field (|
                             M.deref (| M.read (| parts |) |),
-                            M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                            Value.Integer IntegerKind.Usize 1
                           |),
                           M.call_closure (|
                             Ty.apply
@@ -688,7 +691,7 @@ Module num.
                         M.write (|
                           M.SubPointer.get_array_field (|
                             M.deref (| M.read (| parts |) |),
-                            M.alloc (| Value.Integer IntegerKind.Usize 2 |)
+                            Value.Integer IntegerKind.Usize 2
                           |),
                           M.call_closure (|
                             Ty.apply
@@ -770,7 +773,7 @@ Module num.
                                 M.write (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| parts |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 3 |)
+                                    Value.Integer IntegerKind.Usize 3
                                   |),
                                   M.call_closure (|
                                     Ty.apply
@@ -1034,7 +1037,7 @@ Module num.
                                 M.write (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| parts |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |),
                                   M.call_closure (|
                                     Ty.apply
@@ -1111,7 +1114,7 @@ Module num.
                                 M.write (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| parts |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                                    Value.Integer IntegerKind.Usize 1
                                   |),
                                   M.call_closure (|
                                     Ty.apply
@@ -1145,7 +1148,7 @@ Module num.
                                 M.write (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| parts |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 2 |)
+                                    Value.Integer IntegerKind.Usize 2
                                   |),
                                   M.call_closure (|
                                     Ty.apply
@@ -1257,7 +1260,7 @@ Module num.
                                         M.write (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| parts |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 3 |)
+                                            Value.Integer IntegerKind.Usize 3
                                           |),
                                           M.call_closure (|
                                             Ty.apply
@@ -1499,7 +1502,7 @@ Module num.
                                 M.write (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| parts |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |),
                                   M.call_closure (|
                                     Ty.apply
@@ -1533,7 +1536,7 @@ Module num.
                                 M.write (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| parts |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                                    Value.Integer IntegerKind.Usize 1
                                   |),
                                   M.call_closure (|
                                     Ty.apply
@@ -1599,7 +1602,7 @@ Module num.
                                         M.write (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| parts |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 2 |)
+                                            Value.Integer IntegerKind.Usize 2
                                           |),
                                           M.call_closure (|
                                             Ty.apply
@@ -1633,7 +1636,7 @@ Module num.
                                         M.write (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| parts |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 3 |)
+                                            Value.Integer IntegerKind.Usize 3
                                           |),
                                           M.call_closure (|
                                             Ty.apply
@@ -1957,7 +1960,7 @@ Module num.
                                 M.read (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| buf |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |)
                                 |),
                                 M.read (| UnsupportedLiteral |)
@@ -2032,7 +2035,10 @@ Module num.
             let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.write (|
-                  M.SubPointer.get_array_field (| M.deref (| M.read (| parts |) |), n |),
+                  M.SubPointer.get_array_field (|
+                    M.deref (| M.read (| parts |) |),
+                    M.read (| n |)
+                  |),
                   M.call_closure (|
                     Ty.apply
                       (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -2138,7 +2144,10 @@ Module num.
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.write (|
-                            M.SubPointer.get_array_field (| M.deref (| M.read (| parts |) |), n |),
+                            M.SubPointer.get_array_field (|
+                              M.deref (| M.read (| parts |) |),
+                              M.read (| n |)
+                            |),
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -2171,12 +2180,7 @@ Module num.
                           M.write (|
                             M.SubPointer.get_array_field (|
                               M.deref (| M.read (| parts |) |),
-                              M.alloc (|
-                                BinOp.Wrap.add (|
-                                  M.read (| n |),
-                                  Value.Integer IntegerKind.Usize 1
-                                |)
-                              |)
+                              BinOp.Wrap.add (| M.read (| n |), Value.Integer IntegerKind.Usize 1 |)
                             |),
                             M.call_closure (|
                               Ty.apply
@@ -2285,7 +2289,7 @@ Module num.
                                   M.write (|
                                     M.SubPointer.get_array_field (|
                                       M.deref (| M.read (| parts |) |),
-                                      n
+                                      M.read (| n |)
                                     |),
                                     M.call_closure (|
                                       Ty.apply
@@ -2368,7 +2372,10 @@ Module num.
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.write (|
-                            M.SubPointer.get_array_field (| M.deref (| M.read (| parts |) |), n |),
+                            M.SubPointer.get_array_field (|
+                              M.deref (| M.read (| parts |) |),
+                              M.read (| n |)
+                            |),
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -2426,12 +2433,7 @@ Module num.
                           M.write (|
                             M.SubPointer.get_array_field (|
                               M.deref (| M.read (| parts |) |),
-                              M.alloc (|
-                                BinOp.Wrap.add (|
-                                  M.read (| n |),
-                                  Value.Integer IntegerKind.Usize 1
-                                |)
-                              |)
+                              BinOp.Wrap.add (| M.read (| n |), Value.Integer IntegerKind.Usize 1 |)
                             |),
                             M.call_closure (|
                               Ty.apply
@@ -2461,7 +2463,10 @@ Module num.
                       (let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.write (|
-                            M.SubPointer.get_array_field (| M.deref (| M.read (| parts |) |), n |),
+                            M.SubPointer.get_array_field (|
+                              M.deref (| M.read (| parts |) |),
+                              M.read (| n |)
+                            |),
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
@@ -2519,12 +2524,7 @@ Module num.
                           M.write (|
                             M.SubPointer.get_array_field (|
                               M.deref (| M.read (| parts |) |),
-                              M.alloc (|
-                                BinOp.Wrap.add (|
-                                  M.read (| n |),
-                                  Value.Integer IntegerKind.Usize 1
-                                |)
-                              |)
+                              BinOp.Wrap.add (| M.read (| n |), Value.Integer IntegerKind.Usize 1 |)
                             |),
                             M.call_closure (|
                               Ty.apply
@@ -3148,7 +3148,7 @@ Module num.
                                 M.write (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| parts |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |),
                                   M.call_closure (|
                                     Ty.apply
@@ -3290,7 +3290,7 @@ Module num.
                                 M.write (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| parts |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |),
                                   M.call_closure (|
                                     Ty.apply
@@ -3450,7 +3450,7 @@ Module num.
                                         M.write (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| parts |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                            Value.Integer IntegerKind.Usize 0
                                           |),
                                           M.call_closure (|
                                             Ty.apply
@@ -3484,7 +3484,7 @@ Module num.
                                         M.write (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| parts |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                                            Value.Integer IntegerKind.Usize 1
                                           |),
                                           M.call_closure (|
                                             Ty.apply
@@ -3626,7 +3626,7 @@ Module num.
                                         M.write (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| parts |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                            Value.Integer IntegerKind.Usize 0
                                           |),
                                           M.call_closure (|
                                             Ty.apply
@@ -4146,7 +4146,7 @@ Module num.
                                 M.write (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| parts |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |),
                                   M.call_closure (|
                                     Ty.apply
@@ -4288,7 +4288,7 @@ Module num.
                                 M.write (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| parts |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |),
                                   M.call_closure (|
                                     Ty.apply
@@ -4430,7 +4430,7 @@ Module num.
                                 M.write (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| parts |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |),
                                   M.read (|
                                     M.match_operator (|
@@ -5138,7 +5138,7 @@ Module num.
                                 M.write (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| parts |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |),
                                   M.call_closure (|
                                     Ty.apply
@@ -5280,7 +5280,7 @@ Module num.
                                 M.write (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| parts |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |),
                                   M.call_closure (|
                                     Ty.apply
@@ -5440,7 +5440,7 @@ Module num.
                                         M.write (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| parts |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                            Value.Integer IntegerKind.Usize 0
                                           |),
                                           M.call_closure (|
                                             Ty.apply
@@ -5474,7 +5474,7 @@ Module num.
                                         M.write (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| parts |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                                            Value.Integer IntegerKind.Usize 1
                                           |),
                                           M.call_closure (|
                                             Ty.apply
@@ -5508,7 +5508,7 @@ Module num.
                                         M.write (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| parts |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 2 |)
+                                            Value.Integer IntegerKind.Usize 2
                                           |),
                                           M.call_closure (|
                                             Ty.apply
@@ -5684,7 +5684,7 @@ Module num.
                                         M.write (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| parts |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                            Value.Integer IntegerKind.Usize 0
                                           |),
                                           M.call_closure (|
                                             Ty.apply
@@ -6374,7 +6374,7 @@ Module num.
                                 M.write (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| parts |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |),
                                   M.call_closure (|
                                     Ty.apply
@@ -6516,7 +6516,7 @@ Module num.
                                 M.write (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| parts |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |),
                                   M.call_closure (|
                                     Ty.apply
@@ -6676,7 +6676,7 @@ Module num.
                                         M.write (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| parts |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                            Value.Integer IntegerKind.Usize 0
                                           |),
                                           M.call_closure (|
                                             Ty.apply
@@ -6710,7 +6710,7 @@ Module num.
                                         M.write (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| parts |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                                            Value.Integer IntegerKind.Usize 1
                                           |),
                                           M.call_closure (|
                                             Ty.apply
@@ -6852,7 +6852,7 @@ Module num.
                                         M.write (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| parts |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                            Value.Integer IntegerKind.Usize 0
                                           |),
                                           M.call_closure (|
                                             Ty.apply
@@ -7453,9 +7453,7 @@ Module num.
                                                         M.write (|
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| parts |) |),
-                                                            M.alloc (|
-                                                              Value.Integer IntegerKind.Usize 0
-                                                            |)
+                                                            Value.Integer IntegerKind.Usize 0
                                                           |),
                                                           M.call_closure (|
                                                             Ty.apply
@@ -7495,9 +7493,7 @@ Module num.
                                                         M.write (|
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| parts |) |),
-                                                            M.alloc (|
-                                                              Value.Integer IntegerKind.Usize 1
-                                                            |)
+                                                            Value.Integer IntegerKind.Usize 1
                                                           |),
                                                           M.call_closure (|
                                                             Ty.apply
@@ -7655,9 +7651,7 @@ Module num.
                                                         M.write (|
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| parts |) |),
-                                                            M.alloc (|
-                                                              Value.Integer IntegerKind.Usize 0
-                                                            |)
+                                                            Value.Integer IntegerKind.Usize 0
                                                           |),
                                                           M.call_closure (|
                                                             Ty.apply

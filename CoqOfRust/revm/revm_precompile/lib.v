@@ -3762,52 +3762,28 @@ Definition u64_to_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                   Value.Integer IntegerKind.U8 0;
                   Value.Integer IntegerKind.U8 0;
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 0 |)
                   |);
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 1 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 1 |)
                   |);
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 2 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 2 |)
                   |);
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 3 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 3 |)
                   |);
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 4 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 4 |)
                   |);
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 5 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 5 |)
                   |);
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 6 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 6 |)
                   |);
                   M.read (|
-                    M.SubPointer.get_array_field (|
-                      x,
-                      M.alloc (| Value.Integer IntegerKind.Usize 7 |)
-                    |)
+                    M.SubPointer.get_array_field (| x, Value.Integer IntegerKind.Usize 7 |)
                   |)
                 ]
             ]

@@ -267,7 +267,7 @@ Module str.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "array_chunks",
-                                [],
+                                [ Value.Integer IntegerKind.Usize 32 ],
                                 []
                               |),
                               [
@@ -496,7 +496,7 @@ Module str.
                                                                     M.write (|
                                                                       M.SubPointer.get_array_field (|
                                                                         start_bytes,
-                                                                        i
+                                                                        M.read (| i |)
                                                                       |),
                                                                       UnOp.not (|
                                                                         M.call_closure (|
@@ -512,7 +512,7 @@ Module str.
                                                                                 M.deref (|
                                                                                   M.read (| chunk |)
                                                                                 |),
-                                                                                i
+                                                                                M.read (| i |)
                                                                               |)
                                                                             |)
                                                                           ]
@@ -787,7 +787,7 @@ Module str.
                                               ]
                                             |)
                                           |),
-                                          M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                          Value.Integer IntegerKind.Usize 0
                                         |)
                                       |) in
                                     let~ _ : Ty.tuple [] :=
@@ -990,7 +990,7 @@ Module str.
                                       ]
                                     |)
                                   |),
-                                  M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                  Value.Integer IntegerKind.Usize 0
                                 |)
                               |) in
                             let~ slurp : Ty.path "usize" :=
@@ -1299,7 +1299,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
-                                    [],
+                                    [ Value.Integer IntegerKind.Usize 1 ],
                                     []
                                   |),
                                   [
@@ -1581,7 +1581,7 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
-                                    [],
+                                    [ Value.Integer IntegerKind.Usize 1 ],
                                     []
                                   |),
                                   [
@@ -11913,9 +11913,7 @@ Module str.
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 buf,
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 1
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 1
                                                               |)
                                                             |)
                                                           |)
@@ -11927,7 +11925,7 @@ Module str.
                                               |) in
                                             M.SubPointer.get_array_field (|
                                               buf,
-                                              M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                              Value.Integer IntegerKind.Usize 0
                                             |)
                                           |)))
                                     ]

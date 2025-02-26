@@ -58,7 +58,7 @@ Lemma repeat_φ_eq {A : Set} `{Link A} (times : Z) (value : A) :
   repeat (φ value) (Value.Integer IntegerKind.Usize times) =
   M.pure (φ ({| value := repeat_nat (Z.to_nat times) value |} : t A {| Integer.value := times |})).
 Proof.
-  with_strategy transparent [φ] cbn.
+  with_strategy transparent [φ repeat] cbn.
   rewrite repeat_nat_φ_eq.
   reflexivity.
 Qed.

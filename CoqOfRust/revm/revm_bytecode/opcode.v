@@ -423,7 +423,7 @@ Module opcode.
                     (let γ :=
                       M.SubPointer.get_array_field (|
                         M.get_constant "revm_bytecode::opcode::OPCODE_INFO",
-                        M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
+                        M.cast (Ty.path "usize") (M.read (| n |))
                       |) in
                     let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (|
@@ -616,7 +616,7 @@ Module opcode.
             M.match_operator (|
               M.SubPointer.get_array_field (|
                 M.get_constant "revm_bytecode::opcode::OPCODE_INFO",
-                M.alloc (| M.cast (Ty.path "usize") (M.read (| opcode |)) |)
+                M.cast (Ty.path "usize") (M.read (| opcode |))
               |),
               [
                 fun γ =>
@@ -1264,17 +1264,15 @@ Module opcode.
                     (let γ :=
                       M.SubPointer.get_array_field (|
                         M.get_constant "revm_bytecode::opcode::OPCODE_INFO",
-                        M.alloc (|
-                          M.cast
-                            (Ty.path "usize")
-                            (M.read (|
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.deref (| M.read (| self |) |),
-                                "revm_bytecode::opcode::OpCode",
-                                0
-                              |)
-                            |))
-                        |)
+                        M.cast
+                          (Ty.path "usize")
+                          (M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_bytecode::opcode::OpCode",
+                              0
+                            |)
+                          |))
                       |) in
                     let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (|
@@ -1297,7 +1295,7 @@ Module opcode.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
-                                [],
+                                [ Value.Integer IntegerKind.Usize 1 ],
                                 []
                               |),
                               [
@@ -3277,7 +3275,7 @@ Module opcode.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -3793,7 +3791,7 @@ Module opcode.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -3855,10 +3853,7 @@ Module opcode.
         let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.write (|
-              M.SubPointer.get_array_field (|
-                map,
-                M.alloc (| Value.Integer IntegerKind.Usize 0 |)
-              |),
+              M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 0 |),
               Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
             |)
           |) in
@@ -3891,7 +3886,7 @@ Module opcode.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -3945,10 +3940,7 @@ Module opcode.
         let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.write (|
-              M.SubPointer.get_array_field (|
-                map,
-                M.alloc (| Value.Integer IntegerKind.Usize 1 |)
-              |),
+              M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 1 |),
               Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
             |)
           |) in
@@ -3981,7 +3973,7 @@ Module opcode.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -4035,10 +4027,7 @@ Module opcode.
         let~ _ : Ty.tuple [] :=
           M.alloc (|
             M.write (|
-              M.SubPointer.get_array_field (|
-                map,
-                M.alloc (| Value.Integer IntegerKind.Usize 49 |)
-              |),
+              M.SubPointer.get_array_field (| map, Value.Integer IntegerKind.Usize 49 |),
               Value.StructTuple "core::option::Option::Some" [ M.read (| info |) ]
             |)
           |) in

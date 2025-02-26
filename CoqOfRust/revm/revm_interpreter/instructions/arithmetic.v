@@ -224,10 +224,7 @@ Module instructions.
                                     ]
                                     [],
                                   "wrapping_add",
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ],
+                                  [],
                                   []
                                 |),
                                 [ M.read (| op1 |); M.read (| M.deref (| M.read (| op2 |) |) |) ]
@@ -466,10 +463,7 @@ Module instructions.
                                     ]
                                     [],
                                   "wrapping_mul",
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ],
+                                  [],
                                   []
                                 |),
                                 [ M.read (| op1 |); M.read (| M.deref (| M.read (| op2 |) |) |) ]
@@ -708,10 +702,7 @@ Module instructions.
                                     ]
                                     [],
                                   "wrapping_sub",
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ],
+                                  [],
                                   []
                                 |),
                                 [ M.read (| op1 |); M.read (| M.deref (| M.read (| op2 |) |) |) ]
@@ -951,10 +942,7 @@ Module instructions.
                                               ]
                                               [],
                                             "is_zero",
-                                            [
-                                              Value.Integer IntegerKind.Usize 256;
-                                              Value.Integer IntegerKind.Usize 4
-                                            ],
+                                            [],
                                             []
                                           |),
                                           [
@@ -992,10 +980,7 @@ Module instructions.
                                             ]
                                             [],
                                           "wrapping_div",
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ],
+                                          [],
                                           []
                                         |),
                                         [
@@ -1473,10 +1458,7 @@ Module instructions.
                                               ]
                                               [],
                                             "is_zero",
-                                            [
-                                              Value.Integer IntegerKind.Usize 256;
-                                              Value.Integer IntegerKind.Usize 4
-                                            ],
+                                            [],
                                             []
                                           |),
                                           [
@@ -1514,10 +1496,7 @@ Module instructions.
                                             ]
                                             [],
                                           "wrapping_rem",
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ],
+                                          [],
                                           []
                                         |),
                                         [
@@ -1993,10 +1972,7 @@ Module instructions.
                                   ]
                                   [],
                                 "add_mod",
-                                [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
-                                ],
+                                [],
                                 []
                               |),
                               [
@@ -2240,10 +2216,7 @@ Module instructions.
                                   ]
                                   [],
                                 "mul_mod",
-                                [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
-                                ],
+                                [],
                                 []
                               |),
                               [
@@ -2590,10 +2563,7 @@ Module instructions.
                                     ]
                                     [],
                                   "pow",
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ],
+                                  [],
                                   []
                                 |),
                                 [ M.read (| op1 |); M.read (| M.deref (| M.read (| op2 |) |) |) ]
@@ -2873,10 +2843,7 @@ Module instructions.
                                                     ]
                                                     [],
                                                   "from",
-                                                  [
-                                                    Value.Integer IntegerKind.Usize 256;
-                                                    Value.Integer IntegerKind.Usize 4
-                                                  ],
+                                                  [],
                                                   [ Ty.path "i32" ]
                                                 |),
                                                 [ Value.Integer IntegerKind.I32 31 ]
@@ -2914,16 +2881,13 @@ Module instructions.
                                               ]
                                               [],
                                             "as_limbs",
-                                            [
-                                              Value.Integer IntegerKind.Usize 256;
-                                              Value.Integer IntegerKind.Usize 4
-                                            ],
+                                            [],
                                             []
                                           |),
                                           [ M.borrow (| Pointer.Kind.Ref, ext |) ]
                                         |)
                                       |),
-                                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                      Value.Integer IntegerKind.Usize 0
                                     |)
                                   |) in
                                 let~ bit_index : Ty.path "usize" :=
@@ -2951,10 +2915,7 @@ Module instructions.
                                           ]
                                           [],
                                         "bit",
-                                        [
-                                          Value.Integer IntegerKind.Usize 256;
-                                          Value.Integer IntegerKind.Usize 4
-                                        ],
+                                        [],
                                         []
                                       |),
                                       [
@@ -3048,10 +3009,7 @@ Module instructions.
                                                   ]
                                                   [],
                                                 "from",
-                                                [
-                                                  Value.Integer IntegerKind.Usize 256;
-                                                  Value.Integer IntegerKind.Usize 4
-                                                ],
+                                                [],
                                                 [ Ty.path "i32" ]
                                               |),
                                               [ Value.Integer IntegerKind.I32 1 ]
@@ -3076,10 +3034,7 @@ Module instructions.
                                               ]
                                               [],
                                             "from",
-                                            [
-                                              Value.Integer IntegerKind.Usize 256;
-                                              Value.Integer IntegerKind.Usize 4
-                                            ],
+                                            [],
                                             [ Ty.path "i32" ]
                                           |),
                                           [ Value.Integer IntegerKind.I32 1 ]

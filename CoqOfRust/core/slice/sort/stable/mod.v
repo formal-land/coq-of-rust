@@ -328,7 +328,7 @@ Module slice.
                         [ Value.Integer IntegerKind.Usize 4096 ]
                         [ T ],
                       "new",
-                      [ Value.Integer IntegerKind.Usize 4096 ],
+                      [],
                       []
                     |),
                     []
@@ -361,7 +361,7 @@ Module slice.
                         [ Value.Integer IntegerKind.Usize 4096 ]
                         [ T ],
                       "as_uninit_slice_mut",
-                      [ Value.Integer IntegerKind.Usize 4096 ],
+                      [],
                       []
                     |),
                     [ M.borrow (| Pointer.Kind.MutRef, stack_buf |) ]

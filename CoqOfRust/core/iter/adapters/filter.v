@@ -484,7 +484,7 @@ Module iter.
                                         "Item"
                                     ],
                                   "array_assume_init",
-                                  [],
+                                  [ N ],
                                   []
                                 |),
                                 [ M.read (| array |) ]
@@ -528,7 +528,7 @@ Module iter.
                                         "Item"
                                     ],
                                   "new_unchecked",
-                                  [ N ],
+                                  [],
                                   []
                                 |),
                                 [

@@ -1,15 +1,16 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.array.
+Require Import revm.revm_bytecode.links.opcode.
+Require Import revm.revm_interpreter.instructions.links.arithmetic.
 Require Import revm.revm_interpreter.instructions.links.control.
+Require Import revm.revm_interpreter.instructions.links.host.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.links.table.
 Require Import revm.revm_interpreter.instructions.
 
 Import Run.
-
-Opaque repeat.
 
 (*
 pub const fn instruction_table<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -40,9 +41,39 @@ Proof.
   }
   intros []; run_symbolic.
   run_symbolic_let. {
-    replace (get_constant "revm_bytecode::opcode::STOP")
-      with (φ (Ref.immediate Pointer.Kind.Raw ({| Integer.value := 0 |} : Usize.t)))
-      by admit.
     run_symbolic.
-    cbn in *.
-Admitted.
+    set (f := control.instructions.control.stop _ _).
+    refine (
+      let f_with_run := {|
+        Function2.f := f;
+        Function2.run := run_stop run_InterpreterTypes_for_WIRE;
+      |} in _).
+    change (Value.Closure _) with (φ f_with_run).
+    run_symbolic.
+  }
+  intros []; run_symbolic.
+  run_symbolic_let. {
+    run_symbolic.
+    set (f := arithmetic.instructions.arithmetic.add _ _).
+    refine (
+      let f_with_run := {|
+        Function2.f := f;
+        Function2.run := run_add run_InterpreterTypes_for_WIRE;
+      |} in _).
+    change (Value.Closure _) with (φ f_with_run).
+    run_symbolic.
+  }
+  intros []; run_symbolic.
+  run_symbolic_let. {
+    run_symbolic.
+    set (f := host.instructions.host.balance _ _).
+    refine (
+      let f_with_run := {|
+        Function2.f := f;
+        Function2.run := run_balance run_InterpreterTypes_for_WIRE;
+      |} in _).
+    change (Value.Closure _) with (φ f_with_run).
+    run_symbolic.
+  }
+  intros []; run_symbolic.
+Defined.

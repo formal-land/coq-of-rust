@@ -52,7 +52,11 @@ Proof.
   run_symbolic_let. {
     run_symbolic.
     run_symbolic_closure. {
-      apply dependencies.ruint.Uint.run_wrapping_add.
+      apply (
+        dependencies.ruint.Impl_Uint.run_wrapping_add
+          {| Integer.value := 256 |}
+          {| Integer.value := 4 |}
+      ).
     }
     intros []; run_symbolic.
   }

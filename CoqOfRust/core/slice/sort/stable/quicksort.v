@@ -314,7 +314,7 @@ Module slice.
                                             Pointer.Kind.Ref,
                                             M.SubPointer.get_array_field (|
                                               M.deref (| M.read (| v |) |),
-                                              pivot_pos
+                                              M.read (| pivot_pos |)
                                             |)
                                           |)
                                         |)
@@ -433,7 +433,7 @@ Module slice.
                                                           Pointer.Kind.Ref,
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| v |) |),
-                                                            pivot_pos
+                                                            M.read (| pivot_pos |)
                                                           |)
                                                         |)
                                                       |)

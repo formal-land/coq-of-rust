@@ -1072,7 +1072,7 @@ Module collections.
                               "alloc::collections::btree::node::InternalNode",
                               "edges"
                             |),
-                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                            Value.Integer IntegerKind.Usize 0
                           |)
                         |);
                         M.read (|
@@ -1821,7 +1821,7 @@ Module collections.
                                             ]
                                         ],
                                       "as_mut_slice",
-                                      [ Value.Integer IntegerKind.Usize 12 ],
+                                      [],
                                       []
                                     |),
                                     [
@@ -4848,7 +4848,7 @@ Module collections.
                                             [ K ]
                                         ],
                                       "as_mut_slice",
-                                      [ Value.Integer IntegerKind.Usize 11 ],
+                                      [],
                                       []
                                     |),
                                     [
@@ -4990,7 +4990,7 @@ Module collections.
                                             [ V ]
                                         ],
                                       "as_mut_slice",
-                                      [ Value.Integer IntegerKind.Usize 11 ],
+                                      [],
                                       []
                                     |),
                                     [
@@ -6503,7 +6503,10 @@ Module collections.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_v1",
-                                                    [],
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 1;
+                                                      Value.Integer IntegerKind.Usize 0
+                                                    ],
                                                     []
                                                   |),
                                                   [
@@ -7204,7 +7207,7 @@ Module collections.
                                 "alloc::collections::btree::node::InternalNode",
                                 "edges"
                               |),
-                              M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                              Value.Integer IntegerKind.Usize 0
                             |)
                           |)
                         ]

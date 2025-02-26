@@ -3951,7 +3951,10 @@ Module eof.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 1;
+                                  Value.Integer IntegerKind.Usize 1
+                                ],
                                 []
                               |),
                               [
@@ -4034,7 +4037,10 @@ Module eof.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 1;
+                                  Value.Integer IntegerKind.Usize 1
+                                ],
                                 []
                               |),
                               [
@@ -5859,7 +5865,7 @@ Module eof.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
-                                    [],
+                                    [ Value.Integer IntegerKind.Usize 1 ],
                                     []
                                   |),
                                   [
@@ -7422,7 +7428,7 @@ Module eof.
                       Pointer.Kind.Ref,
                       M.SubPointer.get_array_field (|
                         M.deref (| M.read (| types |) |),
-                        this_types_index
+                        M.read (| this_types_index |)
                       |)
                     |)
                   |) in
@@ -7548,7 +7554,7 @@ Module eof.
                                 M.copy (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| code |) |),
-                                    i
+                                    M.read (| i |)
                                   |)
                                 |) in
                               let~ opcode :
@@ -7566,7 +7572,7 @@ Module eof.
                                     Pointer.Kind.Ref,
                                     M.SubPointer.get_array_field (|
                                       M.get_constant "revm_bytecode::opcode::OPCODE_INFO",
-                                      M.alloc (| M.cast (Ty.path "usize") (M.read (| op |)) |)
+                                      M.cast (Ty.path "usize") (M.read (| op |))
                                     |)
                                   |)
                                 |) in
@@ -9228,7 +9234,7 @@ Module eof.
                                       M.SubPointer.get_struct_record_field (|
                                         M.SubPointer.get_array_field (|
                                           M.deref (| M.read (| types |) |),
-                                          this_types_index
+                                          M.read (| this_types_index |)
                                         |),
                                         "revm_bytecode::eof::types_section::TypesSection",
                                         "max_stack_size"

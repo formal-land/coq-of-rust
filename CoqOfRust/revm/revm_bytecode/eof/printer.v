@@ -80,7 +80,10 @@ Module eof.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ op : Ty.path "u8" :=
                           M.copy (|
-                            M.SubPointer.get_array_field (| M.deref (| M.read (| code |) |), i |)
+                            M.SubPointer.get_array_field (|
+                              M.deref (| M.read (| code |) |),
+                              M.read (| i |)
+                            |)
                           |) in
                         let~ opcode :
                             Ty.apply
@@ -97,7 +100,7 @@ Module eof.
                               Pointer.Kind.Ref,
                               M.SubPointer.get_array_field (|
                                 M.get_constant "revm_bytecode::opcode::OPCODE_INFO",
-                                M.alloc (| M.cast (Ty.path "usize") (M.read (| op |)) |)
+                                M.cast (Ty.path "usize") (M.read (| op |))
                               |)
                             |)
                           |) in
@@ -224,7 +227,11 @@ Module eof.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_const",
-                                                                      [],
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ],
                                                                       []
                                                                     |),
                                                                     [
@@ -275,7 +282,10 @@ Module eof.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
-                                              [],
+                                              [
+                                                Value.Integer IntegerKind.Usize 1;
+                                                Value.Integer IntegerKind.Usize 1
+                                              ],
                                               []
                                             |),
                                             [
@@ -488,7 +498,10 @@ Module eof.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_v1",
-                                                        [],
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 1;
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        ],
                                                         []
                                                       |),
                                                       [
@@ -631,7 +644,10 @@ Module eof.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_v1",
-                                                                [],
+                                                                [
+                                                                  Value.Integer IntegerKind.Usize 2;
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                ],
                                                                 []
                                                               |),
                                                               [
@@ -837,7 +853,7 @@ Module eof.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
-                                              [],
+                                              [ Value.Integer IntegerKind.Usize 1 ],
                                               []
                                             |),
                                             [

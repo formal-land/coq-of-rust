@@ -7457,13 +7457,13 @@ Module str.
                                                       M.write (|
                                                         M.SubPointer.get_array_field (|
                                                           is_ascii,
-                                                          j
+                                                          M.read (| j |)
                                                         |),
                                                         BinOp.le (|
                                                           M.read (|
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| chunk |) |),
-                                                              j
+                                                              M.read (| j |)
                                                             |)
                                                           |),
                                                           Value.Integer IntegerKind.U8 127
@@ -7720,7 +7720,7 @@ Module str.
                                                       M.write (|
                                                         M.SubPointer.get_array_field (|
                                                           M.deref (| M.read (| out_chunk |) |),
-                                                          j
+                                                          M.read (| j |)
                                                         |),
                                                         M.call_closure (|
                                                           Ty.apply
@@ -7752,7 +7752,7 @@ Module str.
                                                                         M.deref (|
                                                                           M.read (| chunk |)
                                                                         |),
-                                                                        j
+                                                                        M.read (| j |)
                                                                       |)
                                                                     |)
                                                                   |)
@@ -7940,7 +7940,7 @@ Module str.
                           M.copy (|
                             M.SubPointer.get_array_field (|
                               M.deref (| M.read (| slice |) |),
-                              M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                              Value.Integer IntegerKind.Usize 0
                             |)
                           |) in
                         let~ _ : Ty.tuple [] :=

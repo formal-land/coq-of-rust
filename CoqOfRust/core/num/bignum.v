@@ -518,10 +518,7 @@ Module num.
               let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.write (|
-                    M.SubPointer.get_array_field (|
-                      base,
-                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
-                    |),
+                    M.SubPointer.get_array_field (| base, Value.Integer IntegerKind.Usize 0 |),
                     M.read (| v |)
                   |)
                 |) in
@@ -582,7 +579,7 @@ Module num.
                             let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.write (|
-                                  M.SubPointer.get_array_field (| base, sz |),
+                                  M.SubPointer.get_array_field (| base, M.read (| sz |) |),
                                   M.cast (Ty.path "u32") (M.read (| v |))
                                 |)
                               |) in
@@ -733,7 +730,7 @@ Module num.
                             "core::num::bignum::Big32x40",
                             "base"
                           |),
-                          d
+                          M.read (| d |)
                         |)
                       |),
                       M.read (| b |)
@@ -952,7 +949,7 @@ Module num.
                                   M.read (|
                                     M.SubPointer.get_array_field (|
                                       M.deref (| M.read (| digits |) |),
-                                      msd
+                                      M.read (| msd |)
                                     |)
                                   |)
                                 ]
@@ -1312,7 +1309,7 @@ Module num.
                                       "core::num::bignum::Big32x40",
                                       "base"
                                     |),
-                                    sz
+                                    M.read (| sz |)
                                   |),
                                   Value.Integer IntegerKind.U32 1
                                 |)
@@ -1393,7 +1390,7 @@ Module num.
                                 "core::num::bignum::Big32x40",
                                 "base"
                               |),
-                              M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                              Value.Integer IntegerKind.Usize 0
                             |)
                           |);
                           M.read (| other |);
@@ -1417,7 +1414,7 @@ Module num.
                                     "core::num::bignum::Big32x40",
                                     "base"
                                   |),
-                                  M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                  Value.Integer IntegerKind.Usize 0
                                 |),
                                 M.read (| v |)
                               |)
@@ -1456,7 +1453,7 @@ Module num.
                                                       "core::num::bignum::Big32x40",
                                                       "base"
                                                     |),
-                                                    i
+                                                    M.read (| i |)
                                                   |)
                                                 |);
                                                 Value.Integer IntegerKind.U32 0;
@@ -1482,7 +1479,7 @@ Module num.
                                                           "core::num::bignum::Big32x40",
                                                           "base"
                                                         |),
-                                                        i
+                                                        M.read (| i |)
                                                       |),
                                                       M.read (| v |)
                                                     |)
@@ -2160,7 +2157,7 @@ Module num.
                                       "core::num::bignum::Big32x40",
                                       "base"
                                     |),
-                                    sz
+                                    M.read (| sz |)
                                   |),
                                   M.read (| carry |)
                                 |)
@@ -2505,14 +2502,12 @@ Module num.
                                                             "core::num::bignum::Big32x40",
                                                             "base"
                                                           |),
-                                                          M.alloc (|
+                                                          BinOp.Wrap.sub (|
                                                             BinOp.Wrap.sub (|
-                                                              BinOp.Wrap.sub (|
-                                                                Value.Integer IntegerKind.Usize 40,
-                                                                M.read (| digits |)
-                                                              |),
-                                                              Value.Integer IntegerKind.Usize 1
-                                                            |)
+                                                              Value.Integer IntegerKind.Usize 40,
+                                                              M.read (| digits |)
+                                                            |),
+                                                            Value.Integer IntegerKind.Usize 1
                                                           |)
                                                         |)
                                                       |),
@@ -2689,11 +2684,9 @@ Module num.
                                                       "core::num::bignum::Big32x40",
                                                       "base"
                                                     |),
-                                                    M.alloc (|
-                                                      BinOp.Wrap.add (|
-                                                        M.read (| i |),
-                                                        M.read (| digits |)
-                                                      |)
+                                                    BinOp.Wrap.add (|
+                                                      M.read (| i |),
+                                                      M.read (| digits |)
                                                     |)
                                                   |),
                                                   M.read (|
@@ -2703,7 +2696,7 @@ Module num.
                                                         "core::num::bignum::Big32x40",
                                                         "base"
                                                       |),
-                                                      i
+                                                      M.read (| i |)
                                                     |)
                                                   |)
                                                 |)
@@ -2803,7 +2796,7 @@ Module num.
                                                       "core::num::bignum::Big32x40",
                                                       "base"
                                                     |),
-                                                    i
+                                                    M.read (| i |)
                                                   |),
                                                   Value.Integer IntegerKind.U32 0
                                                 |)
@@ -2855,11 +2848,9 @@ Module num.
                                         "core::num::bignum::Big32x40",
                                         "base"
                                       |),
-                                      M.alloc (|
-                                        BinOp.Wrap.sub (|
-                                          M.read (| last |),
-                                          Value.Integer IntegerKind.Usize 1
-                                        |)
+                                      BinOp.Wrap.sub (|
+                                        M.read (| last |),
+                                        Value.Integer IntegerKind.Usize 1
                                       |)
                                     |)
                                   |),
@@ -2894,7 +2885,7 @@ Module num.
                                                 "core::num::bignum::Big32x40",
                                                 "base"
                                               |),
-                                              last
+                                              M.read (| last |)
                                             |),
                                             M.read (| overflow |)
                                           |)
@@ -3056,7 +3047,7 @@ Module num.
                                                                 "core::num::bignum::Big32x40",
                                                                 "base"
                                                               |),
-                                                              i
+                                                              M.read (| i |)
                                                             |),
                                                             BinOp.bit_or
                                                               (BinOp.Wrap.shl (|
@@ -3069,7 +3060,7 @@ Module num.
                                                                       "core::num::bignum::Big32x40",
                                                                       "base"
                                                                     |),
-                                                                    i
+                                                                    M.read (| i |)
                                                                   |)
                                                                 |),
                                                                 M.read (| bits |)
@@ -3084,13 +3075,11 @@ Module num.
                                                                       "core::num::bignum::Big32x40",
                                                                       "base"
                                                                     |),
-                                                                    M.alloc (|
-                                                                      BinOp.Wrap.sub (|
-                                                                        M.read (| i |),
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          1
-                                                                      |)
+                                                                    BinOp.Wrap.sub (|
+                                                                      M.read (| i |),
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1
                                                                     |)
                                                                   |)
                                                                 |),
@@ -3117,7 +3106,7 @@ Module num.
                                       "core::num::bignum::Big32x40",
                                       "base"
                                     |),
-                                    digits
+                                    M.read (| digits |)
                                   |) in
                                 M.write (|
                                   β,
@@ -3205,7 +3194,7 @@ Module num.
                   M.match_operator (|
                     M.SubPointer.get_array_field (|
                       M.get_constant "core::num::bignum::SMALL_POW5",
-                      table_index
+                      M.read (| table_index |)
                     |),
                     [
                       fun γ =>
@@ -4478,7 +4467,7 @@ Module num.
                                                   "core::num::bignum::Big32x40",
                                                   "base"
                                                 |),
-                                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                                Value.Integer IntegerKind.Usize 0
                                               |) in
                                             M.write (|
                                               β,
@@ -4653,7 +4642,7 @@ Module num.
                                                           "core::num::bignum::Big32x40",
                                                           "base"
                                                         |),
-                                                        digit_idx
+                                                        M.read (| digit_idx |)
                                                       |) in
                                                     M.write (|
                                                       β,
@@ -5691,11 +5680,9 @@ Module num.
                                                               "core::num::bignum::Big32x40",
                                                               "base"
                                                             |),
-                                                            M.alloc (|
-                                                              BinOp.Wrap.sub (|
-                                                                M.read (| sz |),
-                                                                Value.Integer IntegerKind.Usize 1
-                                                              |)
+                                                            BinOp.Wrap.sub (|
+                                                              M.read (| sz |),
+                                                              Value.Integer IntegerKind.Usize 1
                                                             |)
                                                           |)
                                                         |)
@@ -6309,10 +6296,7 @@ Module num.
                 let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.write (|
-                      M.SubPointer.get_array_field (|
-                        base,
-                        M.alloc (| Value.Integer IntegerKind.Usize 0 |)
-                      |),
+                      M.SubPointer.get_array_field (| base, Value.Integer IntegerKind.Usize 0 |),
                       M.read (| v |)
                     |)
                   |) in
@@ -6376,7 +6360,7 @@ Module num.
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.write (|
-                                    M.SubPointer.get_array_field (| base, sz |),
+                                    M.SubPointer.get_array_field (| base, M.read (| sz |) |),
                                     M.cast (Ty.path "u8") (M.read (| v |))
                                   |)
                                 |) in
@@ -6531,7 +6515,7 @@ Module num.
                               "core::num::bignum::tests::Big8x3",
                               "base"
                             |),
-                            d
+                            M.read (| d |)
                           |)
                         |),
                         M.read (| b |)
@@ -6750,7 +6734,7 @@ Module num.
                                     M.read (|
                                       M.SubPointer.get_array_field (|
                                         M.deref (| M.read (| digits |) |),
-                                        msd
+                                        M.read (| msd |)
                                       |)
                                     |)
                                   ]
@@ -7115,7 +7099,7 @@ Module num.
                                         "core::num::bignum::tests::Big8x3",
                                         "base"
                                       |),
-                                      sz
+                                      M.read (| sz |)
                                     |),
                                     Value.Integer IntegerKind.U8 1
                                   |)
@@ -7198,7 +7182,7 @@ Module num.
                                   "core::num::bignum::tests::Big8x3",
                                   "base"
                                 |),
-                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                Value.Integer IntegerKind.Usize 0
                               |)
                             |);
                             M.read (| other |);
@@ -7222,7 +7206,7 @@ Module num.
                                       "core::num::bignum::tests::Big8x3",
                                       "base"
                                     |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |),
                                   M.read (| v |)
                                 |)
@@ -7261,7 +7245,7 @@ Module num.
                                                         "core::num::bignum::tests::Big8x3",
                                                         "base"
                                                       |),
-                                                      i
+                                                      M.read (| i |)
                                                     |)
                                                   |);
                                                   Value.Integer IntegerKind.U8 0;
@@ -7287,7 +7271,7 @@ Module num.
                                                             "core::num::bignum::tests::Big8x3",
                                                             "base"
                                                           |),
-                                                          i
+                                                          M.read (| i |)
                                                         |),
                                                         M.read (| v |)
                                                       |)
@@ -7981,7 +7965,7 @@ Module num.
                                         "core::num::bignum::tests::Big8x3",
                                         "base"
                                       |),
-                                      sz
+                                      M.read (| sz |)
                                     |),
                                     M.read (| carry |)
                                   |)
@@ -8341,14 +8325,12 @@ Module num.
                                                               "core::num::bignum::tests::Big8x3",
                                                               "base"
                                                             |),
-                                                            M.alloc (|
+                                                            BinOp.Wrap.sub (|
                                                               BinOp.Wrap.sub (|
-                                                                BinOp.Wrap.sub (|
-                                                                  Value.Integer IntegerKind.Usize 3,
-                                                                  M.read (| digits |)
-                                                                |),
-                                                                Value.Integer IntegerKind.Usize 1
-                                                              |)
+                                                                Value.Integer IntegerKind.Usize 3,
+                                                                M.read (| digits |)
+                                                              |),
+                                                              Value.Integer IntegerKind.Usize 1
                                                             |)
                                                           |)
                                                         |),
@@ -8531,11 +8513,9 @@ Module num.
                                                         "core::num::bignum::tests::Big8x3",
                                                         "base"
                                                       |),
-                                                      M.alloc (|
-                                                        BinOp.Wrap.add (|
-                                                          M.read (| i |),
-                                                          M.read (| digits |)
-                                                        |)
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| i |),
+                                                        M.read (| digits |)
                                                       |)
                                                     |),
                                                     M.read (|
@@ -8545,7 +8525,7 @@ Module num.
                                                           "core::num::bignum::tests::Big8x3",
                                                           "base"
                                                         |),
-                                                        i
+                                                        M.read (| i |)
                                                       |)
                                                     |)
                                                   |)
@@ -8647,7 +8627,7 @@ Module num.
                                                         "core::num::bignum::tests::Big8x3",
                                                         "base"
                                                       |),
-                                                      i
+                                                      M.read (| i |)
                                                     |),
                                                     Value.Integer IntegerKind.U8 0
                                                   |)
@@ -8702,11 +8682,9 @@ Module num.
                                           "core::num::bignum::tests::Big8x3",
                                           "base"
                                         |),
-                                        M.alloc (|
-                                          BinOp.Wrap.sub (|
-                                            M.read (| last |),
-                                            Value.Integer IntegerKind.Usize 1
-                                          |)
+                                        BinOp.Wrap.sub (|
+                                          M.read (| last |),
+                                          Value.Integer IntegerKind.Usize 1
                                         |)
                                       |)
                                     |),
@@ -8741,7 +8719,7 @@ Module num.
                                                   "core::num::bignum::tests::Big8x3",
                                                   "base"
                                                 |),
-                                                last
+                                                M.read (| last |)
                                               |),
                                               M.read (| overflow |)
                                             |)
@@ -8903,7 +8881,7 @@ Module num.
                                                                   "core::num::bignum::tests::Big8x3",
                                                                   "base"
                                                                 |),
-                                                                i
+                                                                M.read (| i |)
                                                               |),
                                                               BinOp.bit_or
                                                                 (BinOp.Wrap.shl (|
@@ -8916,7 +8894,7 @@ Module num.
                                                                         "core::num::bignum::tests::Big8x3",
                                                                         "base"
                                                                       |),
-                                                                      i
+                                                                      M.read (| i |)
                                                                     |)
                                                                   |),
                                                                   M.read (| bits |)
@@ -8931,13 +8909,11 @@ Module num.
                                                                         "core::num::bignum::tests::Big8x3",
                                                                         "base"
                                                                       |),
-                                                                      M.alloc (|
-                                                                        BinOp.Wrap.sub (|
-                                                                          M.read (| i |),
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            1
-                                                                        |)
+                                                                      BinOp.Wrap.sub (|
+                                                                        M.read (| i |),
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
                                                                       |)
                                                                     |)
                                                                   |),
@@ -8964,7 +8940,7 @@ Module num.
                                         "core::num::bignum::tests::Big8x3",
                                         "base"
                                       |),
-                                      digits
+                                      M.read (| digits |)
                                     |) in
                                   M.write (|
                                     β,
@@ -9059,7 +9035,7 @@ Module num.
                     M.match_operator (|
                       M.SubPointer.get_array_field (|
                         M.get_constant "core::num::bignum::SMALL_POW5",
-                        table_index
+                        M.read (| table_index |)
                       |),
                       [
                         fun γ =>
@@ -10361,7 +10337,7 @@ Module num.
                                                     "core::num::bignum::tests::Big8x3",
                                                     "base"
                                                   |),
-                                                  M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                                  Value.Integer IntegerKind.Usize 0
                                                 |) in
                                               M.write (|
                                                 β,
@@ -10549,7 +10525,7 @@ Module num.
                                                             "core::num::bignum::tests::Big8x3",
                                                             "base"
                                                           |),
-                                                          digit_idx
+                                                          M.read (| digit_idx |)
                                                         |) in
                                                       M.write (|
                                                         β,
@@ -11605,11 +11581,9 @@ Module num.
                                                                 "core::num::bignum::tests::Big8x3",
                                                                 "base"
                                                               |),
-                                                              M.alloc (|
-                                                                BinOp.Wrap.sub (|
-                                                                  M.read (| sz |),
-                                                                  Value.Integer IntegerKind.Usize 1
-                                                                |)
+                                                              BinOp.Wrap.sub (|
+                                                                M.read (| sz |),
+                                                                Value.Integer IntegerKind.Usize 1
                                                               |)
                                                             |)
                                                           |)

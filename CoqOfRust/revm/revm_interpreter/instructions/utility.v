@@ -147,7 +147,7 @@ Module instructions.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
-                                      [],
+                                      [ Value.Integer IntegerKind.Usize 1 ],
                                       []
                                     |),
                                     [
@@ -224,10 +224,7 @@ Module instructions.
                                   ]
                                   [],
                                 "as_limbs_mut",
-                                [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
-                                ],
+                                [],
                                 []
                               |),
                               [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| dest |) |) |)
@@ -1189,7 +1186,8 @@ Module instructions.
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Arguments",
                                                                 "new_const",
-                                                                [],
+                                                                [ Value.Integer IntegerKind.Usize 1
+                                                                ],
                                                                 []
                                                               |),
                                                               [
@@ -1375,7 +1373,7 @@ Module instructions.
                   [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                   [],
                 "from_be_bytes",
-                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                [ Value.Integer IntegerKind.Usize 32 ],
                 []
               |),
               [
@@ -1463,7 +1461,7 @@ Module instructions.
                           [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                           [],
                         "to_be_bytes",
-                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                        [ Value.Integer IntegerKind.Usize 32 ],
                         []
                       |),
                       [ M.borrow (| Pointer.Kind.Ref, self |) ]

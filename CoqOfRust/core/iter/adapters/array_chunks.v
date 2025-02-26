@@ -284,7 +284,7 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
-                                      [],
+                                      [ Value.Integer IntegerKind.Usize 1 ],
                                       []
                                     |),
                                     [
@@ -836,7 +836,7 @@ Module iter.
                                           "Item"
                                       ],
                                     "as_mut_slice",
-                                    [ N ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.MutRef, remainder |) ]
@@ -1784,7 +1784,7 @@ Module iter.
                               [ N ]
                               [ I ],
                             "next_back_remainder",
-                            [ N ],
+                            [],
                             []
                           |),
                           [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]

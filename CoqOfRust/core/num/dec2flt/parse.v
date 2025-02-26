@@ -2331,7 +2331,7 @@ Module num.
                                           (M.read (|
                                             M.SubPointer.get_array_field (|
                                               M.deref (| M.read (| s |) |),
-                                              M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                              Value.Integer IntegerKind.Usize 0
                                             |)
                                           |))
                                       |) in
@@ -2342,7 +2342,7 @@ Module num.
                                           (M.read (|
                                             M.SubPointer.get_array_field (|
                                               M.deref (| M.read (| s |) |),
-                                              M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                                              Value.Integer IntegerKind.Usize 1
                                             |)
                                           |))
                                       |) in
@@ -2353,7 +2353,7 @@ Module num.
                                           (M.read (|
                                             M.SubPointer.get_array_field (|
                                               M.deref (| M.read (| s |) |),
-                                              M.alloc (| Value.Integer IntegerKind.Usize 2 |)
+                                              Value.Integer IntegerKind.Usize 2
                                             |)
                                           |))
                                       |) in

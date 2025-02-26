@@ -23,9 +23,8 @@ for root, _dirs, files in os.walk(test_folder):
 
 def compile_with_option(file: str, output_path: str, is_axiomatized: bool):
     base = os.path.splitext(file)[0]
-    os.makedirs(
-        os.path.dirname(os.path.join(output_path, base + ".err")), exist_ok=True
-    )
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
     # Translate the file, and save the error output if any
     command = (
         "cargo run --quiet --bin coq-of-rust -- translate --path "

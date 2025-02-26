@@ -837,11 +837,9 @@ Module num.
                                                           M.SubPointer.get_array_field (|
                                                             M.get_constant
                                                               "core::num::dec2flt::number::INT_POW10",
-                                                            M.alloc (|
-                                                              M.cast
-                                                                (Ty.path "usize")
-                                                                (M.read (| shift |))
-                                                            |)
+                                                            M.cast
+                                                              (Ty.path "usize")
+                                                              (M.read (| shift |))
                                                           |)
                                                         |)
                                                       ]

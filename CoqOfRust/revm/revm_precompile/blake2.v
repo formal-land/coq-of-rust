@@ -380,7 +380,7 @@ Module blake2.
                   M.match_operator (|
                     M.SubPointer.get_array_field (|
                       M.deref (| M.read (| input |) |),
-                      M.alloc (| Value.Integer IntegerKind.Usize 212 |)
+                      Value.Integer IntegerKind.Usize 212
                     |),
                     [
                       fun γ =>
@@ -625,7 +625,7 @@ Module blake2.
                                         let~ _ : Ty.tuple [] :=
                                           M.alloc (|
                                             M.write (|
-                                              M.SubPointer.get_array_field (| h, i |),
+                                              M.SubPointer.get_array_field (| h, M.read (| i |) |),
                                               M.call_closure (|
                                                 Ty.path "u64",
                                                 M.get_associated_function (|
@@ -932,7 +932,7 @@ Module blake2.
                                         let~ _ : Ty.tuple [] :=
                                           M.alloc (|
                                             M.write (|
-                                              M.SubPointer.get_array_field (| m, i |),
+                                              M.SubPointer.get_array_field (| m, M.read (| i |) |),
                                               M.call_closure (|
                                                 Ty.path "u64",
                                                 M.get_associated_function (|
@@ -1883,7 +1883,7 @@ Module blake2.
             let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.write (|
-                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), a |),
+                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), M.read (| a |) |),
                   M.call_closure (|
                     Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
@@ -1893,10 +1893,16 @@ Module blake2.
                         M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                         [
                           M.read (|
-                            M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), a |)
+                            M.SubPointer.get_array_field (|
+                              M.deref (| M.read (| v |) |),
+                              M.read (| a |)
+                            |)
                           |);
                           M.read (|
-                            M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), b |)
+                            M.SubPointer.get_array_field (|
+                              M.deref (| M.read (| v |) |),
+                              M.read (| b |)
+                            |)
                           |)
                         ]
                       |);
@@ -1908,17 +1914,23 @@ Module blake2.
             let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.write (|
-                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), d |),
+                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), M.read (| d |) |),
                   M.call_closure (|
                     Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "rotate_right", [], [] |),
                     [
                       BinOp.bit_xor
                         (M.read (|
-                          M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), d |)
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| v |) |),
+                            M.read (| d |)
+                          |)
                         |))
                         (M.read (|
-                          M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), a |)
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| v |) |),
+                            M.read (| a |)
+                          |)
                         |));
                       Value.Integer IntegerKind.U32 32
                     ]
@@ -1928,16 +1940,22 @@ Module blake2.
             let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.write (|
-                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), c |),
+                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), M.read (| c |) |),
                   M.call_closure (|
                     Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                     [
                       M.read (|
-                        M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), c |)
+                        M.SubPointer.get_array_field (|
+                          M.deref (| M.read (| v |) |),
+                          M.read (| c |)
+                        |)
                       |);
                       M.read (|
-                        M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), d |)
+                        M.SubPointer.get_array_field (|
+                          M.deref (| M.read (| v |) |),
+                          M.read (| d |)
+                        |)
                       |)
                     ]
                   |)
@@ -1946,17 +1964,23 @@ Module blake2.
             let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.write (|
-                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), b |),
+                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), M.read (| b |) |),
                   M.call_closure (|
                     Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "rotate_right", [], [] |),
                     [
                       BinOp.bit_xor
                         (M.read (|
-                          M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), b |)
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| v |) |),
+                            M.read (| b |)
+                          |)
                         |))
                         (M.read (|
-                          M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), c |)
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| v |) |),
+                            M.read (| c |)
+                          |)
                         |));
                       Value.Integer IntegerKind.U32 24
                     ]
@@ -1966,7 +1990,7 @@ Module blake2.
             let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.write (|
-                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), a |),
+                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), M.read (| a |) |),
                   M.call_closure (|
                     Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
@@ -1976,10 +2000,16 @@ Module blake2.
                         M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                         [
                           M.read (|
-                            M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), a |)
+                            M.SubPointer.get_array_field (|
+                              M.deref (| M.read (| v |) |),
+                              M.read (| a |)
+                            |)
                           |);
                           M.read (|
-                            M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), b |)
+                            M.SubPointer.get_array_field (|
+                              M.deref (| M.read (| v |) |),
+                              M.read (| b |)
+                            |)
                           |)
                         ]
                       |);
@@ -1991,17 +2021,23 @@ Module blake2.
             let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.write (|
-                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), d |),
+                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), M.read (| d |) |),
                   M.call_closure (|
                     Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "rotate_right", [], [] |),
                     [
                       BinOp.bit_xor
                         (M.read (|
-                          M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), d |)
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| v |) |),
+                            M.read (| d |)
+                          |)
                         |))
                         (M.read (|
-                          M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), a |)
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| v |) |),
+                            M.read (| a |)
+                          |)
                         |));
                       Value.Integer IntegerKind.U32 16
                     ]
@@ -2011,16 +2047,22 @@ Module blake2.
             let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.write (|
-                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), c |),
+                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), M.read (| c |) |),
                   M.call_closure (|
                     Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "wrapping_add", [], [] |),
                     [
                       M.read (|
-                        M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), c |)
+                        M.SubPointer.get_array_field (|
+                          M.deref (| M.read (| v |) |),
+                          M.read (| c |)
+                        |)
                       |);
                       M.read (|
-                        M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), d |)
+                        M.SubPointer.get_array_field (|
+                          M.deref (| M.read (| v |) |),
+                          M.read (| d |)
+                        |)
                       |)
                     ]
                   |)
@@ -2029,17 +2071,23 @@ Module blake2.
             let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.write (|
-                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), b |),
+                  M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), M.read (| b |) |),
                   M.call_closure (|
                     Ty.path "u64",
                     M.get_associated_function (| Ty.path "u64", "rotate_right", [], [] |),
                     [
                       BinOp.bit_xor
                         (M.read (|
-                          M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), b |)
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| v |) |),
+                            M.read (| b |)
+                          |)
                         |))
                         (M.read (|
-                          M.SubPointer.get_array_field (| M.deref (| M.read (| v |) |), c |)
+                          M.SubPointer.get_array_field (|
+                            M.deref (| M.read (| v |) |),
+                            M.read (| c |)
+                          |)
                         |));
                       Value.Integer IntegerKind.U32 63
                     ]
@@ -2233,39 +2281,25 @@ Module blake2.
               |) in
             let~ _ : Ty.tuple [] :=
               M.alloc (|
-                let β :=
-                  M.SubPointer.get_array_field (|
-                    v,
-                    M.alloc (| Value.Integer IntegerKind.Usize 12 |)
-                  |) in
+                let β := M.SubPointer.get_array_field (| v, Value.Integer IntegerKind.Usize 12 |) in
                 M.write (|
                   β,
                   BinOp.bit_xor
                     (M.read (| β |))
                     (M.read (|
-                      M.SubPointer.get_array_field (|
-                        t,
-                        M.alloc (| Value.Integer IntegerKind.Usize 0 |)
-                      |)
+                      M.SubPointer.get_array_field (| t, Value.Integer IntegerKind.Usize 0 |)
                     |))
                 |)
               |) in
             let~ _ : Ty.tuple [] :=
               M.alloc (|
-                let β :=
-                  M.SubPointer.get_array_field (|
-                    v,
-                    M.alloc (| Value.Integer IntegerKind.Usize 13 |)
-                  |) in
+                let β := M.SubPointer.get_array_field (| v, Value.Integer IntegerKind.Usize 13 |) in
                 M.write (|
                   β,
                   BinOp.bit_xor
                     (M.read (| β |))
                     (M.read (|
-                      M.SubPointer.get_array_field (|
-                        t,
-                        M.alloc (| Value.Integer IntegerKind.Usize 1 |)
-                      |)
+                      M.SubPointer.get_array_field (| t, Value.Integer IntegerKind.Usize 1 |)
                     |))
                 |)
               |) in
@@ -2279,15 +2313,12 @@ Module blake2.
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.write (|
-                          M.SubPointer.get_array_field (|
-                            v,
-                            M.alloc (| Value.Integer IntegerKind.Usize 14 |)
-                          |),
+                          M.SubPointer.get_array_field (| v, Value.Integer IntegerKind.Usize 14 |),
                           UnOp.not (|
                             M.read (|
                               M.SubPointer.get_array_field (|
                                 v,
-                                M.alloc (| Value.Integer IntegerKind.Usize 14 |)
+                                Value.Integer IntegerKind.Usize 14
                               |)
                             |)
                           |)
@@ -2387,11 +2418,9 @@ Module blake2.
                                             Pointer.Kind.Ref,
                                             M.SubPointer.get_array_field (|
                                               M.get_constant "revm_precompile::blake2::algo::SIGMA",
-                                              M.alloc (|
-                                                BinOp.Wrap.rem (|
-                                                  M.read (| i |),
-                                                  Value.Integer IntegerKind.Usize 10
-                                                |)
+                                              BinOp.Wrap.rem (|
+                                                M.read (| i |),
+                                                Value.Integer IntegerKind.Usize 10
                                               |)
                                             |)
                                           |)
@@ -2417,18 +2446,22 @@ Module blake2.
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 0
+                                                    |)
                                                   |)
                                                 |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
                                                   |)
                                                 |)
                                               |)
@@ -2456,18 +2489,22 @@ Module blake2.
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 2 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 2
+                                                    |)
                                                   |)
                                                 |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 3 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 3
+                                                    |)
                                                   |)
                                                 |)
                                               |)
@@ -2495,18 +2532,22 @@ Module blake2.
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 4 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    |)
                                                   |)
                                                 |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 5 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 5
+                                                    |)
                                                   |)
                                                 |)
                                               |)
@@ -2534,18 +2575,22 @@ Module blake2.
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 6 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 6
+                                                    |)
                                                   |)
                                                 |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 7 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 7
+                                                    |)
                                                   |)
                                                 |)
                                               |)
@@ -2573,18 +2618,22 @@ Module blake2.
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 8 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 8
+                                                    |)
                                                   |)
                                                 |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 9 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 9
+                                                    |)
                                                   |)
                                                 |)
                                               |)
@@ -2612,18 +2661,22 @@ Module blake2.
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 10 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 10
+                                                    |)
                                                   |)
                                                 |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 11 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 11
+                                                    |)
                                                   |)
                                                 |)
                                               |)
@@ -2651,18 +2704,22 @@ Module blake2.
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 12 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 12
+                                                    |)
                                                   |)
                                                 |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 13 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 13
+                                                    |)
                                                   |)
                                                 |)
                                               |)
@@ -2690,18 +2747,22 @@ Module blake2.
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 14 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 14
+                                                    |)
                                                   |)
                                                 |)
                                               |);
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   m,
-                                                  M.SubPointer.get_array_field (|
-                                                    M.deref (| M.read (| s |) |),
-                                                    M.alloc (| Value.Integer IntegerKind.Usize 15 |)
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.deref (| M.read (| s |) |),
+                                                      Value.Integer IntegerKind.Usize 15
+                                                    |)
                                                   |)
                                                 |)
                                               |)
@@ -2790,22 +2851,22 @@ Module blake2.
                                         let β :=
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| h |) |),
-                                            i
+                                            M.read (| i |)
                                           |) in
                                         M.write (|
                                           β,
                                           BinOp.bit_xor
                                             (M.read (| β |))
                                             (BinOp.bit_xor
-                                              (M.read (| M.SubPointer.get_array_field (| v, i |) |))
+                                              (M.read (|
+                                                M.SubPointer.get_array_field (| v, M.read (| i |) |)
+                                              |))
                                               (M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   v,
-                                                  M.alloc (|
-                                                    BinOp.Wrap.add (|
-                                                      M.read (| i |),
-                                                      Value.Integer IntegerKind.Usize 8
-                                                    |)
+                                                  BinOp.Wrap.add (|
+                                                    M.read (| i |),
+                                                    Value.Integer IntegerKind.Usize 8
                                                   |)
                                                 |)
                                               |)))

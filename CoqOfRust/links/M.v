@@ -1108,7 +1108,7 @@ Ltac prepare_call :=
     change consts with consts';
     change tys with tys';
     change arguments with arguments';
-    with_strategy opaque [f Φ] cbn
+    try with_strategy opaque [f Φ] cbn
   end.
 
 Ltac run_symbolic_closure :=

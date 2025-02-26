@@ -65,10 +65,7 @@ Module instructions.
                 []
               |)
             |) in
-          M.SubPointer.get_array_field (|
-            table,
-            M.alloc (| M.cast (Ty.path "usize") (M.read (| opcode |)) |)
-          |)
+          M.SubPointer.get_array_field (| table, M.cast (Ty.path "usize") (M.read (| opcode |)) |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -137,11 +134,9 @@ Module instructions.
               M.write (|
                 M.SubPointer.get_array_field (|
                   table,
-                  M.alloc (|
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (| M.get_constant "revm_bytecode::opcode::STOP" |))
-                  |)
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant "revm_bytecode::opcode::STOP" |))
                 |),
                 (* ReifyFnPointer *)
                 M.pointer_coercion
@@ -157,11 +152,9 @@ Module instructions.
               M.write (|
                 M.SubPointer.get_array_field (|
                   table,
-                  M.alloc (|
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (| M.get_constant "revm_bytecode::opcode::ADD" |))
-                  |)
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant "revm_bytecode::opcode::ADD" |))
                 |),
                 (* ReifyFnPointer *)
                 M.pointer_coercion
@@ -177,11 +170,9 @@ Module instructions.
               M.write (|
                 M.SubPointer.get_array_field (|
                   table,
-                  M.alloc (|
-                    M.cast
-                      (Ty.path "usize")
-                      (M.read (| M.get_constant "revm_bytecode::opcode::BALANCE" |))
-                  |)
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (| M.get_constant "revm_bytecode::opcode::BALANCE" |))
                 |),
                 (* ReifyFnPointer *)
                 M.pointer_coercion

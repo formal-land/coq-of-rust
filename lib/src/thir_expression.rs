@@ -742,7 +742,7 @@ pub(crate) fn compile_expr<'a>(
         }
         thir::ExprKind::Index { lhs, index } => {
             let base = compile_expr(env, generics, thir, lhs);
-            let index = compile_expr(env, generics, thir, index);
+            let index = compile_expr(env, generics, thir, index).read();
 
             Rc::new(Expr::Index { base, index })
         }
@@ -987,7 +987,7 @@ pub(crate) fn compile_expr<'a>(
                             // as these are already inferred from the `Self` type.
                             let generic_consts = generic_args
                                 .iter()
-                                .take(nb_parent_generics)
+                                .skip(nb_parent_generics)
                                 .filter_map(|generic_arg| {
                                     generic_arg
                                         .as_const()

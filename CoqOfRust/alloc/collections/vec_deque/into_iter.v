@@ -1477,7 +1477,7 @@ Module collections.
                                                                 [ T ]
                                                             ],
                                                           "transpose",
-                                                          [ N ],
+                                                          [],
                                                           []
                                                         |),
                                                         [ M.read (| raw_arr |) ]
@@ -1744,7 +1744,7 @@ Module collections.
                                                         [ T ]
                                                     ],
                                                   "transpose",
-                                                  [ N ],
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| raw_arr |) ]
@@ -1905,7 +1905,7 @@ Module collections.
                                                 [ N ]
                                                 [ T ],
                                               "new_unchecked",
-                                              [ N ],
+                                              [],
                                               []
                                             |),
                                             [

@@ -250,7 +250,7 @@ Module slice.
                                                 M.read (|
                                                   M.SubPointer.get_array_field (|
                                                     M.deref (| M.read (| text |) |),
-                                                    i
+                                                    M.read (| i |)
                                                   |)
                                                 |),
                                                 M.read (| x |)

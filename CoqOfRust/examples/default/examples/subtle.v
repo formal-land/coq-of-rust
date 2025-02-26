@@ -4041,7 +4041,10 @@ Module Impl_subtle_CtOption_T.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
-                                                [],
+                                                [
+                                                  Value.Integer IntegerKind.Usize 1;
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ],
                                                 []
                                               |),
                                               [

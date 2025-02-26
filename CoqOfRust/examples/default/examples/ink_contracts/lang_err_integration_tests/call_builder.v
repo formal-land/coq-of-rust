@@ -267,7 +267,8 @@ Module Impl_call_builder_CallBuilderTest.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 0
+                              ],
                               []
                             |),
                             [

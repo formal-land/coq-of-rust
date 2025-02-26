@@ -1062,7 +1062,7 @@ Module iter.
                                     []
                                     [ B ],
                                   "array_assume_init",
-                                  [],
+                                  [ N ],
                                   []
                                 |),
                                 [ M.read (| array |) ]
@@ -1126,7 +1126,7 @@ Module iter.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ B ],
                                   "new_unchecked",
-                                  [ N ],
+                                  [],
                                   []
                                 |),
                                 [

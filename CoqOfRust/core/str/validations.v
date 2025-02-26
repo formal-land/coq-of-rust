@@ -1202,7 +1202,7 @@ Module str.
                                 M.copy (|
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| v |) |),
-                                    index
+                                    M.read (| index |)
                                   |)
                                 |) in
                               M.match_operator (|
@@ -1329,7 +1329,7 @@ Module str.
                                                                       |) in
                                                                     M.SubPointer.get_array_field (|
                                                                       M.deref (| M.read (| v |) |),
-                                                                      index
+                                                                      M.read (| index |)
                                                                     |)
                                                                   |)),
                                                                 Value.Integer IntegerKind.I8 (-64)
@@ -1450,7 +1450,7 @@ Module str.
                                                               |) in
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| v |) |),
-                                                              index
+                                                              M.read (| index |)
                                                             |)
                                                           |)
                                                         ]
@@ -1654,7 +1654,7 @@ Module str.
                                                                       |) in
                                                                     M.SubPointer.get_array_field (|
                                                                       M.deref (| M.read (| v |) |),
-                                                                      index
+                                                                      M.read (| index |)
                                                                     |)
                                                                   |)),
                                                                 Value.Integer IntegerKind.I8 (-64)
@@ -1775,7 +1775,7 @@ Module str.
                                                               |) in
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| v |) |),
-                                                              index
+                                                              M.read (| index |)
                                                             |)
                                                           |)
                                                         ]
@@ -1969,7 +1969,7 @@ Module str.
                                                                         M.deref (|
                                                                           M.read (| v |)
                                                                         |),
-                                                                        index
+                                                                        M.read (| index |)
                                                                       |)
                                                                     |)),
                                                                   Value.Integer IntegerKind.I8 (-64)
@@ -2096,7 +2096,7 @@ Module str.
                                                                       |) in
                                                                     M.SubPointer.get_array_field (|
                                                                       M.deref (| M.read (| v |) |),
-                                                                      index
+                                                                      M.read (| index |)
                                                                     |)
                                                                   |)),
                                                                 Value.Integer IntegerKind.I8 (-64)
@@ -2433,7 +2433,7 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| v |)
                                                                           |),
-                                                                          index
+                                                                          M.read (| index |)
                                                                         |)
                                                                       |),
                                                                       Value.Integer
@@ -2815,7 +2815,7 @@ Module str.
             (M.read (|
               M.SubPointer.get_array_field (|
                 M.deref (| M.read (| M.get_constant "core::str::validations::UTF8_CHAR_WIDTH" |) |),
-                M.alloc (| M.cast (Ty.path "usize") (M.read (| b |)) |)
+                M.cast (Ty.path "usize") (M.read (| b |))
               |)
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"

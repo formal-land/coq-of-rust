@@ -2221,31 +2221,27 @@ Module eof.
                                                               M.read (|
                                                                 M.SubPointer.get_array_field (|
                                                                   M.deref (| M.read (| input |) |),
-                                                                  M.alloc (|
-                                                                    BinOp.Wrap.mul (|
-                                                                      M.read (| i |),
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        2
-                                                                    |)
+                                                                  BinOp.Wrap.mul (|
+                                                                    M.read (| i |),
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      2
                                                                   |)
                                                                 |)
                                                               |);
                                                               M.read (|
                                                                 M.SubPointer.get_array_field (|
                                                                   M.deref (| M.read (| input |) |),
-                                                                  M.alloc (|
-                                                                    BinOp.Wrap.add (|
-                                                                      BinOp.Wrap.mul (|
-                                                                        M.read (| i |),
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          2
-                                                                      |),
+                                                                  BinOp.Wrap.add (|
+                                                                    BinOp.Wrap.mul (|
+                                                                      M.read (| i |),
                                                                       Value.Integer
                                                                         IntegerKind.Usize
-                                                                        1
-                                                                    |)
+                                                                        2
+                                                                    |),
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      1
                                                                   |)
                                                                 |)
                                                               |)

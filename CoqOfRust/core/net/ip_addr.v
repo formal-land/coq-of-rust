@@ -2372,7 +2372,7 @@ Module net.
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |)
                   |),
-                  M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                  Value.Integer IntegerKind.Usize 0
                 |)
               |),
               Value.Integer IntegerKind.U8 127
@@ -2586,7 +2586,7 @@ Module net.
                                           ]
                                         |)
                                       |),
-                                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                      Value.Integer IntegerKind.Usize 0
                                     |)
                                   |),
                                   Value.Integer IntegerKind.U8 0
@@ -2673,7 +2673,7 @@ Module net.
                                             ]
                                           |)
                                         |),
-                                        M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                        Value.Integer IntegerKind.Usize 0
                                       |)
                                     |),
                                     Value.Integer IntegerKind.U8 192
@@ -2702,7 +2702,7 @@ Module net.
                                               ]
                                             |)
                                           |),
-                                          M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                                          Value.Integer IntegerKind.Usize 1
                                         |)
                                       |),
                                       Value.Integer IntegerKind.U8 0
@@ -2732,7 +2732,7 @@ Module net.
                                             ]
                                           |)
                                         |),
-                                        M.alloc (| Value.Integer IntegerKind.Usize 2 |)
+                                        Value.Integer IntegerKind.Usize 2
                                       |)
                                     |),
                                     Value.Integer IntegerKind.U8 0
@@ -2762,7 +2762,7 @@ Module net.
                                           ]
                                         |)
                                       |),
-                                      M.alloc (| Value.Integer IntegerKind.Usize 3 |)
+                                      Value.Integer IntegerKind.Usize 3
                                     |)
                                   |),
                                   Value.Integer IntegerKind.U8 9
@@ -2792,7 +2792,7 @@ Module net.
                                         ]
                                       |)
                                     |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 3 |)
+                                    Value.Integer IntegerKind.Usize 3
                                   |)
                                 |),
                                 Value.Integer IntegerKind.U8 10
@@ -2883,7 +2883,7 @@ Module net.
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                    Value.Integer IntegerKind.Usize 0
                   |)
                 |),
                 Value.Integer IntegerKind.U8 100
@@ -2908,7 +2908,7 @@ Module net.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |),
-                        M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                        Value.Integer IntegerKind.Usize 1
                       |)
                     |))
                     (Value.Integer IntegerKind.U8 192),
@@ -2950,7 +2950,7 @@ Module net.
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                    Value.Integer IntegerKind.Usize 0
                   |)
                 |),
                 Value.Integer IntegerKind.U8 198
@@ -2975,7 +2975,7 @@ Module net.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |),
-                        M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                        Value.Integer IntegerKind.Usize 1
                       |)
                     |))
                     (Value.Integer IntegerKind.U8 254),
@@ -3019,7 +3019,7 @@ Module net.
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |),
-                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                      Value.Integer IntegerKind.Usize 0
                     |)
                   |))
                   (Value.Integer IntegerKind.U8 240),
@@ -3074,7 +3074,7 @@ Module net.
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                    Value.Integer IntegerKind.Usize 0
                   |)
                 |),
                 Value.Integer IntegerKind.U8 224
@@ -3098,7 +3098,7 @@ Module net.
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |),
-                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                      Value.Integer IntegerKind.Usize 0
                     |)
                   |),
                   Value.Integer IntegerKind.U8 239
@@ -3789,7 +3789,10 @@ Module net.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 4;
+                                  Value.Integer IntegerKind.Usize 4
+                                ],
                                 []
                               |),
                               [
@@ -3834,9 +3837,7 @@ Module net.
                                                       Pointer.Kind.Ref,
                                                       M.SubPointer.get_array_field (|
                                                         octets,
-                                                        M.alloc (|
-                                                          Value.Integer IntegerKind.Usize 0
-                                                        |)
+                                                        Value.Integer IntegerKind.Usize 0
                                                       |)
                                                     |)
                                                   |)
@@ -3859,9 +3860,7 @@ Module net.
                                                       Pointer.Kind.Ref,
                                                       M.SubPointer.get_array_field (|
                                                         octets,
-                                                        M.alloc (|
-                                                          Value.Integer IntegerKind.Usize 1
-                                                        |)
+                                                        Value.Integer IntegerKind.Usize 1
                                                       |)
                                                     |)
                                                   |)
@@ -3884,9 +3883,7 @@ Module net.
                                                       Pointer.Kind.Ref,
                                                       M.SubPointer.get_array_field (|
                                                         octets,
-                                                        M.alloc (|
-                                                          Value.Integer IntegerKind.Usize 2
-                                                        |)
+                                                        Value.Integer IntegerKind.Usize 2
                                                       |)
                                                     |)
                                                   |)
@@ -3909,9 +3906,7 @@ Module net.
                                                       Pointer.Kind.Ref,
                                                       M.SubPointer.get_array_field (|
                                                         octets,
-                                                        M.alloc (|
-                                                          Value.Integer IntegerKind.Usize 3
-                                                        |)
+                                                        Value.Integer IntegerKind.Usize 3
                                                       |)
                                                     |)
                                                   |)
@@ -3947,7 +3942,7 @@ Module net.
                                 [ Value.Integer IntegerKind.Usize 15 ]
                                 [],
                               "new",
-                              [ Value.Integer IntegerKind.Usize 15 ],
+                              [],
                               []
                             |),
                             []
@@ -3991,7 +3986,10 @@ Module net.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
-                                      [],
+                                      [
+                                        Value.Integer IntegerKind.Usize 4;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ],
                                       []
                                     |),
                                     [
@@ -4036,9 +4034,7 @@ Module net.
                                                             Pointer.Kind.Ref,
                                                             M.SubPointer.get_array_field (|
                                                               octets,
-                                                              M.alloc (|
-                                                                Value.Integer IntegerKind.Usize 0
-                                                              |)
+                                                              Value.Integer IntegerKind.Usize 0
                                                             |)
                                                           |)
                                                         |)
@@ -4061,9 +4057,7 @@ Module net.
                                                             Pointer.Kind.Ref,
                                                             M.SubPointer.get_array_field (|
                                                               octets,
-                                                              M.alloc (|
-                                                                Value.Integer IntegerKind.Usize 1
-                                                              |)
+                                                              Value.Integer IntegerKind.Usize 1
                                                             |)
                                                           |)
                                                         |)
@@ -4086,9 +4080,7 @@ Module net.
                                                             Pointer.Kind.Ref,
                                                             M.SubPointer.get_array_field (|
                                                               octets,
-                                                              M.alloc (|
-                                                                Value.Integer IntegerKind.Usize 2
-                                                              |)
+                                                              Value.Integer IntegerKind.Usize 2
                                                             |)
                                                           |)
                                                         |)
@@ -4111,9 +4103,7 @@ Module net.
                                                             Pointer.Kind.Ref,
                                                             M.SubPointer.get_array_field (|
                                                               octets,
-                                                              M.alloc (|
-                                                                Value.Integer IntegerKind.Usize 3
-                                                              |)
+                                                              Value.Integer IntegerKind.Usize 3
                                                             |)
                                                           |)
                                                         |)
@@ -4157,7 +4147,7 @@ Module net.
                                       [ Value.Integer IntegerKind.Usize 15 ]
                                       [],
                                     "as_str",
-                                    [ Value.Integer IntegerKind.Usize 15 ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, buf |) ]
@@ -5995,7 +5985,7 @@ Module net.
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                    Value.Integer IntegerKind.Usize 0
                   |)
                 |))
                 (Value.Integer IntegerKind.U16 65024),
@@ -6065,7 +6055,7 @@ Module net.
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                    Value.Integer IntegerKind.Usize 0
                   |)
                 |))
                 (Value.Integer IntegerKind.U16 65472),
@@ -6107,7 +6097,7 @@ Module net.
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                    Value.Integer IntegerKind.Usize 0
                   |)
                 |),
                 Value.Integer IntegerKind.U16 8193
@@ -6131,7 +6121,7 @@ Module net.
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |),
-                      M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                      Value.Integer IntegerKind.Usize 1
                     |)
                   |),
                   Value.Integer IntegerKind.U16 3512
@@ -6174,7 +6164,7 @@ Module net.
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |),
-                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                      Value.Integer IntegerKind.Usize 0
                     |)
                   |),
                   Value.Integer IntegerKind.U16 8193
@@ -6198,7 +6188,7 @@ Module net.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |),
-                        M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                        Value.Integer IntegerKind.Usize 1
                       |)
                     |),
                     Value.Integer IntegerKind.U16 2
@@ -6223,7 +6213,7 @@ Module net.
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |),
-                      M.alloc (| Value.Integer IntegerKind.Usize 2 |)
+                      Value.Integer IntegerKind.Usize 2
                     |)
                   |),
                   Value.Integer IntegerKind.U16 0
@@ -6428,7 +6418,7 @@ Module net.
                                     ]
                                   |)
                                 |),
-                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                Value.Integer IntegerKind.Usize 0
                               |)
                             |))
                             (Value.Integer IntegerKind.U16 15)
@@ -6593,7 +6583,7 @@ Module net.
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                    Value.Integer IntegerKind.Usize 0
                   |)
                 |))
                 (Value.Integer IntegerKind.U16 65280),
@@ -7361,7 +7351,10 @@ Module net.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_v1",
-                                            [],
+                                            [
+                                              Value.Integer IntegerKind.Usize 1;
+                                              Value.Integer IntegerKind.Usize 1
+                                            ],
                                             []
                                           |),
                                           [
@@ -8263,7 +8256,7 @@ Module net.
                                     [ Value.Integer IntegerKind.Usize 39 ]
                                     [],
                                   "new",
-                                  [ Value.Integer IntegerKind.Usize 39 ],
+                                  [],
                                   []
                                 |),
                                 []
@@ -8307,7 +8300,10 @@ Module net.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
-                                          [],
+                                          [
+                                            Value.Integer IntegerKind.Usize 1;
+                                            Value.Integer IntegerKind.Usize 1
+                                          ],
                                           []
                                         |),
                                         [
@@ -8392,7 +8388,7 @@ Module net.
                                           [ Value.Integer IntegerKind.Usize 39 ]
                                           [],
                                         "as_str",
-                                        [ Value.Integer IntegerKind.Usize 39 ],
+                                        [],
                                         []
                                       |),
                                       [ M.borrow (| Pointer.Kind.Ref, buf |) ]

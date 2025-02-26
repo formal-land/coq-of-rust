@@ -3413,7 +3413,10 @@ Module net.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 2;
+                                  Value.Integer IntegerKind.Usize 2
+                                ],
                                 []
                               |),
                               [
@@ -3552,7 +3555,7 @@ Module net.
                                 [ Value.Integer IntegerKind.Usize 21 ]
                                 [],
                               "new",
-                              [ Value.Integer IntegerKind.Usize 21 ],
+                              [],
                               []
                             |),
                             []
@@ -3596,7 +3599,10 @@ Module net.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_v1",
-                                      [],
+                                      [
+                                        Value.Integer IntegerKind.Usize 2;
+                                        Value.Integer IntegerKind.Usize 2
+                                      ],
                                       []
                                     |),
                                     [
@@ -3745,7 +3751,7 @@ Module net.
                                       [ Value.Integer IntegerKind.Usize 21 ]
                                       [],
                                     "as_str",
-                                    [ Value.Integer IntegerKind.Usize 21 ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, buf |) ]
@@ -3977,7 +3983,10 @@ Module net.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
-                                        [],
+                                        [
+                                          Value.Integer IntegerKind.Usize 2;
+                                          Value.Integer IntegerKind.Usize 2
+                                        ],
                                         []
                                       |),
                                       [
@@ -4129,7 +4138,10 @@ Module net.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
-                                        [],
+                                        [
+                                          Value.Integer IntegerKind.Usize 3;
+                                          Value.Integer IntegerKind.Usize 3
+                                        ],
                                         []
                                       |),
                                       [
@@ -4298,7 +4310,7 @@ Module net.
                                 [ Value.Integer IntegerKind.Usize 58 ]
                                 [],
                               "new",
-                              [ Value.Integer IntegerKind.Usize 58 ],
+                              [],
                               []
                             |),
                             []
@@ -4370,7 +4382,10 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
-                                                  [],
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 2;
+                                                    Value.Integer IntegerKind.Usize 2
+                                                  ],
                                                   []
                                                 |),
                                                 [
@@ -4527,7 +4542,10 @@ Module net.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
-                                                  [],
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 3;
+                                                    Value.Integer IntegerKind.Usize 3
+                                                  ],
                                                   []
                                                 |),
                                                 [
@@ -4708,7 +4726,7 @@ Module net.
                                       [ Value.Integer IntegerKind.Usize 58 ]
                                       [],
                                     "as_str",
-                                    [ Value.Integer IntegerKind.Usize 58 ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, buf |) ]

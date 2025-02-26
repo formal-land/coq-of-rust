@@ -5035,7 +5035,12 @@ Module ffi.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.call_closure (|
                   Ty.path "core::fmt::Arguments",
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_v1",
+                    [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
+                    []
+                  |),
                   [
                     M.borrow (|
                       Pointer.Kind.Ref,
@@ -5163,7 +5168,10 @@ Module ffi.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 1;
+                                  Value.Integer IntegerKind.Usize 1
+                                ],
                                 []
                               |),
                               [
@@ -5243,7 +5251,7 @@ Module ffi.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
-                                [],
+                                [ Value.Integer IntegerKind.Usize 1 ],
                                 []
                               |),
                               [

@@ -313,7 +313,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "unicode",
-                  [ Value.Integer IntegerKind.Usize 10 ],
+                  [],
                   []
                 |),
                 [ M.read (| c |) ]
@@ -359,7 +359,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "next",
-                  [ Value.Integer IntegerKind.Usize 10 ],
+                  [],
                   []
                 |),
                 [
@@ -409,7 +409,7 @@ Module char.
                       [ Value.Integer IntegerKind.Usize 10 ]
                       [],
                     "len",
-                    [ Value.Integer IntegerKind.Usize 10 ],
+                    [],
                     []
                   |),
                   [
@@ -451,7 +451,7 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 10 ]
                 [],
               "len",
-              [ Value.Integer IntegerKind.Usize 10 ],
+              [],
               []
             |),
             [
@@ -491,7 +491,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "next_back",
-                  [ Value.Integer IntegerKind.Usize 10 ],
+                  [],
                   []
                 |),
                 [
@@ -538,7 +538,7 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 10 ]
                 [],
               "advance_by",
-              [ Value.Integer IntegerKind.Usize 10 ],
+              [],
               []
             |),
             [
@@ -594,7 +594,7 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 10 ]
                 [],
               "len",
-              [ Value.Integer IntegerKind.Usize 10 ],
+              [],
               []
             |),
             [
@@ -665,7 +665,7 @@ Module char.
                         [ Value.Integer IntegerKind.Usize 10 ]
                         [],
                       "as_str",
-                      [ Value.Integer IntegerKind.Usize 10 ],
+                      [],
                       []
                     |),
                     [
@@ -853,7 +853,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "ascii",
-                  [ Value.Integer IntegerKind.Usize 10 ],
+                  [],
                   []
                 |),
                 [
@@ -900,7 +900,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "backslash",
-                  [ Value.Integer IntegerKind.Usize 10 ],
+                  [],
                   []
                 |),
                 [ M.read (| c |) ]
@@ -936,7 +936,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "unicode",
-                  [ Value.Integer IntegerKind.Usize 10 ],
+                  [],
                   []
                 |),
                 [ M.read (| c |) ]
@@ -982,7 +982,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "next",
-                  [ Value.Integer IntegerKind.Usize 10 ],
+                  [],
                   []
                 |),
                 [
@@ -1032,7 +1032,7 @@ Module char.
                       [ Value.Integer IntegerKind.Usize 10 ]
                       [],
                     "len",
-                    [ Value.Integer IntegerKind.Usize 10 ],
+                    [],
                     []
                   |),
                   [
@@ -1074,7 +1074,7 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 10 ]
                 [],
               "len",
-              [ Value.Integer IntegerKind.Usize 10 ],
+              [],
               []
             |),
             [
@@ -1114,7 +1114,7 @@ Module char.
                     [ Value.Integer IntegerKind.Usize 10 ]
                     [],
                   "next_back",
-                  [ Value.Integer IntegerKind.Usize 10 ],
+                  [],
                   []
                 |),
                 [
@@ -1161,7 +1161,7 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 10 ]
                 [],
               "advance_by",
-              [ Value.Integer IntegerKind.Usize 10 ],
+              [],
               []
             |),
             [
@@ -1217,7 +1217,7 @@ Module char.
                 [ Value.Integer IntegerKind.Usize 10 ]
                 [],
               "len",
-              [ Value.Integer IntegerKind.Usize 10 ],
+              [],
               []
             |),
             [
@@ -1288,7 +1288,7 @@ Module char.
                         [ Value.Integer IntegerKind.Usize 10 ]
                         [],
                       "as_str",
-                      [ Value.Integer IntegerKind.Usize 10 ],
+                      [],
                       []
                     |),
                     [
@@ -1708,7 +1708,7 @@ Module char.
                         [ Value.Integer IntegerKind.Usize 10 ]
                         [],
                       "backslash",
-                      [ Value.Integer IntegerKind.Usize 10 ],
+                      [],
                       []
                     |),
                     [ M.read (| c |) ]
@@ -1748,7 +1748,7 @@ Module char.
                         [ Value.Integer IntegerKind.Usize 10 ]
                         [],
                       "unicode",
-                      [ Value.Integer IntegerKind.Usize 10 ],
+                      [],
                       []
                     |),
                     [ M.read (| c |) ]
@@ -1794,7 +1794,7 @@ Module char.
                             [ Value.Integer IntegerKind.Usize 10 ]
                             [],
                           "empty",
-                          [ Value.Integer IntegerKind.Usize 10 ],
+                          [],
                           []
                         |),
                         []
@@ -1868,7 +1868,7 @@ Module char.
                                 [ Value.Integer IntegerKind.Usize 10 ]
                                 [],
                               "next",
-                              [ Value.Integer IntegerKind.Usize 10 ],
+                              [],
                               []
                             |),
                             [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| bytes |) |) |) ]
@@ -2042,7 +2042,7 @@ Module char.
                             [ Value.Integer IntegerKind.Usize 10 ]
                             [],
                           "len",
-                          [ Value.Integer IntegerKind.Usize 10 ],
+                          [],
                           []
                         |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |) ]
@@ -2150,7 +2150,7 @@ Module char.
                                     [ Value.Integer IntegerKind.Usize 10 ]
                                     [],
                                   "as_str",
-                                  [ Value.Integer IntegerKind.Usize 10 ],
+                                  [],
                                   []
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
@@ -3831,7 +3831,7 @@ Module char.
                               M.read (|
                                 M.SubPointer.get_array_field (|
                                   chars,
-                                  M.alloc (| Value.Integer IntegerKind.Usize 2 |)
+                                  Value.Integer IntegerKind.Usize 2
                                 |)
                               |),
                               Value.UnicodeChar 0
@@ -3869,7 +3869,7 @@ Module char.
                                       M.read (|
                                         M.SubPointer.get_array_field (|
                                           chars,
-                                          M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                                          Value.Integer IntegerKind.Usize 1
                                         |)
                                       |),
                                       Value.UnicodeChar 0

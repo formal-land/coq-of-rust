@@ -79,7 +79,7 @@ Module str.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_const",
-                                        [],
+                                        [ Value.Integer IntegerKind.Usize 1 ],
                                         []
                                       |),
                                       [
@@ -308,7 +308,10 @@ Module str.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_v1",
-                                    [],
+                                    [
+                                      Value.Integer IntegerKind.Usize 3;
+                                      Value.Integer IntegerKind.Usize 3
+                                    ],
                                     []
                                   |),
                                   [
@@ -426,7 +429,10 @@ Module str.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 4;
+                                  Value.Integer IntegerKind.Usize 4
+                                ],
                                 []
                               |),
                               [
@@ -669,7 +675,12 @@ Module str.
               [
                 M.call_closure (|
                   Ty.path "core::fmt::Arguments",
-                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_v1",
+                    [ Value.Integer IntegerKind.Usize 5; Value.Integer IntegerKind.Usize 5 ],
+                    []
+                  |),
                   [
                     M.borrow (|
                       Pointer.Kind.Ref,

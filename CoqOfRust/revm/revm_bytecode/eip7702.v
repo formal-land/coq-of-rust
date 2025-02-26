@@ -1188,7 +1188,7 @@ Module eip7702.
                                           ]
                                         |)
                                       |),
-                                      M.alloc (| Value.Integer IntegerKind.Usize 2 |)
+                                      Value.Integer IntegerKind.Usize 2
                                     |)
                                   |),
                                   M.read (|

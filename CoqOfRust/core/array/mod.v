@@ -224,7 +224,7 @@ Module array.
                               [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"
                               ],
                             "array_assume_init",
-                            [],
+                            [ N ],
                             []
                           |),
                           [ M.read (| array |) ]
@@ -5872,7 +5872,7 @@ Module array.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "array") [ N ] [ T ],
                     "try_map",
-                    [ N ],
+                    [],
                     [
                       Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ U ];
                       Ty.associated_unknown
@@ -6235,7 +6235,7 @@ Module array.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ T ],
                   "split_first_chunk",
-                  [],
+                  [ M ],
                   []
                 |),
                 [
@@ -6330,7 +6330,7 @@ Module array.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ T ],
                   "split_first_chunk_mut",
-                  [],
+                  [ M ],
                   []
                 |),
                 [
@@ -6425,7 +6425,7 @@ Module array.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ T ],
                   "split_last_chunk",
-                  [],
+                  [ M ],
                   []
                 |),
                 [
@@ -6520,7 +6520,7 @@ Module array.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "slice") [] [ T ],
                   "split_last_chunk_mut",
-                  [],
+                  [ M ],
                   []
                 |),
                 [
@@ -7558,7 +7558,7 @@ Module array.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
                             "array_assume_init",
-                            [],
+                            [ N ],
                             []
                           |),
                           [ M.read (| array |) ]
@@ -7579,7 +7579,7 @@ Module array.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                             "new_unchecked",
-                            [ N ],
+                            [],
                             []
                           |),
                           [

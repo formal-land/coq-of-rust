@@ -1631,7 +1631,10 @@ Module instantiation_loops.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_v1",
-                                          [],
+                                          [
+                                            Value.Integer IntegerKind.Usize 3;
+                                            Value.Integer IntegerKind.Usize 2
+                                          ],
                                           []
                                         |),
                                         [
@@ -5287,7 +5290,10 @@ Module instantiation_loops.
                                       M.get_associated_function (|
                                         Ty.path "core::fmt::Arguments",
                                         "new_v1",
-                                        [],
+                                        [
+                                          Value.Integer IntegerKind.Usize 2;
+                                          Value.Integer IntegerKind.Usize 2
+                                        ],
                                         []
                                       |),
                                       [
@@ -5617,7 +5623,10 @@ Module instantiation_loops.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
-                                                [],
+                                                [
+                                                  Value.Integer IntegerKind.Usize 3;
+                                                  Value.Integer IntegerKind.Usize 3
+                                                ],
                                                 []
                                               |),
                                               [
@@ -5762,7 +5771,10 @@ Module instantiation_loops.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_v1",
-                                                [],
+                                                [
+                                                  Value.Integer IntegerKind.Usize 2;
+                                                  Value.Integer IntegerKind.Usize 2
+                                                ],
                                                 []
                                               |),
                                               [

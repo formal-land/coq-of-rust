@@ -63,7 +63,7 @@ Module array.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ],
                                     "as_ascii_unchecked",
-                                    [ N ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)

@@ -1937,25 +1937,23 @@ Module ascii.
                           M.copy (|
                             M.SubPointer.get_array_field (|
                               M.get_constant "core::ascii::ascii_char::fmt::HEX_DIGITS",
-                              M.alloc (|
-                                M.call_closure (|
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_trait_method (|
+                                  "core::convert::From",
                                   Ty.path "usize",
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.path "usize",
-                                    [],
-                                    [ Ty.path "u8" ],
-                                    "from",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    BinOp.Wrap.shr (|
-                                      M.read (| byte |),
-                                      Value.Integer IntegerKind.I32 4
-                                    |)
-                                  ]
-                                |)
+                                  [],
+                                  [ Ty.path "u8" ],
+                                  "from",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  BinOp.Wrap.shr (|
+                                    M.read (| byte |),
+                                    Value.Integer IntegerKind.I32 4
+                                  |)
+                                ]
                               |)
                             |)
                           |) in
@@ -1963,24 +1961,22 @@ Module ascii.
                           M.copy (|
                             M.SubPointer.get_array_field (|
                               M.get_constant "core::ascii::ascii_char::fmt::HEX_DIGITS",
-                              M.alloc (|
-                                M.call_closure (|
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_trait_method (|
+                                  "core::convert::From",
                                   Ty.path "usize",
-                                  M.get_trait_method (|
-                                    "core::convert::From",
-                                    Ty.path "usize",
-                                    [],
-                                    [ Ty.path "u8" ],
-                                    "from",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    BinOp.bit_and
-                                      (M.read (| byte |))
-                                      (Value.Integer IntegerKind.U8 15)
-                                  ]
-                                |)
+                                  [],
+                                  [ Ty.path "u8" ],
+                                  "from",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  BinOp.bit_and
+                                    (M.read (| byte |))
+                                    (Value.Integer IntegerKind.U8 15)
+                                ]
                               |)
                             |)
                           |) in

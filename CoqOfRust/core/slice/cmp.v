@@ -411,14 +411,14 @@ Module slice.
                                                                 Pointer.Kind.Ref,
                                                                 M.SubPointer.get_array_field (|
                                                                   M.deref (| M.read (| self |) |),
-                                                                  idx
+                                                                  M.read (| idx |)
                                                                 |)
                                                               |);
                                                               M.borrow (|
                                                                 Pointer.Kind.Ref,
                                                                 M.SubPointer.get_array_field (|
                                                                   M.deref (| M.read (| other |) |),
-                                                                  idx
+                                                                  M.read (| idx |)
                                                                 |)
                                                               |)
                                                             ]
@@ -833,7 +833,7 @@ Module slice.
                                                       Pointer.Kind.Ref,
                                                       M.SubPointer.get_array_field (|
                                                         M.deref (| M.read (| lhs |) |),
-                                                        i
+                                                        M.read (| i |)
                                                       |)
                                                     |);
                                                     M.borrow (|
@@ -843,7 +843,7 @@ Module slice.
                                                           Pointer.Kind.Ref,
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| rhs |) |),
-                                                            i
+                                                            M.read (| i |)
                                                           |)
                                                         |)
                                                       |)
@@ -1470,7 +1470,7 @@ Module slice.
                                                       Pointer.Kind.Ref,
                                                       M.SubPointer.get_array_field (|
                                                         M.deref (| M.read (| lhs |) |),
-                                                        i
+                                                        M.read (| i |)
                                                       |)
                                                     |);
                                                     M.borrow (|
@@ -1480,7 +1480,7 @@ Module slice.
                                                           Pointer.Kind.Ref,
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| rhs |) |),
-                                                            i
+                                                            M.read (| i |)
                                                           |)
                                                         |)
                                                       |)

@@ -17,7 +17,7 @@ Module eof.
                 [ Value.Integer IntegerKind.Usize 32 ]
                 [],
               "new",
-              [ Value.Integer IntegerKind.Usize 32 ],
+              [],
               []
             |),
             [ M.read (| M.get_constant "revm_bytecode::eof::EOF_MAGIC_HASH::RES" |) ]
