@@ -106,7 +106,7 @@ Module transaction.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "from",
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                      [],
                       [ Ty.path "u64" ]
                     |),
                     [
@@ -143,7 +143,7 @@ Module transaction.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "from",
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                      [],
                       [ Ty.path "u128" ]
                     |),
                     [
@@ -175,7 +175,7 @@ Module transaction.
                       [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                       [],
                     "saturating_mul",
-                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                    [],
                     []
                   |),
                   [ M.read (| max_blob_fee |); M.read (| blob_gas |) ]

@@ -1108,7 +1108,7 @@ Ltac prepare_call :=
     change consts with consts';
     change tys with tys';
     change arguments with arguments';
-    with_strategy opaque [f Φ] cbn
+    try with_strategy opaque [f Φ] cbn
   end.
 
 Ltac run_symbolic_closure :=
@@ -1273,6 +1273,19 @@ Module Function2.
     Φ := Ty.function [Φ A1; Φ A2] (Φ Output);
     φ x := Value.Closure (existS (_, _) x.(f));
   }.
+
+  Definition of_ty (ty1 ty2 ty3 : Ty.t) :
+    OfTy.t ty1 ->
+    OfTy.t ty2 ->
+    OfTy.t ty3 ->
+    OfTy.t (Ty.function [ty1; ty2] ty3).
+  Proof.
+    intros [A1] [A2] [Output].
+    eapply OfTy.Make with (A := t A1 A2 Output).
+    subst.
+    reflexivity.
+  Defined.
+  Smpl Add apply of_ty : of_ty.
 End Function2.
 
 Module Function3.

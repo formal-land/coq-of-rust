@@ -1943,7 +1943,7 @@ Module vec.
                                                               [ N ]
                                                               [ T ],
                                                             "new_unchecked",
-                                                            [ N ],
+                                                            [],
                                                             []
                                                           |),
                                                           [
@@ -2031,7 +2031,7 @@ Module vec.
                                                       [ T ]
                                                   ],
                                                 "transpose",
-                                                [ N ],
+                                                [],
                                                 []
                                               |),
                                               [ M.read (| raw_ary |) ]
@@ -2169,7 +2169,7 @@ Module vec.
                                               [ N ]
                                               [ T ],
                                             "new_unchecked",
-                                            [ N ],
+                                            [],
                                             []
                                           |),
                                           [
@@ -2305,7 +2305,7 @@ Module vec.
                                       [ T ]
                                   ],
                                 "transpose",
-                                [ N ],
+                                [],
                                 []
                               |),
                               [ M.read (| raw_ary |) ]

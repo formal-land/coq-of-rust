@@ -122,7 +122,7 @@ Module ascii.
                     [ Value.Integer IntegerKind.Usize 4 ]
                     [],
                   "ascii",
-                  [ Value.Integer IntegerKind.Usize 4 ],
+                  [],
                   []
                 |),
                 [ M.read (| c |) ]
@@ -157,7 +157,7 @@ Module ascii.
                     [ Value.Integer IntegerKind.Usize 4 ]
                     [],
                   "empty",
-                  [ Value.Integer IntegerKind.Usize 4 ],
+                  [],
                   []
                 |),
                 []
@@ -190,7 +190,7 @@ Module ascii.
                     [ Value.Integer IntegerKind.Usize 4 ]
                     [],
                   "as_str",
-                  [ Value.Integer IntegerKind.Usize 4 ],
+                  [],
                   []
                 |),
                 [
@@ -237,7 +237,7 @@ Module ascii.
                 [ Value.Integer IntegerKind.Usize 4 ]
                 [],
               "next",
-              [ Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -276,7 +276,7 @@ Module ascii.
                       [ Value.Integer IntegerKind.Usize 4 ]
                       [],
                     "len",
-                    [ Value.Integer IntegerKind.Usize 4 ],
+                    [],
                     []
                   |),
                   [
@@ -318,7 +318,7 @@ Module ascii.
                 [ Value.Integer IntegerKind.Usize 4 ]
                 [],
               "len",
-              [ Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -349,7 +349,7 @@ Module ascii.
                 [ Value.Integer IntegerKind.Usize 4 ]
                 [],
               "next_back",
-              [ Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -385,7 +385,7 @@ Module ascii.
                 [ Value.Integer IntegerKind.Usize 4 ]
                 [],
               "advance_by",
-              [ Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -441,7 +441,7 @@ Module ascii.
                 [ Value.Integer IntegerKind.Usize 4 ]
                 [],
               "next_back",
-              [ Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -481,7 +481,7 @@ Module ascii.
                 [ Value.Integer IntegerKind.Usize 4 ]
                 [],
               "advance_back_by",
-              [ Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -533,7 +533,7 @@ Module ascii.
                 [ Value.Integer IntegerKind.Usize 4 ]
                 [],
               "len",
-              [ Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -604,7 +604,7 @@ Module ascii.
                         [ Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "as_str",
-                      [ Value.Integer IntegerKind.Usize 4 ],
+                      [],
                       []
                     |),
                     [

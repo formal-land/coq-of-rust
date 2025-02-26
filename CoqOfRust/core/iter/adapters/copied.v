@@ -1461,7 +1461,7 @@ Module iter.
                                                                         [ N ]
                                                                         [ T ],
                                                                       "new_unchecked",
-                                                                      [ N ],
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [
@@ -1536,7 +1536,7 @@ Module iter.
                                                         []
                                                         [ T ],
                                                       "array_assume_init",
-                                                      [],
+                                                      [ N ],
                                                       []
                                                     |),
                                                     [ M.read (| raw_array |) ]
@@ -1706,7 +1706,7 @@ Module iter.
                                                         [ N ]
                                                         [ T ],
                                                       "new_unchecked",
-                                                      [ N ],
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1846,7 +1846,7 @@ Module iter.
                                         []
                                         [ T ],
                                       "array_assume_init",
-                                      [],
+                                      [ N ],
                                       []
                                     |),
                                     [ M.read (| raw_array |) ]

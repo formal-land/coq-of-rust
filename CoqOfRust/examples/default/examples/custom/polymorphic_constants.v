@@ -106,7 +106,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [ Value.Integer IntegerKind.Usize 3 ]
                   [ Ty.path "i32" ],
                 "convert",
-                [ Value.Integer IntegerKind.Usize 3 ],
+                [],
                 [ Ty.path "f64" ]
               |),
               [ M.read (| foo |) ]

@@ -2596,7 +2596,7 @@ Module string.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "array_chunks",
-                                                  [],
+                                                  [ Value.Integer IntegerKind.Usize 2 ],
                                                   []
                                                 |),
                                                 [
@@ -2788,7 +2788,7 @@ Module string.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "array_chunks",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 2 ],
                             []
                           |),
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
@@ -3278,7 +3278,7 @@ Module string.
                                                 [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ],
                                               "remainder",
-                                              [ Value.Integer IntegerKind.Usize 2 ],
+                                              [],
                                               []
                                             |),
                                             [ M.borrow (| Pointer.Kind.Ref, iter |) ]
@@ -3706,7 +3706,7 @@ Module string.
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                                   "array_chunks",
-                                                  [],
+                                                  [ Value.Integer IntegerKind.Usize 2 ],
                                                   []
                                                 |),
                                                 [
@@ -3898,7 +3898,7 @@ Module string.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "array_chunks",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 2 ],
                             []
                           |),
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| v |) |) |) ]
@@ -4388,7 +4388,7 @@ Module string.
                                                 [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ],
                                               "remainder",
-                                              [ Value.Integer IntegerKind.Usize 2 ],
+                                              [],
                                               []
                                             |),
                                             [ M.borrow (| Pointer.Kind.Ref, iter |) ]
@@ -5861,7 +5861,7 @@ Module string.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_const",
-                                    [],
+                                    [ Value.Integer IntegerKind.Usize 1 ],
                                     []
                                   |),
                                   [

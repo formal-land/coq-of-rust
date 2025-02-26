@@ -74,7 +74,12 @@ Module Impl_core_fmt_Display_for_other_uses_of_question_mark_EmptyVec.
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
             M.call_closure (|
               Ty.path "core::fmt::Arguments",
-              M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+              M.get_associated_function (|
+                Ty.path "core::fmt::Arguments",
+                "new_const",
+                [ Value.Integer IntegerKind.Usize 1 ],
+                []
+              |),
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -504,7 +509,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                            ],
                             []
                           |),
                           [
@@ -574,7 +580,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.get_associated_function (|
                             Ty.path "core::fmt::Arguments",
                             "new_v1",
-                            [],
+                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
+                            ],
                             []
                           |),
                           [

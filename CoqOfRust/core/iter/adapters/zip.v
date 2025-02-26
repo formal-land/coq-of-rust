@@ -2042,7 +2042,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 0 ],
                         []
                       |),
                       [
@@ -5805,7 +5805,7 @@ Module iter.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
-                                [],
+                                [ Value.Integer IntegerKind.Usize 1 ],
                                 []
                               |),
                               [

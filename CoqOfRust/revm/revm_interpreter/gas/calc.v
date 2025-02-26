@@ -753,16 +753,13 @@ Module gas.
                                                     ]
                                                     [],
                                                   "as_limbs",
-                                                  [
-                                                    Value.Integer IntegerKind.Usize 256;
-                                                    Value.Integer IntegerKind.Usize 4
-                                                  ],
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.borrow (| Pointer.Kind.Ref, value |) ]
                                               |)
                                             |),
-                                            i
+                                            M.read (| i |)
                                           |)
                                         |),
                                         Value.Integer IntegerKind.U64 0
@@ -827,16 +824,13 @@ Module gas.
                                                           ]
                                                           [],
                                                         "as_limbs",
-                                                        [
-                                                          Value.Integer IntegerKind.Usize 256;
-                                                          Value.Integer IntegerKind.Usize 4
-                                                        ],
+                                                        [],
                                                         []
                                                       |),
                                                       [ M.borrow (| Pointer.Kind.Ref, value |) ]
                                                     |)
                                                   |),
-                                                  i
+                                                  M.read (| i |)
                                                 |)
                                               |)
                                             ]
@@ -973,10 +967,7 @@ Module gas.
                                     ]
                                     [],
                                   "is_zero",
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ],
+                                  [],
                                   []
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, power |) ]
@@ -1017,10 +1008,7 @@ Module gas.
                                   ]
                                   [],
                                 "from",
-                                [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
-                                ],
+                                [],
                                 [ Ty.path "i32" ]
                               |),
                               [
@@ -1135,10 +1123,7 @@ Module gas.
                                           ]
                                           [],
                                         "checked_add",
-                                        [
-                                          Value.Integer IntegerKind.Usize 256;
-                                          Value.Integer IntegerKind.Usize 4
-                                        ],
+                                        [],
                                         []
                                       |),
                                       [
@@ -1159,10 +1144,7 @@ Module gas.
                                               ]
                                               [],
                                             "from",
-                                            [
-                                              Value.Integer IntegerKind.Usize 256;
-                                              Value.Integer IntegerKind.Usize 4
-                                            ],
+                                            [],
                                             [ Ty.path "u64" ]
                                           |),
                                           [
@@ -1234,10 +1216,7 @@ Module gas.
                                                         ]
                                                         [],
                                                       "checked_mul",
-                                                      [
-                                                        Value.Integer IntegerKind.Usize 256;
-                                                        Value.Integer IntegerKind.Usize 4
-                                                      ],
+                                                      [],
                                                       []
                                                     |),
                                                     [
@@ -1259,10 +1238,7 @@ Module gas.
                                                             ]
                                                             [],
                                                           "from",
-                                                          [
-                                                            Value.Integer IntegerKind.Usize 256;
-                                                            Value.Integer IntegerKind.Usize 4
-                                                          ],
+                                                          [],
                                                           [ Ty.path "u64" ]
                                                         |),
                                                         [

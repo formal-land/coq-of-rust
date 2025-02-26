@@ -444,7 +444,7 @@ Module instructions.
                   [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                   [],
                 "from_limbs",
-                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                [],
                 []
               |),
               [
@@ -479,7 +479,7 @@ Module instructions.
                   [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                   [],
                 "from_limbs",
-                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                [],
                 []
               |),
               [
@@ -543,10 +543,7 @@ Module instructions.
                                 ]
                                 [],
                               "bit",
-                              [
-                                Value.Integer IntegerKind.Usize 256;
-                                Value.Integer IntegerKind.Usize 4
-                              ],
+                              [],
                               []
                             |),
                             [
@@ -585,10 +582,7 @@ Module instructions.
                                   ]
                                   [],
                                 "is_zero",
-                                [
-                                  Value.Integer IntegerKind.Usize 256;
-                                  Value.Integer IntegerKind.Usize 4
-                                ],
+                                [],
                                 []
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| val |) |) |) ]
@@ -725,14 +719,13 @@ Module instructions.
                             ]
                             [],
                           "as_limbs_mut",
-                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                          ],
+                          [],
                           []
                         |),
                         [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| val |) |) |) ]
                       |)
                     |),
-                    M.alloc (| Value.Integer IntegerKind.Usize 3 |)
+                    Value.Integer IntegerKind.Usize 3
                   |) in
                 M.write (|
                   β,
@@ -807,7 +800,7 @@ Module instructions.
                 [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                 [],
               "wrapping_neg",
-              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [ M.read (| op |) ]
@@ -1123,10 +1116,7 @@ Module instructions.
                                                   ]
                                                   [],
                                                 "from",
-                                                [
-                                                  Value.Integer IntegerKind.Usize 256;
-                                                  Value.Integer IntegerKind.Usize 4
-                                                ],
+                                                [],
                                                 [ Ty.path "i32" ]
                                               |),
                                               [ Value.Integer IntegerKind.I32 1 ]

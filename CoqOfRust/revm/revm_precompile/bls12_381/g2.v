@@ -127,7 +127,7 @@ Module bls12_381.
                               "blst::blst_fp2",
                               "fp"
                             |),
-                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                            Value.Integer IntegerKind.Usize 0
                           |)
                         |)
                       |)
@@ -209,7 +209,7 @@ Module bls12_381.
                               "blst::blst_fp2",
                               "fp"
                             |),
-                            M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                            Value.Integer IntegerKind.Usize 1
                           |)
                         |)
                       |)
@@ -294,7 +294,7 @@ Module bls12_381.
                               "blst::blst_fp2",
                               "fp"
                             |),
-                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                            Value.Integer IntegerKind.Usize 0
                           |)
                         |)
                       |)
@@ -379,7 +379,7 @@ Module bls12_381.
                               "blst::blst_fp2",
                               "fp"
                             |),
-                            M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                            Value.Integer IntegerKind.Usize 1
                           |)
                         |)
                       |)
@@ -1108,7 +1108,10 @@ Module bls12_381.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_v1",
-                                                            [],
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 2;
+                                                              Value.Integer IntegerKind.Usize 2
+                                                            ],
                                                             []
                                                           |),
                                                           [
@@ -1376,7 +1379,10 @@ Module bls12_381.
                                           let~ _ : Ty.tuple [] :=
                                             M.alloc (|
                                               M.write (|
-                                                M.SubPointer.get_array_field (| input_fps, i |),
+                                                M.SubPointer.get_array_field (|
+                                                  input_fps,
+                                                  M.read (| i |)
+                                                |),
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
@@ -1693,7 +1699,7 @@ Module bls12_381.
                                     M.read (|
                                       M.SubPointer.get_array_field (|
                                         input_fps,
-                                        M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                        Value.Integer IntegerKind.Usize 0
                                       |)
                                     |)
                                   |)
@@ -1704,7 +1710,7 @@ Module bls12_381.
                                     M.read (|
                                       M.SubPointer.get_array_field (|
                                         input_fps,
-                                        M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                                        Value.Integer IntegerKind.Usize 1
                                       |)
                                     |)
                                   |)
@@ -1715,7 +1721,7 @@ Module bls12_381.
                                     M.read (|
                                       M.SubPointer.get_array_field (|
                                         input_fps,
-                                        M.alloc (| Value.Integer IntegerKind.Usize 2 |)
+                                        Value.Integer IntegerKind.Usize 2
                                       |)
                                     |)
                                   |)
@@ -1726,7 +1732,7 @@ Module bls12_381.
                                     M.read (|
                                       M.SubPointer.get_array_field (|
                                         input_fps,
-                                        M.alloc (| Value.Integer IntegerKind.Usize 3 |)
+                                        Value.Integer IntegerKind.Usize 3
                                       |)
                                     |)
                                   |)

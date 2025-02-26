@@ -121,7 +121,7 @@ Module unicode.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.SubPointer.get_array_field (|
                               M.deref (| M.read (| chunk_idx_map |) |),
-                              chunk_map_idx
+                              M.read (| chunk_map_idx |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -139,9 +139,9 @@ Module unicode.
                         M.SubPointer.get_array_field (|
                           M.SubPointer.get_array_field (|
                             M.deref (| M.read (| bitset_chunk_idx |) |),
-                            M.alloc (| M.cast (Ty.path "usize") (M.read (| chunk_idx |)) |)
+                            M.cast (Ty.path "usize") (M.read (| chunk_idx |))
                           |),
-                          chunk_piece
+                          M.read (| chunk_piece |)
                         |)
                       |))
                   |) in
@@ -178,31 +178,29 @@ Module unicode.
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.SubPointer.get_array_field (|
                               M.deref (| M.read (| bitset_canonical |) |),
-                              idx
+                              M.read (| idx |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
                               M.SubPointer.get_array_field (|
                                 M.deref (| M.read (| bitset_canonicalized |) |),
-                                M.alloc (|
-                                  BinOp.Wrap.sub (|
-                                    M.read (| idx |),
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| bitset_canonical |) |)
-                                        |)
-                                      ]
-                                    |)
+                                BinOp.Wrap.sub (|
+                                  M.read (| idx |),
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| bitset_canonical |) |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |),
@@ -217,9 +215,7 @@ Module unicode.
                                       M.copy (|
                                         M.SubPointer.get_array_field (|
                                           M.deref (| M.read (| bitset_canonical |) |),
-                                          M.alloc (|
-                                            M.cast (Ty.path "usize") (M.read (| real_idx |))
-                                          |)
+                                          M.cast (Ty.path "usize") (M.read (| real_idx |))
                                         |)
                                       |) in
                                     let~ should_invert : Ty.path "bool" :=
@@ -567,7 +563,7 @@ Module unicode.
                     M.read (|
                       M.SubPointer.get_array_field (|
                         M.deref (| M.read (| short_offset_runs |) |),
-                        last_idx
+                        M.read (| last_idx |)
                       |)
                     |)
                   ]
@@ -698,7 +694,7 @@ Module unicode.
                                               M.read (|
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| short_offset_runs |) |),
-                                                  prev
+                                                  M.read (| prev |)
                                                 |)
                                               |)
                                             ]
@@ -799,7 +795,7 @@ Module unicode.
                                         M.copy (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| offsets |) |),
-                                            offset_idx
+                                            M.read (| offset_idx |)
                                           |)
                                         |) in
                                       let~ _ : Ty.tuple [] :=
@@ -7265,11 +7261,9 @@ Module unicode.
                                       "core::unicode::unicode_data::white_space::WHITESPACE_MAP"
                                   |)
                                 |),
-                                M.alloc (|
-                                  BinOp.bit_and
-                                    (M.cast (Ty.path "usize") (M.read (| c |)))
-                                    (Value.Integer IntegerKind.Usize 255)
-                                |)
+                                BinOp.bit_and
+                                  (M.cast (Ty.path "usize") (M.read (| c |)))
+                                  (Value.Integer IntegerKind.Usize 255)
                               |)
                             |))
                             (Value.Integer IntegerKind.U8 1),
@@ -7307,11 +7301,9 @@ Module unicode.
                                       "core::unicode::unicode_data::white_space::WHITESPACE_MAP"
                                   |)
                                 |),
-                                M.alloc (|
-                                  BinOp.bit_and
-                                    (M.cast (Ty.path "usize") (M.read (| c |)))
-                                    (Value.Integer IntegerKind.Usize 255)
-                                |)
+                                BinOp.bit_and
+                                  (M.cast (Ty.path "usize") (M.read (| c |)))
+                                  (Value.Integer IntegerKind.Usize 255)
                               |)
                             |))
                             (Value.Integer IntegerKind.U8 2),
@@ -7581,7 +7573,7 @@ Module unicode.
                                                                 |)
                                                               |)
                                                             |),
-                                                            i
+                                                            M.read (| i |)
                                                           |),
                                                           1
                                                         |)
@@ -8052,7 +8044,7 @@ Module unicode.
                                                                 |)
                                                               |)
                                                             |),
-                                                            i
+                                                            M.read (| i |)
                                                           |),
                                                           1
                                                         |)

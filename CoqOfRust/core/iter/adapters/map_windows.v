@@ -130,7 +130,7 @@ Module iter.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
-                                      [],
+                                      [ Value.Integer IntegerKind.Usize 1 ],
                                       []
                                     |),
                                     [
@@ -257,7 +257,7 @@ Module iter.
                                               M.get_associated_function (|
                                                 Ty.path "core::fmt::Arguments",
                                                 "new_const",
-                                                [],
+                                                [ Value.Integer IntegerKind.Usize 1 ],
                                                 []
                                               |),
                                               [
@@ -307,7 +307,7 @@ Module iter.
                               [ N ]
                               [ I ],
                             "new",
-                            [ N ],
+                            [],
                             []
                           |),
                           [ M.read (| iter |) ]
@@ -587,7 +587,7 @@ Module iter.
                                             "Item"
                                         ],
                                       "try_from_iter",
-                                      [ N ],
+                                      [],
                                       [ I ]
                                     |),
                                     [
@@ -763,7 +763,7 @@ Module iter.
                                                   "Item"
                                               ],
                                             "push",
-                                            [ N ],
+                                            [],
                                             []
                                           |),
                                           [
@@ -948,7 +948,7 @@ Module iter.
                                   "Item"
                               ],
                             "as_array_ref",
-                            [ N ],
+                            [],
                             []
                           |)
                         ]
@@ -1384,7 +1384,7 @@ Module iter.
                                   []
                                   [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
                                 "transpose",
-                                [ N ],
+                                [],
                                 []
                               |),
                               [
@@ -1755,7 +1755,7 @@ Module iter.
                                         [ N ]
                                         [ T ],
                                       "buffer_ptr",
-                                      [ N ],
+                                      [],
                                       []
                                     |),
                                     [
@@ -1968,7 +1968,7 @@ Module iter.
                                                 [ N ]
                                                 [ T ],
                                               "buffer_mut_ptr",
-                                              [ N ],
+                                              [],
                                               []
                                             |),
                                             [
@@ -2092,7 +2092,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ N ] [ T ],
                         "buffer_mut_ptr",
-                        [ N ],
+                        [],
                         []
                       |),
                       [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
@@ -2645,7 +2645,7 @@ Module iter.
                                   [ N ]
                                   [ T ],
                                 "as_uninit_array_mut",
-                                [ N ],
+                                [],
                                 []
                               |),
                               [ M.borrow (| Pointer.Kind.MutRef, buffer |) ]
@@ -2678,7 +2678,7 @@ Module iter.
                                       [ N ]
                                       [ T ],
                                     "as_array_ref",
-                                    [ N ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
@@ -2907,7 +2907,7 @@ Module iter.
                                       [ N ]
                                       [ T ],
                                     "buffer_mut_ptr",
-                                    [ N ],
+                                    [],
                                     []
                                   |),
                                   [
@@ -3092,7 +3092,7 @@ Module iter.
                                       [ N ]
                                       [ I ],
                                     "next_window",
-                                    [ N ],
+                                    [],
                                     []
                                   |),
                                   [
@@ -3242,7 +3242,7 @@ Module iter.
                     [ N ]
                     [ I ],
                   "size_hint",
-                  [ N ],
+                  [],
                   []
                 |),
                 [

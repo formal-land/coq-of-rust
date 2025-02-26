@@ -443,7 +443,7 @@ Module slice.
                                                   Pointer.Kind.MutRef,
                                                   M.SubPointer.get_array_field (|
                                                     M.deref (| M.read (| slots |) |),
-                                                    i
+                                                    M.read (| i |)
                                                   |)
                                                 |);
                                                 M.call_closure (|

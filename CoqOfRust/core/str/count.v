@@ -557,7 +557,7 @@ Module str.
                                                             []
                                                             [ Ty.path "usize" ],
                                                           "as_chunks",
-                                                          [],
+                                                          [ Value.Integer IntegerKind.Usize 4 ],
                                                           []
                                                         |),
                                                         [

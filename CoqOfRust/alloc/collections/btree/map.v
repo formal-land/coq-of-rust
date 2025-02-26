@@ -32675,7 +32675,7 @@ Module collections.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_const",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [

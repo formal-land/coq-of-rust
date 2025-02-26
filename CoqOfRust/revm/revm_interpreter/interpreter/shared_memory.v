@@ -2238,7 +2238,10 @@ Module interpreter.
                                                 M.get_associated_function (|
                                                   Ty.path "core::fmt::Arguments",
                                                   "new_v1",
-                                                  [],
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 3;
+                                                    Value.Integer IntegerKind.Usize 3
+                                                  ],
                                                   []
                                                 |),
                                                 [
@@ -2558,7 +2561,10 @@ Module interpreter.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_v1",
-                                                      [],
+                                                      [
+                                                        Value.Integer IntegerKind.Usize 2;
+                                                        Value.Integer IntegerKind.Usize 2
+                                                      ],
                                                       []
                                                     |),
                                                     [
@@ -2712,7 +2718,7 @@ Module interpreter.
                     ]
                   |)
                 |),
-                M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                Value.Integer IntegerKind.Usize 0
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3030,10 +3036,7 @@ Module interpreter.
                                     ]
                                     [],
                                   "to_be_bytes",
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ],
+                                  [ Value.Integer IntegerKind.Usize 32 ],
                                   []
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, value |) ]

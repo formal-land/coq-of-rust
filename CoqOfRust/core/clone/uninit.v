@@ -207,7 +207,7 @@ Module clone.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_const",
-                                                              [],
+                                                              [ Value.Integer IntegerKind.Usize 1 ],
                                                               []
                                                             |),
                                                             [
@@ -624,7 +624,7 @@ Module clone.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_const",
-                                                              [],
+                                                              [ Value.Integer IntegerKind.Usize 1 ],
                                                               []
                                                             |),
                                                             [
@@ -807,10 +807,12 @@ Module clone.
                                   |)
                                 |)
                               |),
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::clone::uninit::InitializingSlice",
-                                "initialized_len"
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::clone::uninit::InitializingSlice",
+                                  "initialized_len"
+                                |)
                               |)
                             |)
                           |)

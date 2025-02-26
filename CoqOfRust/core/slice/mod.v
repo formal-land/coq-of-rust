@@ -2435,14 +2435,14 @@ Module slice.
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.MutPointer,
-                  M.SubPointer.get_array_field (| M.deref (| M.read (| self |) |), a |)
+                  M.SubPointer.get_array_field (| M.deref (| M.read (| self |) |), M.read (| a |) |)
                 |)
               |) in
             let~ pb : Ty.apply (Ty.path "*mut") [] [ T ] :=
               M.alloc (|
                 M.borrow (|
                   Pointer.Kind.MutPointer,
-                  M.SubPointer.get_array_field (| M.deref (| M.read (| self |) |), b |)
+                  M.SubPointer.get_array_field (| M.deref (| M.read (| self |) |), M.read (| b |) |)
                 |)
               |) in
             let~ _ : Ty.tuple [] :=
@@ -2939,7 +2939,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -3034,7 +3034,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -3129,7 +3129,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -3229,7 +3229,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -3472,7 +3472,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -3567,7 +3567,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "as_chunks_unchecked",
-                            [],
+                            [ N ],
                             []
                           |),
                           [
@@ -3642,7 +3642,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -3749,7 +3749,7 @@ Module slice.
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "as_chunks_unchecked",
-                            [],
+                            [ N ],
                             []
                           |),
                           [
@@ -3819,7 +3819,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -3854,7 +3854,7 @@ Module slice.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::slice::iter::ArrayChunks") [ N ] [ T ],
                   "new",
-                  [ N ],
+                  [],
                   []
                 |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
@@ -4090,7 +4090,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -4188,7 +4188,7 @@ Module slice.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "as_chunks_unchecked_mut",
-                                [],
+                                [ N ],
                                 []
                               |),
                               [
@@ -4273,7 +4273,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -4383,7 +4383,7 @@ Module slice.
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "as_chunks_unchecked_mut",
-                                [],
+                                [ N ],
                                 []
                               |),
                               [
@@ -4460,7 +4460,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -4495,7 +4495,7 @@ Module slice.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::slice::iter::ArrayChunksMut") [ N ] [ T ],
                   "new",
-                  [ N ],
+                  [],
                   []
                 |),
                 [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
@@ -4551,7 +4551,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -4586,7 +4586,7 @@ Module slice.
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::slice::iter::ArrayWindows") [ N ] [ T ],
                   "new",
-                  [ N ],
+                  [],
                   []
                 |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
@@ -4643,7 +4643,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -4738,7 +4738,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -4833,7 +4833,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -4933,7 +4933,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -5119,7 +5119,7 @@ Module slice.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
-                                [],
+                                [ Value.Integer IntegerKind.Usize 1 ],
                                 []
                               |),
                               [
@@ -5217,7 +5217,7 @@ Module slice.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_const",
-                                [],
+                                [ Value.Integer IntegerKind.Usize 1 ],
                                 []
                               |),
                               [
@@ -10083,7 +10083,7 @@ Module slice.
                                         M.get_associated_function (|
                                           Ty.path "core::fmt::Arguments",
                                           "new_const",
-                                          [],
+                                          [ Value.Integer IntegerKind.Usize 1 ],
                                           []
                                         |),
                                         [
@@ -10251,7 +10251,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -11628,7 +11628,7 @@ Module slice.
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ T ],
                       "array_windows",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2 ],
                       []
                     |),
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
@@ -13580,7 +13580,7 @@ Module slice.
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
                           "get_many_unchecked_mut",
-                          [],
+                          [ N ],
                           []
                         |),
                         [
@@ -13651,7 +13651,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
-                                      [],
+                                      [ Value.Integer IntegerKind.Usize 1 ],
                                       []
                                     |),
                                     [
@@ -13861,7 +13861,7 @@ Module slice.
                                     M.get_associated_function (|
                                       Ty.path "core::fmt::Arguments",
                                       "new_const",
-                                      [],
+                                      [ Value.Integer IntegerKind.Usize 1 ],
                                       []
                                     |),
                                     [
@@ -14601,7 +14601,7 @@ Module slice.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_const",
-                                  [],
+                                  [ Value.Integer IntegerKind.Usize 1 ],
                                   []
                                 |),
                                 [
@@ -14755,7 +14755,7 @@ Module slice.
                                               Pointer.Kind.MutRef,
                                               M.SubPointer.get_array_field (|
                                                 M.deref (| M.read (| self |) |),
-                                                i
+                                                M.read (| i |)
                                               |)
                                             |);
                                             M.borrow (|
@@ -14765,7 +14765,7 @@ Module slice.
                                                   Pointer.Kind.Ref,
                                                   M.SubPointer.get_array_field (|
                                                     M.deref (| M.read (| src |) |),
-                                                    i
+                                                    M.read (| i |)
                                                   |)
                                                 |)
                                               |)

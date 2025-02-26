@@ -29,7 +29,7 @@ Module Animal.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 3; Value.Integer IntegerKind.Usize 2 ],
                         []
                       |),
                       [
@@ -230,7 +230,10 @@ Module Impl_traits_Sheep.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 2;
+                                  Value.Integer IntegerKind.Usize 1
+                                ],
                                 []
                               |),
                               [
@@ -326,7 +329,10 @@ Module Impl_traits_Sheep.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 2;
+                                  Value.Integer IntegerKind.Usize 1
+                                ],
                                 []
                               |),
                               [
@@ -520,7 +526,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 3; Value.Integer IntegerKind.Usize 2 ],
                         []
                       |),
                       [

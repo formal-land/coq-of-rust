@@ -358,7 +358,7 @@ Module vec.
                                                   Pointer.Kind.MutRef,
                                                   M.SubPointer.get_array_field (|
                                                     M.deref (| M.read (| v |) |),
-                                                    i
+                                                    M.read (| i |)
                                                   |)
                                                 |)
                                               |)
@@ -432,7 +432,7 @@ Module vec.
                                                               Pointer.Kind.Ref,
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| v |) |),
-                                                                i
+                                                                M.read (| i |)
                                                               |)
                                                             |)
                                                           |)
@@ -487,7 +487,7 @@ Module vec.
                                                           Pointer.Kind.Ref,
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| v |) |),
-                                                            i
+                                                            M.read (| i |)
                                                           |)
                                                         |)
                                                       |)
@@ -502,11 +502,9 @@ Module vec.
                                                           Pointer.Kind.MutRef,
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| v |) |),
-                                                            M.alloc (|
-                                                              BinOp.Wrap.sub (|
-                                                                M.read (| i |),
-                                                                M.read (| del |)
-                                                              |)
+                                                            BinOp.Wrap.sub (|
+                                                              M.read (| i |),
+                                                              M.read (| del |)
                                                             |)
                                                           |)
                                                         |)

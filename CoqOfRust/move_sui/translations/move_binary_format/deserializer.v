@@ -7705,7 +7705,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -8211,7 +8218,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -8717,7 +8731,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -9223,7 +9244,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -9727,7 +9755,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -10231,7 +10266,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -10550,7 +10592,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        1;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        1
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -11160,7 +11209,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -11666,7 +11722,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -12645,7 +12708,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -13130,7 +13200,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -13615,7 +13692,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -14100,7 +14184,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -14585,7 +14676,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -15070,7 +15168,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -22381,7 +22486,14 @@ Module deserializer.
                                                                                                     Ty.path
                                                                                                       "core::fmt::Arguments",
                                                                                                     "new_v1",
-                                                                                                    [],
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        1;
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        1
+                                                                                                    ],
                                                                                                     []
                                                                                                   |),
                                                                                                   [
@@ -24825,7 +24937,10 @@ Module deserializer.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
-                                  [],
+                                  [
+                                    Value.Integer IntegerKind.Usize 1;
+                                    Value.Integer IntegerKind.Usize 0
+                                  ],
                                   []
                                 |),
                                 [
@@ -24959,7 +25074,10 @@ Module deserializer.
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::Arguments",
                                   "new_v1",
-                                  [],
+                                  [
+                                    Value.Integer IntegerKind.Usize 1;
+                                    Value.Integer IntegerKind.Usize 0
+                                  ],
                                   []
                                 |),
                                 [
@@ -33593,7 +33711,14 @@ Module deserializer.
                                                                                           Ty.path
                                                                                             "core::fmt::Arguments",
                                                                                           "new_v1",
-                                                                                          [],
+                                                                                          [
+                                                                                            Value.Integer
+                                                                                              IntegerKind.Usize
+                                                                                              1;
+                                                                                            Value.Integer
+                                                                                              IntegerKind.Usize
+                                                                                              1
+                                                                                          ],
                                                                                           []
                                                                                         |),
                                                                                         [
@@ -33839,7 +33964,14 @@ Module deserializer.
                                                                                   Ty.path
                                                                                     "core::fmt::Arguments",
                                                                                   "new_v1",
-                                                                                  [],
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      1;
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      1
+                                                                                  ],
                                                                                   []
                                                                                 |),
                                                                                 [

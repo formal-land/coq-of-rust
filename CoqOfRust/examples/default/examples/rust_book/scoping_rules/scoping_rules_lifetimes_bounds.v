@@ -91,7 +91,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -179,7 +179,7 @@ Definition print_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [

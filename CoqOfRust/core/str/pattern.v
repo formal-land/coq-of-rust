@@ -450,7 +450,11 @@ Module str.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_const",
-                                                                      [],
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ],
                                                                       []
                                                                     |),
                                                                     [
@@ -739,7 +743,11 @@ Module str.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_const",
-                                                                      [],
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ],
                                                                       []
                                                                     |),
                                                                     [
@@ -9847,9 +9855,7 @@ Module str.
                                                             ]
                                                           |)
                                                         |),
-                                                        M.alloc (|
-                                                          Value.Integer IntegerKind.Usize 0
-                                                        |)
+                                                        Value.Integer IntegerKind.Usize 0
                                                       |)
                                                     |)
                                                   |)
@@ -14930,7 +14936,7 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| needle |)
                                                                           |),
-                                                                          i
+                                                                          M.read (| i |)
                                                                         |)
                                                                       |),
                                                                       M.read (|
@@ -14938,21 +14944,17 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| haystack |)
                                                                           |),
-                                                                          M.alloc (|
-                                                                            BinOp.Wrap.add (|
-                                                                              M.read (|
-                                                                                M.SubPointer.get_struct_record_field (|
-                                                                                  M.deref (|
-                                                                                    M.read (|
-                                                                                      self
-                                                                                    |)
-                                                                                  |),
-                                                                                  "core::str::pattern::TwoWaySearcher",
-                                                                                  "position"
-                                                                                |)
-                                                                              |),
-                                                                              M.read (| i |)
-                                                                            |)
+                                                                          BinOp.Wrap.add (|
+                                                                            M.read (|
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |),
+                                                                                "core::str::pattern::TwoWaySearcher",
+                                                                                "position"
+                                                                              |)
+                                                                            |),
+                                                                            M.read (| i |)
                                                                           |)
                                                                         |)
                                                                       |)
@@ -15241,7 +15243,7 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| needle |)
                                                                           |),
-                                                                          i
+                                                                          M.read (| i |)
                                                                         |)
                                                                       |),
                                                                       M.read (|
@@ -15249,21 +15251,17 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| haystack |)
                                                                           |),
-                                                                          M.alloc (|
-                                                                            BinOp.Wrap.add (|
-                                                                              M.read (|
-                                                                                M.SubPointer.get_struct_record_field (|
-                                                                                  M.deref (|
-                                                                                    M.read (|
-                                                                                      self
-                                                                                    |)
-                                                                                  |),
-                                                                                  "core::str::pattern::TwoWaySearcher",
-                                                                                  "position"
-                                                                                |)
-                                                                              |),
-                                                                              M.read (| i |)
-                                                                            |)
+                                                                          BinOp.Wrap.add (|
+                                                                            M.read (|
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                M.deref (|
+                                                                                  M.read (| self |)
+                                                                                |),
+                                                                                "core::str::pattern::TwoWaySearcher",
+                                                                                "position"
+                                                                              |)
+                                                                            |),
+                                                                            M.read (| i |)
                                                                           |)
                                                                         |)
                                                                       |)
@@ -16133,7 +16131,7 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| needle |)
                                                                           |),
-                                                                          i
+                                                                          M.read (| i |)
                                                                         |)
                                                                       |),
                                                                       M.read (|
@@ -16141,47 +16139,45 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| haystack |)
                                                                           |),
-                                                                          M.alloc (|
-                                                                            BinOp.Wrap.add (|
-                                                                              BinOp.Wrap.sub (|
-                                                                                M.read (|
-                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                    M.deref (|
-                                                                                      M.read (|
-                                                                                        self
-                                                                                      |)
-                                                                                    |),
-                                                                                    "core::str::pattern::TwoWaySearcher",
-                                                                                    "end"
-                                                                                  |)
-                                                                                |),
-                                                                                M.call_closure (|
-                                                                                  Ty.path "usize",
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "slice")
-                                                                                      []
-                                                                                      [ Ty.path "u8"
-                                                                                      ],
-                                                                                    "len",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.read (|
-                                                                                          needle
-                                                                                        |)
-                                                                                      |)
+                                                                          BinOp.Wrap.add (|
+                                                                            BinOp.Wrap.sub (|
+                                                                              M.read (|
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
                                                                                     |)
-                                                                                  ]
+                                                                                  |),
+                                                                                  "core::str::pattern::TwoWaySearcher",
+                                                                                  "end"
                                                                                 |)
                                                                               |),
-                                                                              M.read (| i |)
-                                                                            |)
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [ Ty.path "u8"
+                                                                                    ],
+                                                                                  "len",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        needle
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            |),
+                                                                            M.read (| i |)
                                                                           |)
                                                                         |)
                                                                       |)
@@ -16465,7 +16461,7 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| needle |)
                                                                           |),
-                                                                          i
+                                                                          M.read (| i |)
                                                                         |)
                                                                       |),
                                                                       M.read (|
@@ -16473,47 +16469,45 @@ Module str.
                                                                           M.deref (|
                                                                             M.read (| haystack |)
                                                                           |),
-                                                                          M.alloc (|
-                                                                            BinOp.Wrap.add (|
-                                                                              BinOp.Wrap.sub (|
-                                                                                M.read (|
-                                                                                  M.SubPointer.get_struct_record_field (|
-                                                                                    M.deref (|
-                                                                                      M.read (|
-                                                                                        self
-                                                                                      |)
-                                                                                    |),
-                                                                                    "core::str::pattern::TwoWaySearcher",
-                                                                                    "end"
-                                                                                  |)
-                                                                                |),
-                                                                                M.call_closure (|
-                                                                                  Ty.path "usize",
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "slice")
-                                                                                      []
-                                                                                      [ Ty.path "u8"
-                                                                                      ],
-                                                                                    "len",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      M.deref (|
-                                                                                        M.read (|
-                                                                                          needle
-                                                                                        |)
-                                                                                      |)
+                                                                          BinOp.Wrap.add (|
+                                                                            BinOp.Wrap.sub (|
+                                                                              M.read (|
+                                                                                M.SubPointer.get_struct_record_field (|
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      self
                                                                                     |)
-                                                                                  ]
+                                                                                  |),
+                                                                                  "core::str::pattern::TwoWaySearcher",
+                                                                                  "end"
                                                                                 |)
                                                                               |),
-                                                                              M.read (| i |)
-                                                                            |)
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "slice")
+                                                                                    []
+                                                                                    [ Ty.path "u8"
+                                                                                    ],
+                                                                                  "len",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.borrow (|
+                                                                                    Pointer.Kind.Ref,
+                                                                                    M.deref (|
+                                                                                      M.read (|
+                                                                                        needle
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            |),
+                                                                            M.read (| i |)
                                                                           |)
                                                                         |)
                                                                       |)
@@ -16863,9 +16857,7 @@ Module str.
                               M.copy (|
                                 M.SubPointer.get_array_field (|
                                   M.deref (| M.read (| arr |) |),
-                                  M.alloc (|
-                                    BinOp.Wrap.add (| M.read (| left |), M.read (| offset |) |)
-                                  |)
+                                  BinOp.Wrap.add (| M.read (| left |), M.read (| offset |) |)
                                 |)
                               |) in
                             M.match_operator (|
@@ -17142,16 +17134,14 @@ Module str.
                               M.copy (|
                                 M.SubPointer.get_array_field (|
                                   M.deref (| M.read (| arr |) |),
-                                  M.alloc (|
-                                    BinOp.Wrap.sub (|
-                                      M.read (| n |),
+                                  BinOp.Wrap.sub (|
+                                    M.read (| n |),
+                                    BinOp.Wrap.add (|
                                       BinOp.Wrap.add (|
-                                        BinOp.Wrap.add (|
-                                          Value.Integer IntegerKind.Usize 1,
-                                          M.read (| right |)
-                                        |),
-                                        M.read (| offset |)
-                                      |)
+                                        Value.Integer IntegerKind.Usize 1,
+                                        M.read (| right |)
+                                      |),
+                                      M.read (| offset |)
                                     |)
                                   |)
                                 |)
@@ -17160,16 +17150,14 @@ Module str.
                               M.copy (|
                                 M.SubPointer.get_array_field (|
                                   M.deref (| M.read (| arr |) |),
-                                  M.alloc (|
-                                    BinOp.Wrap.sub (|
-                                      M.read (| n |),
+                                  BinOp.Wrap.sub (|
+                                    M.read (| n |),
+                                    BinOp.Wrap.add (|
                                       BinOp.Wrap.add (|
-                                        BinOp.Wrap.add (|
-                                          Value.Integer IntegerKind.Usize 1,
-                                          M.read (| left |)
-                                        |),
-                                        M.read (| offset |)
-                                      |)
+                                        Value.Integer IntegerKind.Usize 1,
+                                        M.read (| left |)
+                                      |),
+                                      M.read (| offset |)
                                     |)
                                   |)
                                 |)
@@ -17813,7 +17801,7 @@ Module str.
                   M.copy (|
                     M.SubPointer.get_array_field (|
                       M.deref (| M.read (| needle |) |),
-                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                      Value.Integer IntegerKind.Usize 0
                     |)
                   |) in
                 let~ last_byte_offset : Ty.path "usize" :=
@@ -17961,7 +17949,7 @@ Module str.
                                                         M.read (|
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| needle |) |),
-                                                            idx
+                                                            M.read (| idx |)
                                                           |)
                                                         |),
                                                         M.read (| first_probe |)
@@ -18182,7 +18170,7 @@ Module str.
                           [ Value.Integer IntegerKind.Usize 16 ]
                           [ Ty.path "u8" ],
                         "splat",
-                        [ Value.Integer IntegerKind.Usize 16 ],
+                        [],
                         []
                       |),
                       [ M.read (| first_probe |) ]
@@ -18205,14 +18193,14 @@ Module str.
                           [ Value.Integer IntegerKind.Usize 16 ]
                           [ Ty.path "u8" ],
                         "splat",
-                        [ Value.Integer IntegerKind.Usize 16 ],
+                        [],
                         []
                       |),
                       [
                         M.read (|
                           M.SubPointer.get_array_field (|
                             M.deref (| M.read (| needle |) |),
-                            second_probe_offset
+                            M.read (| second_probe_offset |)
                           |)
                         |)
                       ]
@@ -18932,7 +18920,7 @@ Module str.
                                                     [ Value.Integer IntegerKind.Usize 16 ]
                                                     [ Ty.path "i8" ],
                                                   "to_bitmask",
-                                                  [ Value.Integer IntegerKind.Usize 16 ],
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.read (| both |) ]
@@ -19108,7 +19096,7 @@ Module str.
                                                             M.write (|
                                                               M.SubPointer.get_array_field (|
                                                                 masks,
-                                                                j
+                                                                M.read (| j |)
                                                               |),
                                                               M.call_closure (|
                                                                 Ty.path "u16",
@@ -19249,7 +19237,7 @@ Module str.
                                                           M.copy (|
                                                             M.SubPointer.get_array_field (|
                                                               masks,
-                                                              j
+                                                              M.read (| j |)
                                                             |)
                                                           |) in
                                                         M.match_operator (|

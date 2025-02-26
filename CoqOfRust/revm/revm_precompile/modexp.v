@@ -400,10 +400,7 @@ Module modexp.
                                     ]
                                     [],
                                   "is_zero",
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ],
+                                  [],
                                   []
                                 |),
                                 [
@@ -456,10 +453,7 @@ Module modexp.
                                             ]
                                             [],
                                           "bit_len",
-                                          [
-                                            Value.Integer IntegerKind.Usize 256;
-                                            Value.Integer IntegerKind.Usize 4
-                                          ],
+                                          [],
                                           []
                                         |),
                                         [
@@ -546,10 +540,7 @@ Module modexp.
                                                             ]
                                                             [],
                                                           "bit_len",
-                                                          [
-                                                            Value.Integer IntegerKind.Usize 256;
-                                                            Value.Integer IntegerKind.Usize 4
-                                                          ],
+                                                          [],
                                                           []
                                                         |),
                                                         [
@@ -739,7 +730,7 @@ Module modexp.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "from_be_bytes",
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                      [ Value.Integer IntegerKind.Usize 32 ],
                       []
                     |),
                     [
@@ -805,7 +796,7 @@ Module modexp.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "from_be_bytes",
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                      [ Value.Integer IntegerKind.Usize 32 ],
                       []
                     |),
                     [
@@ -871,7 +862,7 @@ Module modexp.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "from_be_bytes",
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                      [ Value.Integer IntegerKind.Usize 32 ],
                       []
                     |),
                     [
@@ -1384,10 +1375,7 @@ Module modexp.
                                                   ]
                                                   [],
                                                 "from_be_bytes",
-                                                [
-                                                  Value.Integer IntegerKind.Usize 256;
-                                                  Value.Integer IntegerKind.Usize 4
-                                                ],
+                                                [ Value.Integer IntegerKind.Usize 32 ],
                                                 []
                                               |),
                                               [
@@ -2159,7 +2147,7 @@ Module modexp.
                     [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                     [],
                   "from",
-                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                  [],
                   [ Ty.path "u64" ]
                 |),
                 [
@@ -2242,7 +2230,7 @@ Module modexp.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "from",
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                      [],
                       [ Ty.path "i32" ]
                     |),
                     [ Value.Integer IntegerKind.I32 20 ]
@@ -2259,7 +2247,7 @@ Module modexp.
                   [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                   [],
                 "saturating_to",
-                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                [],
                 [ Ty.path "u64" ]
               |),
               [ M.borrow (| Pointer.Kind.Ref, gas |) ]
@@ -2318,8 +2306,7 @@ Module modexp.
                             ]
                             [],
                           "from",
-                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                          ],
+                          [],
                           [ Ty.path "u64" ]
                         |),
                         [ BinOp.Wrap.mul (| M.read (| x |), M.read (| x |) |) ]
@@ -2357,10 +2344,7 @@ Module modexp.
                                     ]
                                     [],
                                   "from",
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ],
+                                  [],
                                   [ Ty.path "u64" ]
                                 |),
                                 [
@@ -2408,10 +2392,7 @@ Module modexp.
                                       ]
                                       [],
                                     "from",
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ],
+                                    [],
                                     [ Ty.path "u64" ]
                                   |),
                                   [ M.read (| x |) ]
@@ -2575,10 +2556,7 @@ Module modexp.
                                                 ]
                                                 [],
                                               "from",
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ],
+                                              [],
                                               [ Ty.path "i32" ]
                                             |),
                                             [ Value.Integer IntegerKind.I32 16 ]
@@ -2634,10 +2612,7 @@ Module modexp.
                                                 ]
                                                 [],
                                               "from",
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ],
+                                              [],
                                               [ Ty.path "i32" ]
                                             |),
                                             [ Value.Integer IntegerKind.I32 480 ]
@@ -2664,10 +2639,7 @@ Module modexp.
                                         ]
                                         [],
                                       "from",
-                                      [
-                                        Value.Integer IntegerKind.Usize 256;
-                                        Value.Integer IntegerKind.Usize 4
-                                      ],
+                                      [],
                                       [ Ty.path "i32" ]
                                     |),
                                     [ Value.Integer IntegerKind.I32 199680 ]
@@ -2815,8 +2787,7 @@ Module modexp.
                             ]
                             [],
                           "from",
-                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                          ],
+                          [],
                           [ Ty.path "u64" ]
                         |),
                         [ M.read (| iteration_count |) ]
@@ -2834,7 +2805,7 @@ Module modexp.
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
                       "from",
-                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                      [],
                       [ Ty.path "i32" ]
                     |),
                     [ Value.Integer IntegerKind.I32 3 ]
@@ -2856,7 +2827,7 @@ Module modexp.
                       [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                       [],
                     "saturating_to",
-                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                    [],
                     [ Ty.path "u64" ]
                   |),
                   [ M.borrow (| Pointer.Kind.Ref, gas |) ]
@@ -2954,7 +2925,7 @@ Module modexp.
                       [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                       [],
                     "from",
-                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+                    [],
                     [ Ty.path "u64" ]
                   |),
                   [ M.read (| words |) ]

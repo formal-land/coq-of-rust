@@ -961,7 +961,7 @@ Module utilities.
                           [ Value.Integer IntegerKind.Usize 32 ]
                           [],
                         "new",
-                        [ Value.Integer IntegerKind.Usize 32 ],
+                        [],
                         []
                       |),
                       [
@@ -1001,7 +1001,7 @@ Module utilities.
                           [ Value.Integer IntegerKind.Usize 32 ]
                           [],
                         "new",
-                        [ Value.Integer IntegerKind.Usize 32 ],
+                        [],
                         []
                       |),
                       [

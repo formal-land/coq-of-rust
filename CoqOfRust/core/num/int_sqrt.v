@@ -52,7 +52,7 @@ Module num.
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.write (|
-                              M.SubPointer.get_array_field (| result, n |),
+                              M.SubPointer.get_array_field (| result, M.read (| n |) |),
                               Value.Tuple
                                 [
                                   M.cast (Ty.path "u8") (M.read (| isqrt_n |));
@@ -165,7 +165,7 @@ Module num.
             M.SubPointer.get_tuple_field (|
               M.SubPointer.get_array_field (|
                 M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
-                M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
+                M.cast (Ty.path "usize") (M.read (| n |))
               |),
               0
             |)
@@ -228,7 +228,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
-                                            [],
+                                            [ Value.Integer IntegerKind.Usize 1 ],
                                             []
                                           |),
                                           [
@@ -330,7 +330,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
-                                            [],
+                                            [ Value.Integer IntegerKind.Usize 1 ],
                                             []
                                           |),
                                           [
@@ -432,7 +432,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
-                                            [],
+                                            [ Value.Integer IntegerKind.Usize 1 ],
                                             []
                                           |),
                                           [
@@ -534,7 +534,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
-                                            [],
+                                            [ Value.Integer IntegerKind.Usize 1 ],
                                             []
                                           |),
                                           [
@@ -636,7 +636,7 @@ Module num.
                                           M.get_associated_function (|
                                             Ty.path "core::fmt::Arguments",
                                             "new_const",
-                                            [],
+                                            [ Value.Integer IntegerKind.Usize 1 ],
                                             []
                                           |),
                                           [
@@ -740,7 +740,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
-                                              [],
+                                              [ Value.Integer IntegerKind.Usize 1 ],
                                               []
                                             |),
                                             [
@@ -784,7 +784,7 @@ Module num.
               M.match_operator (|
                 M.SubPointer.get_array_field (|
                   M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
-                  M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
+                  M.cast (Ty.path "usize") (M.read (| n |))
                 |),
                 [
                   fun γ =>
@@ -859,7 +859,7 @@ Module num.
                                                   M.get_associated_function (|
                                                     Ty.path "core::fmt::Arguments",
                                                     "new_const",
-                                                    [],
+                                                    [ Value.Integer IntegerKind.Usize 1 ],
                                                     []
                                                   |),
                                                   [
@@ -1121,7 +1121,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
-                                              [],
+                                              [ Value.Integer IntegerKind.Usize 1 ],
                                               []
                                             |),
                                             [
@@ -1165,7 +1165,7 @@ Module num.
               M.match_operator (|
                 M.SubPointer.get_array_field (|
                   M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
-                  M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
+                  M.cast (Ty.path "usize") (M.read (| n |))
                 |),
                 [
                   fun γ =>
@@ -1241,7 +1241,7 @@ Module num.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_const",
-                                                      [],
+                                                      [ Value.Integer IntegerKind.Usize 1 ],
                                                       []
                                                     |),
                                                     [
@@ -1493,7 +1493,7 @@ Module num.
                                                           M.get_associated_function (|
                                                             Ty.path "core::fmt::Arguments",
                                                             "new_const",
-                                                            [],
+                                                            [ Value.Integer IntegerKind.Usize 1 ],
                                                             []
                                                           |),
                                                           [
@@ -1848,7 +1848,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
-                                              [],
+                                              [ Value.Integer IntegerKind.Usize 1 ],
                                               []
                                             |),
                                             [
@@ -1892,7 +1892,7 @@ Module num.
               M.match_operator (|
                 M.SubPointer.get_array_field (|
                   M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
-                  M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
+                  M.cast (Ty.path "usize") (M.read (| n |))
                 |),
                 [
                   fun γ =>
@@ -1968,7 +1968,7 @@ Module num.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_const",
-                                                      [],
+                                                      [ Value.Integer IntegerKind.Usize 1 ],
                                                       []
                                                     |),
                                                     [
@@ -2221,7 +2221,7 @@ Module num.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_const",
-                                                              [],
+                                                              [ Value.Integer IntegerKind.Usize 1 ],
                                                               []
                                                             |),
                                                             [
@@ -2493,7 +2493,11 @@ Module num.
                                                                   M.get_associated_function (|
                                                                     Ty.path "core::fmt::Arguments",
                                                                     "new_const",
-                                                                    [],
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1
+                                                                    ],
                                                                     []
                                                                   |),
                                                                   [
@@ -2932,7 +2936,7 @@ Module num.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_const",
-                                              [],
+                                              [ Value.Integer IntegerKind.Usize 1 ],
                                               []
                                             |),
                                             [
@@ -2976,7 +2980,7 @@ Module num.
               M.match_operator (|
                 M.SubPointer.get_array_field (|
                   M.get_constant "core::num::int_sqrt::U8_ISQRT_WITH_REMAINDER",
-                  M.alloc (| M.cast (Ty.path "usize") (M.read (| n |)) |)
+                  M.cast (Ty.path "usize") (M.read (| n |))
                 |),
                 [
                   fun γ =>
@@ -3052,7 +3056,7 @@ Module num.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_const",
-                                                      [],
+                                                      [ Value.Integer IntegerKind.Usize 1 ],
                                                       []
                                                     |),
                                                     [
@@ -3305,7 +3309,7 @@ Module num.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_const",
-                                                              [],
+                                                              [ Value.Integer IntegerKind.Usize 1 ],
                                                               []
                                                             |),
                                                             [
@@ -3579,7 +3583,11 @@ Module num.
                                                                       Ty.path
                                                                         "core::fmt::Arguments",
                                                                       "new_const",
-                                                                      [],
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ],
                                                                       []
                                                                     |),
                                                                     [
@@ -3865,7 +3873,11 @@ Module num.
                                                                             Ty.path
                                                                               "core::fmt::Arguments",
                                                                             "new_const",
-                                                                            [],
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ],
                                                                             []
                                                                           |),
                                                                           [
@@ -4895,7 +4907,12 @@ Module num.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_const",
+                  [ Value.Integer IntegerKind.Usize 1 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,

@@ -700,62 +700,99 @@ pub trait InterpreterTypes {
 }
 *)
 Module InterpreterTypes.
+  Module Types.
+    Record t : Type := {
+      Stack : Set;
+      Memory : Set;
+      Bytecode : Set;
+      ReturnData : Set;
+      Input : Set;
+      SubRoutineStack : Set;
+      Control : Set;
+      RuntimeFlag : Set;
+      Extend : Set;
+    }.
+
+    Class AreLinks (types : t) : Set := {
+      H_Stack : Link types.(Stack);
+      H_Memory : Link types.(Memory);
+      H_Bytecode : Link types.(Bytecode);
+      H_ReturnData : Link types.(ReturnData);
+      H_Input : Link types.(Input);
+      H_SubRoutineStack : Link types.(SubRoutineStack);
+      H_Control : Link types.(Control);
+      H_RuntimeFlag : Link types.(RuntimeFlag);
+      H_Extend : Link types.(Extend);
+    }.
+
+    Global Instance IsLinkStack (types : t) (H : AreLinks types) : Link types.(Stack) :=
+      H.(H_Stack _).
+    Global Instance IsLinkMemory (types : t) (H : AreLinks types) : Link types.(Memory) :=
+      H.(H_Memory _).
+    Global Instance IsLinkBytecode (types : t) (H : AreLinks types) : Link types.(Bytecode) :=
+      H.(H_Bytecode _).
+    Global Instance IsLinkReturnData (types : t) (H : AreLinks types) : Link types.(ReturnData) :=
+      H.(H_ReturnData _).
+    Global Instance IsLinkInput (types : t) (H : AreLinks types) : Link types.(Input) :=
+      H.(H_Input _).
+    Global Instance IsLinkSubRoutineStack (types : t) (H : AreLinks types) : Link types.(SubRoutineStack) :=
+      H.(H_SubRoutineStack _).
+    Global Instance IsLinkControl (types : t) (H : AreLinks types) : Link types.(Control) :=
+      H.(H_Control _).
+    Global Instance IsLinkRuntimeFlag (types : t) (H : AreLinks types) : Link types.(RuntimeFlag) :=
+      H.(H_RuntimeFlag _).
+    Global Instance IsLinkExtend (types : t) (H : AreLinks types) : Link types.(Extend) :=
+      H.(H_Extend _).
+  End Types.
+
   Record Run
       (Self : Set) `{Link Self}
-      {Stack : Set} `{Link Stack}
-      {Memory : Set} `{Link Memory}
-      {Bytecode : Set} `{Link Bytecode}
-      {ReturnData : Set} `{Link ReturnData}
-      {Input : Set} `{Link Input}
-      {SubRoutineStack : Set} `{Link SubRoutineStack}
-      {Control : Set} `{Link Control}
-      {RuntimeFlag : Set} `{Link RuntimeFlag}
-      {Extend : Set} `{Link Extend} :
+      (types : Types.t) `{Types.AreLinks types} :
       Set := {
     Stack_IsAssociated :
       IsTraitAssociatedType
         "revm_interpreter::interpreter_types::InterpreterTypes" [] [] (Φ Self)
-        "Stack" (Φ Stack);
-    run_StackTrait_for_Stack : StackTrait.Run Stack;
+        "Stack" (Φ types.(Types.Stack));
+    run_StackTrait_for_Stack : StackTrait.Run types.(Types.Stack);
     Memory_IsAssociated :
       IsTraitAssociatedType
         "revm_interpreter::interpreter_types::InterpreterTypes" [] [] (Φ Self)
-        "Memory" (Φ Memory);
-    run_MemoryTrait_for_Memory : MemoryTrait.Run Memory;
+        "Memory" (Φ types.(Types.Memory));
+    run_MemoryTrait_for_Memory : MemoryTrait.Run types.(Types.Memory);
     Bytecode_IsAssociated :
       IsTraitAssociatedType
         "revm_interpreter::interpreter_types::InterpreterTypes" [] [] (Φ Self)
-        "Bytecode" (Φ Bytecode);
-    run_Jumps_for_Bytecode : Jumps.Run Bytecode;
-    run_Immediates_for_Bytecode : Immediates.Run Bytecode;
-    run_LegacyBytecode_for_Bytecode : LegacyBytecode.Run Bytecode;
-    run_EofData_for_Bytecode : EofData.Run Bytecode;
-    run_EofContainer_for_Bytecode : EofContainer.Run Bytecode;
-    run_EofCodeInfo_for_Bytecode : EofCodeInfo.Run Bytecode;
+        "Bytecode" (Φ types.(Types.Bytecode));
+    run_Jumps_for_Bytecode : Jumps.Run types.(Types.Bytecode);
+    run_Immediates_for_Bytecode : Immediates.Run types.(Types.Bytecode);
+    run_LegacyBytecode_for_Bytecode : LegacyBytecode.Run types.(Types.Bytecode);
+    run_EofData_for_Bytecode : EofData.Run types.(Types.Bytecode);
+    run_EofContainer_for_Bytecode : EofContainer.Run types.(Types.Bytecode);
+    run_EofCodeInfo_for_Bytecode : EofCodeInfo.Run types.(Types.Bytecode);
     ReturnData_IsAssociated :
       IsTraitAssociatedType
         "revm_interpreter::interpreter_types::InterpreterTypes" [] [] (Φ Self)
-        "ReturnData" (Φ ReturnData);
-    run_ReturnData_for_ReturnData : ReturnData.Run ReturnData;
+        "ReturnData" (Φ types.(Types.ReturnData));
+    run_ReturnData_for_ReturnData : ReturnData.Run types.(Types.ReturnData);
     Input_IsAssociated :
       IsTraitAssociatedType
         "revm_interpreter::interpreter_types::InterpreterTypes" [] [] (Φ Self)
-        "Input" (Φ Input);
-    run_InputsTrait_for_Input : InputsTrait.Run Input;
+        "Input" (Φ types.(Types.Input));
+    run_InputsTrait_for_Input : InputsTrait.Run types.(Types.Input);
     SubRoutineStack_IsAssociated :
       IsTraitAssociatedType
         "revm_interpreter::interpreter_types::InterpreterTypes" [] [] (Φ Self)
-        "SubRoutineStack" (Φ SubRoutineStack);
-    run_SubRoutineStack_for_SubRoutineStack : SubRoutineStack.Run SubRoutineStack;
+        "SubRoutineStack" (Φ types.(Types.SubRoutineStack));
+    run_SubRoutineStack_for_SubRoutineStack : SubRoutineStack.Run types.(Types.SubRoutineStack);
     Control_IsAssociated :
       IsTraitAssociatedType
         "revm_interpreter::interpreter_types::InterpreterTypes" [] [] (Φ Self)
-        "Control" (Φ Control);
-    run_LoopControl_for_Control : LoopControl.Run Control;
+        "Control" (Φ types.(Types.Control));
+    run_LoopControl_for_Control : LoopControl.Run types.(Types.Control);
     RuntimeFlag_IsAssociated :
       IsTraitAssociatedType
         "revm_interpreter::interpreter_types::InterpreterTypes" [] [] (Φ Self)
-        "RuntimeFlag" (Φ RuntimeFlag);
-    run_RuntimeFlag_for_RuntimeFlag : RuntimeFlag.Run RuntimeFlag;
+        "RuntimeFlag" (Φ types.(Types.RuntimeFlag));
+    run_RuntimeFlag_for_RuntimeFlag : RuntimeFlag.Run types.(Types.RuntimeFlag);
   }.
 End InterpreterTypes.

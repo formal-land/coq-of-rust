@@ -258,6 +258,8 @@ Definition repeat (v times : Value.t) : M :=
   | _ => M.impossible "expected a usize integer for the repeat operator"
   end.
 
+Global Opaque repeat.
+
 (** There is an automatic instanciation of the function traits for closures and functions. *)
 Module FunctionTraitAutomaticImpl.
   Axiom FunctionImplementsFn :

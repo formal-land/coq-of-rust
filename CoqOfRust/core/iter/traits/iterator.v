@@ -1239,7 +1239,7 @@ Module iter.
                     [ N ]
                     [ Self; F ],
                   "new",
-                  [ N ],
+                  [],
                   []
                 |),
                 [ M.read (| self |); M.read (| f |) ]
@@ -4161,7 +4161,7 @@ Module iter.
                     [ N ]
                     [ Self ],
                   "new",
-                  [ N ],
+                  [],
                   []
                 |),
                 [ M.read (| self |) ]
@@ -5408,7 +5408,7 @@ Module iter.
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 0 ],
                         []
                       |),
                       [

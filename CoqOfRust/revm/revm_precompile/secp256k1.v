@@ -148,7 +148,7 @@ Module secp256k1.
                                           [ Value.Integer IntegerKind.Usize 64 ]
                                           [],
                                         "as_slice",
-                                        [ Value.Integer IntegerKind.Usize 64 ],
+                                        [],
                                         []
                                       |),
                                       [
@@ -913,7 +913,7 @@ Module secp256k1.
                                               [ M.borrow (| Pointer.Kind.Ref, input |) ]
                                             |)
                                           |),
-                                          M.alloc (| Value.Integer IntegerKind.Usize 63 |)
+                                          Value.Integer IntegerKind.Usize 63
                                         |),
                                         [
                                           fun γ =>
@@ -1188,7 +1188,7 @@ Module secp256k1.
                             [ M.borrow (| Pointer.Kind.Ref, input |) ]
                           |)
                         |),
-                        M.alloc (| Value.Integer IntegerKind.Usize 63 |)
+                        Value.Integer IntegerKind.Usize 63
                       |)
                     |),
                     Value.Integer IntegerKind.U8 27

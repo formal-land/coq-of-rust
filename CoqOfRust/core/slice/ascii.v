@@ -360,7 +360,7 @@ Module slice.
                                 Pointer.Kind.MutRef,
                                 M.SubPointer.get_array_field (|
                                   M.deref (| M.read (| self |) |),
-                                  i
+                                  M.read (| i |)
                                 |)
                               |)
                             |) in
@@ -471,7 +471,7 @@ Module slice.
                                 Pointer.Kind.MutRef,
                                 M.SubPointer.get_array_field (|
                                   M.deref (| M.read (| self |) |),
-                                  i
+                                  M.read (| i |)
                                 |)
                               |)
                             |) in

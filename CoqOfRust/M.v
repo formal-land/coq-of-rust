@@ -822,16 +822,19 @@ Definition borrow (kind : Pointer.Kind.t) (value : Value.t) : M :=
     pure (Value.Pointer {| Pointer.kind := kind; Pointer.core := core |})
   | _ => impossible "expected a raw pointer"
   end.
-Opaque borrow.
+Global Opaque borrow.
 
 Definition deref (value : Value.t) : M :=
   match value with
   | Value.Pointer pointer => pure (Value.Pointer (Pointer.deref pointer))
   | _ => impossible "expected a pointer"
   end.
-Opaque deref.
+Global Opaque deref.
 
-Parameter pointer_coercion : Value.t -> Value.t.
+(** For now, we use the identity as a definition. The use case we have seen is making a coercion
+    between function types. *)
+Definition pointer_coercion (value : Value.t) : Value.t :=
+  value.
 
 (** This function is explicitly called in the Rust AST, and should take two
     types that are actually different but convertible, like different kinds of

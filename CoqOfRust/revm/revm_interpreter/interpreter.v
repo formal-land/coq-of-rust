@@ -1520,7 +1520,7 @@ Module interpreter.
                     Pointer.Kind.Ref,
                     M.SubPointer.get_array_field (|
                       M.deref (| M.read (| instruction_table |) |),
-                      M.alloc (| M.cast (Ty.path "usize") (M.read (| opcode |)) |)
+                      M.cast (Ty.path "usize") (M.read (| opcode |))
                     |)
                   |);
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);

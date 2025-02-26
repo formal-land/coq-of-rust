@@ -1624,7 +1624,7 @@ Module host.
                 [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                 [],
               "is_zero",
-              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -1663,7 +1663,7 @@ Module host.
                 [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                 [],
               "is_zero",
-              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [
@@ -1702,7 +1702,7 @@ Module host.
                 [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                 [],
               "is_zero",
-              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ],
+              [],
               []
             |),
             [

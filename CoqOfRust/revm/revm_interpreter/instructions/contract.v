@@ -833,7 +833,7 @@ Module instructions.
                                                     M.get_associated_function (|
                                                       Ty.path "core::fmt::Arguments",
                                                       "new_const",
-                                                      [],
+                                                      [ Value.Integer IntegerKind.Usize 1 ],
                                                       []
                                                     |),
                                                     [
@@ -1156,10 +1156,7 @@ Module instructions.
                                               ]
                                               [],
                                             "to_be_bytes",
-                                            [
-                                              Value.Integer IntegerKind.Usize 256;
-                                              Value.Integer IntegerKind.Usize 4
-                                            ],
+                                            [ Value.Integer IntegerKind.Usize 32 ],
                                             []
                                           |),
                                           [ M.borrow (| Pointer.Kind.Ref, salt |) ]
@@ -1776,10 +1773,7 @@ Module instructions.
                                       ]
                                       [],
                                     "as_limbs",
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, aux_data_size |) ]
@@ -1805,9 +1799,7 @@ Module instructions.
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 0
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 0
                                                               |)
                                                             |),
                                                             M.cast
@@ -1820,9 +1812,7 @@ Module instructions.
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 1
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 1
                                                               |)
                                                             |),
                                                             Value.Integer IntegerKind.U64 0
@@ -1831,9 +1821,7 @@ Module instructions.
                                                           M.read (|
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| x |) |),
-                                                              M.alloc (|
-                                                                Value.Integer IntegerKind.Usize 2
-                                                              |)
+                                                              Value.Integer IntegerKind.Usize 2
                                                             |)
                                                           |),
                                                           Value.Integer IntegerKind.U64 0
@@ -1842,9 +1830,7 @@ Module instructions.
                                                         M.read (|
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| x |) |),
-                                                            M.alloc (|
-                                                              Value.Integer IntegerKind.Usize 3
-                                                            |)
+                                                            Value.Integer IntegerKind.Usize 3
                                                           |)
                                                         |),
                                                         Value.Integer IntegerKind.U64 0
@@ -1906,7 +1892,7 @@ Module instructions.
                                         (M.read (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| x |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                            Value.Integer IntegerKind.Usize 0
                                           |)
                                         |))
                                     |)))
@@ -2211,10 +2197,7 @@ Module instructions.
                                                           ]
                                                           [],
                                                         "as_limbs",
-                                                        [
-                                                          Value.Integer IntegerKind.Usize 256;
-                                                          Value.Integer IntegerKind.Usize 4
-                                                        ],
+                                                        [],
                                                         []
                                                       |),
                                                       [
@@ -2247,11 +2230,9 @@ Module instructions.
                                                                                     M.deref (|
                                                                                       M.read (| x |)
                                                                                     |),
-                                                                                    M.alloc (|
-                                                                                      Value.Integer
-                                                                                        IntegerKind.Usize
-                                                                                        0
-                                                                                    |)
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      0
                                                                                   |)
                                                                                 |),
                                                                                 M.cast
@@ -2267,11 +2248,9 @@ Module instructions.
                                                                                     M.deref (|
                                                                                       M.read (| x |)
                                                                                     |),
-                                                                                    M.alloc (|
-                                                                                      Value.Integer
-                                                                                        IntegerKind.Usize
-                                                                                        1
-                                                                                    |)
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      1
                                                                                   |)
                                                                                 |),
                                                                                 Value.Integer
@@ -2284,11 +2263,9 @@ Module instructions.
                                                                                   M.deref (|
                                                                                     M.read (| x |)
                                                                                   |),
-                                                                                  M.alloc (|
-                                                                                    Value.Integer
-                                                                                      IntegerKind.Usize
-                                                                                      2
-                                                                                  |)
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    2
                                                                                 |)
                                                                               |),
                                                                               Value.Integer
@@ -2301,11 +2278,9 @@ Module instructions.
                                                                                 M.deref (|
                                                                                   M.read (| x |)
                                                                                 |),
-                                                                                M.alloc (|
-                                                                                  Value.Integer
-                                                                                    IntegerKind.Usize
-                                                                                    3
-                                                                                |)
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  3
                                                                               |)
                                                                             |),
                                                                             Value.Integer
@@ -2375,9 +2350,7 @@ Module instructions.
                                                             (M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 0
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 0
                                                               |)
                                                             |))
                                                         |)))
@@ -4101,10 +4074,7 @@ Module instructions.
                                                       ]
                                                       [],
                                                     "from",
-                                                    [
-                                                      Value.Integer IntegerKind.Usize 256;
-                                                      Value.Integer IntegerKind.Usize 4
-                                                    ],
+                                                    [],
                                                     [ Ty.path "i32" ]
                                                   |),
                                                   [ Value.Integer IntegerKind.I32 1 ]
@@ -4918,10 +4888,7 @@ Module instructions.
                                                     ]
                                                     [],
                                                   "is_zero",
-                                                  [
-                                                    Value.Integer IntegerKind.Usize 256;
-                                                    Value.Integer IntegerKind.Usize 4
-                                                  ],
+                                                  [],
                                                   []
                                                 |),
                                                 [ M.borrow (| Pointer.Kind.Ref, value |) ]
@@ -6458,10 +6425,7 @@ Module instructions.
                                       ]
                                       [],
                                     "as_limbs",
-                                    [
-                                      Value.Integer IntegerKind.Usize 256;
-                                      Value.Integer IntegerKind.Usize 4
-                                    ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, len |) ]
@@ -6487,9 +6451,7 @@ Module instructions.
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 0
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 0
                                                               |)
                                                             |),
                                                             M.cast
@@ -6502,9 +6464,7 @@ Module instructions.
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.deref (| M.read (| x |) |),
-                                                                M.alloc (|
-                                                                  Value.Integer IntegerKind.Usize 1
-                                                                |)
+                                                                Value.Integer IntegerKind.Usize 1
                                                               |)
                                                             |),
                                                             Value.Integer IntegerKind.U64 0
@@ -6513,9 +6473,7 @@ Module instructions.
                                                           M.read (|
                                                             M.SubPointer.get_array_field (|
                                                               M.deref (| M.read (| x |) |),
-                                                              M.alloc (|
-                                                                Value.Integer IntegerKind.Usize 2
-                                                              |)
+                                                              Value.Integer IntegerKind.Usize 2
                                                             |)
                                                           |),
                                                           Value.Integer IntegerKind.U64 0
@@ -6524,9 +6482,7 @@ Module instructions.
                                                         M.read (|
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| x |) |),
-                                                            M.alloc (|
-                                                              Value.Integer IntegerKind.Usize 3
-                                                            |)
+                                                            Value.Integer IntegerKind.Usize 3
                                                           |)
                                                         |),
                                                         Value.Integer IntegerKind.U64 0
@@ -6588,7 +6544,7 @@ Module instructions.
                                         (M.read (|
                                           M.SubPointer.get_array_field (|
                                             M.deref (| M.read (| x |) |),
-                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                            Value.Integer IntegerKind.Usize 0
                                           |)
                                         |))
                                     |)))
@@ -6972,10 +6928,7 @@ Module instructions.
                                                 ]
                                                 [],
                                               "as_limbs",
-                                              [
-                                                Value.Integer IntegerKind.Usize 256;
-                                                Value.Integer IntegerKind.Usize 4
-                                              ],
+                                              [],
                                               []
                                             |),
                                             [ M.borrow (| Pointer.Kind.Ref, code_offset |) ]
@@ -7003,11 +6956,9 @@ Module instructions.
                                                                           M.deref (|
                                                                             M.read (| x |)
                                                                           |),
-                                                                          M.alloc (|
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              0
-                                                                          |)
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            0
                                                                         |)
                                                                       |),
                                                                       M.cast
@@ -7023,11 +6974,9 @@ Module instructions.
                                                                           M.deref (|
                                                                             M.read (| x |)
                                                                           |),
-                                                                          M.alloc (|
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              1
-                                                                          |)
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
                                                                         |)
                                                                       |),
                                                                       Value.Integer
@@ -7040,11 +6989,9 @@ Module instructions.
                                                                         M.deref (|
                                                                           M.read (| x |)
                                                                         |),
-                                                                        M.alloc (|
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            2
-                                                                        |)
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          2
                                                                       |)
                                                                     |),
                                                                     Value.Integer IntegerKind.U64 0
@@ -7053,11 +7000,9 @@ Module instructions.
                                                                   M.read (|
                                                                     M.SubPointer.get_array_field (|
                                                                       M.deref (| M.read (| x |) |),
-                                                                      M.alloc (|
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          3
-                                                                      |)
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        3
                                                                     |)
                                                                   |),
                                                                   Value.Integer IntegerKind.U64 0
@@ -7121,9 +7066,7 @@ Module instructions.
                                                   (M.read (|
                                                     M.SubPointer.get_array_field (|
                                                       M.deref (| M.read (| x |) |),
-                                                      M.alloc (|
-                                                        Value.Integer IntegerKind.Usize 0
-                                                      |)
+                                                      Value.Integer IntegerKind.Usize 0
                                                     |)
                                                   |))
                                               |)))
@@ -8400,10 +8343,7 @@ Module instructions.
                                     ]
                                     [],
                                   "is_zero",
-                                  [
-                                    Value.Integer IntegerKind.Usize 256;
-                                    Value.Integer IntegerKind.Usize 4
-                                  ],
+                                  [],
                                   []
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, value |) ]
@@ -9286,10 +9226,7 @@ Module instructions.
                                                         ]
                                                         [],
                                                       "is_zero",
-                                                      [
-                                                        Value.Integer IntegerKind.Usize 256;
-                                                        Value.Integer IntegerKind.Usize 4
-                                                      ],
+                                                      [],
                                                       []
                                                     |),
                                                     [ M.borrow (| Pointer.Kind.Ref, value |) ]
@@ -9455,14 +9392,7 @@ Module instructions.
                                                                         ]
                                                                         [],
                                                                       "is_zero",
-                                                                      [
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          256;
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          4
-                                                                      ],
+                                                                      [],
                                                                       []
                                                                     |),
                                                                     [

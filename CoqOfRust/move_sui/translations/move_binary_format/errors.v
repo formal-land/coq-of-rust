@@ -5764,7 +5764,7 @@ Module errors.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_const",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1 ],
                               []
                             |),
                             [
@@ -5813,7 +5813,8 @@ Module errors.
                             M.get_associated_function (|
                               Ty.path "core::fmt::Arguments",
                               "new_v1",
-                              [],
+                              [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1
+                              ],
                               []
                             |),
                             [
@@ -6114,7 +6115,10 @@ Module errors.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
-                                              [],
+                                              [
+                                                Value.Integer IntegerKind.Usize 2;
+                                                Value.Integer IntegerKind.Usize 2
+                                              ],
                                               []
                                             |),
                                             [
@@ -6260,7 +6264,10 @@ Module errors.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
-                                              [],
+                                              [
+                                                Value.Integer IntegerKind.Usize 2;
+                                                Value.Integer IntegerKind.Usize 2
+                                              ],
                                               []
                                             |),
                                             [
@@ -6500,7 +6507,10 @@ Module errors.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
-                                                              [],
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 3;
+                                                                Value.Integer IntegerKind.Usize 3
+                                                              ],
                                                               []
                                                             |),
                                                             [
@@ -6802,7 +6812,10 @@ Module errors.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
-                                                              [],
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 3;
+                                                                Value.Integer IntegerKind.Usize 3
+                                                              ],
                                                               []
                                                             |),
                                                             [
@@ -6957,7 +6970,7 @@ Module errors.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -7244,7 +7257,10 @@ Module errors.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
-                                              [],
+                                              [
+                                                Value.Integer IntegerKind.Usize 2;
+                                                Value.Integer IntegerKind.Usize 2
+                                              ],
                                               []
                                             |),
                                             [
@@ -7357,7 +7373,10 @@ Module errors.
                                   M.get_associated_function (|
                                     Ty.path "core::fmt::Arguments",
                                     "new_v1",
-                                    [],
+                                    [
+                                      Value.Integer IntegerKind.Usize 2;
+                                      Value.Integer IntegerKind.Usize 2
+                                    ],
                                     []
                                   |),
                                   [
@@ -7507,7 +7526,10 @@ Module errors.
                                             M.get_associated_function (|
                                               Ty.path "core::fmt::Arguments",
                                               "new_v1",
-                                              [],
+                                              [
+                                                Value.Integer IntegerKind.Usize 2;
+                                                Value.Integer IntegerKind.Usize 2
+                                              ],
                                               []
                                             |),
                                             [
@@ -7747,7 +7769,10 @@ Module errors.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
-                                                              [],
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 3;
+                                                                Value.Integer IntegerKind.Usize 3
+                                                              ],
                                                               []
                                                             |),
                                                             [
@@ -8049,7 +8074,10 @@ Module errors.
                                                             M.get_associated_function (|
                                                               Ty.path "core::fmt::Arguments",
                                                               "new_v1",
-                                                              [],
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 3;
+                                                                Value.Integer IntegerKind.Usize 3
+                                                              ],
                                                               []
                                                             |),
                                                             [
@@ -8204,7 +8232,7 @@ Module errors.
                     M.get_associated_function (|
                       Ty.path "core::fmt::Arguments",
                       "new_v1",
-                      [],
+                      [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ],
                       []
                     |),
                     [
@@ -8314,7 +8342,10 @@ Module errors.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 5;
+                                  Value.Integer IntegerKind.Usize 5
+                                ],
                                 []
                               |),
                               [
@@ -8542,7 +8573,10 @@ Module errors.
                               M.get_associated_function (|
                                 Ty.path "core::fmt::Arguments",
                                 "new_v1",
-                                [],
+                                [
+                                  Value.Integer IntegerKind.Usize 3;
+                                  Value.Integer IntegerKind.Usize 3
+                                ],
                                 []
                               |),
                               [

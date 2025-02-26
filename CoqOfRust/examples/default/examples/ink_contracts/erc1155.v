@@ -3417,7 +3417,12 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_v1",
+                  [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 0 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
@@ -3507,7 +3512,12 @@ Module Impl_erc1155_Erc1155TokenReceiver_for_erc1155_Contract.
             [
               M.call_closure (|
                 Ty.path "core::fmt::Arguments",
-                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [], [] |),
+                M.get_associated_function (|
+                  Ty.path "core::fmt::Arguments",
+                  "new_v1",
+                  [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 0 ],
+                  []
+                |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,

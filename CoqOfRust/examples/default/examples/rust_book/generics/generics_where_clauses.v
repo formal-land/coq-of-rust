@@ -31,7 +31,7 @@ Module Impl_generics_where_clauses_PrintInOption_where_core_fmt_Debug_core_optio
                       M.get_associated_function (|
                         Ty.path "core::fmt::Arguments",
                         "new_v1",
-                        [],
+                        [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
                         []
                       |),
                       [

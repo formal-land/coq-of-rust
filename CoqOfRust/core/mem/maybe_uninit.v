@@ -1217,7 +1217,7 @@ Module mem.
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Arguments",
                                                         "new_const",
-                                                        [],
+                                                        [ Value.Integer IntegerKind.Usize 1 ],
                                                         []
                                                       |),
                                                       [
@@ -1415,7 +1415,7 @@ Module mem.
                                                             |)
                                                           |)
                                                         |),
-                                                        i
+                                                        M.read (| i |)
                                                       |)
                                                     |);
                                                     M.call_closure (|
@@ -1434,7 +1434,7 @@ Module mem.
                                                           Pointer.Kind.Ref,
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| src |) |),
-                                                            i
+                                                            M.read (| i |)
                                                           |)
                                                         |)
                                                       ]

@@ -664,7 +664,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (| M.read (| pivot |) |),
-                                                  M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                                  Value.Integer IntegerKind.Usize 0
                                                 |)
                                               |)
                                             |) in
@@ -908,7 +908,7 @@ Module slice.
                                   Pointer.Kind.MutRef,
                                   M.SubPointer.get_array_field (|
                                     M.deref (| M.read (| pivot |) |),
-                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    Value.Integer IntegerKind.Usize 0
                                   |)
                                 |)
                               |) in

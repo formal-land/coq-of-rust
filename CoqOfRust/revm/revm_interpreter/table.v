@@ -153,7 +153,7 @@ Module table.
                       M.write (|
                         M.SubPointer.get_array_field (|
                           M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
-                          M.alloc (| M.cast (Ty.path "usize") (M.read (| opcode |)) |)
+                          M.cast (Ty.path "usize") (M.read (| opcode |))
                         |),
                         M.read (| instruction |)
                       |)
@@ -172,7 +172,7 @@ Module table.
                       M.write (|
                         M.SubPointer.get_array_field (|
                           M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
-                          M.alloc (| M.cast (Ty.path "usize") (M.read (| opcode |)) |)
+                          M.cast (Ty.path "usize") (M.read (| opcode |))
                         |),
                         M.call_closure (|
                           CI,
@@ -596,7 +596,7 @@ Module table.
                           [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |),
-                      M.alloc (| M.cast (Ty.path "usize") (M.read (| opcode |)) |)
+                      M.cast (Ty.path "usize") (M.read (| opcode |))
                     |)
                   |)
                 |)
@@ -827,7 +827,7 @@ Module table.
                                       M.read (|
                                         M.SubPointer.get_array_field (|
                                           M.deref (| M.read (| table |) |),
-                                          i
+                                          M.read (| i |)
                                         |)
                                       |)
                                     ]

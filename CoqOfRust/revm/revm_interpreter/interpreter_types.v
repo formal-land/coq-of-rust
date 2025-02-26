@@ -563,10 +563,7 @@ Module interpreter_types.
                                           ]
                                           [],
                                         "to_be_bytes",
-                                        [
-                                          Value.Integer IntegerKind.Usize 256;
-                                          Value.Integer IntegerKind.Usize 4
-                                        ],
+                                        [ Value.Integer IntegerKind.Usize 20 ],
                                         []
                                       |),
                                       [ M.borrow (| Pointer.Kind.Ref, value |) ]

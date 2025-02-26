@@ -2329,18 +2329,16 @@ Module ptr.
                   (M.read (|
                     M.SubPointer.get_array_field (|
                       M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16",
-                      M.alloc (|
-                        BinOp.Wrap.shr (|
-                          BinOp.bit_and
-                            (M.read (| x |))
-                            (BinOp.Wrap.sub (|
-                              M.read (|
-                                M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD"
-                              |),
-                              Value.Integer IntegerKind.Usize 1
-                            |)),
-                          Value.Integer IntegerKind.I32 1
-                        |)
+                      BinOp.Wrap.shr (|
+                        BinOp.bit_and
+                          (M.read (| x |))
+                          (BinOp.Wrap.sub (|
+                            M.read (|
+                              M.get_constant "core::ptr::align_offset::mod_inv::INV_TABLE_MOD"
+                            |),
+                            Value.Integer IntegerKind.Usize 1
+                          |)),
+                        Value.Integer IntegerKind.I32 1
                       |)
                     |)
                   |))

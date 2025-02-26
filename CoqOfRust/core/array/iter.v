@@ -280,7 +280,7 @@ Module array.
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                     "new_unchecked",
-                    [ N ],
+                    [],
                     []
                   |),
                   [ M.read (| buffer |); M.read (| initialized |) ]
@@ -1914,7 +1914,7 @@ Module array.
                       M.get_associated_function (|
                         Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                         "as_mut_slice",
-                        [ N ],
+                        [],
                         []
                       |),
                       [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
@@ -2238,7 +2238,7 @@ Module array.
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                                   "as_slice",
-                                  [ N ],
+                                  [],
                                   []
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
@@ -2520,7 +2520,7 @@ Module array.
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
                                     "as_slice",
-                                    [ N ],
+                                    [],
                                     []
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)

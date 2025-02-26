@@ -1103,10 +1103,7 @@ Module kzg_point_evaluation.
           let~ _ : Ty.tuple [] :=
             M.alloc (|
               M.write (|
-                M.SubPointer.get_array_field (|
-                  hash,
-                  M.alloc (| Value.Integer IntegerKind.Usize 0 |)
-                |),
+                M.SubPointer.get_array_field (| hash, Value.Integer IntegerKind.Usize 0 |),
                 M.read (|
                   M.get_constant "revm_precompile::kzg_point_evaluation::VERSIONED_HASH_VERSION_KZG"
                 |)
