@@ -801,21 +801,6 @@ Definition if_then_else_bool (condition : Value.t) (then_ else_ : M) : M :=
   | _ => impossible "if_then_else_bool: expected a boolean"
   end.
 
-Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
-  let* are_equal := are_equal value expected_value in
-  if_then_else_bool are_equal (pure (Value.Tuple [])) break_match.
-
-Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
-  let* value := read value in
-  match value with
-  | Value.StructTuple current_constructor _ =>
-    if String.eqb current_constructor constructor then
-      pure (Value.Tuple [])
-    else
-      break_match
-  | _ => break_match
-  end.
-
 Definition borrow (kind : Pointer.Kind.t) (value : Value.t) : M :=
   match value with
   | Value.Pointer {| Pointer.kind := Pointer.Kind.Raw; Pointer.core := core |} =>
@@ -830,6 +815,23 @@ Definition deref (value : Value.t) : M :=
   | _ => impossible "expected a pointer"
   end.
 Global Opaque deref.
+
+Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
+  let* are_equal := are_equal value expected_value in
+  if_then_else_bool are_equal (pure (Value.Tuple [])) break_match.
+
+Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
+  let* value := deref value in
+  let* value := read value in
+  match value with
+  | Value.StructTuple current_constructor _ =>
+    if String.eqb current_constructor constructor then
+      pure (Value.Tuple [])
+    else
+      break_match
+  | _ => break_match
+  end.
+Arguments is_struct_tuple /.
 
 (** For now, we use the identity as a definition. The use case we have seen is making a coercion
     between function types. *)
